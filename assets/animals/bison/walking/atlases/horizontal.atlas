@@ -1,0 +1,38 @@
+horizontal.png
+size: 1024,128
+repeat: none
+bison-horizontal-1
+  rotate: false
+  xy: 0,2
+  size: 136,101
+  orig: 136,101
+  offset: 0,0
+  index: -1
+bison-horizontal-2
+  rotate: false
+  xy: 136,2
+  size: 136,101
+  orig: 136,101
+  offset: 0,0
+  index: -1
+bison-horizontal-3
+  rotate: false
+  xy: 272,2
+  size: 136,101
+  orig: 136,101
+  offset: 0,0
+  index: -1
+bison-horizontal-4
+  rotate: false
+  xy: 408,2
+  size: 136,101
+  orig: 136,101
+  offset: 0,0
+  index: -1
+bison-horizontal-5
+  rotate: false
+  xy: 544,2
+  size: 136,101
+  orig: 136,101
+  offset: 0,0
+  index: -1

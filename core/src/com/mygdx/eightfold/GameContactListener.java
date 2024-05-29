@@ -9,9 +9,9 @@ import objects.animals.helper.BisonManager;
 
 public class GameContactListener implements ContactListener {
 
-    private com.waldergames.eightfoldtwo.GameScreen gameScreen;
+    private com.mygdx.eightfold.GameScreen gameScreen;
 
-    public GameContactListener(com.waldergames.eightfoldtwo.GameScreen gameScreen) {
+    public GameContactListener(com.mygdx.eightfold.GameScreen gameScreen) {
         this.gameScreen = gameScreen;
     }
 
@@ -29,11 +29,13 @@ public class GameContactListener implements ContactListener {
             BodyUserData userDataB = (BodyUserData) b.getUserData();
 
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BISON) {
-//                System.out.println("Contact detected between player and bison");
-//                System.out.println("Player ID: " + userDataA.getId() + ", Bison ID: " + userDataB.getId());
-//                System.out.println(b.getBody().getUserData());
+                System.out.println("Contact detected between player and bison");
+                System.out.println("Player ID: " + userDataA.getId() + ", Bison ID: " + userDataB.getId());
+                System.out.println("Bison ID: " + ((BodyUserData) b.getUserData()).getId());
+                System.out.println("bison userData:" + userDataB.getId());
                 Bison bison =  BisonManager.getBisonById(userDataB.getId());
-                bison.getSprite().flip(true,true);
+                System.out.println(bison.getSprite());
+                //bison.getSprite().flip(true,false);
                 Bison.playerContact(b.getBody(), userDataB.getId());
                 System.out.println(userDataB.getBody());
 

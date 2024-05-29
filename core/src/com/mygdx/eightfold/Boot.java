@@ -2,7 +2,7 @@ package com.mygdx.eightfold;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.waldergames.eightfoldtwo.GameScreen;
+import com.mygdx.eightfold.GameScreen;
 
 public class Boot extends Game {
 

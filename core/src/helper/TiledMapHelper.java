@@ -16,7 +16,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
-import com.waldergames.eightfoldtwo.GameScreen;
+import com.mygdx.eightfold.GameScreen;
 import objects.animals.Bird;
 import objects.animals.bison.Bison;
 import objects.inanimate.Boulder;
@@ -125,7 +125,11 @@ public class TiledMapHelper {
                             );
 
 
+
+
+
                             gameScreen.addBison(bison);
+                            System.out.println("Created Bison with ID: " + bisonId);
                             break;
                         case "bird":
                             int birdId = ++birdCounter;

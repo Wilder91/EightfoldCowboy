@@ -1,4 +1,4 @@
-package com.waldergames.eightfoldtwo;
+package com.mygdx.eightfold;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
