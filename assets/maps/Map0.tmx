@@ -58,7 +58,7 @@
  </layer>
  <objectgroup id="2" name="objects">
   <object id="7" name="player" type="human" x="562.204" y="345.072" width="133.683" height="146.793"/>
-  <object id="24" name="bison" type="bison" x="255.532" y="369.696">
+  <object id="24" name="bison" type="bison" x="421.753" y="420.156">
    <polygon points="0,0 83.9054,-43.224 122.044,-5.08518 86.448,50.8518 -2.54259,48.3092"/>
   </object>
   <object id="25" name="bison" type="bison" x="458.859" y="868.302">

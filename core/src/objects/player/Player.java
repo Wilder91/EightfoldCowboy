@@ -17,7 +17,7 @@ public class Player extends GameEntity {
     private boolean isFacingRight;
     public Player(float width, float height, Body body, GameScreen gameScreen) {
         super(width, height, body, gameScreen);
-        this.speed = 10f;
+        this.speed = 20f;
         this.sprite = new Sprite(new Texture("kath.gif"));
         this.sprite.setSize(width, height);
 

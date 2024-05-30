@@ -1,4 +1,4 @@
-package objects.animals;
+package objects.animals.bird;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

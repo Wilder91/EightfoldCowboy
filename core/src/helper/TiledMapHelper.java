@@ -17,7 +17,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.mygdx.eightfold.GameScreen;
-import objects.animals.Bird;
+import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
 import objects.inanimate.Boulder;
 import objects.inanimate.Building;
@@ -31,7 +31,7 @@ public class TiledMapHelper {
     private GameScreen gameScreen;
     private ShapeRenderer shapeRenderer;
 
-    private static int bisonCounter = 0;
+    private static int bisonCounter = -1;
     private static int birdCounter = 0;
     private static int boulderCounter = 0;
     private static int buildingCounter = 0;
@@ -55,7 +55,7 @@ public class TiledMapHelper {
         for (MapObject object : objects) {
 
             if (object instanceof RectangleMapObject && "path".equals(object.getName())) {
-                System.out.println("path requested");
+                //System.out.println("path requested");
                 Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
                 createStaticRectangle(rectangle);
                 float x = rectangle.getX();
@@ -112,6 +112,7 @@ public class TiledMapHelper {
                                     ContactType.BISON,
                                     bisonId
                             );
+                            System.out.println("TILED MAP HELPER BISON BODY: " + body);
 
                             Bison bison = new Bison(
                                     boundingRectangle.width,
@@ -129,7 +130,7 @@ public class TiledMapHelper {
 
 
                             gameScreen.addBison(bison);
-                            System.out.println("Created Bison with ID: " + bisonId);
+                            //System.out.println("Created Bison with ID: " + bisonId);
                             break;
                         case "bird":
                             int birdId = ++birdCounter;
@@ -161,7 +162,7 @@ public class TiledMapHelper {
                             gameScreen.addBird(bird);
                             break;
                         case "boulder":
-                            System.out.println("boulder requested");
+//                            System.out.println("boulder requested");
                             int boulderId = ++boulderCounter;
                             polygon = polygonMapObject.getPolygon();
                             boundingRectangle = polygon.getBoundingRectangle();
@@ -195,7 +196,7 @@ public class TiledMapHelper {
                             gameScreen.addBoulder(boulder);
                             break;
                         case "saloon":
-                            System.out.println("Saloon requested");
+
                             int buildingId = ++buildingCounter;
                             Polygon buildingPolygon = polygonMapObject.getPolygon();
                             Rectangle buildingBoundingRectangle = buildingPolygon.getBoundingRectangle();

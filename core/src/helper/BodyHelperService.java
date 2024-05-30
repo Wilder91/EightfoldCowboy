@@ -26,9 +26,9 @@ public class BodyHelperService {
         shape.dispose();
 
         body.setUserData( type + "," + id + ", " + body );
-        System.out.println("Body User Data: " + body.getUserData());
-        System.out.println("Fixture User Data: " + fixture.getUserData());
-
+//        System.out.println("Body User Data: " + body.getUserData());
+//        System.out.println("Fixture User Data: " + fixture.getUserData());
+        System.out.println("BODY HELPER BODY: " + type + " " + body);
         return body;
     }
 

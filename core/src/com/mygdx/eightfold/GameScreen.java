@@ -14,12 +14,12 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 import helper.TiledMapHelper;
-import objects.animals.Bird;
+import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
 import objects.inanimate.Boulder;
 import objects.inanimate.Building;
 import objects.player.Player;
-import com.mygdx.eightfold.GameContactListener;
+
 import java.util.ArrayList;
 
 import static helper.Constants.PPM;
@@ -202,7 +202,7 @@ public class GameScreen extends ScreenAdapter {
 
         batch.end();
         // Uncomment for debugging physics bodies
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+       // box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
 }

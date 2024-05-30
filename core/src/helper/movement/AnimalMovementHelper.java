@@ -11,7 +11,7 @@ public class AnimalMovementHelper {
         if (Math.abs(body.getLinearVelocity().x) > velocityThreshold) {
             // Determine the direction based on the velocity
             boolean newFacingRight = (body.getLinearVelocity().x > 0);
-            
+
             // Flip the sprite if the direction has changed
             if (newFacingRight != isFacingRight) {
                 sprite.flip(true, false); // Flip horizontally
