@@ -1,10 +1,12 @@
 package objects.animals.bison;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameScreen;
+import com.mygdx.eightfold.GameScreenAssetManager;
 import helper.movement.AnimalMovementHelper;
 import objects.animals.helper.BisonManager;
 import objects.player.GameEntity;
@@ -23,6 +25,7 @@ public class Bison extends GameEntity {
     private int id;
     private Sprite sprite;
     private TextureAtlas textureAtlas;
+    private AssetManager assetManager;
 
     public Bison(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int bisonId) {
         super(0, 0, body, gameScreen);
@@ -33,7 +36,7 @@ public class Bison extends GameEntity {
         this.body = body;
         System.out.println("BISON CLASS BODY: " + body);
         loadAnimationFrames();
-
+        this.assetManager = new GameScreenAssetManager();
         // Create animations
 
         // Load the animation frames from the texture atlas
@@ -53,23 +56,6 @@ public class Bison extends GameEntity {
     }
     System.out.println("new linear: " + body.getLinearVelocity());
 }
-//       if(body.getLinearVelocity().x > 0){
-//            System.out.println(body.getLinearVelocity().x);
-//            TextureAtlas atlas = new TextureAtlas("animals/bison/walking/atlases/horizontal.atlas");
-//            for (int i = 1; i <= 5; i++) {
-//                TextureRegion region = atlas.findRegion("bison-horizontal-" + i);
-//                if (region == null) {
-//                    System.out.println("Region bison-horizontal-" + i + " not found!");
-//                } else {
-//                    frames.add(region);
-//                }
-//            }
-//
-//        }
-//
-//        if (frames.size == 0) {
-//            throw new RuntimeException("No frames found in the atlas. Check the atlas file and region names.");
-//        }
 
         // Create the animation
         this.animation = new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
@@ -145,6 +131,7 @@ public class Bison extends GameEntity {
         // Load frames for walking animation
         Array<TextureRegion> walkingFrames = new Array<>();
         TextureAtlas walkingAtlas = new TextureAtlas("animals/bison/walking/atlases/horizontal.atlas");
+        System.out.println(walkingAtlas);
         for (int i = 1; i <= 5; i++) {
             TextureRegion region = walkingAtlas.findRegion("bison-horizontal-" + i);
             if (region == null) {

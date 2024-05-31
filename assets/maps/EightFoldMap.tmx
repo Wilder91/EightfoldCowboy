@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="105">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="107">
  <tileset firstgid="1" source="rock.tsx"/>
  <tileset firstgid="101" source="Bison1.tsx"/>
  <layer id="1" name="Tile Layer 1" width="50" height="50" visible="0">
@@ -91,22 +91,25 @@
   <object id="92" name="saloon" type="building" x="633.884" y="4.61042">
    <polygon points="0,0 315.863,0 315.863,331.762 -2.25616,334.219"/>
   </object>
-  <object id="93" name="boulder" x="952.994" y="566.843">
+  <object id="93" name="large_oak" x="952.994" y="566.843">
    <polygon points="0,0 145.081,0 145.081,109.696 3.53857,109.696"/>
   </object>
-  <object id="94" name="boulder" x="1111.11" y="198.248">
+  <object id="94" name="seedling_oak" x="1111.11" y="198.248">
    <polygon points="0,0 145.081,0 145.081,109.696 3.53857,109.696"/>
   </object>
-  <object id="95" name="boulder" x="46.1042" y="590.134">
+  <object id="95" name="juvenile_oak" x="46.1042" y="590.134">
    <polygon points="0,0 145.081,0 145.081,109.696 3.53857,109.696"/>
   </object>
-  <object id="96" name="boulder" x="119.871" y="1180.27">
+  <object id="97" name="medium_oak_two" x="1212.54" y="995.851">
    <polygon points="0,0 145.081,0 145.081,109.696 3.53857,109.696"/>
   </object>
-  <object id="97" name="boulder" x="1212.54" y="995.851">
+  <object id="98" name="medium_oak_one" x="1383.13" y="308.898">
    <polygon points="0,0 145.081,0 145.081,109.696 3.53857,109.696"/>
   </object>
-  <object id="98" name="boulder" x="1383.13" y="308.898">
+  <object id="105" name="large_oak" x="0" y="0">
+   <polygon points="0,0 126.316,0 130.526,122.105 0,117.895"/>
+  </object>
+  <object id="106" name="boulder" x="606.316" y="593.684">
    <polygon points="0,0 145.081,0 145.081,109.696 3.53857,109.696"/>
   </object>
  </objectgroup>

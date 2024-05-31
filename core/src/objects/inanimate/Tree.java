@@ -1,5 +1,6 @@
 package objects.inanimate;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -9,60 +10,67 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameScreen;
 
 import static helper.Constants.FRAME_DURATION;
+import static helper.Constants.PPM;
 
 public class Tree extends InanimateEntity {
+    // Define constants for tree types
+    public static final int LARGE_OAK = 0;
+    public static final int MEDIUM_1 = 1;
+    public static final int MEDIUM_2 = 2;
+    public static final int SMALL = 3;
+    public static final int JUVENILE = 4;
+    public static final int SEEDLING = 5;
+    private AssetManager assetManager;
     private final int treeType;
-    private Animation<TextureRegion> firstTreeAnimation;
-    private Animation<TextureRegion> secondTreeAnimation;
     private float stateTime;
     private Animation<TextureRegion>[] treeAnimations;
 
-
+    @SuppressWarnings("unchecked")
     public Tree(float width, float height, Body body, GameScreen gameScreen, int treeType, int id) {
         super(width, height, body, gameScreen, id);
         this.stateTime = 0f;
         this.treeType = treeType;
-        treeAnimations = new Animation[5];
+        treeAnimations = new Animation[6]; // Array to hold animations for 6 tree types
+        this.assetManager = new AssetManager();
         initAnimations();
-
     }
 
     @Override
     public void update(float delta) {
+        x = body.getPosition().x * PPM;
+        y = body.getPosition().y * PPM;
         stateTime += delta;
+
     }
 
     @Override
     public void update() {
-
+        // Optional: Implement additional update logic if needed
     }
 
     private void initAnimations() {
-        // Load frames for the first tree animation
-        Array<TextureRegion> firstTreeFrames = new Array<>();
-        TextureAtlas firstTreeAtlas = new TextureAtlas("plants/trees/atlases/treeone.atlas");
-        for (int i = 1; i <= 5; i++) {
-            TextureRegion region = firstTreeAtlas.findRegion("tree-one-" + i);
-            if (region == null) {
-                System.out.println("Region tree-one-" + i + " not found!");
-            } else {
-                firstTreeFrames.add(region);
-            }
-        }
-        firstTreeAnimation = new Animation<>(FRAME_DURATION, firstTreeFrames, Animation.PlayMode.LOOP);
+        loadAnimation(LARGE_OAK, "plants/trees/atlases/oak-trees.atlas", 1, 29);
+        loadAnimation(MEDIUM_1, "plants/trees/atlases/oak-trees.atlas", 30, 58);
+        loadAnimation(MEDIUM_2, "plants/trees/atlases/oak-trees.atlas", 59, 67);
+        loadAnimation(SMALL, "plants/trees/atlases/oak-trees.atlas", 68, 116);
+        loadAnimation(JUVENILE, "plants/trees/atlases/oak-trees.atlas", 117, 117);
+        loadAnimation(SEEDLING, "plants/trees/atlases/oak-trees.atlas", 118, 118);
+    }
 
-        // Load frames for the second tree animation
-        Array<TextureRegion> secondTreeFrames = new Array<>();
-        TextureAtlas secondTreeAtlas = new TextureAtlas("plants/trees/atlases/treetwo.atlas");
-        for (int i = 1; i <= 5; i++) {
-            TextureRegion region = secondTreeAtlas.findRegion("tree-two-" + i);
+    private void loadAnimation(int treeType, String atlasPath, int startFrame, int endFrame) {
+        Array<TextureRegion> frames = new Array<>();
+        TextureAtlas atlas = new TextureAtlas(atlasPath);
+        for (int i = startFrame; i <= endFrame; i++) {
+
+            TextureRegion region = atlas.findRegion("oak-trees-" + treeType + "-" + i);
             if (region == null) {
-                System.out.println("Region tree-two-" + i + " not found!");
+                System.out.println("Region oak-trees-" + treeType + "-" + i + " not found!");
             } else {
-                secondTreeFrames.add(region);
+                frames.add(region);
+
             }
         }
-        secondTreeAnimation = new Animation<>(FRAME_DURATION, secondTreeFrames, Animation.PlayMode.LOOP);
+        treeAnimations[treeType] = new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
     }
 
     @Override
@@ -74,10 +82,10 @@ public class Tree extends InanimateEntity {
         TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
 
         // Draw the current frame at the tree's position
-        batch.draw(currentFrame,
-                body.getPosition().x - width / 2,
-                body.getPosition().y - height / 2,
-                width,
-                height);
+        // Convert the Box2D position from meters to pixels for rendering
+        float x = body.getPosition().x * PPM - width / 2;
+        float y = body.getPosition().y * PPM - height / 2;
+
+        batch.draw(currentFrame, x, y, width, height);
     }
 }

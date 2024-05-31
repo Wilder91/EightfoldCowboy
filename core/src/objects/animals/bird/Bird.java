@@ -1,11 +1,14 @@
 package objects.animals.bird;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.mygdx.eightfold.Boot;
+import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.GameScreen;
 import helper.movement.AnimalMovementHelper;
 import objects.animals.helper.BirdManager;
@@ -24,14 +27,18 @@ public class Bird extends GameEntity {
     private Sprite sprite;
     private boolean isFacingRight;
     private int id;
-
+    private AssetManager assetManager;
+    private GameAssets gameAssets;
 
     public Bird(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int birdId) {
         super(0, 0, body, gameScreen);
         float spriteX = x - width / 2;
         float spriteY = y - height / 2;
         this.speed = 15f;
-        Texture birdTexture = new Texture("bird.png");
+        this.gameAssets = new GameAssets();
+        gameAssets.loadAssets();
+        gameAssets.finishLoading();
+        Texture birdTexture = gameAssets.getTexture("bird.png");
         this.sprite = new Sprite(birdTexture);
         this.sprite.setSize(width, height);
         this.sprite.setPosition(spriteX, spriteY);

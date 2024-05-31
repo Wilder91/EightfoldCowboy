@@ -13,11 +13,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
-import helper.TiledMapHelper;
+import helper.tiledmap.TiledMapHelper;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
 import objects.inanimate.Boulder;
 import objects.inanimate.Building;
+import objects.inanimate.Tree;
 import objects.player.Player;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class GameScreen extends ScreenAdapter {
     private ArrayList<Bird> birdList;
     private ArrayList<Building> buildingList;
     private ArrayList<Boulder> boulderList;
+    private ArrayList<Tree> treeList;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private World world;
@@ -38,15 +40,18 @@ public class GameScreen extends ScreenAdapter {
     private Player player;
     private GameContactListener gameContactListener;
     private ShapeRenderer shapeRenderer;
-
+    private GameAssets gameAssets;
     public GameScreen( OrthographicCamera camera) {
         this.buildingList = new ArrayList<Building>();
         this.camera = camera;
         this.bisonList = new ArrayList<>();
         this.birdList = new ArrayList<>();
         this.boulderList = new ArrayList<>();
+        this.treeList = new ArrayList<>();
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0, 0), false);
+        this.gameAssets = new GameAssets();
+
         this.gameContactListener = new GameContactListener(this);
         this.world.setContactListener(this.gameContactListener);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
@@ -85,6 +90,10 @@ public class GameScreen extends ScreenAdapter {
 
         for (Building building : buildingList) {
             building.update(delta);
+        }
+
+        for (Tree tree : treeList) {
+            tree.update(delta);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -166,6 +175,12 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
+    public void addTree( Tree tree) {
+        if (treeList != null) {
+            treeList.add(tree);
+        }
+    }
+
 
     @Override
     public void render(float delta) {
@@ -196,13 +211,16 @@ public class GameScreen extends ScreenAdapter {
         for (Building building : buildingList) {
             building.render(batch);
         }
+        for (Tree tree : treeList) {
+            tree.render(batch);
+        }
 
         // Render shapes
         //tiledMapHelper.renderPathRectangles(); // Remove this line
 
         batch.end();
         // Uncomment for debugging physics bodies
-       // box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+       //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
 }
