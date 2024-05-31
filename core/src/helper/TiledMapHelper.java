@@ -42,7 +42,7 @@ public class TiledMapHelper {
     }
 
     public OrthogonalTiledMapRenderer setupMap() {
-        tiledMap = new TmxMapLoader().load("maps/map0.tmx");
+        tiledMap = new TmxMapLoader().load("maps/EightfoldMap.tmx");
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
         return new OrthogonalTiledMapRenderer(tiledMap);
     }
@@ -115,8 +115,8 @@ public class TiledMapHelper {
                             System.out.println("TILED MAP HELPER BISON BODY: " + body);
 
                             Bison bison = new Bison(
-                                    boundingRectangle.width,
-                                    boundingRectangle.height,
+                                    boundingRectangle.width * 7/4,
+                                    boundingRectangle.height * 7/4,
                                     boundingRectangle.x + boundingRectangle.width / 2,
                                     boundingRectangle.y + boundingRectangle.height / 2,
                                     body,

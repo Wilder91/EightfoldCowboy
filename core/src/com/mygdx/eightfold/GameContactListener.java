@@ -92,8 +92,8 @@ public class GameContactListener implements ContactListener {
 
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BISON) {
                 Bison bison = BisonManager.getBisonById(userDataB.getId());
-                System.out.println("Contact body velo: " + bison.getBody().getLinearVelocity().x);
-                System.out.println("Bison ID: " + userDataB.getId());
+//                System.out.println("Contact body velo: " + bison.getBody().getLinearVelocity().x);
+//                System.out.println("Bison ID: " + userDataB.getId());
                 if (bison == null) {
                     System.out.println("Bison is null for ID: " + userDataB.getId());
                 } else {
@@ -101,7 +101,7 @@ public class GameContactListener implements ContactListener {
                 }
             } else if (userDataA.getType() == ContactType.BISON && userDataB.getType() == ContactType.PLAYER) {
                 Bison bison = BisonManager.getBisonById(userDataA.getId());
-                System.out.println("Bison ID: " + userDataA.getId());
+                //System.out.println("Bison ID: " + userDataA.getId());
                 if (bison == null) {
                     System.out.println("Bison is null for ID: " + userDataA.getId());
                 } else {

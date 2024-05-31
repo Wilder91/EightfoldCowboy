@@ -12,12 +12,13 @@ import objects.player.GameEntity;
 
 import java.util.Random;
 
+import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
 
 public class Building extends GameEntity {
 
     private static final float MOVEMENT_DURATION = 2.0f; // 1 second
-    private static final float FRAME_DURATION = 0.1f; // Duration of each frame in the animation
+    // Duration of each frame in the animation
     private boolean isMoving;
     private float moveTimer;
     private Animation<TextureRegion> animation;

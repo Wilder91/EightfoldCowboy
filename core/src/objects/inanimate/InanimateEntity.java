@@ -5,17 +5,19 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameScreen;
 
 public abstract class InanimateEntity {
+    private final int id;
     protected float x, y, velX, velY, speed;
     protected float width, height;
+    
     protected Body body;
 
-    public InanimateEntity(float width, float height, Body body, GameScreen gameScreen) {
+    public InanimateEntity(float width, float height, Body body, GameScreen gameScreen, int id) {
         this.x = body.getPosition().x;
         this.y = body.getPosition().y;
         this.width = width;
         this.height = height;
         this.body = body;
-
+        this.id = id;
         this.speed = 0;
     }
 

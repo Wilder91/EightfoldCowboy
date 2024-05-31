@@ -9,11 +9,12 @@ import helper.movement.AnimalMovementHelper;
 import objects.animals.helper.BisonManager;
 import objects.player.GameEntity;
 
+import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
 
 public class Bison extends GameEntity {
     // 1 second
-    private static final float FRAME_DURATION = 0.1f; // Duration of each frame in the animation
+
     private Animation<TextureRegion> stationaryAnimation;
     private Animation<TextureRegion> walkingAnimation;
     private Animation<TextureRegion> animation;
@@ -92,20 +93,23 @@ public class Bison extends GameEntity {
 
         // Determine the direction of movement
         boolean isMovingRight = body.getLinearVelocity().x > 0;
-
+        boolean isMovingUp = body.getLinearVelocity().y > 0;
         // Update animation based on the direction of movement
         float movementThreshold = 1;
         if (Math.abs(body.getLinearVelocity().x) < movementThreshold) {
             // If velocity is below the threshold, use stationary animation
             sprite.setRegion(stationaryAnimation.getKeyFrame(stateTime, true));
+            if(!isFacingRight){
+                sprite.flip(true,false);
+            }
         } else if (isMovingRight) {
             // If moving right, use walking animation facing right
             sprite.setRegion(walkingAnimation.getKeyFrame(stateTime, true));
         } else {
-            // If moving left, flip the walking animation for left-facing movement
-            TextureRegion flippedRegion = new TextureRegion(walkingAnimation.getKeyFrame(stateTime, true));
-            flippedRegion.flip(true, false); // Flip the region horizontally
-            sprite.setRegion(flippedRegion);
+            TextureRegion flippedWalkingRegion = new TextureRegion(walkingAnimation.getKeyFrame(stateTime, true));
+            flippedWalkingRegion.flip(true, false);
+            // Flip the region horizontally
+            sprite.setRegion(flippedWalkingRegion);
         }
 
         sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);

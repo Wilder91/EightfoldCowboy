@@ -49,9 +49,22 @@ public class Bird extends GameEntity {
 
         x = body.getPosition().x * PPM ;
         y = body.getPosition().y * PPM;
+        boolean newFacingRight = AnimalMovementHelper.checkLinearVelocity(body, sprite, isFacingRight);
+        if (newFacingRight != isFacingRight) {
+            isFacingRight = newFacingRight;
+        }
+
+
+
+
+
         sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
 
-        AnimalMovementHelper.checkLinearVelocity(body, sprite, isFacingRight);
+        // Check and update the sprite's direction
+
+        if (newFacingRight != isFacingRight) {
+            isFacingRight = newFacingRight;
+        }
 
     }
 
