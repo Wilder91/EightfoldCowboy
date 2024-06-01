@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 public class AnimalMovementHelper {
     public static boolean checkLinearVelocity(Body body, Sprite sprite, boolean isFacingRight) {
         float velocityThreshold = 0.5f; // Adjust this threshold as needed
-
         // Check if the body's velocity exceeds the threshold
         if (Math.abs(body.getLinearVelocity().x) > velocityThreshold) {
             // Determine the direction based on the velocity
@@ -18,7 +17,6 @@ public class AnimalMovementHelper {
                 return newFacingRight; // Return the new direction
             }
         }
-
         // Return the current direction if no flipping occurred
         return isFacingRight;
     }

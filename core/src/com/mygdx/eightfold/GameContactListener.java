@@ -1,6 +1,5 @@
 package com.mygdx.eightfold;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.*;
 import helper.BodyUserData;
 import helper.ContactType;

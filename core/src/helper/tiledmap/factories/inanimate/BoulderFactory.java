@@ -1,6 +1,5 @@
 package helper.tiledmap.factories.inanimate;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -8,9 +7,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.eightfold.GameScreen;
-import helper.BodyHelperService;
-import helper.ContactType;
-import objects.animals.bird.Bird;
 import objects.inanimate.Boulder;
 
 import static helper.Constants.PPM;

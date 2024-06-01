@@ -8,7 +8,6 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -34,12 +33,6 @@ public class TiledMapHelper {
     private GameScreen gameScreen;
     private ShapeRenderer shapeRenderer;
 
-    private static int bisonCounter = -1;
-    private static int birdCounter = 0;
-    private static int boulderCounter = 0;
-    private static int buildingCounter = 0;
-    private static int treeCounter = 0;
-
     public TiledMapHelper(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         this.shapeRenderer = new ShapeRenderer();
@@ -50,10 +43,6 @@ public class TiledMapHelper {
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
         return new OrthogonalTiledMapRenderer(tiledMap);
     }
-
-
-
-
 
     private void parseMapObjects(MapObjects mapObjects) {
         for (MapObject mapObject : mapObjects) {
@@ -122,8 +111,6 @@ public class TiledMapHelper {
             }
         }
     }
-
-
 
     private void createBird(PolygonMapObject polygonMapObject) {
         BirdFactory birdFactory = new BirdFactory(gameScreen);
