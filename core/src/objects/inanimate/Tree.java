@@ -20,7 +20,6 @@ public class Tree extends InanimateEntity {
     public static final int SMALL = 3;
     public static final int JUVENILE = 4;
     public static final int SEEDLING = 5;
-    private AssetManager assetManager;
     private final int treeType;
     private float stateTime;
     private Animation<TextureRegion>[] treeAnimations;
@@ -31,7 +30,6 @@ public class Tree extends InanimateEntity {
         this.stateTime = 0f;
         this.treeType = treeType;
         treeAnimations = new Animation[6]; // Array to hold animations for 6 tree types
-        this.assetManager = new AssetManager();
         initAnimations();
     }
 
@@ -64,7 +62,7 @@ public class Tree extends InanimateEntity {
 
             TextureRegion region = atlas.findRegion("oak-trees-" + treeType + "-" + i);
             if (region == null) {
-                System.out.println("Region oak-trees-" + treeType + "-" + i + " not found!");
+                //System.out.println("Region oak-trees-" + treeType + "-" + i + " not found!");
             } else {
                 frames.add(region);
 

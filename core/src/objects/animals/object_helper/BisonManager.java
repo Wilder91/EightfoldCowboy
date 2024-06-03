@@ -1,4 +1,4 @@
-package objects.animals.helper;
+package objects.animals.object_helper;
 import objects.animals.bison.Bison;
 
 import java.util.HashMap;

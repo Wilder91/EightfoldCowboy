@@ -7,18 +7,25 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameScreen;
+import objects.GameAssets;
 
 import static helper.Constants.PPM;
 
 public class Boulder extends InanimateEntity {
-
+    private GameAssets gameAssets;
     private final int boulderId;
     private Sprite sprite;
     private boolean isFacingRight;
     public Boulder(float width, float height, Body body, GameScreen gameScreen, int boulderId) {
         super(width, height, body, gameScreen, boulderId);
         this.speed = 10f;
-        this.sprite = new Sprite(new Texture("boulder.png"));
+        this.gameAssets = new GameAssets();
+        gameAssets.loadAssets();
+        gameAssets.finishLoading();
+
+        Texture boulderTexture = gameAssets.getTexture("boulder.png");
+        this.sprite = new Sprite(boulderTexture);
+
         this.sprite.setSize(width, height);
         this.boulderId = boulderId;
         this.isFacingRight = false;

@@ -5,7 +5,7 @@ import helper.BodyUserData;
 import helper.ContactType;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
-import objects.animals.helper.BisonManager;
+import objects.animals.object_helper.BisonManager;
 
 public class GameContactListener implements ContactListener {
 

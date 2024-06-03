@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import objects.GameAssets;
 import com.mygdx.eightfold.GameScreen;
 import helper.movement.AnimalMovementHelper;
-import objects.animals.helper.BirdManager;
+import objects.animals.object_helper.BirdManager;
 import objects.player.GameEntity;
 
 import java.util.Random;
@@ -37,7 +37,7 @@ public class Bird extends GameEntity {
         this.gameAssets = new GameAssets();
         gameAssets.loadAssets();
         gameAssets.finishLoading();
-        Texture birdTexture = gameAssets.getTexture("bird.png");
+        Texture birdTexture = gameAssets.getTexture("animals/birds/bird.png");
         this.sprite = new Sprite(birdTexture);
         this.sprite.setSize(width, height);
         this.sprite.setPosition(spriteX, spriteY);

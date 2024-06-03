@@ -14,12 +14,14 @@ public class GameAssets {
     public void loadAssets() {
         // Load the texture atlas
         assetManager.load("plants/trees/atlases/oak-trees.atlas", TextureAtlas.class);
-        assetManager.load("bird.png", Texture.class);
+        assetManager.load("animals/birds/bird.png", Texture.class);
+        assetManager.load("boulder.png", Texture.class);
+        assetManager.load("animals/bison/grazing/atlas/bison-grazing.atlas", TextureAtlas.class);
+        assetManager.load("kath_walk/atlas/kath-walk.atlas", TextureAtlas.class);
         // Load individual textures for bison grazing
         for (int i = 0; i <= 39; i++) {
             String filename = "animals/bison/grazing/Bison_Grazing_" + i + ".png";
             assetManager.load(filename, Texture.class);
-
         }
 
         // Add other assets to load here
