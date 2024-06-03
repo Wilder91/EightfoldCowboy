@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.eightfold.GameScreen;
+import objects.GameAssets;
 import objects.inanimate.Boulder;
 
 import static helper.Constants.PPM;
@@ -15,7 +16,7 @@ public class BoulderFactory {
     private GameScreen gameScreen;
     private static int boulderCounter = 0;
 
-    public BoulderFactory(GameScreen gameScreen){
+    public BoulderFactory(GameScreen gameScreen, GameAssets gameAssets){
         this.gameScreen = gameScreen;
     }
     public void createBoulder(PolygonMapObject polygonMapObject) {

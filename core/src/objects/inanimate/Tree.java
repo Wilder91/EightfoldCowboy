@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameScreen;
+import objects.GameAssets;
 
 import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
@@ -23,7 +24,7 @@ public class Tree extends InanimateEntity {
     private final int treeType;
     private float stateTime;
     private Animation<TextureRegion>[] treeAnimations;
-
+    private GameAssets gameAssets;
     @SuppressWarnings("unchecked")
     public Tree(float width, float height, Body body, GameScreen gameScreen, int treeType, int id) {
         super(width, height, body, gameScreen, id);
@@ -31,6 +32,9 @@ public class Tree extends InanimateEntity {
         this.treeType = treeType;
         treeAnimations = new Animation[6]; // Array to hold animations for 6 tree types
         initAnimations();
+        this.gameAssets = new GameAssets();
+        gameAssets.loadAssets();
+        gameAssets.finishLoading();
     }
 
     @Override

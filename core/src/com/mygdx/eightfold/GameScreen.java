@@ -42,7 +42,7 @@ public class GameScreen extends ScreenAdapter {
     private GameContactListener gameContactListener;
     private ShapeRenderer shapeRenderer;
     private GameAssets gameAssets;
-    public GameScreen( OrthographicCamera camera) {
+    public GameScreen(OrthographicCamera camera, GameAssets gameAssets) {
         this.buildingList = new ArrayList<Building>();
         this.camera = camera;
         this.bisonList = new ArrayList<>();
@@ -56,7 +56,7 @@ public class GameScreen extends ScreenAdapter {
         this.gameContactListener = new GameContactListener(this);
         this.world.setContactListener(this.gameContactListener);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-        this.tiledMapHelper = new TiledMapHelper(this);
+        this.tiledMapHelper = new TiledMapHelper(this, gameAssets);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap();
         this.shapeRenderer = new ShapeRenderer();
         camera.zoom = 3f;

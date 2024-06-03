@@ -22,27 +22,25 @@ public class Bison extends GameEntity {
     private boolean isFacingRight;
     private int id;
     private Sprite sprite;
-    private TextureAtlas textureAtlas;
     private GameAssets gameAssets;
     private  TextureAtlas grazingAtlas;
-    public Bison(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int bisonId) {
-        super(0, 0, body, gameScreen);
+    public Bison(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int bisonId, GameAssets gameAssets) {
+        super(0, 0, body, gameScreen, gameAssets);
         this.stateTime = 0f;
         this.id = bisonId;
         this.isFacingRight = isFacingRight;
         this.body = body;
-        this.gameAssets = new GameAssets();
+        this.gameAssets = gameAssets;
         // Load animations
         loadAnimations();
 
         // Initialize the sprite with the first frame of the animation
         this.sprite = new Sprite(currentAnimation.getKeyFrame(0));
         this.sprite.setSize(width, height);
-        gameAssets.loadAssets();
-        gameAssets.finishLoading();
+
         this.grazingAtlas = gameAssets.getAtlas("animals/bison/grazing/atlas/bison-grazing.atlas");
         BisonManager.addBison(this);
-        System.out.println("animation from atlas: " + createGrazingAnimationFromAtlas());
+       // System.out.println("animation from atlas: " + createGrazingAnimationFromAtlas());
 
     }
 

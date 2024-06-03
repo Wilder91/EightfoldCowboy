@@ -1,4 +1,5 @@
 package com.mygdx.eightfold;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -10,7 +11,6 @@ public class Boot extends Game {
     public static Boot INSTANCE;
     private int widthScreen, heightScreen;
     private OrthographicCamera orthographicCamera;
-    public AssetManager gameAssetManager;
     private GameAssets gameAssets;
 
     public Boot() {
@@ -18,26 +18,20 @@ public class Boot extends Game {
     }
 
     public AssetManager getGameAssetManager() {
-        return gameAssetManager;
+        return gameAssets.assetManager; // Use the AssetManager from GameAssets
     }
 
     @Override
     public void create() {
-
         this.widthScreen = Gdx.graphics.getWidth();
         this.heightScreen = Gdx.graphics.getHeight();
         this.orthographicCamera = new OrthographicCamera();
-        this.gameAssetManager = new AssetManager();
+        this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
+
         this.gameAssets = new GameAssets();
         gameAssets.loadAssets();
         gameAssets.finishLoading();
-        {
 
-            this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
-            System.out.println("Before GameScreen instantiation");
-
-            setScreen(new GameScreen(orthographicCamera));
-            //System.out.println("After GameScreen instantiation");
-        };
+        setScreen(new GameScreen(orthographicCamera, gameAssets));
     }
 }

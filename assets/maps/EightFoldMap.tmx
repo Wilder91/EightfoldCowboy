@@ -94,10 +94,10 @@
   <object id="93" name="large_oak" x="952.994" y="566.843">
    <polygon points="0,0 145.081,0 145.081,109.696 3.53857,109.696"/>
   </object>
-  <object id="94" name="seedling_oak" x="1111.11" y="198.248">
+  <object id="94" name="boulder" x="1111.11" y="198.248">
    <polygon points="0,0 145.081,0 145.081,109.696 3.53857,109.696"/>
   </object>
-  <object id="95" name="juvenile_oak" x="46.1042" y="590.134">
+  <object id="95" name="boulder" x="46.1042" y="590.134">
    <polygon points="0,0 145.081,0 145.081,109.696 3.53857,109.696"/>
   </object>
   <object id="97" name="medium_oak_two" x="1212.54" y="995.851">

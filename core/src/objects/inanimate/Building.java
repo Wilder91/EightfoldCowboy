@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameScreen;
+import objects.GameAssets;
 import objects.player.GameEntity;
 
 import java.util.Random;
@@ -25,8 +26,8 @@ public class Building extends GameEntity {
     private float stateTime; // Time elapsed since the animation started
     private int id;
 
-    public Building(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int buildingId) {
-        super(0, 0, body, gameScreen);
+    public Building(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int buildingId, GameAssets gameAssets) {
+        super(0, 0, body, gameScreen, gameAssets);
 
         this.speed = 15f;
         this.moveTimer = 0;

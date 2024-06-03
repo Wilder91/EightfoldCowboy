@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.eightfold.GameScreen;
+import objects.GameAssets;
 import objects.inanimate.Tree;
 
 import static helper.Constants.PPM;
@@ -15,7 +16,7 @@ import static helper.Constants.PPM;
 public class TreeFactory {
     private GameScreen gameScreen;
     private static int treeCounter = 0;
-    public TreeFactory(GameScreen gameScreen){
+    public TreeFactory(GameScreen gameScreen, GameAssets gameAssets){
         this.gameScreen = gameScreen;
     }
 

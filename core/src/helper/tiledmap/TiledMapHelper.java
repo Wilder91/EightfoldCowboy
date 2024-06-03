@@ -22,6 +22,7 @@ import helper.tiledmap.factories.inanimate.BoulderFactory;
 import helper.tiledmap.factories.inanimate.BuildingFactory;
 import helper.tiledmap.factories.inanimate.TreeFactory;
 import helper.tiledmap.factories.animals.BisonFactory;
+import objects.GameAssets;
 import objects.inanimate.Tree;
 import objects.player.Player;
 
@@ -32,10 +33,12 @@ public class TiledMapHelper {
     private TiledMap tiledMap;
     private GameScreen gameScreen;
     private ShapeRenderer shapeRenderer;
+    private GameAssets gameAssets;
 
-    public TiledMapHelper(GameScreen gameScreen) {
+    public TiledMapHelper(GameScreen gameScreen, GameAssets gameAssets) {
         this.gameScreen = gameScreen;
         this.shapeRenderer = new ShapeRenderer();
+        this.gameAssets = gameAssets;
     }
 
     public OrthogonalTiledMapRenderer setupMap() {
@@ -106,33 +109,33 @@ public class TiledMapHelper {
                             ContactType.PLAYER,
                             playerId
                     );
-                    gameScreen.setPlayer(new Player(rectangle.width, rectangle.height, body, gameScreen));
+                    gameScreen.setPlayer(new Player(rectangle.width, rectangle.height, body, gameScreen, gameAssets));
                 }
             }
         }
     }
 
     private void createBird(PolygonMapObject polygonMapObject) {
-        BirdFactory birdFactory = new BirdFactory(gameScreen);
+        BirdFactory birdFactory = new BirdFactory(gameScreen, gameAssets);
         birdFactory.createBird(polygonMapObject);
     }
     private void createBison(PolygonMapObject polygonMapObject) {
-        BisonFactory bisonFactory = new BisonFactory(gameScreen); // Instantiate the BisonFactory
+        BisonFactory bisonFactory = new BisonFactory(gameScreen, gameAssets); // Instantiate the BisonFactory
         bisonFactory.createBison(polygonMapObject); // Call createBison method from BisonFactory
     }
 
     private void createTree(PolygonMapObject polygonMapObject, int treeType) {
-        TreeFactory treeFactory = new TreeFactory(gameScreen);
+        TreeFactory treeFactory = new TreeFactory(gameScreen, gameAssets);
         treeFactory.createTree(polygonMapObject, treeType);
 
     }
     private void createBoulder(PolygonMapObject polygonMapObject) {
-        BoulderFactory boulderFactory = new BoulderFactory(gameScreen);
+        BoulderFactory boulderFactory = new BoulderFactory(gameScreen, gameAssets);
         boulderFactory.createBoulder(polygonMapObject);
     }
 
     private void createSaloon(PolygonMapObject polygonMapObject) {
-        BuildingFactory buildingFactory = new BuildingFactory(gameScreen);
+        BuildingFactory buildingFactory = new BuildingFactory(gameScreen, gameAssets);
         buildingFactory.createBuilding(polygonMapObject);
 
     }

@@ -7,14 +7,17 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameScreen;
 import helper.BodyHelperService;
 import helper.ContactType;
+import objects.GameAssets;
 import objects.animals.bison.Bison;
 
 public class BisonFactory {
     private GameScreen gameScreen;
+    private GameAssets gameAssets;
     private static int bisonCounter = -1;
 
-    public BisonFactory(GameScreen gameScreen) {
+    public BisonFactory(GameScreen gameScreen, GameAssets gameAssets) {
         this.gameScreen = gameScreen;
+        this.gameAssets = gameAssets;
     }
 
     public void createBison(PolygonMapObject polygonMapObject) {
@@ -41,7 +44,8 @@ public class BisonFactory {
                 body,
                 true,
                 gameScreen,
-                bisonId
+                bisonId,
+                gameAssets
         );
 
         gameScreen.addBison(bison);

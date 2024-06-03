@@ -20,23 +20,23 @@ public class Player extends GameEntity {
     private Texture idleTexture;
     private TextureRegion idleRegion;
     private Animation<TextureRegion> currentAnimation;
+    private  PlayerAnimations playerAnimations;
     private float stateTime;
 
-    public Player(float width, float height, Body body, GameScreen gameScreen) {
-        super(width, height, body, gameScreen);
+    public Player(float width, float height, Body body, GameScreen gameScreen, GameAssets gameAssets) {
+        super(width, height, body, gameScreen, gameAssets);
         this.speed = 20f;
         this.isFacingRight = false;
         this.body = body;
         gameAssets = new GameAssets();
-        gameAssets.loadAssets();
-        gameAssets.finishLoading();
 
+        this.playerAnimations = new PlayerAnimations();
         // Load idle texture
         idleTexture = new Texture("kath.gif");
         idleRegion = new TextureRegion(idleTexture);
 
         // Initialize animations
-        walkingAnimation = createWalkingAnimationFromAtlas();
+        walkingAnimation = playerAnimations.createWalkingAnimationFromAtlas();
         currentAnimation = null;
 
         // Initialize sprite with the idle texture
@@ -61,24 +61,7 @@ public class Player extends GameEntity {
         sprite.setPosition(x - width / 2, y - height / 2);
     }
 
-    private Animation<TextureRegion> createWalkingAnimationFromAtlas() {
-        Array<TextureRegion> frames = new Array<>();
-        TextureAtlas atlas = gameAssets.getAtlas("kath_walk/atlas/kath-walk.atlas");
 
-        // Use the region names and bounds specified in the atlas file
-        String[] regionNames = {"kath_walk"};
-        int[] regionIndices = {0, 1, 2, 3, 4, 5, 6, 7};
-        for (int index : regionIndices) {
-            TextureRegion region = atlas.findRegion(regionNames[0], index);
-            if (region != null) {
-                frames.add(region);
-            } else {
-                System.out.println("Region " + regionNames[0] + " with index " + index + " not found!");
-            }
-        }
-
-        return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
-    }
 
     private void checkUserInput() {
         velX = 0;
@@ -110,7 +93,7 @@ public class Player extends GameEntity {
         if (Math.abs(velX) > 0) {
             currentAnimation = walkingAnimation;
             TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
-            System.out.println("facing right: " + isFacingRight);
+            //System.out.println("facing right: " + isFacingRight);
 
             if (isFacingRight && !frame.isFlipX()) {
                 frame.flip(true, false);

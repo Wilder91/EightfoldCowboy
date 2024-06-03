@@ -29,14 +29,12 @@ public class Bird extends GameEntity {
     private AssetManager assetManager;
     private GameAssets gameAssets;
 
-    public Bird(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int birdId) {
-        super(0, 0, body, gameScreen);
+    public Bird(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int birdId, GameAssets gameAssets) {
+        super(0, 0, body, gameScreen, gameAssets);
         float spriteX = x - width / 2;
         float spriteY = y - height / 2;
         this.speed = 15f;
-        this.gameAssets = new GameAssets();
-        gameAssets.loadAssets();
-        gameAssets.finishLoading();
+       this.gameAssets = gameAssets;
         Texture birdTexture = gameAssets.getTexture("animals/birds/bird.png");
         this.sprite = new Sprite(birdTexture);
         this.sprite.setSize(width, height);

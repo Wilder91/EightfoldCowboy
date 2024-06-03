@@ -7,13 +7,16 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameScreen;
 import helper.BodyHelperService;
 import helper.ContactType;
+import objects.GameAssets;
 import objects.animals.bird.Bird;
 
 public class BirdFactory {
     private GameScreen gameScreen;
+    private GameAssets gameAssets;
     private static int birdCounter = 0;
-    public BirdFactory(GameScreen gameScreen){
+    public BirdFactory(GameScreen gameScreen, GameAssets gameAssets){
         this.gameScreen = gameScreen;
+        this.gameAssets = gameAssets;
     }
 
     public void createBird(PolygonMapObject polygonMapObject) {
@@ -40,7 +43,8 @@ public class BirdFactory {
                 body,
                 true,
                 gameScreen,
-                birdId
+                birdId,
+                gameAssets
         );
 
         gameScreen.addBird(bird);

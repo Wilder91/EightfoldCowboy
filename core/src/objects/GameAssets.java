@@ -18,6 +18,7 @@ public class GameAssets {
         assetManager.load("boulder.png", Texture.class);
         assetManager.load("animals/bison/grazing/atlas/bison-grazing.atlas", TextureAtlas.class);
         assetManager.load("kath_walk/atlas/kath-walk.atlas", TextureAtlas.class);
+        assetManager.load("plants/trees/oak-tree/atlas/oak-trees.atlas", TextureAtlas.class);
         // Load individual textures for bison grazing
         for (int i = 0; i <= 39; i++) {
             String filename = "animals/bison/grazing/Bison_Grazing_" + i + ".png";

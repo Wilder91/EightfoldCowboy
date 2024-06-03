@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.eightfold.GameScreen;
+import objects.GameAssets;
 import objects.inanimate.Building;
 
 import static helper.Constants.PPM;
@@ -15,8 +16,11 @@ import static helper.Constants.PPM;
 public class BuildingFactory {
     private static int buildingCounter = 0;
     private GameScreen gameScreen;
-    public BuildingFactory(GameScreen gameScreen){
+    private GameAssets gameAssets;
+    public BuildingFactory(GameScreen gameScreen, GameAssets gameAssets){
+
         this.gameScreen = gameScreen;
+        this.gameAssets = gameAssets;
     }
 
     public void createBuilding(PolygonMapObject polygonMapObject) {
@@ -50,7 +54,8 @@ public class BuildingFactory {
                 buildingBody,
                 true,
                 gameScreen,
-                buildingId
+                buildingId,
+                gameAssets
         );
 
         gameScreen.addBuilding(building);
