@@ -1,6 +1,7 @@
 package com.mygdx.eightfold;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.eightfold.screens.GameScreen;
 import helper.BodyUserData;
 import helper.ContactType;
 import objects.animals.bird.Bird;
@@ -9,9 +10,9 @@ import objects.animals.object_helper.BisonManager;
 
 public class GameContactListener implements ContactListener {
 
-    private com.mygdx.eightfold.GameScreen gameScreen;
+    private GameScreen gameScreen;
 
-    public GameContactListener(com.mygdx.eightfold.GameScreen gameScreen) {
+    public GameContactListener(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
     }
 

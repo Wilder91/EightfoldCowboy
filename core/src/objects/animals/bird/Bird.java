@@ -1,6 +1,5 @@
 package objects.animals.bird;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -8,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import objects.GameAssets;
-import com.mygdx.eightfold.GameScreen;
+import com.mygdx.eightfold.screens.GameScreen;
 import helper.movement.AnimalMovementHelper;
 import objects.animals.object_helper.BirdManager;
 import objects.player.GameEntity;

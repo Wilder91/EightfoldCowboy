@@ -1,4 +1,4 @@
-package com.mygdx.eightfold;
+package com.mygdx.eightfold.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+import com.mygdx.eightfold.GameContactListener;
 import objects.GameAssets;
 import helper.tiledmap.TiledMapHelper;
 import objects.animals.bird.Bird;

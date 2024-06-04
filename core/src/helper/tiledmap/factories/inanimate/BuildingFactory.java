@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.mygdx.eightfold.GameScreen;
+import com.mygdx.eightfold.screens.GameScreen;
 import objects.GameAssets;
 import objects.inanimate.Building;
 

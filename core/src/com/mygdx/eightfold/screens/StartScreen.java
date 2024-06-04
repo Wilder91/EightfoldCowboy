@@ -1,6 +1,7 @@
-package com.mygdx.eightfold;
+package com.mygdx.eightfold.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.eightfold.Boot;
+import objects.GameAssets;
 
 public class StartScreen extends ScreenAdapter {
     private OrthographicCamera camera;
@@ -24,13 +27,17 @@ public class StartScreen extends ScreenAdapter {
     private Skin skin;
     private Texture backgroundTexture;
     private BitmapFont font;
+    private GameAssets gameAssets;
 
-    public StartScreen(OrthographicCamera camera) {
+    public StartScreen(OrthographicCamera camera, GameAssets gameAssets) {
         this.camera = camera;
         this.viewport = new FitViewport(800, 480, camera);
         this.stage = new Stage(viewport, new SpriteBatch());
+        this.gameAssets = gameAssets;
+        this.camera = camera;
         Gdx.input.setInputProcessor(stage);
         initUI();
+
     }
 
     private void initUI() {
@@ -58,16 +65,26 @@ public class StartScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the game screen
-                // For example: ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(camera));
+               // ((Game) Gdx.app.getApplicationListener())
+                Boot.INSTANCE.changeScreen(new GameScreen(camera, gameAssets));
             }
         });
         stage.addActor(startButton);
+    }
+
+    private void checkInput(){
+        if(Gdx.input.isKeyPressed(Input.Keys.ENTER)){
+            Boot.INSTANCE.changeScreen(new GameScreen(camera, gameAssets));
+        }
+
+
     }
 
     @Override
     public void render(float delta) {
         stage.act(delta);
         stage.draw();
+        checkInput();
     }
 
     @Override

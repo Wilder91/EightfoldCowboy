@@ -109,10 +109,10 @@
   <object id="105" name="large_oak" x="0" y="0">
    <polygon points="0,0 126.316,0 130.526,122.105 0,117.895"/>
   </object>
-  <object id="106" name="large_oak" x="606.316" y="593.684">
+  <object id="106" name="large_oak" x="715.79" y="677.895">
    <polygon points="0,0 145.081,0 145.081,109.696 3.53857,109.696"/>
   </object>
-  <object id="107" name="medium_oak_one" x="160" y="265.263">
+  <object id="107" name="large_oak" x="-4.21053" y="256.842">
    <polygon points="0,0 151.579,0 151.579,193.684 0,193.684"/>
   </object>
   <object id="108" name="medium_oak_one" x="84.2105" y="1153.68">

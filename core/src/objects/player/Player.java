@@ -5,11 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.utils.Array;
-import com.mygdx.eightfold.GameScreen;
+import com.mygdx.eightfold.screens.GameScreen;
 import objects.GameAssets;
 
-import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
 
 public class Player extends GameEntity {

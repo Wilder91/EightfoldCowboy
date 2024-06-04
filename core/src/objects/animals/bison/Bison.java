@@ -1,11 +1,10 @@
 package objects.animals.bison;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.eightfold.GameScreen;
+import com.mygdx.eightfold.screens.GameScreen;
 import helper.movement.AnimalMovementHelper;
 import objects.GameAssets;
 import objects.animals.object_helper.BisonManager;

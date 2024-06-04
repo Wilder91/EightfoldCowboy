@@ -2,7 +2,7 @@ package objects.inanimate;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.eightfold.GameScreen;
+import com.mygdx.eightfold.screens.GameScreen;
 
 public abstract class InanimateEntity {
     private final int id;

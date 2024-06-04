@@ -1,7 +1,5 @@
 package helper.tiledmap.factories.inanimate;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -9,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.mygdx.eightfold.GameScreen;
+import com.mygdx.eightfold.screens.GameScreen;
 import objects.GameAssets;
 import objects.inanimate.Tree;
 
@@ -49,7 +47,8 @@ public class TreeFactory {
         }
 
         shape.set(worldVertices);
-
+        shape.setAsBox(boundingRectangle.width / 3 / PPM,
+                boundingRectangle.height / 5 / PPM);
         treeBody.createFixture(shape, 0.0f);
         shape.dispose();
 

@@ -2,8 +2,10 @@ package com.mygdx.eightfold;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.mygdx.eightfold.screens.StartScreen;
 import objects.GameAssets;
 
 public class Boot extends Game {
@@ -33,6 +35,11 @@ public class Boot extends Game {
         gameAssets.finishLoading();
 
 
-        setScreen(new GameScreen(orthographicCamera, gameAssets));
+        setScreen(new StartScreen(orthographicCamera, gameAssets));
+    }
+
+    // Method to change the screen
+    public void changeScreen(Screen newScreen) {
+        setScreen(newScreen);
     }
 }

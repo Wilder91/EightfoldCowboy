@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.mygdx.eightfold.screens.StartScreen;
 
 public class EightfoldCowboyGame implements ApplicationListener {
     private OrthographicCamera camera;
@@ -16,7 +17,7 @@ public class EightfoldCowboyGame implements ApplicationListener {
         camera.setToOrtho(false, 800, 480);
 
         // Initialize the start screen
-        startScreen = new StartScreen(camera);
+        //startScreen = new StartScreen(camera, gameAssets);
 
         // Set the initial screen to the start screen
         setScreen(startScreen);
