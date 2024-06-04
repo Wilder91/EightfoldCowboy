@@ -28,9 +28,9 @@ public class Player extends GameEntity {
         this.speed = 20f;
         this.isFacingRight = false;
         this.body = body;
-        gameAssets = new GameAssets();
+        this.gameAssets = gameAssets;
 
-        this.playerAnimations = new PlayerAnimations();
+        this.playerAnimations = new PlayerAnimations(gameAssets);
         // Load idle texture
         idleTexture = new Texture("kath.gif");
         idleRegion = new TextureRegion(idleTexture);

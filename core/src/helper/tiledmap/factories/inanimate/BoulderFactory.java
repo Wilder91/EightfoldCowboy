@@ -14,10 +14,12 @@ import static helper.Constants.PPM;
 
 public class BoulderFactory {
     private GameScreen gameScreen;
+    private GameAssets gameAssets;
     private static int boulderCounter = 0;
 
     public BoulderFactory(GameScreen gameScreen, GameAssets gameAssets){
         this.gameScreen = gameScreen;
+        this.gameAssets = gameAssets;
     }
     public void createBoulder(PolygonMapObject polygonMapObject) {
         int boulderId = ++boulderCounter;
@@ -47,7 +49,8 @@ public class BoulderFactory {
                 boundingRectangle.height * 2,
                 boulderBody,
                 gameScreen,
-                boulderId
+                boulderId,
+                gameAssets
         );
         gameScreen.addBoulder(boulder);
     }

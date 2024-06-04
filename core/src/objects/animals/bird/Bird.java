@@ -44,7 +44,6 @@ public class Bird extends GameEntity {
         this.isFacingRight = isFacingRight;
         this.body = body;
         BirdManager.addBird(this);
-
     }
 
     @Override
@@ -78,21 +77,6 @@ public class Bird extends GameEntity {
 
     public Body getBody() {
         return body;
-    }
-
-
-
-    public Sprite getSprite() {
-        return sprite;
-    }
-
-    private void checkBounds(){
-        if(this.x <= 0){
-            this.x = 1;
-        } else if (this.x >= Gdx.graphics.getWidth()) {
-            this.x = Gdx.graphics.getWidth();
-
-        }
     }
 
     @Override

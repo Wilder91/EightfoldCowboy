@@ -82,10 +82,10 @@ public class Bison extends GameEntity {
 
     private Animation<TextureRegion> createGrazingAnimationFromAtlas() {
         Array<TextureRegion> frames = new Array<>();
-        TextureAtlas atlas = gameAssets.getAtlas("animals/bison/grazing/atlas/bison-grazing.atlas");
         for (int i = 0; i <= 39; i++) {
-            TextureRegion region = atlas.findRegion("Bison_Grazing",  i);
+            TextureRegion region = grazingAtlas.findRegion("Bison_Grazing",  i);
             if (region != null) {
+                //System.out.println("Region Bison_Grazing_" + i + " found!");
                 frames.add(region);
             } else {
                 System.out.println("Region Bison_Grazing_" + i + " not found!");

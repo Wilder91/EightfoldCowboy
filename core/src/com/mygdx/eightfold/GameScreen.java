@@ -51,7 +51,7 @@ public class GameScreen extends ScreenAdapter {
         this.treeList = new ArrayList<>();
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0, 0), false);
-        this.gameAssets = new GameAssets();
+        this.gameAssets = gameAssets;
 
         this.gameContactListener = new GameContactListener(this);
         this.world.setContactListener(this.gameContactListener);

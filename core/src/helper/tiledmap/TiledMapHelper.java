@@ -72,10 +72,10 @@ public class TiledMapHelper {
                         case "medium_oak_one":
                             createTree(polygonMapObject, Tree.MEDIUM_1);
                             break;
-                        case "medium_2":
+                        case "medium_oak_two":
                             createTree(polygonMapObject, Tree.MEDIUM_2);
                             break;
-                        case "small":
+                        case "small_oak":
                             createTree(polygonMapObject, Tree.SMALL);
                             break;
                         case "juvenile":

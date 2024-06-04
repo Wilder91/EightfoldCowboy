@@ -12,10 +12,9 @@ public class PlayerAnimations {
     private GameAssets gameAssets;
 
 
-    public PlayerAnimations(){
-        this.gameAssets = new GameAssets();
-        gameAssets.loadAssets();
-        gameAssets.finishLoading();
+    public PlayerAnimations(GameAssets gameAssets){
+        this.gameAssets = gameAssets;
+
 
     }
 

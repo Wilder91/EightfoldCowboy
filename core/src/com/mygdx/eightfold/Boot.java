@@ -32,6 +32,7 @@ public class Boot extends Game {
         gameAssets.loadAssets();
         gameAssets.finishLoading();
 
+
         setScreen(new GameScreen(orthographicCamera, gameAssets));
     }
 }

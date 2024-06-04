@@ -1,5 +1,7 @@
 package helper.tiledmap.factories.inanimate;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,7 +18,9 @@ import static helper.Constants.PPM;
 public class TreeFactory {
     private GameScreen gameScreen;
     private static int treeCounter = 0;
+    private GameAssets gameAssets;
     public TreeFactory(GameScreen gameScreen, GameAssets gameAssets){
+        this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;
     }
 
@@ -55,7 +59,8 @@ public class TreeFactory {
                 treeBody,
                 gameScreen,
                 treeType,
-                treeId
+                treeId,
+                gameAssets
         );
 
         gameScreen.addTree(tree);

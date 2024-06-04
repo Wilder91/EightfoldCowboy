@@ -27,9 +27,7 @@ public class BodyUserData {
         return type;
     }
 
-    public Bison getBison() {
-        return bison;
-    }
+
 
     public Body getBody() {
         return body;
