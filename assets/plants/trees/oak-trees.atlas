@@ -217,8 +217,10 @@ bounds:1626,18,198,200
 Oak_Medium_2
 index:17
 bounds:1626,18,198,200
-Oak_Seedling
+Oak_Sapling
 index:1
+bounds:1981,1982,44,64
+Oak_Seedling
 bounds:2,24,16,21
 Oak_Small
 index:4

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.StartScreen;
 import objects.GameAssets;
 
@@ -35,7 +36,7 @@ public class Boot extends Game {
         gameAssets.finishLoading();
 
 
-        setScreen(new StartScreen(orthographicCamera, gameAssets));
+        setScreen(new GameScreen(orthographicCamera, gameAssets));
     }
 
     // Method to change the screen

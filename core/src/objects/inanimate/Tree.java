@@ -54,7 +54,7 @@ public class Tree extends InanimateEntity {
         loadAnimation(LARGE_OAK, atlas, 1, 29, "Oak_Large");
         loadAnimation(MEDIUM_1, atlas, 1, 29, "Oak_Medium_1");
         loadAnimation(MEDIUM_2, atlas, 1, 29, "Oak_Medium_2");
-        loadAnimation(SMALL, atlas, 1, 48, "Oak_Small");
+        loadAnimation(SMALL, atlas, 1, 29, "Oak_Small");
         loadAnimation(JUVENILE, atlas, 1, 1, "Oak_Sapling");
         loadAnimation(SEEDLING, atlas, 1, 1, "Oak_Seedling");
     }

@@ -37,8 +37,8 @@ public class BisonFactory {
         );
 
         Bison bison = new Bison(
-                boundingRectangle.width * 7 / 4,
-                boundingRectangle.height * 7 / 4,
+                boundingRectangle.width ,
+                boundingRectangle.height ,
                 boundingRectangle.x + boundingRectangle.width / 2,
                 boundingRectangle.y + boundingRectangle.height / 2,
                 body,

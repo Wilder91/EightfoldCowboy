@@ -60,7 +60,7 @@ public class GameScreen extends ScreenAdapter {
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap();
         this.shapeRenderer = new ShapeRenderer();
-        camera.zoom = 3f;
+        camera.zoom = 3/2f;
         // Set camera zoom only once
     }
 

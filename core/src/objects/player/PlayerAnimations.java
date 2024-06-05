@@ -3,37 +3,28 @@ package objects.player;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 import objects.GameAssets;
-
-import static helper.Constants.FRAME_DURATION;
 
 public class PlayerAnimations {
     private GameAssets gameAssets;
 
-
-    public PlayerAnimations(GameAssets gameAssets){
+    public PlayerAnimations(GameAssets gameAssets) {
         this.gameAssets = gameAssets;
-
-
     }
 
-    Animation<TextureRegion> createWalkingAnimationFromAtlas() {
-        Array<TextureRegion> frames = new Array<>();
-        TextureAtlas atlas = gameAssets.getAtlas("kath_walk/atlas/kath-walk.atlas");
+    public Animation<TextureRegion> createWalkingAnimationFromAtlas() {
+        TextureAtlas atlas = gameAssets.getAtlas("player/atlas/player-horizontal.atlas");
+        TextureRegion[] walkFrames = new TextureRegion[8];
 
-        // Use the region names and bounds specified in the atlas file
-        String[] regionNames = {"kath_walk"};
-        int[] regionIndices = {0, 1, 2, 3, 4, 5, 6, 7};
-        for (int index : regionIndices) {
-            TextureRegion region = atlas.findRegion(regionNames[0], index);
-            if (region != null) {
-                frames.add(region);
-            } else {
-                System.out.println("Region " + regionNames[0] + " with index " + index + " not found!");
-            }
-        }
+        walkFrames[0] = atlas.findRegion("Character_Horizontal_Run", 1);
+        walkFrames[1] = atlas.findRegion("Character_Horizontal_Run", 2);
+        walkFrames[2] = atlas.findRegion("Character_Horizontal_Run", 3);
+        walkFrames[3] = atlas.findRegion("Character_Horizontal_Run", 4);
+        walkFrames[4] = atlas.findRegion("Character_Horizontal_Run", 5);
+        walkFrames[5] = atlas.findRegion("Character_Horizontal_Run", 6);
+        walkFrames[6] = atlas.findRegion("Character_Horizontal_Run", 7);
+        walkFrames[7] = atlas.findRegion("Character_Horizontal_Run", 8);
 
-        return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
+        return new Animation<>(0.1f, walkFrames);
     }
 }

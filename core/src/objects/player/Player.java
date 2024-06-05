@@ -18,19 +18,20 @@ public class Player extends GameEntity {
     private Texture idleTexture;
     private TextureRegion idleRegion;
     private Animation<TextureRegion> currentAnimation;
-    private  PlayerAnimations playerAnimations;
+    private PlayerAnimations playerAnimations;
     private float stateTime;
+;
 
     public Player(float width, float height, Body body, GameScreen gameScreen, GameAssets gameAssets) {
         super(width, height, body, gameScreen, gameAssets);
         this.speed = 20f;
-        this.isFacingRight = false;
+        this.isFacingRight = true;
         this.body = body;
         this.gameAssets = gameAssets;
 
         this.playerAnimations = new PlayerAnimations(gameAssets);
         // Load idle texture
-        idleTexture = new Texture("kath.gif");
+        idleTexture = gameAssets.getTexture("Character_Horizontal_Run/Character_Horizontal_Run_3.png");
         idleRegion = new TextureRegion(idleTexture);
 
         // Initialize animations
@@ -59,8 +60,6 @@ public class Player extends GameEntity {
         sprite.setPosition(x - width / 2, y - height / 2);
     }
 
-
-
     private void checkUserInput() {
         velX = 0;
         velY = 0;
@@ -69,14 +68,12 @@ public class Player extends GameEntity {
             if (!isFacingRight) {
                 isFacingRight = true;
             }
-
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             velX = -1;
             if (isFacingRight) {
                 isFacingRight = false;
             }
-
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             velY = 1;
@@ -91,18 +88,19 @@ public class Player extends GameEntity {
         if (Math.abs(velX) > 0) {
             currentAnimation = walkingAnimation;
             TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
-            //System.out.println("facing right: " + isFacingRight);
 
-            if (isFacingRight && !frame.isFlipX()) {
+            if (isFacingRight && frame.isFlipX()) {
                 frame.flip(true, false);
-            } else if (!isFacingRight && frame.isFlipX()) {
+            } else if (!isFacingRight && !frame.isFlipX()) {
                 frame.flip(true, false);
             }
             sprite.setRegion(frame);
         } else {
             currentAnimation = null;
             sprite.setRegion(idleRegion);
-            if (isFacingRight) {
+            if (!isFacingRight && !sprite.isFlipX()) {
+                sprite.flip(true, false);
+            } else if (isFacingRight && sprite.isFlipX()) {
                 sprite.flip(true, false);
             }
         }

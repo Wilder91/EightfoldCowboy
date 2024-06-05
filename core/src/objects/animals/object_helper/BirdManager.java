@@ -12,7 +12,5 @@ public class BirdManager {
         birdMap.put(bird.getId(), bird);
     }
 
-    public static Bird getBirdById(int id) {
-        return birdMap.get(id);
-    }
+
 }
