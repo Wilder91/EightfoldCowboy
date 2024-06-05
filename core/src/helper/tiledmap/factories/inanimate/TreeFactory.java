@@ -4,19 +4,20 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.screens.GameScreen;
+import helper.BodyUserData;
 import objects.GameAssets;
 import objects.inanimate.Tree;
 
 import static helper.Constants.PPM;
+import static helper.ContactType.TREE;
 
 public class TreeFactory {
     private GameScreen gameScreen;
     private static int treeCounter = 0;
     private GameAssets gameAssets;
+
     public TreeFactory(GameScreen gameScreen, GameAssets gameAssets){
         this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;
@@ -47,14 +48,21 @@ public class TreeFactory {
         }
 
         shape.set(worldVertices);
-        shape.setAsBox(boundingRectangle.width / 3 / PPM,
-                boundingRectangle.height / 5 / PPM);
-        treeBody.createFixture(shape, 0.0f);
+        shape.setAsBox(boundingRectangle.width / 2/  PPM, boundingRectangle.height /2 / PPM);
+        Fixture treeFixture = treeBody.createFixture(shape, 0.0f);
+        treeFixture.setUserData(new BodyUserData(treeId, TREE, treeBody));
+
+
+        Filter filter = new Filter();
+        filter.categoryBits = TREE.getCategoryBits();
+        filter.maskBits = TREE.getMaskBits();
+        treeFixture.setFilterData(filter);
+
         shape.dispose();
 
         Tree tree = new Tree(
-                boundingRectangle.width * 2,
-                boundingRectangle.height * 2,
+                boundingRectangle.width,
+                boundingRectangle.height,
                 treeBody,
                 gameScreen,
                 treeType,

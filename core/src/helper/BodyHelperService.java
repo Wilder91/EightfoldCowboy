@@ -2,6 +2,7 @@ package helper;
 
 import com.badlogic.gdx.physics.box2d.*;
 import static helper.Constants.PPM;
+import static helper.ContactType.TREE;
 
 public class BodyHelperService {
 
@@ -21,7 +22,8 @@ public class BodyHelperService {
         fixtureDef.friction = 0;
 
         Fixture fixture = body.createFixture(fixtureDef);
-        fixture.setUserData(new BodyUserData(id, type, body)); // Set user data for the fixture
+        fixture.setUserData(new BodyUserData(id, type, body));
+        // Set user data for the fixture
         //System.out.println("Fixture User Data: " + fixture.getUserData());
         shape.dispose();
 

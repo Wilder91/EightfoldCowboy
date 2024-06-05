@@ -20,11 +20,11 @@ public class Player extends GameEntity {
     private Animation<TextureRegion> currentAnimation;
     private PlayerAnimations playerAnimations;
     private float stateTime;
-;
+
 
     public Player(float width, float height, Body body, GameScreen gameScreen, GameAssets gameAssets) {
         super(width, height, body, gameScreen, gameAssets);
-        this.speed = 20f;
+        this.speed = 7f;
         this.isFacingRight = true;
         this.body = body;
         this.gameAssets = gameAssets;

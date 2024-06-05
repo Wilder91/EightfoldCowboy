@@ -3,6 +3,7 @@ package objects.inanimate;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.screens.GameScreen;
+import objects.GameAssets;
 
 public abstract class InanimateEntity {
     private final int id;
@@ -11,7 +12,7 @@ public abstract class InanimateEntity {
     
     protected Body body;
 
-    public InanimateEntity(float width, float height, Body body, GameScreen gameScreen, int id) {
+    public InanimateEntity(float width, float height, Body body, GameScreen gameScreen, int id, GameAssets gameAssets) {
         this.x = body.getPosition().x;
         this.y = body.getPosition().y;
         this.width = width;

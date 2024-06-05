@@ -124,7 +124,7 @@ public class GameContactListener implements ContactListener {
     }
 
     private boolean isBisonContact(Fixture a, Fixture b) {
-        System.out.println(a.getUserData());
+        //System.out.println(a.getUserData());
         return (a.getUserData() instanceof Bison && b.getUserData() instanceof Bison);
 
     }

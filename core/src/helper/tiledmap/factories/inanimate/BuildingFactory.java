@@ -4,14 +4,14 @@ package helper.tiledmap.factories.inanimate;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.screens.GameScreen;
+import helper.BodyUserData;
 import objects.GameAssets;
 import objects.inanimate.Building;
 
 import static helper.Constants.PPM;
+import static helper.ContactType.TREE;
 
 public class BuildingFactory {
     private static int buildingCounter = 0;
@@ -39,16 +39,22 @@ public class BuildingFactory {
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(
-                boundingRectangle.width / 2 / PPM,
-                boundingRectangle.height / 2 / PPM
+                boundingRectangle.width  / PPM,
+                boundingRectangle.height  / PPM
         );
 
-        buildingBody.createFixture(shape, 0.0f);
+        Fixture buildingFixture = buildingBody.createFixture(shape, 0.0f);
+        buildingFixture.setUserData(new BodyUserData(buildingId, TREE, buildingBody));
         shape.dispose();
 
+        Filter filter = new Filter();
+        filter.categoryBits = TREE.getCategoryBits();
+        filter.maskBits = TREE.getMaskBits();
+        buildingFixture.setFilterData(filter);
+
         Building building = new Building(
-                boundingRectangle.width / 2,
-                boundingRectangle.height / 2,
+                boundingRectangle.width /PPM ,
+                boundingRectangle.height  / PPM ,
                 boundingRectangle.x + boundingRectangle.width / 2,
                 boundingRectangle.y + boundingRectangle.height / 2,
                 buildingBody,

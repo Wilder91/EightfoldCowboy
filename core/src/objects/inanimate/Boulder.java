@@ -17,7 +17,7 @@ public class Boulder extends InanimateEntity {
     private Sprite sprite;
     private boolean isFacingRight;
     public Boulder(float width, float height, Body body, GameScreen gameScreen, int boulderId, GameAssets gameAssets) {
-        super(width, height, body, gameScreen, boulderId);
+        super(width, height, body, gameScreen, boulderId, gameAssets);
         this.speed = 10f;
         this.gameAssets = gameAssets;
         gameAssets.loadAssets();

@@ -22,14 +22,15 @@ public class Bison extends GameEntity {
     private int id;
     private Sprite sprite;
     private GameAssets gameAssets;
-    private  TextureAtlas grazingAtlas;
+
     public Bison(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int bisonId, GameAssets gameAssets) {
-        super(0, 0, body, gameScreen, gameAssets);
+        super(width, height, body, gameScreen, gameAssets);
         this.stateTime = 0f;
         this.id = bisonId;
         this.isFacingRight = isFacingRight;
         this.body = body;
         this.gameAssets = gameAssets;
+
         // Load animations
         loadAnimations();
 
@@ -37,10 +38,7 @@ public class Bison extends GameEntity {
         this.sprite = new Sprite(currentAnimation.getKeyFrame(0));
         this.sprite.setSize(width, height);
 
-        this.grazingAtlas = gameAssets.getAtlas("animals/bison/grazing/atlas/bison-grazing.atlas");
         BisonManager.addBison(this);
-       // System.out.println("animation from atlas: " + createGrazingAnimationFromAtlas());
-
     }
 
     @Override
@@ -81,10 +79,10 @@ public class Bison extends GameEntity {
 
     private Animation<TextureRegion> createGrazingAnimationFromAtlas() {
         Array<TextureRegion> frames = new Array<>();
+        TextureAtlas grazingAtlas = gameAssets.getAtlas("animals/bison/grazing/atlas/bison-grazing.atlas");
         for (int i = 0; i <= 39; i++) {
-            TextureRegion region = grazingAtlas.findRegion("Bison_Grazing",  i);
+            TextureRegion region = grazingAtlas.findRegion("Bison_Grazing", i);
             if (region != null) {
-                //System.out.println("Region Bison_Grazing_" + i + " found!");
                 frames.add(region);
             } else {
                 System.out.println("Region Bison_Grazing_" + i + " not found!");
@@ -99,7 +97,7 @@ public class Bison extends GameEntity {
     }
 
     private void loadAnimations() {
-        stationaryAnimation = loadAnimation("animals/bison/grazing/Bison_Grazing_", 40);
+        stationaryAnimation = createGrazingAnimationFromAtlas();
         walkingAnimation = loadWalkingAnimation();
 
         currentAnimation = stationaryAnimation; // Default to stationary animation
@@ -129,27 +127,28 @@ public class Bison extends GameEntity {
         return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
     }
 
-
-
     private void updateAnimation() {
         boolean isMovingRight = body.getLinearVelocity().x > 0;
         float movementThreshold = 1;
 
         if (Math.abs(body.getLinearVelocity().x) < movementThreshold) {
             // If velocity is below the threshold, use stationary animation
-            sprite.setRegion(createGrazingAnimationFromAtlas().getKeyFrame(stateTime, true));
-            if (!isFacingRight) {
-                sprite.flip(true, false);
-            }
-        } else if (isMovingRight) {
-            // If moving right, use walking animation facing right
-            sprite.setRegion(walkingAnimation.getKeyFrame(stateTime, true));
+            currentAnimation = stationaryAnimation;
         } else {
-            // If moving left, use walking animation flipped horizontally
-            TextureRegion flippedWalkingRegion = new TextureRegion(walkingAnimation.getKeyFrame(stateTime, true));
-
-            flippedWalkingRegion.flip(true, false);
-            sprite.setRegion(flippedWalkingRegion);
+            // If velocity is above the threshold, use walking animation
+            currentAnimation = walkingAnimation;
         }
+
+        TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
+        sprite.setRegion(frame);
+
+        if (isFacingRight && frame.isFlipX()) {
+            frame.flip(true, false);
+        } else if (!isFacingRight && !frame.isFlipX()) {
+            frame.flip(true, false);
+        }
+
+        sprite.setRegion(frame);
+        sprite.setSize(width, height); // Ensure sprite size remains consistent
     }
 }

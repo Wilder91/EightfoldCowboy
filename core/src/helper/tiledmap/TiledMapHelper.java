@@ -44,6 +44,7 @@ public class TiledMapHelper {
     public OrthogonalTiledMapRenderer setupMap() {
         tiledMap = new TmxMapLoader().load("maps/EightfoldMap.tmx");
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
+        parseWallObjects(tiledMap.getLayers().get("wall").getObjects());
         return new OrthogonalTiledMapRenderer(tiledMap);
     }
 
@@ -109,7 +110,52 @@ public class TiledMapHelper {
                             ContactType.PLAYER,
                             playerId
                     );
-                    gameScreen.setPlayer(new Player(rectangle.width, rectangle.height, body, gameScreen, gameAssets));
+                    //System.out.println(rectangle.width + " " + rectangle.height);
+                    gameScreen.setPlayer(new Player(rectangle.width , rectangle.height, body, gameScreen, gameAssets));
+                }
+            }
+        }
+    }
+
+    private void parseWallObjects(MapObjects mapObjects) {
+        for (MapObject mapObject : mapObjects) {
+            if (mapObject instanceof PolygonMapObject) {
+                PolygonMapObject polygonMapObject = (PolygonMapObject) mapObject;
+                String polygonName = mapObject.getName();
+                if (polygonName != null) {
+                    switch (polygonName) {
+                        case "roots":
+                            createStaticBody(polygonMapObject);
+                            break;
+                        case "wall":
+                            createStaticBody(polygonMapObject);
+                        default:
+                            createStaticBody(polygonMapObject);
+                            break;
+                    }
+                } else {
+                    createStaticBody(polygonMapObject);
+                }
+            }
+
+            if (mapObject instanceof RectangleMapObject) {
+                Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+                String rectangleName = mapObject.getName();
+
+                if (rectangleName != null && rectangleName.equals("player")) {
+                    int playerId = 1;
+                    Body body = BodyHelperService.createBody(
+                            rectangle.x + rectangle.width / 2,
+                            rectangle.y + rectangle.height / 2,
+                            rectangle.width,
+                            rectangle.height,
+                            false,
+                            gameScreen.getWorld(),
+                            ContactType.PLAYER,
+                            playerId
+                    );
+                    //System.out.println(rectangle.width + " " + rectangle.height);
+                    gameScreen.setPlayer(new Player(rectangle.width , rectangle.height, body, gameScreen, gameAssets));
                 }
             }
         }

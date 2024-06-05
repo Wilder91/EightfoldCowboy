@@ -28,7 +28,7 @@ public class Tree extends InanimateEntity {
 
     @SuppressWarnings("unchecked")
     public Tree(float width, float height, Body body, GameScreen gameScreen, int treeType, int id, GameAssets gameAssets) {
-        super(width, height, body, gameScreen, id);
+        super(width, height, body, gameScreen, id, gameAssets);
         this.stateTime = 0f;
         this.treeType = treeType;
         treeAnimations = new Animation[6]; // Array to hold animations for 6 tree types
@@ -50,7 +50,6 @@ public class Tree extends InanimateEntity {
 
     private void initAnimations() {
         TextureAtlas atlas = gameAssets.getAtlas("plants/trees/oak-trees.atlas");
-        System.out.println(atlas);
         loadAnimation(LARGE_OAK, atlas, 1, 29, "Oak_Large");
         loadAnimation(MEDIUM_1, atlas, 1, 29, "Oak_Medium_1");
         loadAnimation(MEDIUM_2, atlas, 1, 29, "Oak_Medium_2");
@@ -101,7 +100,7 @@ public class Tree extends InanimateEntity {
             // Convert the Box2D position from meters to pixels for rendering
             float x = body.getPosition().x * PPM - width / 2;
             float y = body.getPosition().y * PPM - height / 2;
-
+            //System.out.println(treeType + width + " " + height);
             batch.draw(currentFrame, x, y, width, height);
         } catch (Exception e) {
             System.err.println("Error getting key frame: " + e.getMessage());

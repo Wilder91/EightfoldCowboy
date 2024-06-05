@@ -197,23 +197,25 @@ public class GameScreen extends ScreenAdapter {
 
         // Render path rectangles before rendering objects
         //tiledMapHelper.renderPathRectangles();
-
+        for (Building building : buildingList) {
+            building.render(batch);
+        }
         if (player != null) {
             player.render(batch);
         }
 
-        for (Bison bison : bisonList) {
-            bison.render(batch);
-        }
+
         for (Bird bird : birdList) {
             bird.render(batch);
+        }
+        for (Bison bison : bisonList) {
+            bison.render(batch);
         }
         for (Boulder boulder : boulderList) {
             boulder.render(batch);
         }
-        for (Building building : buildingList) {
-            building.render(batch);
-        }
+
+
         for (Tree tree : treeList) {
             tree.render(batch);
         }
