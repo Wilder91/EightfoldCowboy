@@ -19,6 +19,10 @@ public class GameAssets {
         assetManager.load("animals/bison/grazing/atlas/bison-grazing.atlas", TextureAtlas.class);
         assetManager.load("player/atlas/player-horizontal.atlas", TextureAtlas.class);
         assetManager.load("plants/trees/oak-trees.atlas", TextureAtlas.class);
+        assetManager.load("animals/bison/walking/atlases/horizontal.atlas", TextureAtlas.class);
+        assetManager.load("animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas", TextureAtlas.class);
+        assetManager.load("animals/bison/walking/atlases/eightfold/bison-diagonal.atlas", TextureAtlas.class);
+        assetManager.load("animals/bison/walking/atlases/eightfold/bison-horizontal.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
         // Load individual textures for bison grazing
         for (int i = 0; i <= 39; i++) {

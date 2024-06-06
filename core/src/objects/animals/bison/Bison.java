@@ -2,6 +2,7 @@ package objects.animals.bison;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.screens.GameScreen;
@@ -36,7 +37,7 @@ public class Bison extends GameEntity {
 
         // Initialize the sprite with the first frame of the animation
         this.sprite = new Sprite(currentAnimation.getKeyFrame(0));
-        this.sprite.setSize(width, height);
+        this.sprite.setSize(175, 175);
 
         BisonManager.addBison(this);
     }
@@ -51,13 +52,11 @@ public class Bison extends GameEntity {
         sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
 
         // Determine the current animation frame
+        System.out.println(body.getLinearVelocity());
         updateAnimation();
 
         // Check and update the sprite's direction
-        boolean newFacingRight = AnimalMovementHelper.checkLinearVelocity(body, sprite, isFacingRight);
-        if (newFacingRight != isFacingRight) {
-            isFacingRight = newFacingRight;
-        }
+
     }
 
     @Override
@@ -79,9 +78,9 @@ public class Bison extends GameEntity {
 
     private Animation<TextureRegion> createGrazingAnimationFromAtlas() {
         Array<TextureRegion> frames = new Array<>();
-        TextureAtlas grazingAtlas = gameAssets.getAtlas("animals/bison/grazing/atlas/bison-grazing.atlas");
-        for (int i = 0; i <= 39; i++) {
-            TextureRegion region = grazingAtlas.findRegion("Bison_Grazing", i);
+        TextureAtlas grazingAtlas = gameAssets.getAtlas("animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas");
+        for (int i = 1; i <= 5; i++) {
+            TextureRegion region = grazingAtlas.findRegion("Bison_Down_Rest", i);
             if (region != null) {
                 frames.add(region);
             } else {
@@ -91,14 +90,15 @@ public class Bison extends GameEntity {
         return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
     }
 
-    public void playerContact(Body body, int bisonId, float linearVelocity) {
+    public void playerContact(Body body, int bisonId, Vector2 linearVelocity) {
         body.setLinearDamping(1.5f);
-        body.setLinearVelocity(linearVelocity, 0); // Adjust the linear velocity
+
+        body.setLinearVelocity(linearVelocity); // Adjust the linear velocity
     }
 
     private void loadAnimations() {
         stationaryAnimation = createGrazingAnimationFromAtlas();
-        walkingAnimation = loadWalkingAnimation();
+
 
         currentAnimation = stationaryAnimation; // Default to stationary animation
     }
@@ -113,11 +113,69 @@ public class Bison extends GameEntity {
         return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
     }
 
-    private Animation<TextureRegion> loadWalkingAnimation() {
+
+    private Animation<TextureRegion> loadUpWalkingAnimation() {
         Array<TextureRegion> frames = new Array<>();
-        TextureAtlas atlas = new TextureAtlas("animals/bison/walking/atlases/horizontal.atlas");
+        TextureAtlas atlas = gameAssets.getAtlas("animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas");
+        for (int i = 1; i <= 7; i++) {
+            TextureRegion region = atlas.findRegion("Bison_Up_Walk", i);
+            if (region != null) {
+                frames.add(region);
+            } else {
+                System.out.println("Region Bison_Up_Walk_" + i + " not found!");
+            }
+        }
+        return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
+    }
+
+    private Animation<TextureRegion> loadDownWalkingAnimation() {
+        Array<TextureRegion> frames = new Array<>();
+        TextureAtlas atlas = gameAssets.getAtlas("animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas");
+        for (int i = 1; i <= 8; i++) {
+            TextureRegion region = atlas.findRegion("Bison_Down_Walk", i);
+            if (region != null) {
+                frames.add(region);
+            } else {
+                System.out.println("Region Bison_Down_Walk_" + i + " not found!");
+            }
+        }
+        return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
+    }
+
+    private Animation<TextureRegion> loadDiagonalDownWalkingAnimation() {
+        Array<TextureRegion> frames = new Array<>();
+        TextureAtlas atlas = gameAssets.getAtlas("animals/bison/walking/atlases/eightfold/bison-diagonal.atlas");
         for (int i = 1; i <= 5; i++) {
-            TextureRegion region = atlas.findRegion("bison-horizontal-" + i);
+            TextureRegion region = atlas.findRegion("Bison_DiagDOWN_Walk", i);
+            if (region != null) {
+                frames.add(region);
+            } else {
+                System.out.println("Region Bison_Down_Walk_" + i + " not found!");
+            }
+        }
+        return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
+    }
+
+
+    private Animation<TextureRegion> loadDiagonalUpWalkingAnimation() {
+        Array<TextureRegion> frames = new Array<>();
+        TextureAtlas atlas = gameAssets.getAtlas("animals/bison/walking/atlases/eightfold/bison-diagonal.atlas");
+        for (int i = 1; i <= 5; i++) {
+            TextureRegion region = atlas.findRegion("Bison_DiagUP_Walk", i);
+            if (region != null) {
+                frames.add(region);
+            } else {
+                System.out.println("Region Bison_Down_Walk_" + i + " not found!");
+            }
+        }
+        return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
+    }
+
+    private Animation<TextureRegion> loadHorizontalWalkingAnimation() {
+        Array<TextureRegion> frames = new Array<>();
+        TextureAtlas atlas = gameAssets.getAtlas("animals/bison/walking/atlases/eightfold/bison-horizontal.atlas");
+        for (int i = 1; i <= 5; i++) {
+            TextureRegion region = atlas.findRegion("Bison_Horizontal_Walk", i);
             if (region != null) {
                 frames.add(region);
             } else {
@@ -128,27 +186,49 @@ public class Bison extends GameEntity {
     }
 
     private void updateAnimation() {
+        boolean isMoving = Math.abs(body.getLinearVelocity().x) > 0 || Math.abs(body.getLinearVelocity().y) > 0;
+        boolean isMovingUp = body.getLinearVelocity().y > 0;
+        boolean isMovingDown = body.getLinearVelocity().y < 0;
         boolean isMovingRight = body.getLinearVelocity().x > 0;
-        float movementThreshold = 1;
+        boolean isMovingLeft = body.getLinearVelocity().x < 0;
 
-        if (Math.abs(body.getLinearVelocity().x) < movementThreshold) {
-            // If velocity is below the threshold, use stationary animation
-            currentAnimation = stationaryAnimation;
+        if (isMoving) {
+            if (isMovingUp) {
+                if (isMovingRight) {
+                    currentAnimation = loadDiagonalUpWalkingAnimation();
+                    isFacingRight= true;
+
+                } else if (isMovingLeft) {
+                    currentAnimation = loadDiagonalUpWalkingAnimation();
+                    isFacingRight =false;
+                } else {
+                    currentAnimation = loadUpWalkingAnimation();
+                }
+            } else if (isMovingDown) {
+                if (isMovingRight) {
+                    currentAnimation = loadDiagonalDownWalkingAnimation();
+                    isFacingRight = true;
+                } else if (isMovingLeft) {
+                    currentAnimation = loadDiagonalDownWalkingAnimation();
+                    isFacingRight = false;
+                    sprite.flip(true,false);
+                } else {
+                    currentAnimation = loadDownWalkingAnimation();
+                }
+            } else if (isMovingRight || isMovingLeft) {
+                currentAnimation = loadHorizontalWalkingAnimation();
+                isFacingRight = isMovingRight;
+            }
         } else {
-            // If velocity is above the threshold, use walking animation
-            currentAnimation = walkingAnimation;
+            currentAnimation = stationaryAnimation;
         }
 
         TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
-        sprite.setRegion(frame);
 
-        if (isFacingRight && frame.isFlipX()) {
-            frame.flip(true, false);
-        } else if (!isFacingRight && !frame.isFlipX()) {
-            frame.flip(true, false);
-        }
+
 
         sprite.setRegion(frame);
-        sprite.setSize(width, height); // Ensure sprite size remains consistent
+        sprite.setSize(width, height);
     }
 }
+
