@@ -6,7 +6,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -28,23 +27,23 @@ import java.util.ArrayList;
 import static helper.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter {
-    private ArrayList<Bison> bisonList;
-    private ArrayList<Bird> birdList;
-    private ArrayList<Building> buildingList;
-    private ArrayList<Boulder> boulderList;
-    private ArrayList<Tree> treeList;
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
+    private final ArrayList<Bison> bisonList;
+    private final ArrayList<Bird> birdList;
+    private final ArrayList<Building> buildingList;
+    private final ArrayList<Boulder> boulderList;
+    private final ArrayList<Tree> treeList;
+    private final OrthographicCamera camera;
+    private final SpriteBatch batch;
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
-    private TiledMapHelper tiledMapHelper;
+    private final TiledMapHelper tiledMapHelper;
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private Player player;
-    private GameContactListener gameContactListener;
-    private ShapeRenderer shapeRenderer;
-    private GameAssets gameAssets;
+    private final GameContactListener gameContactListener;
+
+    private final GameAssets gameAssets;
     public GameScreen(OrthographicCamera camera, GameAssets gameAssets) {
-        this.buildingList = new ArrayList<Building>();
+        this.buildingList = new ArrayList<>();
         this.camera = camera;
         this.bisonList = new ArrayList<>();
         this.birdList = new ArrayList<>();
@@ -59,7 +58,7 @@ public class GameScreen extends ScreenAdapter {
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap();
-        this.shapeRenderer = new ShapeRenderer();
+
         camera.zoom = 3/2f;
         // Set camera zoom only once
     }
