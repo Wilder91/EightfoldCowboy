@@ -9,30 +9,31 @@ import com.mygdx.eightfold.screens.GameScreen;
 import objects.GameAssets;
 import objects.animals.object_helper.BisonManager;
 import objects.player.GameEntity;
+import  helper.movement.Facing;
+import java.util.HashMap;
+import java.util.Map;
 
 import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
 
+// Import the Direction enum
+
+
 public class Bison extends GameEntity {
-    private Animation<TextureRegion> stationaryAnimation;
-    private Animation<TextureRegion> walkingUpAnimation;
-    private Animation<TextureRegion> walkingDownAnimation;
-    private Animation<TextureRegion> walkingDiagonalUpAnimation;
-    private Animation<TextureRegion> walkingDiagonalDownAnimation;
-    private Animation<TextureRegion> walkingHorizontalAnimation;
+    private Map<String, Animation<TextureRegion>> animations;
     private Animation<TextureRegion> currentAnimation;
     private float stateTime;
-    private boolean isFacingRight;
+    private Facing facingDirection;
     private int id;
     private Sprite sprite;
     private GameAssets gameAssets;
     private float movementThreshold;
-
-    public Bison(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int bisonId, GameAssets gameAssets) {
+    private boolean isResting;
+    public Bison(float width, float height, float x, float y, Body body, Facing initialDirection, GameScreen gameScreen, int bisonId, GameAssets gameAssets) {
         super(width, height, body, gameScreen, gameAssets);
         this.stateTime = 0f;
         this.id = bisonId;
-        this.isFacingRight = isFacingRight;
+        this.facingDirection = initialDirection;
         this.body = body;
         this.gameAssets = gameAssets;
         this.movementThreshold = 1f;
@@ -53,12 +54,20 @@ public class Bison extends GameEntity {
         float x = body.getPosition().x * PPM;
         float y = body.getPosition().y * PPM;
         sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
-        if (Math.abs(body.getLinearVelocity().x) < 1 && Math.abs(body.getLinearVelocity().y) < 1) {
+
+        // Set the origin of the sprite to its center
+        sprite.setOriginCenter();
+
+        // Stop the bison if the velocity is below a threshold
+        Vector2 linearVelocity = body.getLinearVelocity();
+        if (linearVelocity.len() < 0.8) {
             body.setLinearVelocity(0, 0);
         }
+
         // Determine the current animation frame and update sprite size if needed
-        updateAnimation();
+        updateAnimation(linearVelocity);
     }
+
 
     @Override
     public void render(SpriteBatch batch) {
@@ -78,51 +87,29 @@ public class Bison extends GameEntity {
     }
 
     private void loadAnimations() {
-        stationaryAnimation = createGrazingAnimationFromAtlas();
-        walkingUpAnimation = loadUpWalkingAnimation();
-        walkingDownAnimation = loadDownWalkingAnimation();
-        walkingDiagonalUpAnimation = loadDiagonalUpWalkingAnimation();
-        walkingDiagonalDownAnimation = loadDiagonalDownWalkingAnimation();
-        walkingHorizontalAnimation = loadHorizontalWalkingAnimation();
-        currentAnimation = stationaryAnimation; // Default to stationary animation
+        animations = new HashMap<>();
+        animations.put("stationary", createAnimation("Bison_Down_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
+        animations.put("walkingUp", createAnimation("Bison_Up_Walk", 7, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
+        animations.put("walkingDown", createAnimation("Bison_Down_Walk", 8, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
+        animations.put("walkingDiagonalUp", createAnimation("Bison_DiagUP_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
+        animations.put("walkingDiagonalDown", createAnimation("Bison_DiagDOWN_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
+        animations.put("walkingHorizontal", createAnimation("Bison_Horizontal_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-horizontal.atlas"));
+        animations.put("runningUp", createAnimation("Bison_Up_Run", 7, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
+        animations.put("runningDiagonalUp", createAnimation("Bison_DiagUP_Run", 7, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
+        animations.put("runningDown", createAnimation("Bison_Down_Run", 7, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
+        animations.put("runningDiagonalDown", createAnimation("Bison_DiagDOWN_Run", 7, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
+        animations.put("runningHorizontal", createAnimation("Bison_Horizontal_Run", 5, "animals/bison/walking/atlases/eightfold/bison-horizontal.atlas"));
+        animations.put("stationaryUp", createAnimation("Bison_Up_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
+        animations.put("stationaryDown", createAnimation("Bison_Down_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
+        animations.put("stationaryHorizontal", createAnimation("Bison_Horizontal_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-horizontal.atlas"));
+        animations.put("stationaryUpDiagonal", createAnimation("Bison_DiagUP_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
+        animations.put("stationaryDownDiagonal", createAnimation("Bison_DiagDOWN_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
+        //animations.put("stationaryDownRight", createAnimation("Bison_DownRight_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
+        //animations.put("stationaryDownLeft", createAnimation("Bison_DownLeft_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
+        currentAnimation = animations.get("stationaryHorizontal"); // Default to stationary animation
     }
 
-    private Animation<TextureRegion> createGrazingAnimationFromAtlas() {
-        Array<TextureRegion> frames = new Array<>();
-        TextureAtlas grazingAtlas = gameAssets.getAtlas("animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas");
-        for (int i = 1; i <= 5; i++) {
-            TextureRegion region = grazingAtlas.findRegion("Bison_Down_Rest", i);
-            if (region != null) {
-                frames.add(region);
-            } else {
-                System.out.println("Region Bison_Grazing_" + i + " not found!");
-            }
-        }
-        return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
-    }
-
-    private Animation<TextureRegion> loadUpWalkingAnimation() {
-        return loadAnimation("Bison_Up_Walk", 7, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas");
-    }
-
-    private Animation<TextureRegion> loadDownWalkingAnimation() {
-        return loadAnimation("Bison_Down_Walk", 8, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas");
-    }
-
-    private Animation<TextureRegion> loadDiagonalUpWalkingAnimation() {
-
-        return loadAnimation("Bison_DiagUP_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas");
-    }
-
-    private Animation<TextureRegion> loadDiagonalDownWalkingAnimation() {
-        return loadAnimation("Bison_DiagDOWN_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas");
-    }
-
-    private Animation<TextureRegion> loadHorizontalWalkingAnimation() {
-        return loadAnimation("Bison_Horizontal_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-horizontal.atlas");
-    }
-
-    private Animation<TextureRegion> loadAnimation(String regionNamePrefix, int frameCount, String atlasPath) {
+    private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount, String atlasPath) {
         Array<TextureRegion> frames = new Array<>();
         TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
         for (int i = 1; i <= frameCount; i++) {
@@ -136,46 +123,21 @@ public class Bison extends GameEntity {
         return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
     }
 
-    private void updateAnimation() {
-        boolean isMoving = Math.abs(body.getLinearVelocity().x) > movementThreshold || Math.abs(body.getLinearVelocity().y) > movementThreshold;
-        boolean isMovingUp = body.getLinearVelocity().y > movementThreshold;
-        boolean isMovingDown = body.getLinearVelocity().y < -movementThreshold;
-        boolean isMovingRight = body.getLinearVelocity().x > movementThreshold;
-        boolean isMovingLeft = body.getLinearVelocity().x < -movementThreshold;
+    private void updateAnimation(Vector2 linearVelocity) {
+        float vx = linearVelocity.x;
+        float vy = linearVelocity.y;
+
+        boolean isMoving = Math.abs(vx) > movementThreshold || Math.abs(vy) > movementThreshold;
+        boolean isRunning = Math.abs(vx) > movementThreshold * 2 || Math.abs(vy) > movementThreshold * 2;
 
         if (isMoving) {
-            if (isMovingUp) {
-                if (isMovingRight) {
-                    currentAnimation = walkingDiagonalUpAnimation;
-
-                    isFacingRight = false; //png is inverted so i'm rolling with it for now
-                    System.out.println("up and to the right!");
-                } else if (isMovingLeft) {
-                    currentAnimation = walkingDiagonalUpAnimation;
-
-                    isFacingRight = true; //png is inverted so i'm rolling with it for now
-                } else {
-                    currentAnimation = walkingUpAnimation;
-                }
-            } else if (isMovingDown) {
-                if (isMovingRight) {
-                    currentAnimation = walkingDiagonalDownAnimation;
-                    isFacingRight = true;
-                } else if (isMovingLeft) {
-                    currentAnimation = walkingDiagonalDownAnimation;
-                    isFacingRight = false;
-                } else {
-                    currentAnimation = walkingDownAnimation;
-                }
-            } else if (isMovingRight) {
-                currentAnimation = walkingHorizontalAnimation;
-                isFacingRight = true;
-            } else if (isMovingLeft) {
-                currentAnimation = walkingHorizontalAnimation;
-                isFacingRight = false;
+            if (isRunning) {
+                setRunningAnimation(vx, vy);
+            } else {
+                setWalkingAnimation(vx, vy);
             }
         } else {
-            currentAnimation = stationaryAnimation;
+            setRestingAnimation();
         }
 
         TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
@@ -183,15 +145,126 @@ public class Bison extends GameEntity {
 
         // Adjust sprite size and flip based on direction
         sprite.setSize(frame.getRegionWidth(), frame.getRegionHeight());
-        if ((isFacingRight && sprite.isFlipX()) || (!isFacingRight && !sprite.isFlipX())) {
-            sprite.flip(true, false);
-        }
+        sprite.setOriginCenter(); // Ensure the origin is centered
+        updateSpriteFlip();
     }
+
     public void playerContact(Body body, int bisonId, Vector2 linearVelocity) {
         body.setLinearDamping(1.5f);
-
         body.setLinearVelocity(linearVelocity); // Adjust the linear velocity
     }
 
+    private void setRestingAnimation() {
+        isResting = true;
+        switch (facingDirection) {
+            case UP:
+                currentAnimation = animations.get("stationaryUp");
+                break;
+            case DOWN:
+                currentAnimation = animations.get("stationaryDown");
+                break;
+            case LEFT:
+                currentAnimation = animations.get("stationaryHorizontal");
+                sprite.setFlip(true, false); // Flip for left direction
+                break;
+            case RIGHT:
+                currentAnimation = animations.get("stationaryHorizontal");
+                sprite.setFlip(false, false); // No flip for right direction
+                break;
+            case UP_RIGHT:
+                currentAnimation = animations.get("stationaryUpDiagonal");
+                sprite.setFlip(false, false); // No flip for right direction
+                break;
+            case UP_LEFT:
+                currentAnimation = animations.get("stationaryUpDiagonal");
+                sprite.setFlip(true, false); // Flip for left direction
+                break;
+            case DOWN_RIGHT:
+                currentAnimation = animations.get("stationaryDownDiagonal");
+                sprite.setFlip(false, false); // No flip for right direction
+                break;
+            case DOWN_LEFT:
+                currentAnimation = animations.get("stationaryDownDiagonal");
+                sprite.setFlip(true, false); // Flip for left direction
+                break;
+            default:
+                currentAnimation = animations.get("stationary");
+                break;
+        }
+        sprite.setOriginCenter(); // Set the origin to the center of the sprite
+    }
 
+
+    private void setWalkingAnimation(float vx, float vy) {
+        isResting = false;
+        if (vy > movementThreshold) {
+            if (vx > 0) {
+                currentAnimation = animations.get("walkingDiagonalUp");
+                facingDirection = Facing.UP_RIGHT;
+            } else if (vx < 0) {
+                currentAnimation = animations.get("walkingDiagonalUp");
+                facingDirection = Facing.UP_LEFT;
+            } else {
+                currentAnimation = animations.get("walkingUp");
+                facingDirection = Facing.UP;
+            }
+        } else if (vy < -movementThreshold) {
+            if (vx > 0) {
+                currentAnimation = animations.get("walkingDiagonalDown");
+                facingDirection = Facing.DOWN_RIGHT;
+            } else if (vx < 0) {
+                currentAnimation = animations.get("walkingDiagonalDown");
+                facingDirection = Facing.DOWN_LEFT;
+            } else {
+                currentAnimation = animations.get("walkingDown");
+                facingDirection = Facing.DOWN;
+            }
+        } else if (vx > movementThreshold) {
+            currentAnimation = animations.get("walkingHorizontal");
+            facingDirection = Facing.RIGHT;
+        } else if (vx < -movementThreshold) {
+            currentAnimation = animations.get("walkingHorizontal");
+            facingDirection = Facing.LEFT;
+        }
+    }
+
+    private void setRunningAnimation(float vx, float vy) {
+        isResting = false;
+        if (vy > movementThreshold * 2) {
+            if (vx > 0) {
+                currentAnimation = animations.get("runningDiagonalUp");
+                facingDirection = Facing.UP_RIGHT;
+            } else if (vx < 0) {
+                currentAnimation = animations.get("runningDiagonalUp");
+                facingDirection = Facing.UP_LEFT;
+            } else {
+                currentAnimation = animations.get("runningUp");
+                facingDirection = Facing.UP;
+            }
+        } else if (vy < -movementThreshold * 2) {
+            if (vx > 0) {
+                currentAnimation = animations.get("runningDiagonalDown");
+                facingDirection = Facing.DOWN_RIGHT;
+            } else if (vx < 0) {
+                currentAnimation = animations.get("runningDiagonalDown");
+                facingDirection = Facing.DOWN_LEFT;
+            } else {
+                currentAnimation = animations.get("runningDown");
+                facingDirection = Facing.DOWN;
+            }
+        } else if (vx > movementThreshold * 2) {
+            currentAnimation = animations.get("runningHorizontal");
+            facingDirection = Facing.RIGHT;
+        } else if (vx < -movementThreshold * 2) {
+            currentAnimation = animations.get("runningHorizontal");
+            facingDirection = Facing.LEFT;
+        }
+    }
+
+    private void updateSpriteFlip() {
+        boolean flipX = (facingDirection == Facing.LEFT || facingDirection == Facing.UP_LEFT || facingDirection == Facing.DOWN_LEFT);
+        if (sprite.isFlipX() != flipX) {
+            sprite.flip(true, false);
+        }
+    }
 }

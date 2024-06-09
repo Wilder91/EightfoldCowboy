@@ -20,5 +20,7 @@ public class AnimalMovementHelper {
         // Return the current direction if no flipping occurred
         return isFacingRight;
     }
+
+
 }
 

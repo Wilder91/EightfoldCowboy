@@ -9,6 +9,7 @@ import helper.BodyHelperService;
 import helper.ContactType;
 import objects.GameAssets;
 import objects.animals.bison.Bison;
+import helper.movement.Facing;
 
 public class BisonFactory {
     private GameScreen gameScreen;
@@ -42,7 +43,7 @@ public class BisonFactory {
                 boundingRectangle.x + boundingRectangle.width / 2,
                 boundingRectangle.y + boundingRectangle.height / 2,
                 body,
-                true,
+                Facing.RIGHT,
                 gameScreen,
                 bisonId,
                 gameAssets

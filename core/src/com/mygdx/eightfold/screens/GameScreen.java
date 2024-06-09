@@ -224,7 +224,7 @@ public class GameScreen extends ScreenAdapter {
 
         batch.end();
         // Uncomment for debugging physics bodies
-       //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
 }
