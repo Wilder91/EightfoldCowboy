@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="463">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="608">
  <editorsettings>
   <chunksize width="32" height="32"/>
  </editorsettings>
@@ -188,100 +188,7 @@
   <object id="174" name="wall" x="220.397" y="766.703">
    <polygon points="0,0 12.2588,-5.79135 32.9053,-9.00876 37.099,0.321742 7.09725,7.72181"/>
   </object>
-  <object id="292" name="bison" x="519.798" y="63.8757">
-   <polygon points="0,0 120.667,0.579202 121.838,88.6178 -3.51458,88.6178"/>
-  </object>
-  <object id="293" name="bison" x="565.523" y="878.835">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="294" name="bison" x="1150.55" y="525.221">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="295" name="bison" x="407.895" y="402.632">
-   <polygon points="0,0 120.667,0.579202 121.838,88.6178 -3.51458,88.6178"/>
-  </object>
   <object id="428" name="bison" x="1092.23" y="377.406">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="429" name="bison" x="1142.21" y="402.399">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="430" name="bison" x="1194.7" y="434.891">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="431" name="bison" x="1199.7" y="444.889">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="432" name="bison" x="1242.19" y="469.883">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="433" name="bison" x="1179.71" y="287.428">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="434" name="bison" x="1159.71" y="309.923">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="435" name="bison" x="1037.24" y="259.935">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="436" name="bison" x="1087.22" y="284.928">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="437" name="bison" x="1139.71" y="317.42">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="438" name="bison" x="1144.71" y="327.418">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="439" name="bison" x="1187.2" y="352.412">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="440" name="bison" x="1124.72" y="169.957">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="441" name="bison" x="1104.72" y="192.452">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="442" name="bison" x="1147.22" y="254.936">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="443" name="bison" x="1197.2" y="279.929">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="444" name="bison" x="1249.69" y="312.421">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="445" name="bison" x="1254.69" y="322.419">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="446" name="bison" x="1297.18" y="347.413">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="447" name="bison" x="1234.7" y="164.958">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="448" name="bison" x="1214.7" y="187.453">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="449" name="bison" x="1259.69" y="222.444">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="450" name="bison" x="1309.67" y="247.437">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="451" name="bison" x="1362.16" y="279.929">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="452" name="bison" x="1367.16" y="289.927">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="453" name="bison" x="1409.65" y="314.921">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="454" name="bison" x="1347.17" y="132.466">
-   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
-  </object>
-  <object id="455" name="bison" x="1327.17" y="154.961">
    <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
   </object>
  </objectgroup>

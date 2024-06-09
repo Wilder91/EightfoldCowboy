@@ -76,8 +76,8 @@ public class GameContactListener implements ContactListener {
             }else if (userDataA.getType() == ContactType.BISON && userDataB.getType() == ContactType.BISON) {
 //                System.out.println("Contact detected between Bison and bird");
 //                System.out.println("Bison ID: " + userDataB.getId() + ", Bird ID: " + userDataA.getId());
-                a.getBody().setLinearDamping(3f);
-                b.getBody().setLinearDamping(3f);
+                a.getBody().setLinearDamping(7f);
+                b.getBody().setLinearDamping(7f);
                 Bird.playerContact(b.getBody(), userDataB.getId());
             }
 

@@ -28,7 +28,7 @@ public class Bison extends GameEntity {
     private float movementThreshold;
     private boolean isResting;
     private Random random;
-   ;
+    ;
     private boolean isPaused;
     private float restingTime;
     private float pauseDuration;
@@ -110,22 +110,22 @@ public class Bison extends GameEntity {
 
     private void loadAnimations() {
         animations = new HashMap<>();
-        animations.put("stationary", createAnimation("Bison_Down_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
-        animations.put("walkingUp", createAnimation("Bison_Up_Walk", 7, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
-        animations.put("walkingDown", createAnimation("Bison_Down_Walk", 8, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
-        animations.put("walkingDiagonalUp", createAnimation("Bison_DiagUP_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
-        animations.put("walkingDiagonalDown", createAnimation("Bison_DiagDOWN_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
-        animations.put("walkingHorizontal", createAnimation("Bison_Horizontal_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-horizontal.atlas"));
-        animations.put("runningUp", createAnimation("Bison_Up_Run", 7, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
-        animations.put("runningDiagonalUp", createAnimation("Bison_DiagUP_Run", 7, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
-        animations.put("runningDown", createAnimation("Bison_Down_Run", 7, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
-        animations.put("runningDiagonalDown", createAnimation("Bison_DiagDOWN_Run", 7, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
-        animations.put("runningHorizontal", createAnimation("Bison_Horizontal_Run", 5, "animals/bison/walking/atlases/eightfold/bison-horizontal.atlas"));
-        animations.put("stationaryUp", createAnimation("Bison_Up_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
-        animations.put("stationaryDown", createAnimation("Bison_Down_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-up-and-down.atlas"));
-        animations.put("stationaryHorizontal", createAnimation("Bison_Horizontal_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-horizontal.atlas"));
-        animations.put("stationaryUpDiagonal", createAnimation("Bison_DiagUP_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
-        animations.put("stationaryDownDiagonal", createAnimation("Bison_DiagDOWN_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-diagonal.atlas"));
+        animations.put("stationary", createAnimation("bison_Down_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("walkingUp", createAnimation("bison_Up_Walk", 7, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("walkingDown", createAnimation("bison_Down_Walk", 8, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("walkingDiagonalUp", createAnimation("bison_DiagUP_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("walkingDiagonalDown", createAnimation("bison_DiagDOWN_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("walkingHorizontal", createAnimation("bison_Horizontal_Walk", 5, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("runningUp", createAnimation("bison_Up_Run", 7, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("runningDiagonalUp", createAnimation("bison_DiagUP_Run", 7, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("runningDown", createAnimation("bison_Down_Run", 7, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("runningDiagonalDown", createAnimation("bison_DiagDOWN_Run", 7, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("runningHorizontal", createAnimation("bison_Horizontal_Run", 5, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("stationaryUp", createAnimation("bison_Up_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("stationaryDown", createAnimation("bison_Down_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("stationaryHorizontal", createAnimation("bison_Horizontal_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("stationaryUpDiagonal", createAnimation("bison_DiagUP_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
+        animations.put("stationaryDownDiagonal", createAnimation("bison_DiagDOWN_Rest", 5, "animals/bison/walking/atlases/eightfold/bison-movement.atlas"));
         currentAnimation = animations.get("stationaryHorizontal"); // Default to stationary animation
     }
 

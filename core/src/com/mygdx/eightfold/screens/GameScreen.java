@@ -40,7 +40,7 @@ public class GameScreen extends ScreenAdapter {
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private Player player;
     private final GameContactListener gameContactListener;
-
+    private boolean outputOnce = false;
     private final GameAssets gameAssets;
     public GameScreen(OrthographicCamera camera, GameAssets gameAssets) {
         this.buildingList = new ArrayList<>();
@@ -152,6 +152,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void addBison(Bison bison) {
         if (bisonList != null) {
+            //System.out.println(bison);
             bisonList.add(bison);
         } else {
             System.err.println("bisonList is null. Cannot add bison.");
@@ -207,8 +208,13 @@ public class GameScreen extends ScreenAdapter {
         for (Bird bird : birdList) {
             bird.render(batch);
         }
-        for (Bison bison : bisonList) {
+        for (Bison bison : bisonList) {if (!outputOnce) {
+            System.out.println("Sprite from screen: " + bison.getSprite());;
+            outputOnce = true;
+        }
+
             bison.render(batch);
+
         }
         for (Boulder boulder : boulderList) {
             boulder.render(batch);
@@ -224,7 +230,7 @@ public class GameScreen extends ScreenAdapter {
 
         batch.end();
         // Uncomment for debugging physics bodies
-        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
 }
