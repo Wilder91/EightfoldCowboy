@@ -11,6 +11,7 @@ import objects.GameAssets;
 import static helper.Constants.PPM;
 
 public class Player extends GameEntity {
+    private final float originalSpeed;
     private GameAssets gameAssets;
     private Sprite sprite;
     private boolean isFacingRight;
@@ -25,6 +26,7 @@ public class Player extends GameEntity {
     public Player(float width, float height, Body body, GameScreen gameScreen, GameAssets gameAssets) {
         super(width, height, body, gameScreen, gameAssets);
         this.speed = 7f;
+        this.originalSpeed = 7f;
         this.isFacingRight = true;
         this.body = body;
         this.gameAssets = gameAssets;
@@ -82,6 +84,12 @@ public class Player extends GameEntity {
             velY = -1;
         }
         body.setLinearVelocity(velX * speed, velY * speed);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)){
+            speed = speed * 2;
+        }
+        if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            speed = originalSpeed;
+        }
     }
 
     private void updateAnimation() {

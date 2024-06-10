@@ -208,10 +208,10 @@ public class GameScreen extends ScreenAdapter {
         for (Bird bird : birdList) {
             bird.render(batch);
         }
-        for (Bison bison : bisonList) {if (!outputOnce) {
-            System.out.println("Sprite from screen: " + bison.getSprite());;
-            outputOnce = true;
-        }
+        for (Bison bison : bisonList){ //{if (!outputOnce)
+            //System.out.println("Sprite from screen: " + bison.getSprite());;
+            //outputOnce = true;
+        //}
 
             bison.render(batch);
 

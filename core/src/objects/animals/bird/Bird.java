@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import objects.GameAssets;
 import com.mygdx.eightfold.screens.GameScreen;
-import helper.movement.AnimalMovementHelper;
+import helper.movement.SpriteMovementHelper;
 import objects.animals.object_helper.BirdManager;
 import objects.player.GameEntity;
 
@@ -51,7 +51,7 @@ public class Bird extends GameEntity {
 
         x = body.getPosition().x * PPM ;
         y = body.getPosition().y * PPM;
-        boolean newFacingRight = AnimalMovementHelper.checkLinearVelocity(body, sprite, isFacingRight);
+        boolean newFacingRight = SpriteMovementHelper.checkLinearVelocity(body, sprite, isFacingRight);
         if (newFacingRight != isFacingRight) {
             isFacingRight = newFacingRight;
         }
