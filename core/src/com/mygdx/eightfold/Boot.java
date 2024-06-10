@@ -20,21 +20,18 @@ public class Boot extends Game {
         INSTANCE = this;
     }
 
-    public AssetManager getGameAssetManager() {
-        return gameAssets.assetManager; // Use the AssetManager from GameAssets
-    }
+
 
     @Override
     public void create() {
-        this.widthScreen = Gdx.graphics.getWidth();
-        this.heightScreen = Gdx.graphics.getHeight();
+        this.widthScreen = 1920;
+        this.heightScreen = 1080;
         this.orthographicCamera = new OrthographicCamera();
         this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
 
         this.gameAssets = new GameAssets();
         gameAssets.loadAssets();
         gameAssets.finishLoading();
-
 
         setScreen(new GameScreen(orthographicCamera, gameAssets));
     }

@@ -22,7 +22,6 @@ public class GameContactListener implements ContactListener {
         Fixture b = contact.getFixtureB();
         if (isBisonContact(a, b)){
             System.out.println("Contact between two bison");
-
         }
         // Check if one of the fixtures has userData of type BodyUserData
         if (a.getUserData() instanceof BodyUserData && b.getUserData() instanceof BodyUserData) {
@@ -74,11 +73,11 @@ public class GameContactListener implements ContactListener {
                 a.getBody().setLinearDamping(7f);
                 Bird.playerContact(b.getBody(), userDataB.getId());
             }else if (userDataA.getType() == ContactType.BISON && userDataB.getType() == ContactType.BISON) {
-//                System.out.println("Contact detected between Bison and bird");
+                //System.out.println("Contact detected between Bison and bison");
 //                System.out.println("Bison ID: " + userDataB.getId() + ", Bird ID: " + userDataA.getId());
                 a.getBody().setLinearDamping(7f);
                 b.getBody().setLinearDamping(7f);
-                Bird.playerContact(b.getBody(), userDataB.getId());
+
             }
 
 

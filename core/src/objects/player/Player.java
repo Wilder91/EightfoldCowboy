@@ -45,6 +45,20 @@ public class Player extends GameEntity {
         this.sprite.setSize(width, height);
     }
 
+//    private void checkBounds() {
+//        if (sprite.getX() < 0) {
+//            sprite.s.x = 0;
+//        } else if (position.x + width > mapWidth) {
+//            position.x = mapWidth - width;
+//        }
+//
+//        if (position.y < 0) {
+//            position.y = 0;
+//        } else if (position.y + height > mapHeight) {
+//            position.y = mapHeight - height;
+//        }
+//    }
+
     @Override
     public void update(float delta) {
         stateTime += delta; // Update the state time

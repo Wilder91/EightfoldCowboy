@@ -43,7 +43,7 @@ public class BisonFactory {
                 boundingRectangle.x + boundingRectangle.width / 2,
                 boundingRectangle.y + boundingRectangle.height / 2,
                 body,
-                Facing.RIGHT,
+                Facing.DOWN_LEFT,
                 gameScreen,
                 bisonId,
                 gameAssets

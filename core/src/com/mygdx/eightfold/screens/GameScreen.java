@@ -1,5 +1,6 @@
 package com.mygdx.eightfold.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -59,9 +60,10 @@ public class GameScreen extends ScreenAdapter {
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap();
 
-        camera.zoom = 3/2f;
+        //camera.zoom = 3/2f;
         // Set camera zoom only once
     }
+
 
 
 
@@ -103,6 +105,10 @@ public class GameScreen extends ScreenAdapter {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             resetGame();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            // Pause the game
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
         }
     }
 
@@ -230,7 +236,7 @@ public class GameScreen extends ScreenAdapter {
 
         batch.end();
         // Uncomment for debugging physics bodies
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
 }

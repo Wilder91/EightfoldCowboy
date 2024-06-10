@@ -3,6 +3,8 @@ package com.mygdx.eightfold.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -25,18 +27,25 @@ public class StartScreen extends ScreenAdapter {
     private Stage stage;
     private SpriteBatch batch;
     private Skin skin;
+    private Sound song;
     private Texture backgroundTexture;
     private BitmapFont font;
     private GameAssets gameAssets;
-
+    private Music backgroundMusic;
     public StartScreen(OrthographicCamera camera, GameAssets gameAssets) {
         this.camera = camera;
         this.viewport = new FitViewport(800, 480, camera);
         this.stage = new Stage(viewport, new SpriteBatch());
         this.gameAssets = gameAssets;
         this.camera = camera;
+
         Gdx.input.setInputProcessor(stage);
+
         initUI();
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/start_music.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.2f);
+        backgroundMusic.play();
 
     }
 
