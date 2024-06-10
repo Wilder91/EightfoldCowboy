@@ -103,9 +103,9 @@ public class GameScreen extends ScreenAdapter {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             Gdx.app.exit();
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            resetGame();
-        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+//            resetGame();
+//        }
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             // Pause the game
             ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
@@ -118,10 +118,8 @@ public class GameScreen extends ScreenAdapter {
         birdList.clear();
         boulderList.clear();
         buildingList.clear();
-
         // Reset player (you might want to set a starting position and other initial values)
         player = null;
-
         // Reinitialize the world and camera
         world.dispose(); // Dispose the old world
         world = new World(new Vector2(0, 0), false);
@@ -129,13 +127,8 @@ public class GameScreen extends ScreenAdapter {
         box2DDebugRenderer = new Box2DDebugRenderer();
         camera.position.set(0, 0, 0); // or set to a specific starting position
         camera.update();
-
         // Reload the map and objects
         orthogonalTiledMapRenderer = tiledMapHelper.setupMap();
-
-        // Reinitialize the player and other game objects as needed
-        // For example, if the player is created from the map:
-
     }
 
     private void cameraUpdate() {

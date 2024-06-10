@@ -22,7 +22,7 @@ public class PauseScreen implements Screen {
         this.camera = camera;
         this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;
-        camera.setToOrtho(false, 800, 480); // Set your game width and height
+        camera.setToOrtho(false, 1920, 1080); // Set your game width and height
         batch = new SpriteBatch();
         font = new BitmapFont();
          layout = new GlyphLayout();
@@ -43,8 +43,8 @@ public class PauseScreen implements Screen {
 
         batch.begin();
         layout.setText(font, "Paused");
-        float pauseTextWidth = layout.width;
-        float pauseTextHeight = layout.height;
+        float pauseTextWidth = layout.width * 2;
+        float pauseTextHeight = layout.height * 2;
         font.draw(batch, "Paused", (camera.viewportWidth - pauseTextWidth) / 2, (camera.viewportHeight + pauseTextHeight) / 2);
 
         // Center the "Press 'P' to Resume" text
