@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.screens.GameScreen;
+import helper.movement.BisonMovementHelper;
 import helper.movement.SpriteMovementHelper;
 import objects.GameAssets;
 import objects.animals.object_helper.BisonManager;
@@ -41,7 +42,7 @@ public class Bison extends GameEntity {
         this.pauseDuration = 3f; // 3 seconds pause duration
         this.isPaused = true;
         int[] frameCounts = {5, 7, 8, 5, 5, 5, 7, 7, 7, 7, 5, 5, 5, 5, 5};
-        this.movementHelper = new SpriteMovementHelper(gameAssets, "bison", frameCounts);
+        this.movementHelper = new BisonMovementHelper(gameAssets, "bison", frameCounts, true);
 
         movementHelper.loadAnimations();// Load animations
         // Initialize the sprite with the first frame of the animation

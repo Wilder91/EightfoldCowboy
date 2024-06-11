@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="652">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="678">
  <editorsettings>
   <chunksize width="32" height="32"/>
  </editorsettings>
@@ -16,7 +16,7 @@
  <tileset firstgid="2830" source="fence-left.tsx"/>
  <tileset firstgid="2833" source="Bison_Horizontal_Walk_3.tsx"/>
  <objectgroup id="2" name="objects">
-  <object id="92" name="saloon" type="building" x="780.441" y="30.5443">
+  <object id="92" name="saloon" type="building" x="783.308" y="-89.8915">
    <polygon points="0,0 202.172,0 202.172,211.684 -1.44408,213.251"/>
   </object>
   <object id="125" name="large_oak" x="223.4" y="34.048">
@@ -215,21 +215,87 @@
   <object id="648" name="roots" x="1282.36" y="319.829">
    <polygon points="0,0 20.7615,-7.88681 55.7281,-12.2684 62.8307,0.438156 12.0198,10.5157"/>
   </object>
-  <object id="649" name="wall" x="965.11" y="143.881">
-   <polygon points="0,0 13.0062,-63.2966 20.8098,-62.4295 7.80369,6.06954"/>
-  </object>
   <object id="651" name="roots" x="772.388" y="1043.53" rotation="5">
    <polygon points="0,0 2.76957,-3.52115 7.4341,-5.47734 8.38155,0.19562 1.60344,4.69485"/>
   </object>
+  <object id="652" name="medium_oak_one" x="1316.33" y="753.061">
+   <polygon points="0,0 -11.1888,-204.339 173.427,-184.089 169.697,11.0454"/>
+  </object>
+  <object id="653" name="roots" x="1359.8" y="746.687">
+   <polygon points="0,0 12.2588,-5.79135 32.9053,-9.00876 37.099,0.321742 7.09725,7.72181"/>
+  </object>
+  <object id="654" name="medium_oak_one" x="1658.49" y="910.011">
+   <polygon points="0,0 -11.1888,-204.339 173.427,-184.089 169.697,11.0454"/>
+  </object>
+  <object id="655" name="roots" x="1701.96" y="903.637">
+   <polygon points="0,0 12.2588,-5.79135 32.9053,-9.00876 37.099,0.321742 7.09725,7.72181"/>
+  </object>
+  <object id="656" name="small_oak" x="1498.13" y="758.366">
+   <polygon points="0,0 85.5426,0.820333 86.3203,91.0569 -3.11064,90.2366"/>
+  </object>
+  <object id="657" name="roots" x="1528.23" y="845.345" rotation="5">
+   <polygon points="0,0 2.76957,-3.52115 7.4341,-5.47734 8.38155,0.19562 1.60344,4.69485"/>
+  </object>
+  <object id="658" name="small_oak" x="1602.73" y="625.242">
+   <polygon points="0,0 85.5426,0.820333 86.3203,91.0569 -3.11064,90.2366"/>
+  </object>
+  <object id="659" name="roots" x="1643.17" y="687.405" rotation="5">
+   <polygon points="0,0 2.76957,-3.52115 7.4341,-5.47734 8.38155,0.19562 1.60344,4.69485"/>
+  </object>
+  <object id="660" name="small_oak" x="1574.67" y="548.048">
+   <polygon points="0,0 85.5426,0.820333 86.3203,91.0569 -3.11064,90.2366"/>
+  </object>
+  <object id="661" name="roots" x="1604.77" y="635.03" rotation="5">
+   <polygon points="0,0 2.76957,-3.52115 7.4341,-5.47734 8.38155,0.19562 1.60344,4.69485"/>
+  </object>
+  <object id="662" name="large_oak" x="1554.19" y="248.716">
+   <polygon points="22.2214,2.68121 252.768,1.3406 251.379,243.99 19.4437,239.968"/>
+  </object>
+  <object id="663" name="roots" x="1664.37" y="465.383">
+   <polygon points="0,0 20.7615,-7.88681 55.7281,-12.2684 62.8307,0.438156 12.0198,10.5157"/>
+  </object>
+  <object id="664" name="large_oak" x="997.11" y="904.378">
+   <polygon points="22.2214,2.68121 252.768,1.3406 251.379,243.99 19.4437,239.968"/>
+  </object>
+  <object id="665" name="roots" x="1107.29" y="1121.05">
+   <polygon points="0,0 20.7615,-7.88681 55.7281,-12.2684 62.8307,0.438156 12.0198,10.5157"/>
+  </object>
+  <object id="666" name="bison" x="1228.79" y="800.092">
+   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
+  </object>
+  <object id="667" name="bison" x="1354.88" y="790.922">
+   <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
+  </object>
+  <object id="668" name="wall" x="1071.27" y="33.8571">
+   <polygon points="0,0 19.0989,0 19.0989,121.538 0.868131,121.538"/>
+  </object>
+  <object id="672" name="small_oak" x="501.838" y="1029.96">
+   <polygon points="0,0 85.5426,0.820333 86.3203,91.0569 -3.11064,90.2366"/>
+  </object>
+  <object id="673" name="roots" x="535.428" y="1114.14" rotation="5">
+   <polygon points="0,0 2.76957,-3.52115 7.4341,-5.47734 8.38155,0.19562 1.60344,4.69485"/>
+  </object>
+  <object id="674" name="medium_oak_one" x="371.723" y="1162.19">
+   <polygon points="0,0 -11.1888,-204.339 173.427,-184.089 169.697,11.0454"/>
+  </object>
+  <object id="675" name="roots" x="415.197" y="1155.82">
+   <polygon points="0,0 12.2588,-5.79135 32.9053,-9.00876 37.099,0.321742 7.09725,7.72181"/>
+  </object>
+  <object id="676" name="medium_oak_one" x="3.01526" y="1122.12">
+   <polygon points="0,0 -11.1888,-204.339 173.427,-184.089 169.697,11.0454"/>
+  </object>
+  <object id="677" name="roots" x="46.4893" y="1115.74">
+   <polygon points="0,0 12.2588,-5.79135 32.9053,-9.00876 37.099,0.321742 7.09725,7.72181"/>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="wall">
-  <object id="285" name="wall" x="755.967" y="207.607">
+  <object id="285" name="wall" x="758.834" y="87.1715">
    <polygon points="0,0 28.3587,14.1794 28.9495,-5.31726 0.590807,-20.0874"/>
   </object>
-  <object id="288" name="wall" x="834.087" y="234.366">
+  <object id="288" name="wall" x="836.955" y="113.93">
    <polygon points="0,0 49.8473,14.1794 50.8857,-5.31726 1.03849,-20.0874"/>
   </object>
-  <object id="289" name="wall" x="773.208" y="160.933">
+  <object id="289" name="wall" x="776.075" y="40.4974">
    <polygon points="0,0 28.3587,14.1794 28.9495,-5.31726 0.590807,-20.0874"/>
   </object>
  </objectgroup>

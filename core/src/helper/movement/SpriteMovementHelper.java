@@ -16,7 +16,7 @@ import java.util.Random;
 import static com.badlogic.gdx.math.MathUtils.random;
 import static helper.Constants.FRAME_DURATION;
 
-public class SpriteMovementHelper {
+public abstract class SpriteMovementHelper {
     private Map<String, Animation<TextureRegion>> animations;
     private Animation<TextureRegion> currentAnimation;
     private float stateTime;
@@ -26,15 +26,16 @@ public class SpriteMovementHelper {
     private String animalType;
     private boolean isFacingRight = true; // Track the facing direction
     private int[] frameCounts;
-
+    private boolean randomFlip;
     // Variables to track the last movement direction
     private boolean wasMovingLeft = false;
     private boolean wasMovingRight = false;
     private boolean wasMovingUp = false;
     private boolean wasMovingDown = false;
     private boolean hasMoved = false;
+
     private boolean startFlipped;
-    public SpriteMovementHelper(GameAssets gameAssets, String animalType, int[] frameCounts) {
+    public SpriteMovementHelper(GameAssets gameAssets, String animalType, int[] frameCounts, boolean randomFlip ) {
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.stateTime = 0f;
@@ -42,6 +43,12 @@ public class SpriteMovementHelper {
         this.animations = new HashMap<>();
         this.frameCounts = frameCounts;
         this.startFlipped = random.nextBoolean();
+        this.randomFlip = randomFlip;
+        if(randomFlip){
+            this.startFlipped = random.nextBoolean();
+        }else{
+            this.startFlipped = false;
+        }
         loadAnimations();
 
             String[] restingAnimations = { "stationaryHorizontal", "stationaryUpDiagonal", "stationaryDownDiagonal"};
@@ -109,8 +116,9 @@ public class SpriteMovementHelper {
         Random random = new Random();
 
         // Generate a random number between 1 and maxValue (inclusive)
+
         int randomNumber = random.nextInt(maxValue) + 1;
-        for (int i = 1; i <= frameCount; i++) {
+        for (int i = randomNumber; i <= frameCount; i++) {
             TextureRegion region = atlas.findRegion(regionNamePrefix, i);
             if (region != null) {
                 frames.add(region);

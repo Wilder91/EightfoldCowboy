@@ -22,7 +22,6 @@ import objects.inanimate.Boulder;
 import objects.inanimate.Building;
 import objects.inanimate.Tree;
 import objects.player.Player;
-
 import java.util.ArrayList;
 
 import static helper.Constants.PPM;
@@ -41,7 +40,6 @@ public class GameScreen extends ScreenAdapter {
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private Player player;
     private final GameContactListener gameContactListener;
-    private boolean outputOnce = false;
     private final GameAssets gameAssets;
     public GameScreen(OrthographicCamera camera, GameAssets gameAssets) {
         this.buildingList = new ArrayList<>();
@@ -77,7 +75,9 @@ public class GameScreen extends ScreenAdapter {
 
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
-
+        for (Tree tree : treeList) {
+            tree.update(delta);
+        }
         if (player != null) {
             player.update(delta);
         }
@@ -96,16 +96,12 @@ public class GameScreen extends ScreenAdapter {
             building.update(delta);
         }
 
-        for (Tree tree : treeList) {
-            tree.update(delta);
-        }
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             Gdx.app.exit();
         }
-//        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-//            resetGame();
-//        }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             // Pause the game
             ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
@@ -202,6 +198,8 @@ public class GameScreen extends ScreenAdapter {
         if (player != null) {
             player.render(batch);
         }
+
+
 
 
         for (Bird bird : birdList) {

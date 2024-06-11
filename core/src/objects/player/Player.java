@@ -25,8 +25,8 @@ public class Player extends GameEntity {
 
     public Player(float width, float height, Body body, GameScreen gameScreen, GameAssets gameAssets) {
         super(width, height, body, gameScreen, gameAssets);
-        this.speed = 7f;
-        this.originalSpeed = 7f;
+        this.speed = 5f;
+        this.originalSpeed = speed;
         this.isFacingRight = true;
         this.body = body;
         this.gameAssets = gameAssets;
