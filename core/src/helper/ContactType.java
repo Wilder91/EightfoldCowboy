@@ -1,19 +1,20 @@
 package helper;
 
 public enum ContactType {
-    PLAYER((short) 0x0001, (short) (0x0002 | 0x0004 | 0x0008 | 0x0010)), // Excludes TREE
-    INANIMATE((short) 0x0002, (short) (0x0001 | 0x0004 | 0x0008 | 0x0010)), // Excludes TREE
-    BISON((short) 0x0004, (short) (0x0001 | 0x0002 | 0x0008 | 0x0010)), // Excludes TREE
-    BIRD((short) 0x0008, (short) (0x0001 | 0x0002 | 0x0004 | 0x0010)), // Excludes TREE
-    WILDANIMAL((short) 0x0010, (short) (0x0001 | 0x0002 | 0x0004 | 0x0008)), // Excludes TREE
-    TREE((short) 0x0020, (short) 0); // No collisions with anything
+    PLAYER(0x0001, 0x0002 | 0x0004 | 0x0008 | 0x0010),
+    INANIMATE(0x0002, 0x0001 | 0x0004 | 0x0008 | 0x0010),
+    BISON(0x0004, 0x0001 | 0x0002 | 0x0008 | 0x0010),
+    BIRD(0x0008, 0x0001 | 0x0002 | 0x0004 | 0x0010),
+    WILDANIMAL(0x0010, 0x0001 | 0x0002 | 0x0004 | 0x0008),
+    TREE(0x0020, 0),
+    DOOR(0x0040, 0x0001 | 0x0002); // Allow collisions with PLAYER and INANIMATE
 
     private final short categoryBits;
     private final short maskBits;
 
-    ContactType(short categoryBits, short maskBits) {
-        this.categoryBits = categoryBits;
-        this.maskBits = maskBits;
+    ContactType(int categoryBits, int maskBits) {
+        this.categoryBits = (short) categoryBits;
+        this.maskBits = (short) maskBits;
     }
 
     public short getCategoryBits() {

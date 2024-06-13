@@ -20,6 +20,7 @@ import helper.ContactType;
 import helper.tiledmap.factories.animals.BirdFactory;
 import helper.tiledmap.factories.inanimate.BoulderFactory;
 import helper.tiledmap.factories.inanimate.BuildingFactory;
+import helper.tiledmap.factories.inanimate.DoorFactory;
 import helper.tiledmap.factories.inanimate.TreeFactory;
 import helper.tiledmap.factories.animals.BisonFactory;
 import objects.GameAssets;
@@ -133,6 +134,10 @@ public class TiledMapHelper {
                             break;
                         case "wall":
                             createStaticBody(polygonMapObject);
+                            break;
+                        case "door":
+                            createDoor(polygonMapObject);
+                            break;
                         default:
                             createStaticBody(polygonMapObject);
                             break;
@@ -172,6 +177,12 @@ public class TiledMapHelper {
     private void createBison(PolygonMapObject polygonMapObject) {
         BisonFactory bisonFactory = new BisonFactory(gameScreen, gameAssets, false); // Instantiate the BisonFactory
         bisonFactory.createBison(polygonMapObject); // Call createBison method from BisonFactory
+    }
+
+    private void createDoor(PolygonMapObject polygonMapObject) {
+
+        DoorFactory doorFactory = new DoorFactory(gameScreen, gameAssets); // Instantiate the BisonFactory
+        doorFactory.createDoor(polygonMapObject); // Call createDoor method from DoorFactory
     }
 
     private void createTalkingBison(PolygonMapObject polygonMapObject) {

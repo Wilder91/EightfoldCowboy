@@ -43,10 +43,7 @@ public class Tree extends InanimateEntity {
         stateTime += delta;
     }
 
-    @Override
-    public void update() {
-        // Optional: Implement additional update logic if needed
-    }
+
 
     private void initAnimations() {
         TextureAtlas atlas = gameAssets.getAtlas("plants/trees/oak-trees.atlas");

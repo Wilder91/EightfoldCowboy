@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.Texture;
 import objects.GameAssets;
 
-public class ConversationScreen extends ScreenAdapter {
+public class BisonConversationScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final GameAssets gameAssets;
     private final GameScreen gameScreen;
@@ -28,7 +28,7 @@ public class ConversationScreen extends ScreenAdapter {
     private Texture characterTexture;
     private int bisonId;
 
-    public ConversationScreen(OrthographicCamera camera, GameAssets gameAssets, GameScreen gameScreen, int bisonId) {
+    public BisonConversationScreen(OrthographicCamera camera, GameAssets gameAssets, GameScreen gameScreen, int bisonId) {
         this.camera = camera;
         this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;

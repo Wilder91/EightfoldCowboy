@@ -23,6 +23,7 @@ import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
 import objects.inanimate.Boulder;
 import objects.inanimate.Building;
+import objects.inanimate.Door;
 import objects.inanimate.Tree;
 import objects.player.Player;
 import java.util.ArrayList;
@@ -37,12 +38,14 @@ public class GameScreen extends ScreenAdapter {
     private final ArrayList<Tree> treeList;
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
+    private final ArrayList<Door> doorList;
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
     private final TiledMapHelper tiledMapHelper;
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private Player player;
     private Label textLabel;
+    private Label doorLabel;
     private final GameContactListener gameContactListener;
     private final GameAssets gameAssets;
 
@@ -59,6 +62,7 @@ public class GameScreen extends ScreenAdapter {
         this.birdList = new ArrayList<>();
         this.boulderList = new ArrayList<>();
         this.treeList = new ArrayList<>();
+        this.doorList = new ArrayList<>();
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0, 0), false);
         this.gameAssets = gameAssets;
@@ -74,6 +78,8 @@ public class GameScreen extends ScreenAdapter {
         this.stage = new Stage(new ScreenViewport());
         this.textLabel = new Label("", skin);
         this.textLabel.setVisible(false);
+        this.doorLabel = new Label("", skin);
+        this.doorLabel.setVisible(false);
 
         Gdx.input.setInputProcessor(stage); // Set input processor to the stage
 
@@ -91,14 +97,27 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void showTextBox(String text, float x, float y) {
+       // System.out.println("textbox");
         textLabel.setText(text);
         textLabel.setPosition(x, y);
         textLabel.setVisible(true);
     }
 
+    public void showDoorBox(String text, float x, float y) {
+        System.out.println("doorbox");
+        doorLabel.setText(text);
+        doorLabel.setPosition(x, y);
+        doorLabel.setVisible(true);
+    }
+
     public void hideTextBox() {
         textLabel.setVisible(false);
     }
+
+    public void hideDoorBox() {
+        doorLabel.setVisible(false);
+    }
+
 
     private void update(float delta) {
         world.step(1 / 60f, 6, 2);
@@ -126,6 +145,10 @@ public class GameScreen extends ScreenAdapter {
 
         for (Building building : buildingList) {
             building.update(delta);
+        }
+        for (Door door : doorList){
+            door.update(delta);
+
         }
 
 
@@ -164,6 +187,17 @@ public class GameScreen extends ScreenAdapter {
             System.err.println("bisonList is null. Cannot add bison.");
         }
     }
+
+    public void addDoor(Door door) {
+        if (doorList != null) {
+            //System.out.println(bison);
+            System.out.println(door.getId());
+            doorList.add(door);
+        } else {
+            System.err.println("bisonList is null. Cannot add bison.");
+        }
+    }
+
 
     public void addBird(Bird bird) {
         if (birdList != null) {
@@ -222,6 +256,9 @@ public class GameScreen extends ScreenAdapter {
         for (Tree tree : treeList) {
             tree.render(batch);
         }
+        for (Door door : doorList){
+            door.render(batch);
+        }
         batch.end();
 
         // Render the Stage
@@ -229,7 +266,7 @@ public class GameScreen extends ScreenAdapter {
         stage.draw();
 
         // Uncomment for debugging physics bodies
-        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
     @Override
@@ -254,7 +291,7 @@ public class GameScreen extends ScreenAdapter {
     public void conversationScreen(int id) {
         System.out.println("E PRESSED AGAIn");
 
-        ((Game) Gdx.app.getApplicationListener()).setScreen(new ConversationScreen(camera, gameAssets, this,  id));
+        ((Game) Gdx.app.getApplicationListener()).setScreen(new BisonConversationScreen(camera, gameAssets, this,  id));
     }
 }
 

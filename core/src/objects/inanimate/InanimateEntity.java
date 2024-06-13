@@ -24,7 +24,7 @@ public abstract class InanimateEntity {
 
     public abstract void update(float delta);
 
-    public abstract void update();
+
 
     public abstract void render(SpriteBatch batch);
 

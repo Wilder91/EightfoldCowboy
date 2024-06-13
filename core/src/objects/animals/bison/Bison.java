@@ -1,13 +1,11 @@
 package objects.animals.bison;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.eightfold.screens.ConversationScreen;
 import com.mygdx.eightfold.screens.GameScreen;
 import helper.movement.BisonMovementHelper;
 import helper.movement.SpriteMovementHelper;
@@ -16,7 +14,6 @@ import objects.animals.object_helper.BisonManager;
 import objects.player.GameEntity;
 import helper.movement.Facing;
 
-import java.util.Map;
 import java.util.Random;
 
 import static helper.Constants.PPM;
@@ -46,12 +43,8 @@ public class Bison extends GameEntity {
         this.id = bisonId;
         this.talkingBison = talkingBison;
         System.out.println(initialDirection);
-
-            this.facingDirection = talkingBison ? Facing.LEFT : initialDirection;
-
-
+        this.facingDirection = talkingBison ? Facing.LEFT : initialDirection;
         this.body = body;
-
         this.gameAssets = gameAssets;
         this.movementThreshold = 1f;
         this.restingTime = 0f;
@@ -59,8 +52,8 @@ public class Bison extends GameEntity {
         this.isPaused = true;
         this.contactTimer = 1;
         this.gameScreen = gameScreen;
-        int[] frameCounts = {5, 7, 8, 5, 5, 5, 7, 7, 7, 7, 5, 5, 5, 5, 5};
-        this.movementHelper = new BisonMovementHelper(gameAssets, "bison", frameCounts, true);
+        int[] eightfoldFrameCounts = {5, 7, 8, 5, 5, 5, 7, 7, 7, 7, 5, 5, 5, 5, 5};
+        this.movementHelper = new BisonMovementHelper(gameAssets, "bison", eightfoldFrameCounts, true);
         this.font = new BitmapFont();
         movementHelper.loadAnimations();// Load animations
         // Initialize the sprite with the first frame of the animation
@@ -78,7 +71,9 @@ public class Bison extends GameEntity {
 
         // Set the origin of the sprite to its center
         sprite.setOriginCenter();
-
+        if (contactTimer > 1){
+            gameScreen.hideTextBox();
+        }
         // Use the helper to update the animation based on body velocity
         movementHelper.updateAnimation(body.getLinearVelocity(), delta);
         if (isContacted) {

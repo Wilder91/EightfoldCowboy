@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="727">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="729">
  <editorsettings>
   <chunksize width="32" height="32"/>
  </editorsettings>
@@ -26,9 +26,6 @@
   </object>
   <object id="216" name="roots" x="549.225" y="882.483">
    <polygon points="0,0 12.2588,-5.79135 32.9053,-9.00876 37.099,0.321742 7.09725,7.72181"/>
-  </object>
-  <object id="221" name="roots" x="375.498" y="824.191" rotation="5">
-   <polygon points="0,0 2.76957,-3.52115 7.4341,-5.47734 8.38155,0.19562 1.60344,4.69485"/>
   </object>
   <object id="222" name="small_oak" x="738.798" y="959.353">
    <polygon points="0,0 85.5426,0.820333 86.3203,91.0569 -3.11064,90.2366"/>
@@ -63,7 +60,7 @@
   <object id="264" name="wall" x="33.2969" y="1061.33">
    <polygon points="0,0 633.499,-3.09023 631.599,26.267 1.26827,27.8121"/>
   </object>
-  <object id="267" name="player" type="human" x="668.079" y="1176.93" width="31.0551" height="59.7148"/>
+  <object id="267" name="player" type="human" x="827.09" y="284.704" width="31.0551" height="59.7148"/>
   <object id="275" name="wall" x="735.769" y="1061.7">
    <polygon points="0,0 1185.59,-3.09023 1182.04,26.267 2.37356,27.8121"/>
   </object>
@@ -166,12 +163,6 @@
   <object id="688" name="roots" x="337.502" y="610.038">
    <polygon points="0,0 12.2588,-5.79135 32.9053,-9.00876 37.099,0.321742 7.09725,7.72181"/>
   </object>
-  <object id="689" name="roots" x="163.775" y="551.746" rotation="5">
-   <polygon points="0,0 2.76957,-3.52115 7.4341,-5.47734 8.38155,0.19562 1.60344,4.69485"/>
-  </object>
-  <object id="690" name="roots" x="278.71" y="393.806" rotation="5">
-   <polygon points="0,0 2.76957,-3.52115 7.4341,-5.47734 8.38155,0.19562 1.60344,4.69485"/>
-  </object>
   <object id="692" name="small_oak" x="290.115" y="757.515">
    <polygon points="0,0 85.5426,0.820333 86.3203,91.0569 -3.11064,90.2366"/>
   </object>
@@ -189,9 +180,6 @@
   </object>
   <object id="697" name="roots" x="707.229" y="327.159">
    <polygon points="0,0 12.2588,-5.79135 32.9053,-9.00876 37.099,0.321742 7.09725,7.72181"/>
-  </object>
-  <object id="698" name="roots" x="533.502" y="268.867" rotation="5">
-   <polygon points="0,0 2.76957,-3.52115 7.4341,-5.47734 8.38155,0.19562 1.60344,4.69485"/>
   </object>
   <object id="699" name="roots" x="648.437" y="110.927" rotation="5">
    <polygon points="0,0 2.76957,-3.52115 7.4341,-5.47734 8.38155,0.19562 1.60344,4.69485"/>
@@ -278,6 +266,9 @@
   </object>
   <object id="289" name="wall" x="825.895" y="185.471">
    <polygon points="0,0 17.7366,77.4949 18.1061,-29.0605 0.369513,-109.784"/>
+  </object>
+  <object id="728" name="door" x="876.325" y="250.883">
+   <polygon points="0,0 28.2686,8.83392 15.9011,33.5689 -1.76678,30.0353"/>
   </object>
  </objectgroup>
  <layer id="5" name="path" width="60" height="34">

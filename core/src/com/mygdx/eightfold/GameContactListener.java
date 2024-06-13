@@ -1,5 +1,7 @@
 package com.mygdx.eightfold;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.screens.GameScreen;
@@ -8,6 +10,8 @@ import helper.ContactType;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
 import objects.animals.object_helper.BisonManager;
+import objects.animals.object_helper.DoorManager;
+import objects.inanimate.Door;
 
 public class GameContactListener implements ContactListener {
 
@@ -22,10 +26,13 @@ public class GameContactListener implements ContactListener {
         Fixture a = contact.getFixtureA();
         Fixture b = contact.getFixtureB();
         // Check if one of the fixtures has userData of type BodyUserData
+
         if (a.getUserData() instanceof BodyUserData && b.getUserData() instanceof BodyUserData) {
             BodyUserData userDataA = (BodyUserData) a.getUserData();
             BodyUserData userDataB = (BodyUserData) b.getUserData();
-
+            if(userDataA.getType() ==ContactType.PLAYER){
+                System.out.println(userDataB.getType());
+            }
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BISON) {
                  Bison bison = BisonManager.getBisonById(userDataB.getId());
                  bison.isContacted = true;
@@ -39,14 +46,16 @@ public class GameContactListener implements ContactListener {
 
 
             }
-            if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BIRD) {
+            if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.DOOR) {
+                System.out.println(DoorManager.getDoorMap());
+                Door door = DoorManager.getDoorById(1);
+                door.playerContact();
 
-                Bird.playerContact(userDataB.getBody(), userDataB.getId());
 
 
-            } else if (userDataA.getType() == ContactType.BIRD && userDataB.getType() == ContactType.PLAYER) {
+            } else if (userDataA.getType() == ContactType.DOOR && userDataB.getType() == ContactType.PLAYER) {
 
-                Bird.playerContact(a.getBody(), userDataA.getId());
+                System.out.println("YOYOOYOYO");
             }
             if (userDataA.getType() == ContactType.BIRD && userDataB.getType() == ContactType.BIRD) {
 
@@ -99,6 +108,14 @@ public class GameContactListener implements ContactListener {
                 } else {
                     bison.playerContact(a.getBody(), a.getBody().getLinearVelocity());
                 }
+            }
+            if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.DOOR) {
+                System.out.println(DoorManager.getDoorMap());
+                Door door = DoorManager.getDoorById(1);
+                door.playerContact();
+
+
+
             }
         }
     }

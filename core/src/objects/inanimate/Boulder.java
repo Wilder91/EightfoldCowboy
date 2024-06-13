@@ -43,10 +43,7 @@ public class Boulder extends InanimateEntity {
 
     }
 
-    @Override
-    public void update() {
 
-    }
 
     @Override
     public void render(SpriteBatch batch) {
