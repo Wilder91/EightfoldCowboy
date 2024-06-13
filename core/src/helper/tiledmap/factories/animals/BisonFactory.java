@@ -12,13 +12,15 @@ import objects.animals.bison.Bison;
 import helper.movement.Facing;
 
 public class BisonFactory {
+    private final Boolean talkingBison;
     private GameScreen gameScreen;
     private GameAssets gameAssets;
     private static int bisonCounter = -1;
 
-    public BisonFactory(GameScreen gameScreen, GameAssets gameAssets) {
+    public BisonFactory(GameScreen gameScreen, GameAssets gameAssets, Boolean talkingBison) {
         this.gameScreen = gameScreen;
         this.gameAssets = gameAssets;
+        this.talkingBison = talkingBison;
     }
 
     public void createBison(PolygonMapObject polygonMapObject) {
@@ -46,7 +48,8 @@ public class BisonFactory {
                 Facing.DOWN_LEFT,
                 gameScreen,
                 bisonId,
-                gameAssets
+                gameAssets,
+                talkingBison
         );
 
         gameScreen.addBison(bison);

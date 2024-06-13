@@ -12,7 +12,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.eightfold.GameContactListener;
 import objects.GameAssets;
 import helper.tiledmap.TiledMapHelper;
@@ -39,11 +42,19 @@ public class GameScreen extends ScreenAdapter {
     private final TiledMapHelper tiledMapHelper;
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private Player player;
+    private Label textLabel;
     private final GameContactListener gameContactListener;
     private final GameAssets gameAssets;
+
+    // Scene2D
+    private Stage stage;
+    private Skin skin;
+
     public GameScreen(OrthographicCamera camera, GameAssets gameAssets) {
+
         this.buildingList = new ArrayList<>();
         this.camera = camera;
+        camera.zoom = 80f;
         this.bisonList = new ArrayList<>();
         this.birdList = new ArrayList<>();
         this.boulderList = new ArrayList<>();
@@ -58,15 +69,35 @@ public class GameScreen extends ScreenAdapter {
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap();
 
-        //camera.zoom = 3/2f;
-        // Set camera zoom only once
+        // Initialize Scene2D Stage
+        this.skin = new Skin(Gdx.files.internal("vhs/skin/vhs-ui.json"));
+        this.stage = new Stage(new ScreenViewport());
+        this.textLabel = new Label("", skin);
+        this.textLabel.setVisible(false);
+
+        Gdx.input.setInputProcessor(stage); // Set input processor to the stage
+
+        // Initialize Skin (you should load an actual skin file here)
+        this.skin = new Skin(Gdx.files.internal("commodore64/skin/uiskin.json"));
+
+        // Create UI elements
+        //Table table = new Table();
+        //table.setFillParent(true);
+        //table.add(textLabel).center().expand();
+        stage.addActor(textLabel);
+
+        // Create a button
+
     }
 
+    public void showTextBox(String text, float x, float y) {
+        textLabel.setText(text);
+        textLabel.setPosition(x, y);
+        textLabel.setVisible(true);
+    }
 
-
-
-    public Player getPlayer() {
-        return player;
+    public void hideTextBox() {
+        textLabel.setVisible(false);
     }
 
     private void update(float delta) {
@@ -78,6 +109,7 @@ public class GameScreen extends ScreenAdapter {
         for (Tree tree : treeList) {
             tree.update(delta);
         }
+
         if (player != null) {
             player.update(delta);
         }
@@ -99,7 +131,7 @@ public class GameScreen extends ScreenAdapter {
 
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
@@ -108,24 +140,11 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    private void resetGame() {
-        // Clear all existing objects
-        bisonList.clear();
-        birdList.clear();
-        boulderList.clear();
-        buildingList.clear();
-        // Reset player (you might want to set a starting position and other initial values)
-        player = null;
-        // Reinitialize the world and camera
-        world.dispose(); // Dispose the old world
-        world = new World(new Vector2(0, 0), false);
-        world.setContactListener(gameContactListener);
-        box2DDebugRenderer = new Box2DDebugRenderer();
-        camera.position.set(0, 0, 0); // or set to a specific starting position
+    public void resetCamera() {
+        camera.zoom = 80f; // Or whatever your initial zoom level is
         camera.update();
-        // Reload the map and objects
-        orthogonalTiledMapRenderer = tiledMapHelper.setupMap();
     }
+
 
     private void cameraUpdate() {
         if (player != null) {
@@ -135,14 +154,6 @@ public class GameScreen extends ScreenAdapter {
             camera.position.set(position);
             camera.update();
         }
-    }
-
-    public World getWorld() {
-        return world;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 
     public void addBison(Bison bison) {
@@ -180,54 +191,72 @@ public class GameScreen extends ScreenAdapter {
     }
 
 
+    // Other existing methods...
+
     @Override
     public void render(float delta) {
         update(delta); // Pass delta time to update method
 
         Gdx.gl.glClearColor(162f / 255f, 188f / 255f, 104f / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
         batch.begin();
 
-        // Render path rectangles before rendering objects
-        //tiledMapHelper.renderPathRectangles();
+        // Render game objects
         for (Building building : buildingList) {
             building.render(batch);
         }
         if (player != null) {
             player.render(batch);
         }
-
-
-
-
         for (Bird bird : birdList) {
             bird.render(batch);
         }
-        for (Bison bison : bisonList){ //{if (!outputOnce)
-            //System.out.println("Sprite from screen: " + bison.getSprite());;
-            //outputOnce = true;
-        //}
-
+        for (Bison bison : bisonList){
             bison.render(batch);
-
         }
         for (Boulder boulder : boulderList) {
             boulder.render(batch);
         }
-
-
         for (Tree tree : treeList) {
             tree.render(batch);
         }
-
-        // Render shapes
-        //tiledMapHelper.renderPathRectangles(); // Remove this line
-
         batch.end();
+
+        // Render the Stage
+        stage.act(delta);
+        stage.draw();
+
         // Uncomment for debugging physics bodies
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
+    @Override
+    public void dispose() {
+        // Dispose of assets properly
+        batch.dispose();
+        world.dispose();
+        box2DDebugRenderer.dispose();
+        orthogonalTiledMapRenderer.dispose();
+        stage.dispose();
+        skin.dispose();
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void conversationScreen(int id) {
+        System.out.println("E PRESSED AGAIn");
+
+        ((Game) Gdx.app.getApplicationListener()).setScreen(new ConversationScreen(camera, gameAssets, this,  id));
+    }
 }
+
+
+

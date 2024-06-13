@@ -76,22 +76,22 @@ public abstract class SpriteMovementHelper {
 
     public void loadAnimations() {
         // Populate the animations map with all available animations
-        //animations.put("stationary", createStationaryAnimation(animalType + "_Down_Rest", frameCounts[0], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("walkingUp", createAnimation(animalType + "_Up_Walk", frameCounts[1], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("walkingDown", createAnimation(animalType + "_Down_Walk", frameCounts[2], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("walkingDiagonalUp", createAnimation(animalType + "_DiagUP_Walk", frameCounts[3], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("walkingDiagonalDown", createAnimation(animalType + "_DiagDOWN_Walk", frameCounts[4], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("walkingHorizontal", createAnimation(animalType + "_Horizontal_Walk", frameCounts[5], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("runningUp", createAnimation(animalType + "_Up_Run", frameCounts[6], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("runningDiagonalUp", createAnimation(animalType + "_DiagUP_Run", frameCounts[7], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("runningDown", createAnimation(animalType + "_Down_Run", frameCounts[8], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("runningDiagonalDown", createAnimation(animalType + "_DiagDOWN_Run", frameCounts[9], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("runningHorizontal", createAnimation(animalType + "_Horizontal_Run", frameCounts[10], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("stationaryUp", createStationaryAnimation(animalType + "_Up_Rest", frameCounts[11], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("stationaryDown", createStationaryAnimation(animalType + "_Down_Rest", frameCounts[12], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("stationaryHorizontal", createAnimation(animalType + "_Horizontal_Rest", frameCounts[13], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("stationaryUpDiagonal", createAnimation(animalType + "_DiagUP_Rest", frameCounts[14], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
-        animations.put("stationaryDownDiagonal", createAnimation(animalType + "_DiagDOWN_Rest", frameCounts[5], "animals/" + animalType + "/walking/atlases/eightfold/" + animalType + "-movement.atlas"));
+
+        animations.put("walkingUp", createAnimation(animalType + "_Up_Walk", frameCounts[1], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("walkingDown", createAnimation(animalType + "_Down_Walk", frameCounts[2], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("walkingDiagonalUp", createAnimation(animalType + "_DiagUP_Walk", frameCounts[3], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("walkingDiagonalDown", createAnimation(animalType + "_DiagDOWN_Walk", frameCounts[4], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("walkingHorizontal", createAnimation(animalType + "_Horizontal_Walk", frameCounts[5], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("runningUp", createAnimation(animalType + "_Up_Run", frameCounts[6], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("runningDiagonalUp", createAnimation(animalType + "_DiagUP_Run", frameCounts[7], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("runningDown", createAnimation(animalType + "_Down_Run", frameCounts[8], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("runningDiagonalDown", createAnimation(animalType + "_DiagDOWN_Run", frameCounts[9], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("runningHorizontal", createAnimation(animalType + "_Horizontal_Run", frameCounts[10], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("stationaryUp", createStationaryAnimation(animalType + "_Up_Rest", frameCounts[11], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("stationaryDown", createStationaryAnimation(animalType + "_Down_Rest", frameCounts[12], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("stationaryHorizontal", createAnimation(animalType + "_Horizontal_Rest", frameCounts[13], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("stationaryUpDiagonal", createAnimation(animalType + "_DiagUP_Rest", frameCounts[14], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("stationaryDownDiagonal", createAnimation(animalType + "_DiagDOWN_Rest", frameCounts[5], "atlases/eightfold/" + animalType + "-movement.atlas"));
     }
 
 

@@ -58,6 +58,10 @@ public class TiledMapHelper {
                         case "bison":
                             createBison(polygonMapObject);
                             break;
+                        case "talking-bison":
+
+                            createTalkingBison(polygonMapObject);
+                            break;
                         case "bird":
                             createBird(polygonMapObject);
                             break;
@@ -101,8 +105,8 @@ public class TiledMapHelper {
                 if (rectangleName != null && rectangleName.equals("player")) {
                     int playerId = 1;
                     Body body = BodyHelperService.createBody(
-                            rectangle.x + rectangle.width / 2,
-                            rectangle.y + rectangle.height / 2,
+                            rectangle.x + rectangle.width / PPM,
+                            rectangle.y + rectangle.height / PPM,
                             rectangle.width,
                             rectangle.height,
                             false,
@@ -166,7 +170,13 @@ public class TiledMapHelper {
         birdFactory.createBird(polygonMapObject);
     }
     private void createBison(PolygonMapObject polygonMapObject) {
-        BisonFactory bisonFactory = new BisonFactory(gameScreen, gameAssets); // Instantiate the BisonFactory
+        BisonFactory bisonFactory = new BisonFactory(gameScreen, gameAssets, false); // Instantiate the BisonFactory
+        bisonFactory.createBison(polygonMapObject); // Call createBison method from BisonFactory
+    }
+
+    private void createTalkingBison(PolygonMapObject polygonMapObject) {
+
+        BisonFactory bisonFactory = new BisonFactory(gameScreen, gameAssets, true); // Instantiate the BisonFactory
         bisonFactory.createBison(polygonMapObject); // Call createBison method from BisonFactory
     }
 

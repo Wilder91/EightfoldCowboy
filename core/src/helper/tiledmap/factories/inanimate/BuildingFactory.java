@@ -1,6 +1,5 @@
 package helper.tiledmap.factories.inanimate;
 
-
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -17,8 +16,8 @@ public class BuildingFactory {
     private static int buildingCounter = 0;
     private GameScreen gameScreen;
     private GameAssets gameAssets;
-    public BuildingFactory(GameScreen gameScreen, GameAssets gameAssets){
 
+    public BuildingFactory(GameScreen gameScreen, GameAssets gameAssets) {
         this.gameScreen = gameScreen;
         this.gameAssets = gameAssets;
     }
@@ -30,6 +29,8 @@ public class BuildingFactory {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
+
+        // Adjust position calculation
         bodyDef.position.set(
                 (boundingRectangle.x + boundingRectangle.width / 2) / PPM,
                 (boundingRectangle.y + boundingRectangle.height / 2) / PPM
@@ -38,9 +39,10 @@ public class BuildingFactory {
         Body buildingBody = gameScreen.getWorld().createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
+        // Adjust size calculation
         shape.setAsBox(
-                boundingRectangle.width  / PPM,
-                boundingRectangle.height  / PPM
+                boundingRectangle.width / 2 / PPM,
+                boundingRectangle.height / 2 / PPM
         );
 
         Fixture buildingFixture = buildingBody.createFixture(shape, 0.0f);
@@ -53,10 +55,10 @@ public class BuildingFactory {
         buildingFixture.setFilterData(filter);
 
         Building building = new Building(
-                boundingRectangle.width /PPM ,
-                boundingRectangle.height  / PPM ,
-                boundingRectangle.x + boundingRectangle.width / 2,
-                boundingRectangle.y + boundingRectangle.height / 2,
+                boundingRectangle.width / PPM,
+                boundingRectangle.height / PPM,
+                boundingRectangle.x / PPM + boundingRectangle.width / 2 / PPM,
+                boundingRectangle.y / PPM + boundingRectangle.height / 2 / PPM,
                 buildingBody,
                 true,
                 gameScreen,

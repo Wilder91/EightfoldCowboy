@@ -9,6 +9,8 @@ import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.StartScreen;
 import objects.GameAssets;
 
+import static helper.Constants.PPM;
+
 public class Boot extends Game {
 
     public static Boot INSTANCE;
@@ -24,8 +26,8 @@ public class Boot extends Game {
 
     @Override
     public void create() {
-        this.widthScreen = 1920;
-        this.heightScreen = 1080;
+        this.widthScreen = (int) (Gdx.graphics.getWidth() / PPM);
+        this.heightScreen = (int) ( Gdx.graphics.getHeight() / PPM);
         this.orthographicCamera = new OrthographicCamera();
         this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
 
