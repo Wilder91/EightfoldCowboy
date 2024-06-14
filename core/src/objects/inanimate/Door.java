@@ -1,5 +1,7 @@
 package objects.inanimate;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,84 +10,81 @@ import com.mygdx.eightfold.screens.GameScreen;
 import objects.GameAssets;
 import objects.animals.object_helper.DoorManager;
 
+import static helper.Constants.PPM;
+
 public class Door extends InanimateEntity {
     private final int doorId;
     private Sprite sprite;
     private GameAssets gameAssets;
-    private boolean isFacingRight;
-    private DoorManager doorManager;
     private GameScreen gameScreen;
     private boolean isContacted;
     private BitmapFont font;
-    private int messageTimer;
+    private float messageTimer;
+    private int messageState;
 
     public Door(float width, float height, Body body, GameScreen gameScreen, int doorId, GameAssets gameAssets) {
         super(width, height, body, gameScreen, doorId, gameAssets);
         this.doorId = doorId;
         this.gameAssets = gameAssets;
-        this.doorManager = new DoorManager();
         this.gameScreen = gameScreen;
         this.isContacted = false;
         this.messageTimer = 0;
+        this.messageState = 0;
         this.font = new BitmapFont();
 
-        gameAssets.loadAssets();
-        gameAssets.finishLoading();
-
-        // Example texture
-//        Texture doorTexture = gameAssets.getTexture("door.png"); // Make sure the texture name matches your assets
-//        this.sprite = new Sprite(doorTexture);
-//        this.sprite.setSize(width, height);
-        this.isFacingRight = false;
-
-        doorManager.addDoor(this);
+        // Initialize the DoorManager and add this door
+        DoorManager.addDoor(this);
     }
 
     @Override
     public void update(float delta) {
+        float x = body.getPosition().x * PPM;
+        float y = body.getPosition().y * PPM;
 
-        float x = body.getPosition().x ;
-        float y = body.getPosition().y ;
-        //sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
-        if (messageTimer >= 1.5) {
-
-            messageTimer = 0;
-            isContacted = false;
-
-        }
-//        if (isContacted) {
-//            gameScreen.showDoorBox("DOOR", 0, 100);
-//        } else {
-//            gameScreen.hideDoorBox();
-//        }
         if (isContacted) {
-            messageTimer += delta;
-            gameScreen.showTextBox("Press E to Open Doors", 0, y + 70);
-
-
-        }else if(!isContacted){
+            handleInteraction(delta, x, y);
+        } else {
             gameScreen.hideTextBox();
         }
     }
 
+    private void handleInteraction(float delta, float x, float y) {
+        messageTimer += delta;
+        System.out.println(messageTimer);
+        if (messageState == 0) {
+            gameScreen.showTextBox("Press E to Open Doors", 0, 100);
+            if (messageTimer >= 1.5f) {
+                messageTimer = 0;
+                isContacted = false;
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+                messageState = 1;
+                messageTimer = 0;
+//                gameScreen.enterPauseScreen();
+            }
+        } else if (messageState == 1) {
+            gameScreen.showTextBox("Locked", 0, 100);
+            if (messageTimer >= 1.5f) {
+                messageState = 0;
+                isContacted = false;
+            }
+        }
+    }
 
 
     @Override
     public void render(SpriteBatch batch) {
-        //System.out.println(messageTimer);
-
-
-
+        // Render the door sprite here if you have one
     }
 
     public void playerContact() {
-        System.out.println(isContacted);
         isContacted = true;
-
+        messageTimer = 0;  // Reset timer on contact
     }
 
     public void playerLeave() {
         isContacted = false;
+        messageState = 0;  // Reset message state on leave
     }
 
     public int getId() {

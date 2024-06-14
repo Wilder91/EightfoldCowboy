@@ -154,13 +154,17 @@ public class GameScreen extends ScreenAdapter {
 
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
+            enterPauseScreen();
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             // Pause the game
             ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
         }
+    }
+
+    public void enterPauseScreen(){
+        ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
     }
 
     public void resetCamera() {
@@ -266,7 +270,7 @@ public class GameScreen extends ScreenAdapter {
         stage.draw();
 
         // Uncomment for debugging physics bodies
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
     @Override

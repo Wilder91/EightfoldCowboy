@@ -1,8 +1,6 @@
 package com.mygdx.eightfold;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.screens.GameScreen;
 import helper.BodyUserData;
@@ -112,7 +110,7 @@ public class GameContactListener implements ContactListener {
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.DOOR) {
                 System.out.println(DoorManager.getDoorMap());
                 Door door = DoorManager.getDoorById(1);
-                door.playerContact();
+                //door.playerContact();
 
 
 

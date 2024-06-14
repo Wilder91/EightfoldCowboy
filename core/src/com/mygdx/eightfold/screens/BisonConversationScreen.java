@@ -48,7 +48,7 @@ public class BisonConversationScreen extends ScreenAdapter {
         } else if (bisonId == 1) {
             this.dialogues = new String[]{
                     "My name is Mike",
-                    "I'm a big bison and all that",
+                    "I'm a big bison, as you can see",
                     "Welcome to the world of talking bison!"
             };
             this.characterTexture = new Texture(Gdx.files.internal("animals/bison/grazing/Bison_Grazing_1.png"));
