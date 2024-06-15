@@ -37,6 +37,7 @@ public class Bison extends GameEntity {
     private float restingTime;
     private float pauseDuration;
     private float contactTimer;
+    private boolean inConversation = false;
     private FirstLevelBisonConversations bisonConversations;
 
     public Bison(float width, float height, float x, float y, Body body, Facing initialDirection, GameScreen gameScreen, int bisonId, GameAssets gameAssets, Boolean talkingBison) {
@@ -74,21 +75,16 @@ public class Bison extends GameEntity {
 
         // Set the origin of the sprite to its center
         sprite.setOriginCenter();
-        if (contactTimer > 1) {
-            gameScreen.hideTextBox();
-        }
+
         // Use the helper to update the animation based on body velocity
         movementHelper.updateAnimation(body.getLinearVelocity(), delta);
         if (isContacted) {
             contactTimer += delta;
             if (talkingBison) {
-                gameScreen.showTextBox("Hello");
 
             }
         }
-        if(contactTimer > 2){
-            gameScreen.hideTextBox();
-        }
+
 
         // The sprite's flip state should be managed within the helper
         sprite = movementHelper.getSprite();
@@ -115,20 +111,30 @@ public class Bison extends GameEntity {
             } else if (talkingBison) {
 
                 gameScreen.showInfoBox("Press E to begin Conversation");
+                System.out.println(contactTimer);
                 if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+                    inConversation = true;
                     System.out.println("E PRESSED!");
                     gameScreen.hideInfoBox();
                     isContacted = false;
                    bisonConversations.startConversations(id);
+
                 }
                 if (contactTimer >= 1.5) {
                     contactTimer = 0;
+                    gameScreen.hideInfoBox();
                     isContacted = false;
+                    //isContacted = false;
 
                 }
+
             }
         }
-
+        if(inConversation) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+                bisonConversations.nextLine();
+            }
+        }
 
     }
 

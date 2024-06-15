@@ -13,12 +13,20 @@ public class FirstLevelBisonConversations {
 
     public FirstLevelBisonConversations(GameScreen gameScreen, Bison bison) {
         this.gameScreen = gameScreen;
-        this.conversationTexts = new String[]{"Hello Kath", "How are you?", "Nice weather today"};
-        this.conversationIndex = 0; // Start with the first conversation text
+        if (bison.getId() == 0) {
+            this.conversationTexts = new String[]{"Hello Kath", "How are you?", "Nice weather today"};
+             // Start with the first conversation text
+        }else{
+            this.conversationTexts = new String[]{"Welcome to Bison Land", "We are bison here", "Even the people are bison here"};
+
+        }
+        this.conversationIndex = 0;
     }
 
     public void nextLine(){
+        System.out.println("Next line");
         conversationIndex  += 1;
+        startConversations(id);
     }
 
     public void startConversations(int id) {
@@ -30,6 +38,7 @@ public class FirstLevelBisonConversations {
             gameScreen.showTextBox(conversationTexts[conversationIndex]);
         } else {
             gameScreen.hideTextBox();
+            conversationIndex = 0;
         }
 
         // Increment conversation index for next conversation
