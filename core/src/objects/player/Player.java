@@ -99,7 +99,7 @@ public class Player extends GameEntity {
         }
         body.setLinearVelocity(velX * speed, velY * speed);
         if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)){
-            speed = speed * 2;
+            speed = speed * 3/2;
         }
         if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
             speed = originalSpeed;

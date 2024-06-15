@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.screens.GameScreen;
+import conversations.firstLevel.FirstLevelBisonConversations;
 import helper.movement.BisonMovementHelper;
 import helper.movement.SpriteMovementHelper;
 import objects.GameAssets;
@@ -36,6 +37,7 @@ public class Bison extends GameEntity {
     private float restingTime;
     private float pauseDuration;
     private float contactTimer;
+    private FirstLevelBisonConversations bisonConversations;
 
     public Bison(float width, float height, float x, float y, Body body, Facing initialDirection, GameScreen gameScreen, int bisonId, GameAssets gameAssets, Boolean talkingBison) {
         super(width, height, body, gameScreen, gameAssets);
@@ -59,11 +61,12 @@ public class Bison extends GameEntity {
         // Initialize the sprite with the first frame of the animation
         this.sprite = new Sprite(movementHelper.getCurrentAnimation().getKeyFrame(0));
         BisonManager.addBison(this);
+        this.bisonConversations = new FirstLevelBisonConversations(gameScreen, this);
     }
 
     @Override
     public void update(float delta) {
-    // Update the state time
+        // Update the state time
         // Update sprite position
         float x = body.getPosition().x * PPM;
         float y = body.getPosition().y * PPM;
@@ -71,7 +74,7 @@ public class Bison extends GameEntity {
 
         // Set the origin of the sprite to its center
         sprite.setOriginCenter();
-        if (contactTimer > 1){
+        if (contactTimer > 1) {
             gameScreen.hideTextBox();
         }
         // Use the helper to update the animation based on body velocity
@@ -79,13 +82,13 @@ public class Bison extends GameEntity {
         if (isContacted) {
             contactTimer += delta;
             if (talkingBison) {
-                gameScreen.showTextBox("Hello", 0, y + 70);
+                gameScreen.showTextBox("Hello");
 
             }
-        }else if(!isContacted){
+        }
+        if(contactTimer > 2){
             gameScreen.hideTextBox();
         }
-
 
         // The sprite's flip state should be managed within the helper
         sprite = movementHelper.getSprite();
@@ -94,16 +97,14 @@ public class Bison extends GameEntity {
     }
 
 
-
-
     @Override
     public void render(SpriteBatch batch) {
         sprite.draw(batch);
 
-        if (isContacted){
-            if(!talkingBison) {
+        if (isContacted) {
+            if (!talkingBison) {
                 //System.out.println(contactTimer);
-
+                //bisonConversations.startConversations(id);
                 font.setColor(Color.WHITE);
                 font.draw(batch, "mooo", body.getPosition().x * PPM, body.getPosition().y * PPM + 70);
                 if (contactTimer >= 1.5) {
@@ -111,14 +112,14 @@ public class Bison extends GameEntity {
                     isContacted = false;
 
                 }
-            }
-            else if (talkingBison) {
+            } else if (talkingBison) {
 
-                gameScreen.showTextBox("Press E to begin Conversation", 0, y );
-                if(Gdx.input.isKeyPressed(Input.Keys.E)){
+                gameScreen.showInfoBox("Press E to begin Conversation");
+                if (Gdx.input.isKeyPressed(Input.Keys.E)) {
                     System.out.println("E PRESSED!");
-                    gameScreen.conversationScreen(id);
+                    gameScreen.hideInfoBox();
                     isContacted = false;
+                   bisonConversations.startConversations(id);
                 }
                 if (contactTimer >= 1.5) {
                     contactTimer = 0;
@@ -130,7 +131,6 @@ public class Bison extends GameEntity {
 
 
     }
-
 
 
     public int getId() {
@@ -142,21 +142,10 @@ public class Bison extends GameEntity {
     }
 
 
-
-
-
-
     public void playerContact(Body body, Vector2 linearVelocity) {
         body.setLinearDamping(1.5f);
         body.setLinearVelocity(linearVelocity);
         System.out.println(talkingBison);
     }
-
-
-
-
-
-
-
 
 }

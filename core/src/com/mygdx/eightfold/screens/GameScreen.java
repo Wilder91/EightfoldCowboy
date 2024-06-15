@@ -12,11 +12,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.eightfold.GameContactListener;
+
 import objects.GameAssets;
 import helper.tiledmap.TiledMapHelper;
 import objects.animals.bird.Bird;
@@ -26,6 +24,9 @@ import objects.inanimate.Building;
 import objects.inanimate.Door;
 import objects.inanimate.Tree;
 import objects.player.Player;
+import text.InfoBox;
+import text.BisonTextBox;
+
 import java.util.ArrayList;
 
 import static helper.Constants.PPM;
@@ -44,20 +45,17 @@ public class GameScreen extends ScreenAdapter {
     private final TiledMapHelper tiledMapHelper;
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private Player player;
-    private Label textLabel;
-    private Label doorLabel;
     private final GameContactListener gameContactListener;
     private final GameAssets gameAssets;
 
-    // Scene2D
-    private Stage stage;
-    private Skin skin;
+    // TextBox
+    private BisonTextBox textBox;
+    private InfoBox infoBox;
 
     public GameScreen(OrthographicCamera camera, GameAssets gameAssets) {
-
         this.buildingList = new ArrayList<>();
         this.camera = camera;
-        camera.zoom = 80f;
+        camera.zoom = 40f;
         this.bisonList = new ArrayList<>();
         this.birdList = new ArrayList<>();
         this.boulderList = new ArrayList<>();
@@ -73,51 +71,29 @@ public class GameScreen extends ScreenAdapter {
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap();
 
-        // Initialize Scene2D Stage
-        this.skin = new Skin(Gdx.files.internal("vhs/skin/vhs-ui.json"));
-        this.stage = new Stage(new ScreenViewport());
-        this.textLabel = new Label("", skin);
-        this.textLabel.setVisible(false);
-        this.doorLabel = new Label("", skin);
-        this.doorLabel.setVisible(false);
-
-        Gdx.input.setInputProcessor(stage); // Set input processor to the stage
-
-        // Initialize Skin (you should load an actual skin file here)
-        this.skin = new Skin(Gdx.files.internal("commodore64/skin/uiskin.json"));
-
-        // Create UI elements
-        //Table table = new Table();
-        //table.setFillParent(true);
-        //table.add(textLabel).center().expand();
-        stage.addActor(textLabel);
-
-        // Create a button
+        // Initialize TextBox
+        this.textBox = new BisonTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), "animals/bison/bison-single.png");
+        this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
+        Gdx.input.setInputProcessor(textBox.getStage());
+        Gdx.input.setInputProcessor(infoBox.getStage());
 
     }
 
-    public void showTextBox(String text, float x, float y) {
-       // System.out.println("textbox");
-        textLabel.setText(text);
-        textLabel.setPosition(x, y);
-        textLabel.setVisible(true);
-    }
-
-    public void showDoorBox(String text, float x, float y) {
-        System.out.println("doorbox");
-        doorLabel.setText(text);
-        doorLabel.setPosition(x, y);
-        doorLabel.setVisible(true);
+    public void showTextBox(String text) {
+        textBox.showTextBox(text);
     }
 
     public void hideTextBox() {
-        textLabel.setVisible(false);
+        textBox.hideTextBox();
     }
 
-    public void hideDoorBox() {
-        doorLabel.setVisible(false);
+    public void showInfoBox(String text) {
+        infoBox.showInfoBox(text);
     }
 
+    public void hideInfoBox() {
+        infoBox.hideInfoBox();
+    }
 
     private void update(float delta) {
         world.step(1 / 60f, 6, 2);
@@ -148,10 +124,7 @@ public class GameScreen extends ScreenAdapter {
         }
         for (Door door : doorList){
             door.update(delta);
-
         }
-
-
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             enterPauseScreen();
@@ -167,12 +140,6 @@ public class GameScreen extends ScreenAdapter {
         ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
     }
 
-    public void resetCamera() {
-        camera.zoom = 80f; // Or whatever your initial zoom level is
-        camera.update();
-    }
-
-
     private void cameraUpdate() {
         if (player != null) {
             Vector3 position = camera.position;
@@ -185,7 +152,6 @@ public class GameScreen extends ScreenAdapter {
 
     public void addBison(Bison bison) {
         if (bisonList != null) {
-            //System.out.println(bison);
             bisonList.add(bison);
         } else {
             System.err.println("bisonList is null. Cannot add bison.");
@@ -194,14 +160,11 @@ public class GameScreen extends ScreenAdapter {
 
     public void addDoor(Door door) {
         if (doorList != null) {
-            //System.out.println(bison);
-            System.out.println(door.getId());
             doorList.add(door);
         } else {
-            System.err.println("bisonList is null. Cannot add bison.");
+            System.err.println("doorList is null. Cannot add door.");
         }
     }
-
 
     public void addBird(Bird bird) {
         if (birdList != null) {
@@ -216,20 +179,18 @@ public class GameScreen extends ScreenAdapter {
             boulderList.add(boulder);
         }
     }
+
     public void addBuilding(Building building) {
         if (buildingList != null) {
             buildingList.add(building);
         }
     }
 
-    public void addTree( Tree tree) {
+    public void addTree(Tree tree) {
         if (treeList != null) {
             treeList.add(tree);
         }
     }
-
-
-    // Other existing methods...
 
     @Override
     public void render(float delta) {
@@ -266,8 +227,10 @@ public class GameScreen extends ScreenAdapter {
         batch.end();
 
         // Render the Stage
-        stage.act(delta);
-        stage.draw();
+        textBox.getStage().act(delta);
+        textBox.getStage().draw();
+        infoBox.getStage().act(delta);
+        infoBox.getStage().draw();
 
         // Uncomment for debugging physics bodies
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
@@ -280,8 +243,8 @@ public class GameScreen extends ScreenAdapter {
         world.dispose();
         box2DDebugRenderer.dispose();
         orthogonalTiledMapRenderer.dispose();
-        stage.dispose();
-        skin.dispose();
+        textBox.getStage().dispose();
+        textBox.getSkin().dispose();
     }
 
     public void setPlayer(Player player) {
@@ -293,11 +256,6 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void conversationScreen(int id) {
-        System.out.println("E PRESSED AGAIn");
-
-        ((Game) Gdx.app.getApplicationListener()).setScreen(new BisonConversationScreen(camera, gameAssets, this,  id));
+        ((Game) Gdx.app.getApplicationListener()).setScreen(new BisonConversationScreen(camera, gameAssets, this, id));
     }
 }
-
-
-

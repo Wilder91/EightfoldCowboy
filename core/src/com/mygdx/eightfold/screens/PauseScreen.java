@@ -129,7 +129,7 @@ public class PauseScreen implements Screen {
 //        }
 //    }
 private void resumeGame() {
-    gameScreen.resetCamera();
+
     ((Game) Gdx.app.getApplicationListener()).setScreen(gameScreen);
 }
 

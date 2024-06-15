@@ -34,7 +34,7 @@ public class StartScreen extends ScreenAdapter {
     private Music backgroundMusic;
     public StartScreen(OrthographicCamera camera, GameAssets gameAssets) {
         this.camera = camera;
-        this.viewport = new FitViewport(800, 480, camera);
+        this.viewport = new FitViewport(camera.viewportWidth, camera.viewportHeight, camera);
         this.stage = new Stage(viewport, new SpriteBatch());
         this.gameAssets = gameAssets;
         this.camera = camera;
@@ -64,12 +64,12 @@ public class StartScreen extends ScreenAdapter {
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, com.badlogic.gdx.graphics.Color.WHITE);
         Label titleLabel = new Label("The Eightfold Cowboy", labelStyle);
         titleLabel.setFontScale(2);
-        titleLabel.setPosition(400 - titleLabel.getWidth() / 2, 300);
+        titleLabel.setPosition(viewport.getScreenWidth() - titleLabel.getWidth() / 2, 300);
         stage.addActor(titleLabel);
 
         // Start button
         TextButton startButton = new TextButton("Start Game", skin);
-        startButton.setPosition(400 - startButton.getWidth() / 2, 200);
+        startButton.setPosition(viewport.getScreenWidth() - startButton.getWidth() / 2, 200);
         startButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

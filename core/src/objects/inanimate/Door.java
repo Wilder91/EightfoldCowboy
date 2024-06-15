@@ -14,7 +14,6 @@ import static helper.Constants.PPM;
 
 public class Door extends InanimateEntity {
     private final int doorId;
-    private Sprite sprite;
     private GameAssets gameAssets;
     private GameScreen gameScreen;
     private boolean isContacted;
@@ -44,7 +43,7 @@ public class Door extends InanimateEntity {
         if (isContacted) {
             handleInteraction(delta, x, y);
         } else {
-            gameScreen.hideTextBox();
+            gameScreen.hideInfoBox();
         }
     }
 
@@ -52,7 +51,7 @@ public class Door extends InanimateEntity {
         messageTimer += delta;
         System.out.println(messageTimer);
         if (messageState == 0) {
-            gameScreen.showTextBox("Press E to Open Doors", 0, 100);
+            gameScreen.showInfoBox("Press E to Open Doors");
             if (messageTimer >= 1.5f) {
                 messageTimer = 0;
                 isContacted = false;
@@ -63,7 +62,7 @@ public class Door extends InanimateEntity {
 //                gameScreen.enterPauseScreen();
             }
         } else if (messageState == 1) {
-            gameScreen.showTextBox("Locked", 0, 100);
+            gameScreen.showInfoBox("Locked");
             if (messageTimer >= 1.5f) {
                 messageState = 0;
                 isContacted = false;
