@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
 import helper.BodyHelperService;
 import helper.ContactType;
@@ -35,15 +36,16 @@ public class TiledMapHelper {
     private GameScreen gameScreen;
     private ShapeRenderer shapeRenderer;
     private GameAssets gameAssets;
-
-    public TiledMapHelper(GameScreen gameScreen, GameAssets gameAssets) {
+    private GameContactListener gameContactListener;
+    public TiledMapHelper(GameScreen gameScreen, GameAssets gameAssets, GameContactListener gameContactListener) {
         this.gameScreen = gameScreen;
         this.shapeRenderer = new ShapeRenderer();
         this.gameAssets = gameAssets;
+        this.gameContactListener = gameContactListener;
     }
 
-    public OrthogonalTiledMapRenderer setupMap() {
-        tiledMap = new TmxMapLoader().load("maps/EightfoldMap.tmx");
+    public OrthogonalTiledMapRenderer setupMap(String fileName) {
+        tiledMap = new TmxMapLoader().load(fileName);
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
         parseWallObjects(tiledMap.getLayers().get("wall").getObjects());
         return new OrthogonalTiledMapRenderer(tiledMap);
@@ -181,7 +183,7 @@ public class TiledMapHelper {
 
     private void createDoor(PolygonMapObject polygonMapObject) {
 
-        DoorFactory doorFactory = new DoorFactory(gameScreen, gameAssets); // Instantiate the BisonFactory
+        DoorFactory doorFactory = new DoorFactory(gameScreen, gameAssets, gameContactListener); // Instantiate the BisonFactory
         doorFactory.createDoor(polygonMapObject); // Call createDoor method from DoorFactory
     }
 
@@ -192,12 +194,12 @@ public class TiledMapHelper {
     }
 
     private void createTree(PolygonMapObject polygonMapObject, int treeType) {
-        TreeFactory treeFactory = new TreeFactory(gameScreen, gameAssets);
+        TreeFactory treeFactory = new TreeFactory(gameScreen, gameAssets, gameContactListener);
         treeFactory.createTree(polygonMapObject, treeType);
 
     }
     private void createBoulder(PolygonMapObject polygonMapObject) {
-        BoulderFactory boulderFactory = new BoulderFactory(gameScreen, gameAssets);
+        BoulderFactory boulderFactory = new BoulderFactory(gameScreen, gameAssets, gameContactListener);
         boulderFactory.createBoulder(polygonMapObject);
     }
 

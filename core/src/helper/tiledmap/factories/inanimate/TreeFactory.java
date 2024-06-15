@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
 import helper.BodyUserData;
 import objects.GameAssets;
@@ -17,10 +18,12 @@ public class TreeFactory {
     private GameScreen gameScreen;
     private static int treeCounter = 0;
     private GameAssets gameAssets;
+    private GameContactListener gameContactListener;
 
-    public TreeFactory(GameScreen gameScreen, GameAssets gameAssets){
+    public TreeFactory(GameScreen gameScreen, GameAssets gameAssets, GameContactListener gameContactListener){
         this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;
+        this.gameContactListener = gameContactListener;
     }
 
     public void createTree(PolygonMapObject polygonMapObject, int treeType) {
@@ -67,7 +70,8 @@ public class TreeFactory {
                 gameScreen,
                 treeType,
                 treeId,
-                gameAssets
+                gameAssets,
+                gameContactListener
         );
 
         gameScreen.addTree(tree);

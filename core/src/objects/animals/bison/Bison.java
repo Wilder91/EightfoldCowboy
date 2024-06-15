@@ -44,8 +44,8 @@ public class Bison extends GameEntity {
         super(width, height, body, gameScreen, gameAssets);
         this.random = new Random();
         this.id = bisonId;
+
         this.talkingBison = talkingBison;
-        System.out.println(initialDirection);
         this.facingDirection = talkingBison ? Facing.LEFT : initialDirection;
         this.body = body;
         this.gameAssets = gameAssets;
@@ -111,13 +111,13 @@ public class Bison extends GameEntity {
             } else if (talkingBison) {
 
                 gameScreen.showInfoBox("Press E to begin Conversation");
-                System.out.println(contactTimer);
+
                 if (Gdx.input.isKeyPressed(Input.Keys.E)) {
                     inConversation = true;
-                    System.out.println("E PRESSED!");
+
                     gameScreen.hideInfoBox();
                     isContacted = false;
-                   bisonConversations.startConversations(id);
+                   bisonConversations.startConversations(this.id);
 
                 }
                 if (contactTimer >= 1.5) {

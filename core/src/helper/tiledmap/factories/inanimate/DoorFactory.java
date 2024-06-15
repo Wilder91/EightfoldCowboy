@@ -4,25 +4,25 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
+import com.mygdx.eightfold.screens.SaloonScreen;
 import helper.BodyUserData;
-import helper.movement.Facing;
 import objects.GameAssets;
-import objects.animals.bison.Bison;
 import objects.inanimate.Door;
 
 import static helper.Constants.PPM;
 import static helper.ContactType.DOOR;
-import static helper.ContactType.TREE;
 
 public class DoorFactory {
     private static int doorCounter = 0;
     private GameScreen gameScreen;
     private GameAssets gameAssets;
-
-    public DoorFactory(GameScreen gameScreen, GameAssets gameAssets) {
+    private GameContactListener gameContactListener;
+    public DoorFactory(GameScreen gameScreen, GameAssets gameAssets, GameContactListener gameContactListener) {
         this.gameScreen = gameScreen;
         this.gameAssets = gameAssets;
+        this.gameContactListener = gameContactListener;
     }
 
     public void createDoor(PolygonMapObject polygonMapObject) {
@@ -63,7 +63,8 @@ public class DoorFactory {
                 doorBody,
                 gameScreen,
                 doorId,
-                gameAssets
+                gameAssets,
+                gameContactListener
         );
 
         gameScreen.addDoor(door);

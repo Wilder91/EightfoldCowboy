@@ -1,12 +1,16 @@
 package objects.inanimate;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
+import com.mygdx.eightfold.screens.SaloonScreen;
 import objects.GameAssets;
 import objects.animals.object_helper.DoorManager;
 
@@ -17,19 +21,23 @@ public class Door extends InanimateEntity {
     private GameAssets gameAssets;
     private GameScreen gameScreen;
     private boolean isContacted;
+    private boolean moveOn;
     private BitmapFont font;
     private float messageTimer;
     private int messageState;
+    private SaloonScreen saloonScreen;
 
-    public Door(float width, float height, Body body, GameScreen gameScreen, int doorId, GameAssets gameAssets) {
-        super(width, height, body, gameScreen, doorId, gameAssets);
+    public Door(float width, float height, Body body, GameScreen gameScreen, int doorId, GameAssets gameAssets, GameContactListener gameContactListener) {
+        super(width, height, body, gameScreen, doorId, gameAssets, gameContactListener);
         this.doorId = doorId;
         this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;
         this.isContacted = false;
         this.messageTimer = 0;
         this.messageState = 0;
+        this.moveOn = false;
         this.font = new BitmapFont();
+
 
         // Initialize the DoorManager and add this door
         DoorManager.addDoor(this);
@@ -45,6 +53,7 @@ public class Door extends InanimateEntity {
         } else {
             gameScreen.hideInfoBox();
         }
+
     }
 
     private void handleInteraction(float delta, float x, float y) {
@@ -59,16 +68,21 @@ public class Door extends InanimateEntity {
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
                 messageState = 1;
                 messageTimer = 0;
-//                gameScreen.enterPauseScreen();
+
             }
         } else if (messageState == 1) {
+            moveOn= true;
             gameScreen.showInfoBox("Locked");
+
             if (messageTimer >= 1.5f) {
                 messageState = 0;
                 isContacted = false;
             }
         }
+
+
     }
+
 
 
     @Override

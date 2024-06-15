@@ -223,7 +223,7 @@
   <object id="719" name="wall" x="1914.55" y="35.3357" rotation="90">
    <polygon points="0,0 1885.29,-3.09023 1879.63,26.267 3.77435,27.8121"/>
   </object>
-  <object id="720" name="bison" x="1188.56" y="411.179">
+  <object id="720" name="talking-bison" x="1188.56" y="411.179">
    <polygon points="0,0 76.3359,0.536202 77.077,82.0389 -2.22338,82.0389"/>
   </object>
   <object id="721" name="bison" x="777.385" y="539.672">

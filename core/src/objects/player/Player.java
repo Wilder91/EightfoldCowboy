@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.screens.GameScreen;
+import helper.movement.SpriteMovementHelper;
 import objects.GameAssets;
 
 import static helper.Constants.PPM;
@@ -21,6 +22,7 @@ public class Player extends GameEntity {
     private Animation<TextureRegion> currentAnimation;
     private PlayerAnimations playerAnimations;
     private float stateTime;
+    private SpriteMovementHelper movementHelper;
 
 
     public Player(float width, float height, Body body, GameScreen gameScreen, GameAssets gameAssets) {
