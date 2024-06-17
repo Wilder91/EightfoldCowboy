@@ -58,7 +58,7 @@ public class Door extends InanimateEntity {
 
     private void handleInteraction(float delta, float x, float y) {
         messageTimer += delta;
-        System.out.println(messageTimer);
+        //System.out.println(messageTimer);
         if (messageState == 0) {
             gameScreen.showInfoBox("Press E to Open Doors");
             if (messageTimer >= 1.5f) {
@@ -68,6 +68,7 @@ public class Door extends InanimateEntity {
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
                 messageState = 1;
                 messageTimer = 0;
+                //gameScreen.setSaloonTime(true);
 
             }
         } else if (messageState == 1) {

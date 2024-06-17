@@ -62,7 +62,7 @@ public class Bison extends GameEntity {
         // Initialize the sprite with the first frame of the animation
         this.sprite = new Sprite(movementHelper.getCurrentAnimation().getKeyFrame(0));
         BisonManager.addBison(this);
-        this.bisonConversations = new FirstLevelBisonConversations(gameScreen, this);
+        this.bisonConversations = new FirstLevelBisonConversations(gameScreen, this, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png");
     }
 
     @Override
@@ -93,6 +93,10 @@ public class Bison extends GameEntity {
     }
 
 
+    public void setInConversation(boolean inConversation) {
+        this.inConversation = inConversation;
+    }
+
     @Override
     public void render(SpriteBatch batch) {
         sprite.draw(batch);
@@ -117,7 +121,7 @@ public class Bison extends GameEntity {
 
                     gameScreen.hideInfoBox();
                     isContacted = false;
-                   bisonConversations.startConversations(this.id);
+                    bisonConversations.startConversations(this);
 
                 }
                 if (contactTimer >= 1.5) {
@@ -132,7 +136,7 @@ public class Bison extends GameEntity {
         }
         if(inConversation) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-                bisonConversations.nextLine();
+                bisonConversations.nextLine(this);
             }
         }
 

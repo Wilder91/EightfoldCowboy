@@ -1,52 +1,57 @@
 package conversations.firstLevel;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.screens.GameScreen;
+import conversations.Conversation;
 import objects.animals.bison.Bison;
 
-public class FirstLevelBisonConversations {
+public class FirstLevelBisonConversations extends Conversation {
     private final GameScreen gameScreen;
-    private int id;
-    private String[] conversationTexts;
-    private int conversationIndex;
+    private final Bison bison;
 
-    public FirstLevelBisonConversations(GameScreen gameScreen, Bison bison) {
+    public FirstLevelBisonConversations(GameScreen gameScreen, Bison bison, String filepath, String imagePath) {
+        super(getConversationTexts(bison), filepath, imagePath);
         this.gameScreen = gameScreen;
+        this.bison = bison;
+    }
 
-
-        if (bison.getId() == 0) {
-            this.conversationTexts = new String[]{"Hey there Cowboy!", "How are you?", "Nice weather today"};
-             // Start with the first conversation text
-        }else{
-            this.conversationTexts = new String[]{"Welcome to Bison Land", "We are bison here", "Even the people are bison here"};
+    private static String[] getConversationTexts(Bison bison) {
+        //System.out.println(bison.getId());
+        switch (bison.getId()) {
+            case 0:
+                return new String[]{"Hey there Cowboy!", "Nice day today", "I love yyou"};
+            case 1:
+                return new String[]{"Wassup", "I'm the evil one"};
+            case 2:
+                return new String[]{"Welcome to Bison Land", "Watch your step ;)"};
+            default:
+                return new String[]{"Leave my ass alone."};
         }
-        this.conversationIndex = 0;
     }
 
-    public void nextLine(){
-
-        conversationIndex  += 1;
-        startConversations(id);
+    @Override
+    protected void showTextBox(String text) {
+        gameScreen.showTextBox(text);
     }
 
-    public void startConversations(int id) {
+    @Override
+    protected void hideTextBox() {
+        gameScreen.hideTextBox();
+    }
+
+    @Override
+    protected void hideInfoBox() {
         gameScreen.hideInfoBox();
-        System.out.println(id);
+    }
 
-        // Display current conversation text based on conversationIndex
-        if (conversationIndex < conversationTexts.length ) {
-            gameScreen.showTextBox(conversationTexts[conversationIndex]);
-        } else {
-            gameScreen.hideTextBox();
-            conversationIndex = 0;
-        }
-
-        // Increment conversation index for next conversation
+    public boolean isConversationFinished() {
+        return conversationIndex > conversationTexts.length;
 
     }
 
-    public void endConversations() {
+
+    public void resetConversation() {
+        conversationIndex = 0;
         gameScreen.hideTextBox();
     }
 }

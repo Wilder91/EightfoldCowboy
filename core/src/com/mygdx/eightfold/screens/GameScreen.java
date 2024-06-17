@@ -24,8 +24,8 @@ import objects.inanimate.Building;
 import objects.inanimate.Door;
 import objects.inanimate.Tree;
 import objects.player.Player;
-import text.InfoBox;
-import text.BisonTextBox;
+import text.infobox.InfoBox;
+import text.textbox.BisonTextBox;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,8 @@ public class GameScreen extends ScreenAdapter {
     private Player player;
     private final GameContactListener gameContactListener;
     private final GameAssets gameAssets;
-
+    private boolean saloonTime = false;
+    private SaloonScreen saloonScreen;
     public OrthographicCamera getCamera() {
         return camera;
     }
@@ -78,6 +79,7 @@ public class GameScreen extends ScreenAdapter {
         // Initialize TextBox
         this.textBox = new BisonTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), "animals/bison/bison-single.png");
         this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
+       // this.saloonScreen = new SaloonScreen(camera, gameAssets,gameContactListener, this);
         Gdx.input.setInputProcessor(textBox.getStage());
         Gdx.input.setInputProcessor(infoBox.getStage());
 
@@ -97,6 +99,14 @@ public class GameScreen extends ScreenAdapter {
 
     public void hideInfoBox() {
         infoBox.hideInfoBox();
+    }
+
+    public void setSaloonTime(boolean saloonTime) {
+        this.saloonTime = saloonTime;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     private void update(float delta) {
@@ -137,6 +147,9 @@ public class GameScreen extends ScreenAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             // Pause the game
             ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
+        }
+        if (saloonTime){
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new SaloonScreen(camera, gameAssets, gameContactListener, this, world));
         }
     }
 

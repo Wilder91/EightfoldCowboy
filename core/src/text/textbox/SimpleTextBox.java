@@ -1,4 +1,4 @@
-package text;
+package text.textbox;
 
 public class SimpleTextBox {
 }

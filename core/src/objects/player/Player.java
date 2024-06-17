@@ -27,7 +27,7 @@ public class Player extends GameEntity {
 
     public Player(float width, float height, Body body, GameScreen gameScreen, GameAssets gameAssets) {
         super(width, height, body, gameScreen, gameAssets);
-        this.speed = 5f;
+        this.speed = 4f;
         this.originalSpeed = speed;
         this.isFacingRight = true;
         this.body = body;
@@ -67,6 +67,8 @@ public class Player extends GameEntity {
 
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
+//        System.out.println("Player position: (" + x + ", " + y + ")");
+//        System.out.println("Player velocity: (" + body.getLinearVelocity().x + ", " + body.getLinearVelocity().y + ")");
 
         checkUserInput();
         updateAnimation();

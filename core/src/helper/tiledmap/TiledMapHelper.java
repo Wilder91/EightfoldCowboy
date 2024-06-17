@@ -42,6 +42,7 @@ public class TiledMapHelper {
         this.shapeRenderer = new ShapeRenderer();
         this.gameAssets = gameAssets;
         this.gameContactListener = gameContactListener;
+
     }
 
     public OrthogonalTiledMapRenderer setupMap(String fileName) {
@@ -106,6 +107,7 @@ public class TiledMapHelper {
                 String rectangleName = mapObject.getName();
 
                 if (rectangleName != null && rectangleName.equals("player")) {
+                    System.out.println("PLAYER");
                     int playerId = 1;
                     Body body = BodyHelperService.createBody(
                             rectangle.x + rectangle.width / PPM,

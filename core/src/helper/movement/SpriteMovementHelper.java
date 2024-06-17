@@ -287,4 +287,8 @@ public abstract class SpriteMovementHelper {
     public Sprite getSprite() {
         return sprite;
     }
+
+    public float getStateTime() {
+        return stateTime;
+    }
 }

@@ -1,4 +1,4 @@
-package text;
+package text.textbox;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;

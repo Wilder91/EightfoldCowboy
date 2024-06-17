@@ -2,24 +2,21 @@ package com.mygdx.eightfold.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.GameContactListener;
 
 import objects.GameAssets;
 import helper.tiledmap.TiledMapHelper;
 import objects.player.Player;
-import text.InfoBox;
-import text.SaloonTextBox;
+import text.infobox.InfoBox;
+import text.textbox.SaloonTextBox;
 
 import static helper.Constants.PPM;
 
@@ -39,11 +36,10 @@ public class SaloonScreen extends ScreenAdapter {
     private SaloonTextBox textBox;
     private InfoBox infoBox;
 
-    public SaloonScreen(OrthographicCamera camera, GameAssets gameAssets, GameContactListener gameContactListener, GameScreen gameScreen) {
+    public SaloonScreen(OrthographicCamera camera, GameAssets gameAssets, GameContactListener gameContactListener, GameScreen gameScreen, World world) {
         this.camera = camera;
-        camera.zoom = 40f;
         this.batch = new SpriteBatch();
-        this.world = new World(new Vector2(0, 0), false);
+        this.world = world;
         this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;
         this.gameContactListener = gameContactListener;
@@ -51,12 +47,12 @@ public class SaloonScreen extends ScreenAdapter {
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.tiledMapHelper = new TiledMapHelper(gameScreen, gameAssets, gameContactListener);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/InsideMap.tmx");
+        this.player = gameScreen.getPlayer();
 
-        // Initialize TextBox
-        this.textBox = new SaloonTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), "saloon/Saloon0.png");
-        this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
-        Gdx.input.setInputProcessor(textBox.getStage());
-        Gdx.input.setInputProcessor(infoBox.getStage());
+        if (player == null) {
+            System.out.println("Player is null!");
+        }
+
     }
 
     public void showTextBox(String text) {
@@ -76,23 +72,18 @@ public class SaloonScreen extends ScreenAdapter {
     }
 
     private void update(float delta) {
-        world.step(1 / 60f, 6, 2);
-        cameraUpdate();
+        world.step(1 / 60f, 6, 2);  // Step the physics world
+        cameraUpdate();  // Update the camera
 
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
 
         if (player != null) {
-            player.update(delta);
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            enterPauseScreen();
-        }
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-            // Pause the game
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, gameScreen));
+            System.out.println("Updating player...");
+            player.update(delta);  // Update the player
+            System.out.println("Player position: " + player.getBody().getPosition());
+        } else {
+            System.out.println("Player is null during update!");
         }
     }
 
@@ -114,7 +105,7 @@ public class SaloonScreen extends ScreenAdapter {
     public void render(float delta) {
         update(delta); // Pass delta time to update method
 
-        Gdx.gl.glClearColor(162f / 255f, 188f / 255f, 104f / 255f, 1);
+        Gdx.gl.glClearColor(78f / 255f, 87f / 255f, 92f / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
@@ -128,10 +119,10 @@ public class SaloonScreen extends ScreenAdapter {
         batch.end();
 
         // Render the Stage
-        textBox.getStage().act(delta);
-        textBox.getStage().draw();
-        infoBox.getStage().act(delta);
-        infoBox.getStage().draw();
+        //textBox.getStage().act(delta);
+        //textBox.getStage().draw();
+        //infoBox.getStage().act(delta);
+        //infoBox.getStage().draw();
 
         // Uncomment for debugging physics bodies
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
@@ -144,8 +135,8 @@ public class SaloonScreen extends ScreenAdapter {
         world.dispose();
         box2DDebugRenderer.dispose();
         orthogonalTiledMapRenderer.dispose();
-        textBox.getStage().dispose();
-        textBox.getSkin().dispose();
+        //textBox.getStage().dispose();
+        //textBox.getSkin().dispose();
     }
 
     public void setPlayer(Player player) {
@@ -155,6 +146,4 @@ public class SaloonScreen extends ScreenAdapter {
     public World getWorld() {
         return world;
     }
-
-
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="2">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="3">
  <tileset firstgid="1" source="tavern.tsx"/>
  <layer id="1" name="Tile Layer 1" width="60" height="34">
   <data encoding="csv">
@@ -41,7 +41,7 @@
  </layer>
  <objectgroup id="4" name="wall"/>
  <objectgroup id="2" name="objects">
-  <object id="1" name="player" x="58.9319" y="911.602" width="75.5064" height="128.913"/>
+  <object id="1" name="player" x="442.524" y="805.018" width="75.5064" height="75.5064"/>
  </objectgroup>
  <layer id="3" name="Tile Layer 2" width="60" height="34">
   <data encoding="csv">

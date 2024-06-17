@@ -1,4 +1,4 @@
-package text;
+package text.textbox;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -11,39 +11,43 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class BisonTextBox {
-    private Stage stage;
-    private Skin skin;
-    private Table table;
-    private Label textLabel;
-    private Image image;
+public abstract class TextBox {
+    protected Stage stage;
+    protected Skin skin;
+    protected Table table;
+    protected Label textLabel;
+    protected Image image;
 
-    public BisonTextBox(Skin skin, String imagePath) {
+    public TextBox(Skin skin, String imagePath) {
         this.skin = skin;
         this.stage = new Stage(new ScreenViewport());
-        this.textLabel = new Label("", skin);
+
+        // Use the commodore-64 font and label style from the skin
+        this.textLabel = new Label("", skin, "default");
+        this.textLabel.setWrap(true); // Enable word wrap
+
+        // Load the image
         this.image = new Image(new Texture(Gdx.files.internal(imagePath)));
 
-        // Create a solid color texture
+        // Create the table and set the background
+        this.table = new Table(skin);
+        table.setFillParent(false);
+
+        // Set the table's background color
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(0, 0, 0, 0.8f); // RGBA: black with 80% opacity
+        pixmap.setColor(207 / 255f, 185 / 255f, 151 / 255f, 1f); // RGBA: color with 100% opacity
         pixmap.fill();
         TextureRegionDrawable solidColorDrawable = new TextureRegionDrawable(new Texture(pixmap));
-
-        // Create the table and set the background
-        this.table = new Table();
-        table.setFillParent(false);
         table.setBackground(solidColorDrawable);
-        table.add(image).expandX();// Set the background drawable
-        table.add(textLabel).expandX();
 
+        // Add elements to the table
+        table.add(image).expandX();
+        table.add(textLabel).expandX().fillX(); // Make sure label fills its cell
 
-
-
-        // Position the table at the bottom of the screen
-        table.bottom().left();
-        table.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 4);
-        table.setPosition(0, 0);
+        // Position the table at the bottom center of the screen
+        table.center();
+        table.setSize(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 4);
+        table.setPosition((Gdx.graphics.getWidth() - table.getWidth()) / 2, 0);
 
         stage.addActor(table);
         table.setVisible(false);
@@ -68,4 +72,6 @@ public class BisonTextBox {
     public Skin getSkin() {
         return skin;
     }
+
+    public abstract void setFontColor(float r, float g, float b, float a);
 }
