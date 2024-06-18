@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.GameContactListener;
 
 import com.mygdx.eightfold.GameAssets;
+import helper.screens.SwitchableScreen;
 import helper.tiledmap.TiledMapHelper;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
@@ -31,7 +33,7 @@ import java.util.ArrayList;
 
 import static helper.Constants.PPM;
 
-public class GameScreen extends ScreenAdapter {
+public class GameScreen extends ScreenAdapter implements SwitchableScreen {
     private final ArrayList<Bison> bisonList;
     private final ArrayList<Bird> birdList;
     private final ArrayList<Building> buildingList;
@@ -45,6 +47,7 @@ public class GameScreen extends ScreenAdapter {
     private final TiledMapHelper tiledMapHelper;
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private Player player;
+    private Music music;
     private final GameContactListener gameContactListener;
     private final GameAssets gameAssets;
     private boolean saloonTime = false;
@@ -67,6 +70,7 @@ public class GameScreen extends ScreenAdapter {
         this.treeList = new ArrayList<>();
         this.doorList = new ArrayList<>();
         this.batch = new SpriteBatch();
+        this.music = gameAssets.getMusic("lost & found.mp3");
         this.world = new World(new Vector2(0, 0), false);
         this.gameAssets = gameAssets;
 
@@ -102,6 +106,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void setSaloonTime(boolean saloonTime) {
+        music.stop();
         this.saloonTime = saloonTime;
     }
 
@@ -223,6 +228,8 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
+        music.setVolume(.1f);
+       // music.play();
         batch.begin();
 
         // Render game objects
@@ -280,5 +287,15 @@ public class GameScreen extends ScreenAdapter {
 
     public void conversationScreen(int id) {
         ((Game) Gdx.app.getApplicationListener()).setScreen(new BisonConversationScreen(camera, gameAssets, this, id));
+    }
+
+    @Override
+    public void toggle() {
+
+    }
+
+    @Override
+    public boolean isActive() {
+        return false;
     }
 }

@@ -19,6 +19,7 @@ public class GameAssets {
         assetManager.load("atlases/eightfold/bison-movement.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
         assetManager.load("ethereal.mp3", Music.class);
+        assetManager.load("lost & found.mp3", Music.class);
         // Load individual textures for bison grazing
         for (int i = 0; i <= 39; i++) {
             String filename = "animals/bison/grazing/Bison_Grazing_" + i + ".png";

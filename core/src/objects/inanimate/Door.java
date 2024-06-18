@@ -22,9 +22,10 @@ public class Door extends InanimateEntity {
     private BitmapFont font;
     private float messageTimer;
     private int messageState;
+    private String name;
     private SaloonScreen saloonScreen;
 
-    public Door(float width, float height, Body body, GameScreen gameScreen, int doorId, GameAssets gameAssets, GameContactListener gameContactListener) {
+    public Door(float width, float height, Body body, GameScreen gameScreen, int doorId, GameAssets gameAssets, GameContactListener gameContactListener, String doorName) {
         super(width, height, body, gameScreen, doorId, gameAssets, gameContactListener);
         this.doorId = doorId;
         this.gameAssets = gameAssets;
@@ -33,8 +34,9 @@ public class Door extends InanimateEntity {
         this.messageTimer = 0;
         this.messageState = 0;
         this.moveOn = false;
+        this.name = doorName != null ? doorName.trim() : null; // Trim the name to remove any leading/trailing spaces
+        //System.out.println("door class: " + name);
         this.font = new BitmapFont();
-
 
         // Initialize the DoorManager and add this door
         DoorManager.addDoor(this);
@@ -65,8 +67,28 @@ public class Door extends InanimateEntity {
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
                 messageState = 1;
                 messageTimer = 0;
-                gameScreen.setSaloonTime(!gameScreen.isSaloonTime());
-
+                System.out.println("door name " + name );
+                if(name != null){
+                    //System.out.println("name: " + name);
+                    switch(name){
+                        case "enter_saloon":
+                            System.out.println("Switching to Saloon...");
+                            gameScreen.setSaloonTime(!gameScreen.isSaloonTime());
+                            break;
+                        case "leave_saloon":
+                            System.out.println("leave!");
+                            if (saloonScreen != null) {
+                                System.out.println("Leaving Saloon...");
+                                saloonScreen.setGameTime(!saloonScreen.isGameTime());
+                            } else {
+                                System.out.println("Saloon screen not initialized");
+                            }
+                            break;
+                        default:
+                            System.out.println("Unknown door name: " + name);
+                            break;
+                    }
+                }
             }
         } else if (messageState == 1) {
             moveOn= true;
@@ -77,11 +99,7 @@ public class Door extends InanimateEntity {
                 isContacted = false;
             }
         }
-
-
     }
-
-
 
     @Override
     public void render(SpriteBatch batch) {
@@ -96,6 +114,10 @@ public class Door extends InanimateEntity {
     public void playerLeave() {
         isContacted = false;
         messageState = 0;  // Reset message state on leave
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getId() {

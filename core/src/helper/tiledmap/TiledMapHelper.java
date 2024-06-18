@@ -72,6 +72,7 @@ public class TiledMapHelper {
 
     private void parseMapObjects(MapObjects mapObjects) {
         for (MapObject mapObject : mapObjects) {
+            System.out.println(mapObject.getProperties().get("type", String.class));
             if (mapObject instanceof PolygonMapObject) {
                 PolygonMapObject polygonMapObject = (PolygonMapObject) mapObject;
                 String polygonName = mapObject.getName();
@@ -147,13 +148,32 @@ public class TiledMapHelper {
         for (MapObject mapObject : mapObjects) {
             if (mapObject instanceof PolygonMapObject) {
                 PolygonMapObject polygonMapObject = (PolygonMapObject) mapObject;
-                String polygonName = mapObject.getName();
-                if (polygonName != null) {
+                String polygonName = polygonMapObject.getName();
+                String polygonClass = mapObject.getProperties().get("type", String.class);
+
+                if (polygonClass != null) {
+                    if ("door".equals(polygonClass)) {
+                        if (polygonName != null) {
+                            switch (polygonName) {
+                                case "enter_saloon":
+                                    System.out.println("enter saloon!");
+                                    createDoor(polygonMapObject, polygonName);
+                                    break;
+                                case "leave_saloon":
+                                    createDoor(polygonMapObject, polygonName);
+                                    break;
+                                default:
+                                    createStaticBody(polygonMapObject);
+                                    break;
+                            }
+                        }
+                    } else if ("wall".equals(polygonClass)) {
+                        createStaticBody(polygonMapObject);
+                    }
+                } else if (polygonName != null) {
                     switch (polygonName) {
                         case "roots":
-                        case "wall":
-                        case "door":
-                            createDoor(polygonMapObject);
+                            createStaticBody(polygonMapObject);
                             break;
                         default:
                             createStaticBody(polygonMapObject);
@@ -180,12 +200,12 @@ public class TiledMapHelper {
                             ContactType.PLAYER,
                             playerId
                     );
-                    //System.out.println(rectangle.width + " " + rectangle.height);
                     gameScreen.setPlayer(new Player(rectangle.width, rectangle.height, body, gameScreen, gameAssets));
                 }
             }
         }
     }
+
 
     private void createBird(PolygonMapObject polygonMapObject) {
         BirdFactory birdFactory = new BirdFactory(gameScreen, gameAssets);
@@ -202,9 +222,9 @@ public class TiledMapHelper {
         bisonFactory.createBison(polygonMapObject); // Call createBison method from BisonFactory
     }
 
-    private void createDoor(PolygonMapObject polygonMapObject) {
+    private void createDoor(PolygonMapObject polygonMapObject, String polygonName) {
         DoorFactory doorFactory = new DoorFactory(gameScreen, gameAssets, gameContactListener); // Instantiate the DoorFactory
-        doorFactory.createDoor(polygonMapObject); // Call createDoor method from DoorFactory
+        doorFactory.createDoor(polygonMapObject, polygonName); // Call createDoor method from DoorFactory
     }
 
     private void createTree(PolygonMapObject polygonMapObject, int treeType) {

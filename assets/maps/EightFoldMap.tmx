@@ -306,8 +306,8 @@
   <object id="289" name="wall" x="835.379" y="185.471">
    <polygon points="0,0 17.7366,77.4949 18.1061,-29.0605 0.369513,-109.784"/>
   </object>
-  <object id="728" name="door" x="876.325" y="250.883">
-   <polygon points="0,0 28.2686,8.83392 15.9011,33.5689 -1.76678,30.0353"/>
+  <object id="728" name="enter_saloon" type="door" x="876.325" y="205.513">
+   <polygon points="0,0 43.0834,14.6819 24.2344,55.7911 -2.6927,49.9183"/>
   </object>
  </objectgroup>
  <layer id="5" name="path" width="60" height="34">

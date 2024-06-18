@@ -24,7 +24,7 @@ public class DoorFactory {
         this.gameContactListener = gameContactListener;
     }
 
-    public void createDoor(PolygonMapObject polygonMapObject) {
+    public void createDoor(PolygonMapObject polygonMapObject, String polygonName) {
         int doorId = ++doorCounter;
         Polygon polygon = polygonMapObject.getPolygon();
         Rectangle boundingRectangle = polygon.getBoundingRectangle();
@@ -55,7 +55,7 @@ public class DoorFactory {
         filter.categoryBits = DOOR.getCategoryBits();
         filter.maskBits = DOOR.getMaskBits();
         doorFixture.setFilterData(filter);
-
+        System.out.println("door factory: " + polygonName);
         Door door = new Door(
                 boundingRectangle.width,
                 boundingRectangle.height,
@@ -63,7 +63,9 @@ public class DoorFactory {
                 gameScreen,
                 doorId,
                 gameAssets,
-                gameContactListener
+                gameContactListener,
+                polygonName
+
         );
 
         gameScreen.addDoor(door);

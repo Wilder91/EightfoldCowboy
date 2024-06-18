@@ -45,15 +45,17 @@ public class GameContactListener implements ContactListener {
 
             }
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.DOOR) {
-                System.out.println(DoorManager.getDoorMap());
-                Door door = DoorManager.getDoorById(1);
+                //System.out.println(DoorManager.getDoorMap());
+                Door door = DoorManager.getDoorById(userDataB.getId());
                 door.playerContact();
 
 
 
             } else if (userDataA.getType() == ContactType.DOOR && userDataB.getType() == ContactType.PLAYER) {
+                //System.out.println(DoorManager.getDoorMap());
+                Door door = DoorManager.getDoorById(userDataA.getId());
+                door.playerContact();
 
-                System.out.println("YOYOOYOYO");
             }
             if (userDataA.getType() == ContactType.BIRD && userDataB.getType() == ContactType.BIRD) {
 
@@ -108,8 +110,8 @@ public class GameContactListener implements ContactListener {
                 }
             }
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.DOOR) {
-                System.out.println(DoorManager.getDoorMap());
-                Door door = DoorManager.getDoorById(1);
+                //System.out.println(DoorManager.getDoorMap());
+                Door door = DoorManager.getDoorById(userDataB.getId());
                 //door.playerContact();
 
 

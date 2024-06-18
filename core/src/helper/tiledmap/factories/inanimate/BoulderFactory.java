@@ -11,6 +11,7 @@ import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
 import objects.inanimate.Boulder;
 
+
 import static helper.Constants.PPM;
 
 public class BoulderFactory {

@@ -24,12 +24,12 @@ public class Boot extends Game {
         this.heightScreen = 480;
         this.orthographicCamera = new OrthographicCamera();
         this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
-
         this.gameAssets = new GameAssets();
         gameAssets.loadAssets();
         gameAssets.finishLoading();
 
         setScreen(new GameScreen(orthographicCamera, gameAssets));
+
     }
 
     // Method to change the screen

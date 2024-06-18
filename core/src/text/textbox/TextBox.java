@@ -48,7 +48,7 @@ public abstract class TextBox {
 
         // Create a table for the image with a border
         Table imageContainer = new Table();
-        imageContainer.setBackground(createBackgroundWithBorder(100f / 255f, 130f / 255f, 104f / 255f, .4f, 162f / 255f, 188f / 255f, 104f / 255f, .4f));
+        imageContainer.setBackground(createBackgroundWithBorder(100f / 255f, 130f / 255f, 104f / 255f, .8f, 162f / 255f, 188f / 255f, 104f / 255f, .8f));
         imageContainer.add(image).size(50, 50).pad(5);
 
         // Create a table for the text and image
@@ -61,8 +61,8 @@ public abstract class TextBox {
 
         // Create a background table to add border and background color
         Table backgroundTable = new Table();
-        backgroundTable.setBackground(createBackgroundWithBorder(120F / 255f, 137F / 255f, 139F / 255f, .4f, 162f / 255f, 188f / 255f, 104f / 255f, 0.6f));
-        backgroundTable.add(stack).expand().fill().pad(10);
+        backgroundTable.setBackground(createBackgroundWithBorder(100F / 255f, 137F / 255f, 109F / 255f, .8f, 162f / 255f, 188f / 255f, 104f / 255f, 0.8f));
+        backgroundTable.add(stack).expand().fill().pad(0);
 
         // Add the background table to the dialog
         dialog.getContentTable().add(backgroundTable).expand().fill();
@@ -85,8 +85,8 @@ public abstract class TextBox {
 
     private TextureRegionDrawable createBackgroundWithBorder(float borderR, float borderG, float borderB, float borderA, float bgR, float bgG, float bgB, float bgA) {
         int borderWidth = 3;
-        int width = 40;  // Arbitrary size; can be adjusted
-        int height = 40; // Arbitrary size; can be adjusted
+        int width = 50;  // Arbitrary size; can be adjusted
+        int height = 50; // Arbitrary size; can be adjusted
 
         Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
 
@@ -131,9 +131,9 @@ public abstract class TextBox {
         dialog.setPosition((width - dialog.getWidth()) / 2, 0);
 
         // Update image size based on dialog size
-        //image.setSize(50, 50); // Maintain the image size
+        image.setSize(50, 50); // Maintain the image size
         stage.getViewport().update(width, height, true);
-
+//        image.setScale(2,2);
         float scale = height / 720f; // Assuming 720 is the reference height
         textLabel.setStyle(new Label.LabelStyle(scaleFont(originalFont, scale), textLabel.getStyle().fontColor));
     }

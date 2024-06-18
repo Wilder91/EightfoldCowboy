@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.eightfold.GameContactListener;
 
 import com.mygdx.eightfold.GameAssets;
+import helper.screens.SwitchableScreen;
 import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
 import objects.inanimate.Door;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 
 import static helper.Constants.PPM;
 
-public class SaloonScreen extends ScreenAdapter {
+public class SaloonScreen extends ScreenAdapter implements SwitchableScreen {
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final GameScreen gameScreen;
@@ -34,6 +35,16 @@ public class SaloonScreen extends ScreenAdapter {
     private final TiledMapHelper tiledMapHelper;
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private Player player;
+    private Boolean gameTime = false;
+
+    public Boolean isGameTime() {
+        return gameTime;
+    }
+
+    public void setGameTime(Boolean gameTime) {
+        this.gameTime = gameTime;
+    }
+
     private final GameContactListener gameContactListener;
     private final GameAssets gameAssets;
     private final Music music;
@@ -88,12 +99,16 @@ public class SaloonScreen extends ScreenAdapter {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             enterPauseScreen();
         }
+        //System.out.println(gameTime);
         if (player != null) {
             //System.out.println("Updating player...");
             player.update(delta);  // Update the player
             //System.out.println("Player position: " + player.getBody().getPosition());
         } else {
             //System.out.println("Player is null during update!");
+        }
+        if (gameTime){
+            ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(camera, gameAssets));
         }
     }
 
@@ -136,7 +151,9 @@ public class SaloonScreen extends ScreenAdapter {
         for (Door door : doorList){
             door.render(batch);
         }
-        music.play();
+        music.setVolume(.1f);
+        //music.play();
+
         batch.end();
 
         // Render the Stage
@@ -146,7 +163,7 @@ public class SaloonScreen extends ScreenAdapter {
         //infoBox.getStage().draw();
 
         // Uncomment for debugging physics bodies
-        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
     @Override
@@ -166,5 +183,15 @@ public class SaloonScreen extends ScreenAdapter {
 
     public World getWorld() {
         return world;
+    }
+
+    @Override
+    public void toggle() {
+
+    }
+
+    @Override
+    public boolean isActive() {
+        return false;
     }
 }
