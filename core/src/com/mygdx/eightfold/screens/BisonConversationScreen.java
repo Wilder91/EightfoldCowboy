@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.Texture;
-import objects.GameAssets;
+import com.mygdx.eightfold.GameAssets;
 
 public class BisonConversationScreen extends ScreenAdapter {
     private final OrthographicCamera camera;

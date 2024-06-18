@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.GameContactListener;
 
-import objects.GameAssets;
+import com.mygdx.eightfold.GameAssets;
 import helper.tiledmap.TiledMapHelper;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
@@ -23,7 +23,7 @@ import objects.inanimate.Boulder;
 import objects.inanimate.Building;
 import objects.inanimate.Door;
 import objects.inanimate.Tree;
-import objects.player.Player;
+import com.mygdx.eightfold.player.Player;
 import text.infobox.InfoBox;
 import text.textbox.BisonTextBox;
 
@@ -60,7 +60,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(OrthographicCamera camera, GameAssets gameAssets) {
         this.buildingList = new ArrayList<>();
         this.camera = camera;
-        camera.zoom = 40f;
+        //camera.zoom = 40f;
         this.bisonList = new ArrayList<>();
         this.birdList = new ArrayList<>();
         this.boulderList = new ArrayList<>();
@@ -109,6 +109,10 @@ public class GameScreen extends ScreenAdapter {
         return player;
     }
 
+    public boolean isSaloonTime() {
+        return saloonTime;
+    }
+
     private void update(float delta) {
         world.step(1 / 60f, 6, 2);
         cameraUpdate();
@@ -151,6 +155,8 @@ public class GameScreen extends ScreenAdapter {
         if (saloonTime){
             ((Game) Gdx.app.getApplicationListener()).setScreen(new SaloonScreen(camera, gameAssets, gameContactListener, this, world));
         }
+
+        textBox.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public void enterPauseScreen(){

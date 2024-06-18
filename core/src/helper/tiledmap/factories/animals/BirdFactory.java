@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.screens.GameScreen;
 import helper.BodyHelperService;
 import helper.ContactType;
-import objects.GameAssets;
+import com.mygdx.eightfold.GameAssets;
 import objects.animals.bird.Bird;
 
 public class BirdFactory {

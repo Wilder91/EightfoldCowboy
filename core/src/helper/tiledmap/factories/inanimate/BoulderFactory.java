@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
-import objects.GameAssets;
+import com.mygdx.eightfold.GameAssets;
 import objects.inanimate.Boulder;
 
 import static helper.Constants.PPM;

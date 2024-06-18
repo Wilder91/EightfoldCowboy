@@ -19,11 +19,13 @@ public class FirstLevelBisonConversations extends Conversation {
         //System.out.println(bison.getId());
         switch (bison.getId()) {
             case 0:
-                return new String[]{"Hey there Cowboy!", "Nice day today", "I love yyou"};
+                return new String[]{"Howdy stranger, " + "\n" + "welcome to the ranch", "Nice day today, huh?", "Feel free to take a walk" + "\n" + "around, there are plenty of other bison to talk to." + "\n" + "Just stay out of The" + "\n" + "Saloon."};
             case 1:
                 return new String[]{"Wassup", "I'm the evil one"};
             case 2:
-                return new String[]{"Welcome to Bison Land", "Watch your step ;)"};
+                return new String[]{"Welcome to Bison Land", "Even the people are bison here"};
+            case 3:
+                return new String[]{"Stay out of the Saloon," + "\n" + "I've heard it's haunted", "I don't believe in that" + "\n" + "crap but I have heard" + "\n" + "strange noises emanating" + "\n" + "from within"};
             default:
                 return new String[]{"Leave my ass alone."};
         }

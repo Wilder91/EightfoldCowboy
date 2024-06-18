@@ -3,8 +3,8 @@ package objects.humans;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.screens.GameScreen;
-import objects.GameAssets;
-import objects.player.GameEntity;
+import com.mygdx.eightfold.GameAssets;
+import com.mygdx.eightfold.player.GameEntity;
 
 public class NPC extends GameEntity {
     public NPC(float width, float height, Body body, GameScreen gameScreen, GameAssets gameAssets) {

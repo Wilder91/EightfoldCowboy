@@ -1,9 +1,9 @@
-package objects.player;
+package com.mygdx.eightfold.player;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import objects.GameAssets;
+import com.mygdx.eightfold.GameAssets;
 
 public class PlayerAnimations {
     private GameAssets gameAssets;

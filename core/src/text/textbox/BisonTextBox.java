@@ -12,6 +12,7 @@ public class BisonTextBox extends TextBox {
 
     @Override
     public void setFontColor(float r, float g, float b, float a) {
+
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = skin.getFont("default-font");
         labelStyle.fontColor = new Color(r, g, b, a);

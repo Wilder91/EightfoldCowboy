@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
-import objects.GameAssets;
+import com.mygdx.eightfold.GameAssets;
 
 public abstract class InanimateEntity {
     private final int id;

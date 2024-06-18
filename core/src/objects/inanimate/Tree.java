@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
-import objects.GameAssets;
+import com.mygdx.eightfold.GameAssets;
 
 import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;

@@ -1,15 +1,9 @@
 package com.mygdx.eightfold;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.mygdx.eightfold.screens.GameScreen;
-import com.mygdx.eightfold.screens.StartScreen;
-import objects.GameAssets;
-
-import static helper.Constants.PPM;
 
 public class Boot extends Game {
 
@@ -26,8 +20,8 @@ public class Boot extends Game {
 
     @Override
     public void create() {
-        this.widthScreen = (int) (Gdx.graphics.getWidth() / PPM);
-        this.heightScreen = (int) ( Gdx.graphics.getHeight() / PPM);
+        this.widthScreen = 800;
+        this.heightScreen = 480;
         this.orthographicCamera = new OrthographicCamera();
         this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
 

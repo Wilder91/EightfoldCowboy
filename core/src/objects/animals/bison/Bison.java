@@ -10,9 +10,9 @@ import com.mygdx.eightfold.screens.GameScreen;
 import conversations.firstLevel.FirstLevelBisonConversations;
 import helper.movement.BisonMovementHelper;
 import helper.movement.SpriteMovementHelper;
-import objects.GameAssets;
+import com.mygdx.eightfold.GameAssets;
 import objects.animals.object_helper.BisonManager;
-import objects.player.GameEntity;
+import com.mygdx.eightfold.player.GameEntity;
 import helper.movement.Facing;
 
 import java.util.Random;
@@ -44,7 +44,6 @@ public class Bison extends GameEntity {
         super(width, height, body, gameScreen, gameAssets);
         this.random = new Random();
         this.id = bisonId;
-
         this.talkingBison = talkingBison;
         this.facingDirection = talkingBison ? Facing.LEFT : initialDirection;
         this.body = body;
@@ -61,6 +60,7 @@ public class Bison extends GameEntity {
         movementHelper.loadAnimations();// Load animations
         // Initialize the sprite with the first frame of the animation
         this.sprite = new Sprite(movementHelper.getCurrentAnimation().getKeyFrame(0));
+        sprite.setAlpha(.3f);
         BisonManager.addBison(this);
         this.bisonConversations = new FirstLevelBisonConversations(gameScreen, this, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png");
     }
@@ -80,9 +80,7 @@ public class Bison extends GameEntity {
         movementHelper.updateAnimation(body.getLinearVelocity(), delta);
         if (isContacted) {
             contactTimer += delta;
-            if (talkingBison) {
 
-            }
         }
 
 
@@ -110,26 +108,24 @@ public class Bison extends GameEntity {
                 if (contactTimer >= 1.5) {
                     contactTimer = 0;
                     isContacted = false;
-
                 }
             } else if (talkingBison) {
+                if(!inConversation) {
+                    gameScreen.showInfoBox("Press E to begin Conversation");
 
-                gameScreen.showInfoBox("Press E to begin Conversation");
+                    if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+                        inConversation = true;
+                        gameScreen.hideInfoBox();
+                        isContacted = false;
+                        bisonConversations.startConversations(this);
+                    }
+                    if (contactTimer >= 1.5) {
+                        contactTimer = 0;
+                        gameScreen.hideInfoBox();
+                        isContacted = false;
+                        //isContacted = false;
 
-                if (Gdx.input.isKeyPressed(Input.Keys.E)) {
-                    inConversation = true;
-
-                    gameScreen.hideInfoBox();
-                    isContacted = false;
-                    bisonConversations.startConversations(this);
-
-                }
-                if (contactTimer >= 1.5) {
-                    contactTimer = 0;
-                    gameScreen.hideInfoBox();
-                    isContacted = false;
-                    //isContacted = false;
-
+                    }
                 }
 
             }

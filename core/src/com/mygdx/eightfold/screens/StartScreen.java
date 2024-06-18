@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.eightfold.Boot;
-import objects.GameAssets;
+import com.mygdx.eightfold.GameAssets;
 
 public class StartScreen extends ScreenAdapter {
     private OrthographicCamera camera;

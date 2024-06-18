@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.screens.GameScreen;
-import objects.GameAssets;
-import objects.player.GameEntity;
+import com.mygdx.eightfold.GameAssets;
+import com.mygdx.eightfold.player.GameEntity;
 
 import java.util.Random;
 

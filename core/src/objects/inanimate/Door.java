@@ -1,17 +1,14 @@
 package objects.inanimate;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.SaloonScreen;
-import objects.GameAssets;
+import com.mygdx.eightfold.GameAssets;
 import objects.animals.object_helper.DoorManager;
 
 import static helper.Constants.PPM;
@@ -68,7 +65,7 @@ public class Door extends InanimateEntity {
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
                 messageState = 1;
                 messageTimer = 0;
-                //gameScreen.setSaloonTime(true);
+                gameScreen.setSaloonTime(!gameScreen.isSaloonTime());
 
             }
         } else if (messageState == 1) {
