@@ -15,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.eightfold.GameContactListener;
 
 import com.mygdx.eightfold.GameAssets;
-import helper.screens.SwitchableScreen;
 import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
 import objects.inanimate.Door;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 
 import static helper.Constants.PPM;
 
-public class SaloonScreen extends ScreenAdapter implements SwitchableScreen {
+public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final GameScreen gameScreen;
@@ -88,6 +87,16 @@ public class SaloonScreen extends ScreenAdapter implements SwitchableScreen {
 
     public void hideInfoBox() {
         infoBox.hideInfoBox();
+    }
+
+    @Override
+    public void setSaloonTime(boolean saloonTime) {
+
+    }
+
+    @Override
+    public boolean isSaloonTime() {
+        return false;
     }
 
     private void update(float delta) {

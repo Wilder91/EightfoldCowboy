@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.GameContactListener;
 
 import com.mygdx.eightfold.GameAssets;
-import helper.screens.SwitchableScreen;
 import helper.tiledmap.TiledMapHelper;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
@@ -33,7 +32,7 @@ import java.util.ArrayList;
 
 import static helper.Constants.PPM;
 
-public class GameScreen extends ScreenAdapter implements SwitchableScreen {
+public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Bison> bisonList;
     private final ArrayList<Bird> birdList;
     private final ArrayList<Building> buildingList;
@@ -116,6 +115,16 @@ public class GameScreen extends ScreenAdapter implements SwitchableScreen {
 
     public boolean isSaloonTime() {
         return saloonTime;
+    }
+
+    @Override
+    public void toggle() {
+
+    }
+
+    @Override
+    public boolean isActive() {
+        return false;
     }
 
     private void update(float delta) {
@@ -289,13 +298,7 @@ public class GameScreen extends ScreenAdapter implements SwitchableScreen {
         ((Game) Gdx.app.getApplicationListener()).setScreen(new BisonConversationScreen(camera, gameAssets, this, id));
     }
 
-    @Override
-    public void toggle() {
 
-    }
 
-    @Override
-    public boolean isActive() {
-        return false;
-    }
+
 }

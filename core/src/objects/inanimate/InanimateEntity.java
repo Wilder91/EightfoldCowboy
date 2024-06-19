@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
+import com.mygdx.eightfold.screens.ScreenInterface;
 
 public abstract class InanimateEntity {
     private final int id;
@@ -13,7 +14,7 @@ public abstract class InanimateEntity {
     
     protected Body body;
 
-    public InanimateEntity(float width, float height, Body body, GameScreen gameScreen, int id, GameAssets gameAssets, GameContactListener gameContactListener) {
+    public InanimateEntity(float width, float height, Body body, ScreenInterface screen, int id, GameAssets gameAssets, GameContactListener gameContactListener) {
         this.x = body.getPosition().x;
         this.y = body.getPosition().y;
         this.width = width;
