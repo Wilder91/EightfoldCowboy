@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.GameEntity;
+import com.mygdx.eightfold.screens.ScreenInterface;
 
 import java.util.Random;
 
@@ -26,8 +27,8 @@ public class Building extends GameEntity {
     private float stateTime; // Time elapsed since the animation started
     private int id;
 
-    public Building(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int buildingId, GameAssets gameAssets) {
-        super(0, 0, body, gameScreen, gameAssets);
+    public Building(float width, float height, float x, float y, Body body, boolean isFacingRight, ScreenInterface screenInterface, int buildingId, GameAssets gameAssets) {
+        super(0, 0, body, screenInterface, gameAssets);
 
         this.speed = 15f;
         this.moveTimer = 0;

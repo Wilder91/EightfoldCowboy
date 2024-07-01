@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.GameContactListener;
-import com.mygdx.eightfold.screens.GameScreen;
+import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import com.mygdx.eightfold.GameAssets;
 import objects.inanimate.Door;
@@ -15,13 +15,14 @@ import static helper.ContactType.DOOR;
 
 public class DoorFactory {
     private static int doorCounter = 0;
-    private GameScreen gameScreen;
+    private ScreenInterface screenInterface;
     private GameAssets gameAssets;
     private GameContactListener gameContactListener;
-    public DoorFactory(GameScreen gameScreen, GameAssets gameAssets, GameContactListener gameContactListener) {
-        this.gameScreen = gameScreen;
+    public DoorFactory(ScreenInterface screen, GameAssets gameAssets) {
+        this.screenInterface = screen;
         this.gameAssets = gameAssets;
-        this.gameContactListener = gameContactListener;
+
+        this.screenInterface = screenInterface;
     }
 
     public void createDoor(PolygonMapObject polygonMapObject, String polygonName) {
@@ -38,7 +39,7 @@ public class DoorFactory {
                 (boundingRectangle.y + boundingRectangle.height / 2) / PPM
         );
 
-        Body doorBody = gameScreen.getWorld().createBody(bodyDef);
+        Body doorBody = screenInterface.getWorld().createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
         // Adjust size calculation
@@ -55,12 +56,12 @@ public class DoorFactory {
         filter.categoryBits = DOOR.getCategoryBits();
         filter.maskBits = DOOR.getMaskBits();
         doorFixture.setFilterData(filter);
-        System.out.println("door factory: " + polygonName);
+        //println("door factory: " + polygonName);
         Door door = new Door(
                 boundingRectangle.width,
                 boundingRectangle.height,
                 doorBody,
-                gameScreen,
+                screenInterface,
                 doorId,
                 gameAssets,
                 gameContactListener,
@@ -68,6 +69,8 @@ public class DoorFactory {
 
         );
 
-        gameScreen.addDoor(door);
+        screenInterface.addDoor(door);
+
+
     }
 }

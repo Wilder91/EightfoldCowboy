@@ -9,19 +9,20 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
+import com.mygdx.eightfold.screens.ScreenInterface;
 import objects.inanimate.Boulder;
 
 
 import static helper.Constants.PPM;
 
 public class BoulderFactory {
-    private GameScreen gameScreen;
+    private ScreenInterface screenInterface;
     private GameAssets gameAssets;
     private GameContactListener gameContactListener;
     private static int boulderCounter = 0;
 
-    public BoulderFactory(GameScreen gameScreen, GameAssets gameAssets, GameContactListener gameContactListener){
-        this.gameScreen = gameScreen;
+    public BoulderFactory(ScreenInterface screenInterface, GameAssets gameAssets, GameContactListener gameContactListener){
+        this.screenInterface = screenInterface;
         this.gameAssets = gameAssets;
         this.gameContactListener = gameContactListener;
     }
@@ -37,7 +38,7 @@ public class BoulderFactory {
                 (boundingRectangle.y + boundingRectangle.height / 2) / PPM
         );
 
-        Body boulderBody = gameScreen.getWorld().createBody(bodyDef);
+        Body boulderBody = screenInterface.getWorld().createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(
@@ -52,12 +53,12 @@ public class BoulderFactory {
                 boundingRectangle.width * 2,
                 boundingRectangle.height * 2,
                 boulderBody,
-                gameScreen,
+                screenInterface,
                 boulderId,
                 gameAssets,
                 gameContactListener
         );
-        gameScreen.addBoulder(boulder);
+        screenInterface.addBoulder(boulder);
     }
 
 }

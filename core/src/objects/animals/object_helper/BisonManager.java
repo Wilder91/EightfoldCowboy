@@ -8,9 +8,9 @@ public class BisonManager {
     private static final Map<Integer, Bison> bisonMap = new HashMap<>();
 
     public static void addBison(Bison bison) {
-        //System.out.println("bison manager called" + bison.getSprite());
+
         bisonMap.put(bison.getId(), bison);
-        //System.out.println("bison map after addition: " + bisonMap);
+
     }
 
     public static Map<Integer, Bison> getBisonMap() {

@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
+import com.mygdx.eightfold.screens.ScreenInterface;
 
 import static helper.Constants.PPM;
 
@@ -17,8 +18,8 @@ public class Boulder extends InanimateEntity {
     private final int boulderId;
     private Sprite sprite;
     private boolean isFacingRight;
-    public Boulder(float width, float height, Body body, GameScreen gameScreen, int boulderId, GameAssets gameAssets, GameContactListener gameContactListener) {
-        super(width, height, body, gameScreen, boulderId, gameAssets, gameContactListener);
+    public Boulder(float width, float height, Body body, ScreenInterface screenInterface, int boulderId, GameAssets gameAssets, GameContactListener gameContactListener) {
+        super(width, height, body, screenInterface, boulderId, gameAssets, gameContactListener);
         this.speed = 10f;
         this.gameAssets = gameAssets;
         gameAssets.loadAssets();

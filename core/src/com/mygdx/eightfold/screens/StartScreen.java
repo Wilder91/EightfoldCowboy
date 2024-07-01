@@ -32,12 +32,16 @@ public class StartScreen extends ScreenAdapter {
     private BitmapFont font;
     private GameAssets gameAssets;
     private Music backgroundMusic;
-    public StartScreen(OrthographicCamera camera, GameAssets gameAssets) {
+    private ScreenInterface screenInterface;
+    private  Boot game;
+    public StartScreen(OrthographicCamera camera, GameAssets gameAssets, ScreenInterface screenInterface, Boot game) {
         this.camera = camera;
         this.viewport = new FitViewport(camera.viewportWidth, camera.viewportHeight, camera);
+        this.screenInterface = screenInterface;
         this.stage = new Stage(viewport, new SpriteBatch());
         this.gameAssets = gameAssets;
         this.camera = camera;
+        this.game = game;
 
         Gdx.input.setInputProcessor(stage);
 
@@ -75,7 +79,7 @@ public class StartScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the game screen
                // ((Game) Gdx.app.getApplicationListener())
-                Boot.INSTANCE.changeScreen(new GameScreen(camera, gameAssets));
+                Boot.INSTANCE.changeScreen(new GameScreen(camera, screenInterface, gameAssets, game));
             }
         });
         stage.addActor(startButton);
@@ -83,7 +87,7 @@ public class StartScreen extends ScreenAdapter {
 
     private void checkInput(){
         if(Gdx.input.isKeyPressed(Input.Keys.ENTER)){
-            Boot.INSTANCE.changeScreen(new GameScreen(camera, gameAssets));
+            Boot.INSTANCE.changeScreen(new GameScreen(camera, screenInterface, gameAssets, game));
         }
 
 

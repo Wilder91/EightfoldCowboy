@@ -17,7 +17,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameContactListener;
-import com.mygdx.eightfold.screens.GameScreen;
+import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
 import helper.tiledmap.factories.animals.BirdFactory;
@@ -27,29 +27,29 @@ import helper.tiledmap.factories.inanimate.DoorFactory;
 import helper.tiledmap.factories.inanimate.TreeFactory;
 import helper.tiledmap.factories.animals.BisonFactory;
 import com.mygdx.eightfold.GameAssets;
-import objects.inanimate.Tree;
 import com.mygdx.eightfold.player.Player;
+import objects.inanimate.Tree;
 
 import static helper.Constants.PPM;
 
 public class TiledMapHelper {
 
     private TiledMap tiledMap;
-    private GameScreen gameScreen;
     private ShapeRenderer shapeRenderer;
     private GameAssets gameAssets;
     private GameContactListener gameContactListener;
+    private ScreenInterface screenInterface;
 
-    public TiledMapHelper(GameScreen gameScreen, GameAssets gameAssets, GameContactListener gameContactListener) {
-        this.gameScreen = gameScreen;
+    public TiledMapHelper(ScreenInterface screenInterface, GameAssets gameAssets, GameContactListener gameContactListener) {
         this.shapeRenderer = new ShapeRenderer();
         this.gameAssets = gameAssets;
         this.gameContactListener = gameContactListener;
+        this.screenInterface = screenInterface;
     }
 
     public OrthogonalTiledMapRenderer setupMap(String fileName) {
         // Clear existing bodies
-        clearWorldBodies(gameScreen.getWorld());
+        clearWorldBodies(screenInterface.getWorld());
 
         // Load the new map
         tiledMap = new TmxMapLoader().load(fileName);
@@ -72,7 +72,7 @@ public class TiledMapHelper {
 
     private void parseMapObjects(MapObjects mapObjects) {
         for (MapObject mapObject : mapObjects) {
-            System.out.println(mapObject.getProperties().get("type", String.class));
+            //System.out.println(mapObject.getProperties().get("type", String.class));
             if (mapObject instanceof PolygonMapObject) {
                 PolygonMapObject polygonMapObject = (PolygonMapObject) mapObject;
                 String polygonName = mapObject.getName();
@@ -125,20 +125,19 @@ public class TiledMapHelper {
                 String rectangleName = mapObject.getName();
 
                 if (rectangleName != null && rectangleName.equals("player")) {
-                    System.out.println("PLAYER");
+                    //System.out.println("PLAYER");
                     int playerId = 1;
                     Body body = BodyHelperService.createBody(
                             rectangle.x + rectangle.width / PPM,
-                            rectangle.y + rectangle.height / PPM,
+                            rectangle.y  + rectangle.height / PPM,
                             rectangle.width,
                             rectangle.height,
                             false,
-                            gameScreen.getWorld(),
+                            screenInterface.getWorld(),
                             ContactType.PLAYER,
                             playerId
                     );
-                    //System.out.println(rectangle.width + " " + rectangle.height);
-                    gameScreen.setPlayer(new Player(rectangle.width, rectangle.height, body, gameScreen, gameAssets));
+                    screenInterface.setPlayer(new Player(rectangle.x + rectangle.width / PPM, rectangle.y  + rectangle.height / PPM,rectangle.width, rectangle.height, body, screenInterface, gameAssets));
                 }
             }
         }
@@ -184,68 +183,67 @@ public class TiledMapHelper {
                 }
             }
 
-            if (mapObject instanceof RectangleMapObject) {
-                Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-                String rectangleName = mapObject.getName();
-
-                if (rectangleName != null && rectangleName.equals("player")) {
-                    int playerId = 1;
-                    Body body = BodyHelperService.createBody(
-                            rectangle.x + rectangle.width / 2,
-                            rectangle.y + rectangle.height / 2,
-                            rectangle.width,
-                            rectangle.height,
-                            false,
-                            gameScreen.getWorld(),
-                            ContactType.PLAYER,
-                            playerId
-                    );
-                    gameScreen.setPlayer(new Player(rectangle.width, rectangle.height, body, gameScreen, gameAssets));
-                }
-            }
+//            if (mapObject instanceof RectangleMapObject) {
+//                Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+//                String rectangleName = mapObject.getName();
+//
+//                if (rectangleName != null && rectangleName.equals("player")) {
+//                    int playerId = 1;
+//                    Body body = BodyHelperService.createBody(
+//                            rectangle.x + rectangle.width / 2,
+//                            rectangle.y + rectangle.height / 2,
+//                            rectangle.width,
+//                            rectangle.height,
+//                            false,
+//                            screenInterface.getWorld(),
+//                            ContactType.PLAYER,
+//                            playerId
+//                    );
+//                    screenInterface.setPlayer(new Player(rectangle.width, rectangle.height, body, screenInterface, gameAssets));
+////                }
+//            }
         }
     }
 
-
     private void createBird(PolygonMapObject polygonMapObject) {
-        BirdFactory birdFactory = new BirdFactory(gameScreen, gameAssets);
+        BirdFactory birdFactory = new BirdFactory(screenInterface, gameAssets);
         birdFactory.createBird(polygonMapObject);
     }
 
     private void createBison(PolygonMapObject polygonMapObject) {
-        BisonFactory bisonFactory = new BisonFactory(gameScreen, gameAssets, false); // Instantiate the BisonFactory
+        BisonFactory bisonFactory = new BisonFactory(screenInterface, gameAssets, false); // Instantiate the BisonFactory
         bisonFactory.createBison(polygonMapObject); // Call createBison method from BisonFactory
     }
 
     private void createTalkingBison(PolygonMapObject polygonMapObject) {
-        BisonFactory bisonFactory = new BisonFactory(gameScreen, gameAssets, true); // Instantiate the BisonFactory
+        BisonFactory bisonFactory = new BisonFactory(screenInterface, gameAssets, true); // Instantiate the BisonFactory
         bisonFactory.createBison(polygonMapObject); // Call createBison method from BisonFactory
     }
 
     private void createDoor(PolygonMapObject polygonMapObject, String polygonName) {
-        DoorFactory doorFactory = new DoorFactory(gameScreen, gameAssets, gameContactListener); // Instantiate the DoorFactory
+        DoorFactory doorFactory = new DoorFactory(screenInterface, gameAssets); // Instantiate the DoorFactory
         doorFactory.createDoor(polygonMapObject, polygonName); // Call createDoor method from DoorFactory
     }
 
     private void createTree(PolygonMapObject polygonMapObject, int treeType) {
-        TreeFactory treeFactory = new TreeFactory(gameScreen, gameAssets, gameContactListener);
+        TreeFactory treeFactory = new TreeFactory(screenInterface, gameAssets);
         treeFactory.createTree(polygonMapObject, treeType);
     }
 
     private void createBoulder(PolygonMapObject polygonMapObject) {
-        BoulderFactory boulderFactory = new BoulderFactory(gameScreen, gameAssets, gameContactListener);
+        BoulderFactory boulderFactory = new BoulderFactory(screenInterface, gameAssets, gameContactListener);
         boulderFactory.createBoulder(polygonMapObject);
     }
 
     private void createSaloon(PolygonMapObject polygonMapObject) {
-        BuildingFactory buildingFactory = new BuildingFactory(gameScreen, gameAssets);
+        BuildingFactory buildingFactory = new BuildingFactory(screenInterface, gameAssets);
         buildingFactory.createBuilding(polygonMapObject);
     }
 
     private void createStaticBody(PolygonMapObject polygonMapObject) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        Body body = gameScreen.getWorld().createBody(bodyDef);
+        Body body = screenInterface.getWorld().createBody(bodyDef);
         Shape shape = createPolygonShape(polygonMapObject);
         body.setUserData("static_body"); // Set userData to some meaningful data
         body.createFixture(shape, 1000);

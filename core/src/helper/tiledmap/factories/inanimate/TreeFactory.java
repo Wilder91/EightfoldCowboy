@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.GameContactListener;
-import com.mygdx.eightfold.screens.GameScreen;
+import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import com.mygdx.eightfold.GameAssets;
 import objects.inanimate.Tree;
@@ -15,14 +15,14 @@ import static helper.Constants.PPM;
 import static helper.ContactType.TREE;
 
 public class TreeFactory {
-    private GameScreen gameScreen;
+    private ScreenInterface screenInterface;
     private static int treeCounter = 0;
     private GameAssets gameAssets;
     private GameContactListener gameContactListener;
 
-    public TreeFactory(GameScreen gameScreen, GameAssets gameAssets, GameContactListener gameContactListener){
+    public TreeFactory(ScreenInterface screenInterface, GameAssets gameAssets){
         this.gameAssets = gameAssets;
-        this.gameScreen = gameScreen;
+        this.screenInterface = screenInterface;
         this.gameContactListener = gameContactListener;
     }
 
@@ -39,7 +39,7 @@ public class TreeFactory {
                 (boundingRectangle.y + boundingRectangle.height / 2) / PPM
         );
 
-        Body treeBody = gameScreen.getWorld().createBody(bodyDef);
+        Body treeBody = screenInterface.getWorld().createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
         float[] vertices = polygon.getVertices();
@@ -67,13 +67,13 @@ public class TreeFactory {
                 boundingRectangle.width,
                 boundingRectangle.height,
                 treeBody,
-                gameScreen,
+                screenInterface,
                 treeType,
                 treeId,
                 gameAssets,
                 gameContactListener
         );
 
-        gameScreen.addTree(tree);
+        screenInterface.addTree(tree);
     }
 }

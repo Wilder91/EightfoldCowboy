@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.screens.GameScreen;
+import com.mygdx.eightfold.screens.ScreenInterface;
 import conversations.firstLevel.FirstLevelBisonConversations;
 import helper.movement.BisonMovementHelper;
 import helper.movement.SpriteMovementHelper;
@@ -34,14 +35,15 @@ public class Bison extends GameEntity {
     public boolean talkingBison;
     private BitmapFont font;
     private GameScreen gameScreen;
+    private ScreenInterface screenInterface;
     private float restingTime;
     private float pauseDuration;
     private float contactTimer;
     private boolean inConversation = false;
     private FirstLevelBisonConversations bisonConversations;
 
-    public Bison(float width, float height, float x, float y, Body body, Facing initialDirection, GameScreen gameScreen, int bisonId, GameAssets gameAssets, Boolean talkingBison) {
-        super(width, height, body, gameScreen, gameAssets);
+    public Bison(float width, float height, float x, float y, Body body, Facing initialDirection,  ScreenInterface screenInterface, int bisonId, GameAssets gameAssets, Boolean talkingBison) {
+        super(width, height, body, screenInterface, gameAssets);
         this.random = new Random();
         this.id = bisonId;
         this.talkingBison = talkingBison;
@@ -53,7 +55,7 @@ public class Bison extends GameEntity {
         this.pauseDuration = 3f; // 3 seconds pause duration
         this.isPaused = true;
         this.contactTimer = 1;
-        this.gameScreen = gameScreen;
+        this.screenInterface = screenInterface;
         int[] eightfoldFrameCounts = {5, 7, 8, 5, 5, 5, 7, 7, 7, 7, 5, 5, 5, 5, 5};
         this.movementHelper = new BisonMovementHelper(gameAssets, "bison", eightfoldFrameCounts, true);
         this.font = new BitmapFont();
@@ -62,7 +64,7 @@ public class Bison extends GameEntity {
         this.sprite = new Sprite(movementHelper.getCurrentAnimation().getKeyFrame(0));
         sprite.setAlpha(.3f);
         BisonManager.addBison(this);
-        this.bisonConversations = new FirstLevelBisonConversations(gameScreen, this, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png");
+        this.bisonConversations = new FirstLevelBisonConversations(screenInterface, this, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png");
     }
 
     @Override
@@ -101,28 +103,26 @@ public class Bison extends GameEntity {
 
         if (isContacted) {
             if (!talkingBison) {
-                //System.out.println(contactTimer);
-                //bisonConversations.startConversations(id);
                 font.setColor(Color.WHITE);
                 font.draw(batch, "mooo", body.getPosition().x * PPM, body.getPosition().y * PPM + 70);
                 if (contactTimer >= 1.5) {
                     contactTimer = 0;
-                    isContacted = false;
+                    //isContacted = false;
                 }
             } else if (talkingBison) {
                 if(!inConversation) {
-                    gameScreen.showInfoBox("Press E to begin Conversation");
+                    screenInterface.showInfoBox("Press E to begin Conversation");
 
                     if (Gdx.input.isKeyPressed(Input.Keys.E)) {
                         inConversation = true;
-                        gameScreen.hideInfoBox();
+                        screenInterface.hideInfoBox();
                         isContacted = false;
                         bisonConversations.startConversations(this);
                     }
                     if (contactTimer >= 1.5) {
                         contactTimer = 0;
-                        gameScreen.hideInfoBox();
-                        isContacted = false;
+                        //screenInterface.hideInfoBox();
+                        //isContacted = false;
                         //isContacted = false;
 
                     }
@@ -147,6 +147,9 @@ public class Bison extends GameEntity {
         this.body = body;
     }
 
+    public void endPlayerContact(){
+        isContacted = false;
+    }
 
     public void playerContact(Body body, Vector2 linearVelocity) {
         body.setLinearDamping(1.5f);

@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.screens.GameScreen;
+import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import com.mygdx.eightfold.GameAssets;
 import objects.inanimate.Building;
@@ -14,11 +15,11 @@ import static helper.ContactType.TREE;
 
 public class BuildingFactory {
     private static int buildingCounter = 0;
-    private GameScreen gameScreen;
+    private ScreenInterface screenInterface;
     private GameAssets gameAssets;
 
-    public BuildingFactory(GameScreen gameScreen, GameAssets gameAssets) {
-        this.gameScreen = gameScreen;
+    public BuildingFactory(ScreenInterface screenInterface, GameAssets gameAssets) {
+        this.screenInterface = screenInterface;
         this.gameAssets = gameAssets;
     }
 
@@ -36,7 +37,7 @@ public class BuildingFactory {
                 (boundingRectangle.y + boundingRectangle.height / 2) / PPM
         );
 
-        Body buildingBody = gameScreen.getWorld().createBody(bodyDef);
+        Body buildingBody = screenInterface.getWorld().createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
         // Adjust size calculation
@@ -61,11 +62,11 @@ public class BuildingFactory {
                 boundingRectangle.y / PPM + boundingRectangle.height / 2 / PPM,
                 buildingBody,
                 true,
-                gameScreen,
+                screenInterface,
                 buildingId,
                 gameAssets
         );
 
-        gameScreen.addBuilding(building);
+        screenInterface.addBuilding(building);
     }
 }

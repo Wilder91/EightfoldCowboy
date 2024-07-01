@@ -9,15 +9,23 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mygdx.eightfold.Boot;
 import com.mygdx.eightfold.GameContactListener;
-
 import com.mygdx.eightfold.GameAssets;
+import helper.BodyUserData;
+import helper.ContactType;
 import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
+import objects.animals.bird.Bird;
+import objects.animals.bison.Bison;
+import objects.inanimate.Boulder;
+import objects.inanimate.Building;
 import objects.inanimate.Door;
+import objects.inanimate.Tree;
 import text.infobox.InfoBox;
 import text.textbox.SaloonTextBox;
 
@@ -35,51 +43,62 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
     private Player player;
     private Boolean gameTime = false;
-
-    public Boolean isGameTime() {
-        return gameTime;
-    }
-
-    public void setGameTime(Boolean gameTime) {
-        this.gameTime = gameTime;
-    }
-
+    private boolean playerPositionInitialized = false;
+    private final ScreenInterface screenInterface;
     private final GameContactListener gameContactListener;
     private final GameAssets gameAssets;
     private final Music music;
     private final ArrayList<Door> doorList;
-    // TextBox
+    private Game game;
+    // TextBox and InfoBox
     private SaloonTextBox textBox;
     private InfoBox infoBox;
 
-    public SaloonScreen(OrthographicCamera camera, GameAssets gameAssets, GameContactListener gameContactListener, GameScreen gameScreen, World world) {
+    public SaloonScreen(OrthographicCamera camera, GameAssets gameAssets,  GameScreen gameScreen, World world, ScreenInterface screenInterface, Player player, Game game) {
         this.camera = camera;
+        //camera.zoom = 3f;
         this.music = gameAssets.getMusic("ethereal.mp3");
+        this.screenInterface = screenInterface;
         this.batch = new SpriteBatch();
         this.world = world;
+        this.game = game;
         this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;
         this.doorList = new ArrayList<>();
-        this.gameContactListener = gameContactListener;
+        this.gameContactListener = new GameContactListener(this);
         this.world.setContactListener(this.gameContactListener);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-        this.tiledMapHelper = new TiledMapHelper(gameScreen, gameAssets, gameContactListener);
+        this.tiledMapHelper = new TiledMapHelper(this, gameAssets, gameContactListener);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/InsideMap.tmx");
-        this.player = gameScreen.getPlayer();
+
+        this.player = Boot.INSTANCE.getGameScreen().getPlayer();
+        player.createBody(world);
 
         if (player == null) {
             System.out.println("Player is null!");
         }
 
+        // Initialize TextBox and InfoBox
+        this.textBox = new SaloonTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), "animals/bison/bison-single.png");
+        this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
+        Gdx.input.setInputProcessor(textBox.getStage());
+        Gdx.input.setInputProcessor(infoBox.getStage());
     }
 
     public void showTextBox(String text) {
         textBox.showTextBox(text);
     }
 
+    @Override
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
     public void hideTextBox() {
         textBox.hideTextBox();
     }
+
+
 
     public void showInfoBox(String text) {
         infoBox.showInfoBox(text);
@@ -95,9 +114,23 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     @Override
+    public void setGameTime(boolean saloonTime) {
+
+        gameScreen.setSaloonTime(!saloonTime);
+    }
+
+    @Override
     public boolean isSaloonTime() {
         return false;
     }
+
+    @Override
+    public void transitionToScreen(ScreenInterface newScreen) {
+        ((Game) Gdx.app.getApplicationListener()).setScreen((ScreenAdapter) newScreen);
+        updateDoorScreenReferences(newScreen);
+    }
+
+
 
     private void update(float delta) {
         world.step(1 / 60f, 6, 2);  // Step the physics world
@@ -105,23 +138,35 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
+
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             enterPauseScreen();
         }
-        //System.out.println(gameTime);
+
         if (player != null) {
-            //System.out.println("Updating player...");
+
             player.update(delta);  // Update the player
-            //System.out.println("Player position: " + player.getBody().getPosition());
-        } else {
-            //System.out.println("Player is null during update!");
         }
-        if (gameTime){
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new GameScreen(camera, gameAssets));
+
+        for (Door door : doorList) {
+
+            door.update(delta);
+
         }
+
+        if (player != null) {
+            if (!playerPositionInitialized) {
+                player.getBody().setTransform(15, 2, 0); // Set the initial position
+                playerPositionInitialized = true; // Set the flag to true to avoid resetting the position
+            }
+
+            player.update(delta);  // Update the player
+        }
+
+
     }
 
-    public void enterPauseScreen(){
+    public void enterPauseScreen() {
         ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, gameScreen));
     }
 
@@ -136,10 +181,20 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     public void addDoor(Door door) {
+        System.out.println("HELLLLO");
         if (doorList != null) {
             doorList.add(door);
+            System.out.println(door);
         } else {
             System.err.println("doorList is null. Cannot add door.");
+        }
+    }
+
+
+
+    private void updateDoorScreenReferences(ScreenInterface newScreen) {
+        for (Door door : doorList) {
+            door.setScreen(newScreen);
         }
     }
 
@@ -156,8 +211,10 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         // Render game objects
         if (player != null) {
             player.render(batch);
+
+            System.out.println("Player Position: " + player.getSprite().getX());
         }
-        for (Door door : doorList){
+        for (Door door : doorList) {
             door.render(batch);
         }
         music.setVolume(.1f);
@@ -166,10 +223,10 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         batch.end();
 
         // Render the Stage
-        //textBox.getStage().act(delta);
-        //textBox.getStage().draw();
-        //infoBox.getStage().act(delta);
-        //infoBox.getStage().draw();
+        textBox.getStage().act(delta);
+        textBox.getStage().draw();
+        infoBox.getStage().act(delta);
+        infoBox.getStage().draw();
 
         // Uncomment for debugging physics bodies
         box2DDebugRenderer.render(world, camera.combined.scl(PPM));
@@ -182,12 +239,39 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         world.dispose();
         box2DDebugRenderer.dispose();
         orthogonalTiledMapRenderer.dispose();
-        //textBox.getStage().dispose();
-        //textBox.getSkin().dispose();
+        textBox.getStage().dispose();
+        textBox.getSkin().dispose();
+        infoBox.getStage().dispose();
+        infoBox.getSkin().dispose();
     }
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    @Override
+    public void addBison(Bison bison) {
+
+    }
+
+    @Override
+    public void addTree(Tree tree) {
+
+    }
+
+    @Override
+    public void addBird(Bird bird) {
+
+    }
+
+    @Override
+    public void addBoulder(Boulder boulder) {
+
+    }
+
+    @Override
+    public void addBuilding(Building building) {
+
     }
 
     public World getWorld() {
@@ -196,11 +280,19 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     @Override
     public void toggle() {
-
+        // Implement if needed
     }
 
     @Override
     public boolean isActive() {
         return false;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

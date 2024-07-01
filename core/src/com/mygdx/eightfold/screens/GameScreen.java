@@ -14,8 +14,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mygdx.eightfold.Boot;
 import com.mygdx.eightfold.GameContactListener;
-
 import com.mygdx.eightfold.GameAssets;
 import helper.tiledmap.TiledMapHelper;
 import objects.animals.bird.Bird;
@@ -40,6 +40,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Tree> treeList;
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
+    private final ScreenInterface screenInterface;
     private final ArrayList<Door> doorList;
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
@@ -50,7 +51,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final GameContactListener gameContactListener;
     private final GameAssets gameAssets;
     private boolean saloonTime = false;
-    private SaloonScreen saloonScreen;
+    private Game game;
     public OrthographicCamera getCamera() {
         return camera;
     }
@@ -59,33 +60,30 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private BisonTextBox textBox;
     private InfoBox infoBox;
 
-    public GameScreen(OrthographicCamera camera, GameAssets gameAssets) {
+    public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game) {
+        this.screenInterface = screenInterface;
         this.buildingList = new ArrayList<>();
         this.camera = camera;
-        //camera.zoom = 40f;
         this.bisonList = new ArrayList<>();
         this.birdList = new ArrayList<>();
         this.boulderList = new ArrayList<>();
         this.treeList = new ArrayList<>();
         this.doorList = new ArrayList<>();
         this.batch = new SpriteBatch();
+        this.game = game;
         this.music = gameAssets.getMusic("lost & found.mp3");
         this.world = new World(new Vector2(0, 0), false);
         this.gameAssets = gameAssets;
-
         this.gameContactListener = new GameContactListener(this);
         this.world.setContactListener(this.gameContactListener);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets, gameContactListener);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/EightfoldMap.tmx");
-
         // Initialize TextBox
         this.textBox = new BisonTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), "animals/bison/bison-single.png");
         this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
-       // this.saloonScreen = new SaloonScreen(camera, gameAssets,gameContactListener, this);
         Gdx.input.setInputProcessor(textBox.getStage());
         Gdx.input.setInputProcessor(infoBox.getStage());
-
     }
 
     public void showTextBox(String text) {
@@ -104,9 +102,15 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         infoBox.hideInfoBox();
     }
 
-    public void setSaloonTime(boolean saloonTime) {
+    public void setSaloonTime(boolean time) {
         music.stop();
-        this.saloonTime = saloonTime;
+        System.out.println("CLOSE!");
+        this.saloonTime = time;
+    }
+
+    @Override
+    public void setGameTime(boolean saloonTime) {
+
     }
 
     public Player getPlayer() {
@@ -118,13 +122,25 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     @Override
-    public void toggle() {
+    public void transitionToScreen(ScreenInterface newScreen) {
+        ((Game) Gdx.app.getApplicationListener()).setScreen((ScreenAdapter) newScreen);
+        updateDoorScreenReferences(newScreen);
+    }
 
+    @Override
+    public void toggle() {
+        // Implement toggle logic if needed
     }
 
     @Override
     public boolean isActive() {
         return false;
+    }
+
+    private void updateDoorScreenReferences(ScreenInterface newScreen) {
+        for (Door door : doorList) {
+            door.setScreen(newScreen);
+        }
     }
 
     private void update(float delta) {
@@ -154,7 +170,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Building building : buildingList) {
             building.update(delta);
         }
-        for (Door door : doorList){
+        for (Door door : doorList) {
             door.update(delta);
         }
 
@@ -163,17 +179,21 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-            // Pause the game
             ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
         }
-        if (saloonTime){
-            ((Game) Gdx.app.getApplicationListener()).setScreen(new SaloonScreen(camera, gameAssets, gameContactListener, this, world));
+        if (saloonTime) {
+            World newWorld = new World(new Vector2(0, 0), false); // Create a new World instance for the new screen
+             // Create a new GameContactListener instance
+            SaloonScreen saloonScreen = new SaloonScreen(camera, gameAssets,   this, newWorld, this, player, game);
+            // Use new instances
+            ((Game) Gdx.app.getApplicationListener()).setScreen(saloonScreen);
+            updateDoorScreenReferences(saloonScreen);
         }
 
         textBox.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    public void enterPauseScreen(){
+    public void enterPauseScreen() {
         ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
     }
 
@@ -187,6 +207,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
+    @Override
     public void addBison(Bison bison) {
         if (bisonList != null) {
             bisonList.add(bison);
@@ -195,6 +216,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
+    @Override
     public void addDoor(Door door) {
         if (doorList != null) {
             doorList.add(door);
@@ -203,6 +225,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
+
+
+
+    @Override
     public void addBird(Bird bird) {
         if (birdList != null) {
             birdList.add(bird);
@@ -211,18 +237,21 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
+    @Override
     public void addBoulder(Boulder boulder) {
         if (boulderList != null) {
             boulderList.add(boulder);
         }
     }
 
+    @Override
     public void addBuilding(Building building) {
         if (buildingList != null) {
             buildingList.add(building);
         }
     }
 
+    @Override
     public void addTree(Tree tree) {
         if (treeList != null) {
             treeList.add(tree);
@@ -238,7 +267,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
         music.setVolume(.1f);
-       // music.play();
+        //music.play();
         batch.begin();
 
         // Render game objects
@@ -251,7 +280,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Bird bird : birdList) {
             bird.render(batch);
         }
-        for (Bison bison : bisonList){
+        for (Bison bison : bisonList) {
             bison.render(batch);
         }
         for (Boulder boulder : boulderList) {
@@ -260,7 +289,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Tree tree : treeList) {
             tree.render(batch);
         }
-        for (Door door : doorList){
+        for (Door door : doorList) {
             door.render(batch);
         }
         batch.end();
@@ -272,7 +301,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         infoBox.getStage().draw();
 
         // Uncomment for debugging physics bodies
-        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+       // box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
     @Override
@@ -286,19 +315,22 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         textBox.getSkin().dispose();
     }
 
+    public void resetPlayer(Player player){
+        player.createBody(world);
+    }
+
     public void setPlayer(Player player) {
         this.player = player;
+        if(player.getBody() == null) {
+
+        }
     }
 
     public World getWorld() {
         return world;
     }
 
-    public void conversationScreen(int id) {
-        ((Game) Gdx.app.getApplicationListener()).setScreen(new BisonConversationScreen(camera, gameAssets, this, id));
+    public Game getGame() {
+        return game;
     }
-
-
-
-
 }

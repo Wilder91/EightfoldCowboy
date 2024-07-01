@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
+import com.mygdx.eightfold.screens.ScreenInterface;
 
 import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
@@ -28,8 +29,8 @@ public class Tree extends InanimateEntity {
     private GameAssets gameAssets;
 
     @SuppressWarnings("unchecked")
-    public Tree(float width, float height, Body body, GameScreen gameScreen, int treeType, int id, GameAssets gameAssets, GameContactListener gameContactListener) {
-        super(width, height, body, gameScreen, id, gameAssets, gameContactListener);
+    public Tree(float width, float height, Body body, ScreenInterface screenInterface, int treeType, int id, GameAssets gameAssets, GameContactListener gameContactListener) {
+        super(width, height, body, screenInterface, id, gameAssets, gameContactListener);
         this.stateTime = 0f;
         this.treeType = treeType;
         treeAnimations = new Animation[6]; // Array to hold animations for 6 tree types

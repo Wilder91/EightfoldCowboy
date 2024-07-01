@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.screens.GameScreen;
+import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
 import com.mygdx.eightfold.GameAssets;
@@ -12,10 +13,11 @@ import objects.animals.bird.Bird;
 
 public class BirdFactory {
     private GameScreen gameScreen;
+    private ScreenInterface screenInterface;
     private GameAssets gameAssets;
     private static int birdCounter = 0;
-    public BirdFactory(GameScreen gameScreen, GameAssets gameAssets){
-        this.gameScreen = gameScreen;
+    public BirdFactory(ScreenInterface screenInterface, GameAssets gameAssets){
+        this.screenInterface = screenInterface;
         this.gameAssets = gameAssets;
     }
 

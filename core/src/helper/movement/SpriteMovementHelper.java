@@ -54,7 +54,7 @@ public abstract class SpriteMovementHelper {
             String[] restingAnimations = { "stationaryHorizontal", "stationaryUpDiagonal", "stationaryDownDiagonal"};
             Random random = new Random();
             int randomIndex = random.nextInt(restingAnimations.length);
-            //System.out.println(restingAnimations[randomIndex]);
+
             this.currentAnimation = animations.get(restingAnimations[randomIndex]);
             this.sprite = new Sprite(this.currentAnimation.getKeyFrame(0));
 

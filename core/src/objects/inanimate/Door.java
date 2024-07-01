@@ -1,18 +1,18 @@
 package objects.inanimate;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.mygdx.eightfold.Boot;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.SaloonScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import objects.animals.object_helper.DoorManager;
-import objects.inanimate.InanimateEntity;
-
 import static helper.Constants.PPM;
 
 public class Door extends InanimateEntity {
@@ -36,6 +36,7 @@ public class Door extends InanimateEntity {
         this.messageTimer = 0;
         this.messageState = 0;
         this.moveOn = false;
+
         this.name = doorName != null ? doorName.trim() : null; // Trim the name to remove any leading/trailing spaces
         this.font = new BitmapFont();
 
@@ -45,10 +46,9 @@ public class Door extends InanimateEntity {
 
     @Override
     public void update(float delta) {
-        float x = body.getPosition().x * PPM;
-        float y = body.getPosition().y * PPM;
-
         if (isContacted) {
+            float x = body.getPosition().x * PPM;
+            float y = body.getPosition().y * PPM;
             handleInteraction(delta, x, y);
         } else {
             screen.hideInfoBox();
@@ -61,28 +61,25 @@ public class Door extends InanimateEntity {
             screen.showInfoBox("Press E to Open Doors");
             if (messageTimer >= 1.5f) {
                 messageTimer = 0;
-                isContacted = false;
+                playerLeave();
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
                 messageState = 1;
                 messageTimer = 0;
-                System.out.println("door name " + name);
                 if (name != null) {
                     switch (name) {
                         case "enter_saloon":
                             if (screen instanceof GameScreen) {
-                                GameScreen gameScreen = (GameScreen) screen;
-                                System.out.println("Switching to Saloon...");
-                                screen.setSaloonTime(!screen.isSaloonTime());
+                                Game game = ((GameScreen) screen).getGame();
+                                Boot.INSTANCE.switchToSaloonScreen(((GameScreen) screen).getPlayer());
+                                messageState = 0;
                             }
                             break;
                         case "leave_saloon":
-                            System.out.println("leave!");
-                            if (saloonScreen != null) {
-                                System.out.println("Leaving Saloon...");
-                                saloonScreen.setGameTime(!saloonScreen.isGameTime());
-                            } else {
-                                System.out.println("Saloon screen not initialized");
+                            if (screen instanceof SaloonScreen) {
+                                Game game = ((SaloonScreen) screen).getGame();
+                                Boot.INSTANCE.switchToGameScreen((Boot.INSTANCE.getGameScreen()).getPlayer());
+                                messageState = 0;
                             }
                             break;
                         default:
@@ -114,7 +111,6 @@ public class Door extends InanimateEntity {
 
     public void playerLeave() {
         isContacted = false;
-        messageState = 0;  // Reset message state on leave
     }
 
     public String getName() {
@@ -124,4 +120,9 @@ public class Door extends InanimateEntity {
     public int getId() {
         return doorId;
     }
+
+    public void setScreen(ScreenInterface newScreen) {
+        this.screen = newScreen;
+    }
 }
+

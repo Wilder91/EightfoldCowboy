@@ -20,6 +20,7 @@ public class DoorManager {
     }
 
     public static Door getDoorById(int id) {
+
         return doorMap.get(id);
     }
 }

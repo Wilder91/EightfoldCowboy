@@ -4,8 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.eightfold.screens.GameScreen;
+import com.mygdx.eightfold.screens.ScreenInterface;
+import helper.BodyHelperService;
+import helper.ContactType;
 import helper.movement.SpriteMovementHelper;
 import com.mygdx.eightfold.GameAssets;
 
@@ -23,15 +29,21 @@ public class Player extends GameEntity {
     private PlayerAnimations playerAnimations;
     private float stateTime;
     private SpriteMovementHelper movementHelper;
-
-
-    public Player(float width, float height, Body body, GameScreen gameScreen, GameAssets gameAssets) {
-        super(width, height, body, gameScreen, gameAssets);
+    private ScreenInterface screenInterface;
+    private Vector2 initialPosition;
+    public Player(float x, float y, float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
+        super(width, height, body, screenInterface, gameAssets);
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
         this.speed = 4f;
         this.originalSpeed = speed;
         this.isFacingRight = true;
         this.body = body;
         this.gameAssets = gameAssets;
+        System.out.println("x: " + Gdx.graphics.getWidth()/2);
+        this.initialPosition = new Vector2(300,100);
 
         this.playerAnimations = new PlayerAnimations(gameAssets);
         // Load idle texture
@@ -47,7 +59,18 @@ public class Player extends GameEntity {
         this.sprite.setSize(width, height);
     }
 
-//    private void checkBounds() {
+    public void setPosition(int setX, int setY){
+        x = setX;
+        y = setY;
+
+
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    //    private void checkBounds() {
 //        if (sprite.getX() < 0) {
 //            sprite.s.x = 0;
 //        } else if (position.x + width > mapWidth) {
@@ -64,15 +87,25 @@ public class Player extends GameEntity {
     @Override
     public void update(float delta) {
         stateTime += delta; // Update the state time
-
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
-//        System.out.println("Player position: (" + x + ", " + y + ")");
-//        System.out.println("Player velocity: (" + body.getLinearVelocity().x + ", " + body.getLinearVelocity().y + ")");
+
 
         checkUserInput();
         updateAnimation();
     }
+
+    public void createBody(World world) {
+        this.body = BodyHelperService.createBody(
+                x, y, width, height, false, world, ContactType.PLAYER, 1);
+    }
+
+    public void setPosition(float x, float y) {
+        if (body != null) {
+            body.setTransform(x / PPM, y / PPM, body.getAngle()); // Set initial position
+        }
+    }
+
 
     @Override
     public void render(SpriteBatch batch) {
@@ -134,5 +167,11 @@ public class Player extends GameEntity {
 
     public void setBody(Body body) {
         this.body = body;
+    }
+
+
+    public Vector2 getInitialPosition() {
+        initialPosition.set(x, y);
+        return initialPosition;
     }
 }

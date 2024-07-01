@@ -97,7 +97,7 @@ public class Bird extends GameEntity {
 
         float velocityX = speed * MathUtils.cos(angle);
         float velocityY = speed * MathUtils.sin(angle);
-        System.out.println(velocityX);
+
         body.setLinearVelocity(velocityX, velocityY);
 
     }
