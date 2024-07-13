@@ -169,9 +169,14 @@ public class Player extends GameEntity {
         this.body = body;
     }
 
+    public int getId(){
+        return 1;
+    }
 
     public Vector2 getInitialPosition() {
         initialPosition.set(x, y);
         return initialPosition;
     }
+
+
 }

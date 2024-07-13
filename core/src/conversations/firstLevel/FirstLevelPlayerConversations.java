@@ -1,34 +1,31 @@
 package conversations.firstLevel;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mygdx.eightfold.player.Player;
+import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import conversations.Conversation;
 import objects.animals.bison.Bison;
 
-public class FirstLevelBisonConversations extends Conversation {
+public class FirstLevelPlayerConversations extends Conversation {
     private final ScreenInterface screenInterface;
-    private final Bison bison;
+    private final Player player;
 
 
-    public FirstLevelBisonConversations(ScreenInterface screenInterface, Bison bison, String filepath, String imagePath) {
-        super(getBisonConversationTexts(bison), filepath, imagePath);
+    public FirstLevelPlayerConversations(ScreenInterface screenInterface, Player player, String filepath, String imagePath) {
+        super(getPlayerConversationTexts(player), filepath, imagePath);
         this.screenInterface = screenInterface;
-        this.bison = bison;
+        this.player = player;
     }
 
-    private static String[] getBisonConversationTexts(Bison bison) {
+    private static String[] getPlayerConversationTexts(Player player) {
         //System.out.println(bison.getId());
-        switch (bison.getId()) {
-            case 0:
+
+
                 return new String[]{"Howdy stranger, " + "\n" + "welcome to the ranch", "Nice day today, huh?", "Feel free to take a walk" + "\n" + "around and talk to the other bison. Just stay out of The" + "\n" + "Saloon."};
-            case 1:
-                return new String[]{"Wassup", "I'm the evil one"};
-            case 2:
-                return new String[]{"Welcome to Bison Land", "Even the people are bison\nhere"};
-            case 3:
-                return new String[]{"Stay out of the Saloon," + "\n" + "I've heard it's haunted", "I don't believe in that" + "\n" + "crap but I have heard" + "\n" + "strange noises emanating" + "\n" + "from within"};
-            default:
-                return new String[]{"Leave my ass alone."};
-        }
+
+
+
     }
 
     @Override

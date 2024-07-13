@@ -72,9 +72,12 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/InsideMap.tmx");
 
         this.player = Boot.INSTANCE.getGameScreen().getPlayer();
+
         player.createBody(world);
 
+
         if (player == null) {
+
             System.out.println("Player is null!");
         }
 
@@ -211,8 +214,8 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         // Render game objects
         if (player != null) {
             player.render(batch);
-
-            System.out.println("Player Position: " + player.getSprite().getX());
+            //player.createBody(world);
+            //dSystem.out.println("Player Position: " + player.getSprite().getX());
         }
         for (Door door : doorList) {
             door.render(batch);
@@ -247,6 +250,9 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     public void setPlayer(Player player) {
         this.player = player;
+        if (player != null && player.getBody() == null) {
+            player.createBody(world); // Create a new body in the new world
+        }
     }
 
     @Override

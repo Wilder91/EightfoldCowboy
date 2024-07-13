@@ -123,8 +123,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     @Override
     public void transitionToScreen(ScreenInterface newScreen) {
+        removePlayerBody();
         ((Game) Gdx.app.getApplicationListener()).setScreen((ScreenAdapter) newScreen);
+
         updateDoorScreenReferences(newScreen);
+
     }
 
     @Override
@@ -139,6 +142,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     private void updateDoorScreenReferences(ScreenInterface newScreen) {
         for (Door door : doorList) {
+            removePlayerBody();
             door.setScreen(newScreen);
         }
     }
@@ -225,7 +229,14 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
-
+    public void removePlayerBody() {
+        System.out.println("player body before : " + player.getBody());
+        if (player != null && player.getBody() != null) {
+            world.destroyBody(player.getBody());
+            player.setBody(null);
+            System.out.println("player body after: " + player.getBody());// Clear the reference to the old body
+        }
+    }
 
 
     @Override
@@ -301,7 +312,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         infoBox.getStage().draw();
 
         // Uncomment for debugging physics bodies
-       // box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+       //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
     @Override

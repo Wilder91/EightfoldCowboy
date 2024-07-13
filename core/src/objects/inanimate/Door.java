@@ -71,7 +71,9 @@ public class Door extends InanimateEntity {
                         case "enter_saloon":
                             if (screen instanceof GameScreen) {
                                 Game game = ((GameScreen) screen).getGame();
+                                ((GameScreen) screen).removePlayerBody();
                                 Boot.INSTANCE.switchToSaloonScreen(((GameScreen) screen).getPlayer());
+
                                 messageState = 0;
                             }
                             break;

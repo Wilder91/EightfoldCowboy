@@ -1,5 +1,6 @@
 package objects.animals.bird;
 
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.GameScreen;
+import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.movement.SpriteMovementHelper;
 import objects.animals.object_helper.BirdManager;
 import com.mygdx.eightfold.player.GameEntity;
@@ -27,9 +29,10 @@ public class Bird extends GameEntity {
     private int id;
     private AssetManager assetManager;
     private GameAssets gameAssets;
+    private ScreenInterface screenInterface;
 
-    public Bird(float width, float height, float x, float y, Body body, boolean isFacingRight, GameScreen gameScreen, int birdId, GameAssets gameAssets) {
-        super(0, 0, body, gameScreen, gameAssets);
+    public Bird(float width, float height, float x, float y, Body body, boolean isFacingRight, ScreenInterface screenInterface, int birdId, GameAssets gameAssets) {
+        super(0, 0, body, screenInterface, gameAssets);
         float spriteX = x - width / 2;
         float spriteY = y - height / 2;
         this.speed = 15f;
@@ -64,9 +67,9 @@ public class Bird extends GameEntity {
 
         // Check and update the sprite's direction
 
-        if (newFacingRight != isFacingRight) {
-            isFacingRight = newFacingRight;
-        }
+//        if (newFacingRight != isFacingRight) {
+//            isFacingRight = newFacingRight;
+//        }
 
     }
 
@@ -89,7 +92,7 @@ public class Bird extends GameEntity {
 
     public static void playerContact(Body body, int id){
         // Apply linear damping to gradually reduce velocity
-        body.setLinearDamping(.8f);
+        body.setLinearDamping(3f);
         // Generate a random direction and set the initial velocity
         Random random = new Random();
         float angle = random.nextFloat() * MathUtils.PI2 * 40; // Random angle between 0 and 2π

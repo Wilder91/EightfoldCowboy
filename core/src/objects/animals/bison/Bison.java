@@ -2,6 +2,7 @@ package objects.animals.bison;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
@@ -22,8 +23,6 @@ import static helper.Constants.PPM;
 
 public class Bison extends GameEntity {
     private SpriteMovementHelper movementHelper;
-
-
     private Facing facingDirection;
     private int id;
     private Sprite sprite;
@@ -41,15 +40,18 @@ public class Bison extends GameEntity {
     private float contactTimer;
     private boolean inConversation = false;
     private FirstLevelBisonConversations bisonConversations;
+    private Sound contactSound;
 
     public Bison(float width, float height, float x, float y, Body body, Facing initialDirection,  ScreenInterface screenInterface, int bisonId, GameAssets gameAssets, Boolean talkingBison) {
         super(width, height, body, screenInterface, gameAssets);
         this.random = new Random();
         this.id = bisonId;
         this.talkingBison = talkingBison;
-        this.facingDirection = talkingBison ? Facing.LEFT : initialDirection;
+        this.facingDirection = Facing.LEFT;
         this.body = body;
         this.gameAssets = gameAssets;
+        this.contactSound = gameAssets.getSound("sounds/bison-sound.mp3");
+
         this.movementThreshold = 1f;
         this.restingTime = 0f;
         this.pauseDuration = 3f; // 3 seconds pause duration
@@ -57,7 +59,9 @@ public class Bison extends GameEntity {
         this.contactTimer = 1;
         this.screenInterface = screenInterface;
         int[] eightfoldFrameCounts = {5, 7, 8, 5, 5, 5, 7, 7, 7, 7, 5, 5, 5, 5, 5};
-        this.movementHelper = new BisonMovementHelper(gameAssets, "bison", eightfoldFrameCounts, true);
+        boolean startFlipped = talkingBison; // Set startFlipped to true if talkingBison is true, otherwise false
+        boolean randomFlip = !talkingBison;
+        this.movementHelper = new BisonMovementHelper(gameAssets, "bison", eightfoldFrameCounts, randomFlip, startFlipped);
         this.font = new BitmapFont();
         movementHelper.loadAnimations();// Load animations
         // Initialize the sprite with the first frame of the animation
@@ -116,8 +120,8 @@ public class Bison extends GameEntity {
                     if (Gdx.input.isKeyPressed(Input.Keys.E)) {
                         inConversation = true;
                         screenInterface.hideInfoBox();
-                        isContacted = false;
-                        bisonConversations.startConversations(this);
+
+                        bisonConversations.startBisonConversations(this);
                     }
                     if (contactTimer >= 1.5) {
                         contactTimer = 0;
@@ -132,10 +136,14 @@ public class Bison extends GameEntity {
         }
         if(inConversation) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-                bisonConversations.nextLine(this);
+                bisonConversations.bisonNextLine(this);
             }
         }
 
+    }
+
+    public void playContactSound(){
+        contactSound.play(.05f);
     }
 
 
@@ -152,9 +160,11 @@ public class Bison extends GameEntity {
     }
 
     public void playerContact(Body body, Vector2 linearVelocity) {
+
         body.setLinearDamping(1.5f);
         body.setLinearVelocity(linearVelocity);
         System.out.println(talkingBison);
+
     }
 
 }

@@ -35,29 +35,29 @@ public abstract class SpriteMovementHelper {
     private boolean hasMoved = false;
 
     private boolean startFlipped;
-    public SpriteMovementHelper(GameAssets gameAssets, String animalType, int[] frameCounts, boolean randomFlip ) {
+    public SpriteMovementHelper(GameAssets gameAssets, String animalType, int[] frameCounts, boolean randomFlip, boolean startFlipped) {
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.stateTime = 0f;
         this.movementThreshold = 1f;
         this.animations = new HashMap<>();
         this.frameCounts = frameCounts;
-        this.startFlipped = random.nextBoolean();
         this.randomFlip = randomFlip;
-        if(randomFlip){
+
+        if (randomFlip) {
             this.startFlipped = random.nextBoolean();
-        }else{
-            this.startFlipped = false;
+        } else {
+            this.startFlipped = startFlipped;
         }
+
         loadAnimations();
 
-            String[] restingAnimations = { "stationaryHorizontal", "stationaryUpDiagonal", "stationaryDownDiagonal"};
-            Random random = new Random();
-            int randomIndex = random.nextInt(restingAnimations.length);
+        String[] restingAnimations = {"stationaryHorizontal", "stationaryUpDiagonal", "stationaryDownDiagonal"};
+        Random random = new Random();
+        int randomIndex = random.nextInt(restingAnimations.length);
 
-            this.currentAnimation = animations.get(restingAnimations[randomIndex]);
-            this.sprite = new Sprite(this.currentAnimation.getKeyFrame(0));
-
+        this.currentAnimation = animations.get(restingAnimations[randomIndex]);
+        this.sprite = new Sprite(this.currentAnimation.getKeyFrame(0));
     }
 
     public static boolean checkLinearVelocity(Body body, Sprite sprite, boolean isFacingRight) {
@@ -66,9 +66,11 @@ public abstract class SpriteMovementHelper {
         if (Math.abs(body.getLinearVelocity().x) > velocityThreshold) {
             // Determine the direction based on the velocity
             boolean newFacingRight = (body.getLinearVelocity().x > 0);
-            sprite.flip(true,false);
             // Flip the sprite if the direction has changed
-
+            if (newFacingRight != isFacingRight) {
+                sprite.flip(true, false);
+                isFacingRight = newFacingRight;
+            }
         }
         // Return the current direction if no flipping occurred
         return isFacingRight;

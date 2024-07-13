@@ -29,10 +29,10 @@ public class BirdFactory {
         Body body = BodyHelperService.createBody(
                 boundingRectangle.x + boundingRectangle.width / 2,
                 boundingRectangle.y + boundingRectangle.height / 2,
-                boundingRectangle.width / 2,
-                boundingRectangle.height / 2,
+                boundingRectangle.width ,
+                boundingRectangle.height ,
                 false,
-                gameScreen.getWorld(),
+                screenInterface.getWorld(),
                 ContactType.BIRD,
                 birdId
         );
@@ -44,11 +44,11 @@ public class BirdFactory {
                 boundingRectangle.y + boundingRectangle.height / 2,
                 body,
                 true,
-                gameScreen,
+                screenInterface,
                 birdId,
                 gameAssets
         );
 
-        gameScreen.addBird(bird);
+        screenInterface.addBird(bird);
     }
 }

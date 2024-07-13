@@ -20,7 +20,7 @@ public abstract class Conversation {
         this.textBox = new BisonTextBox(skin, imagePath);
     }
 
-    public void nextLine(Bison bison) {
+    public void bisonNextLine(Bison bison) {
         if (conversationIndex < conversationTexts.length) {
             showTextBox(conversationTexts[conversationIndex]);
             conversationIndex++;
@@ -33,10 +33,10 @@ public abstract class Conversation {
         }
     }
 
-    public void startConversations(Bison bison) {
+    public void startBisonConversations(Bison bison) {
         if (!isTextBoxVisible) {
             hideInfoBox();
-            nextLine(bison);
+            bisonNextLine(bison);
         }
     }
 

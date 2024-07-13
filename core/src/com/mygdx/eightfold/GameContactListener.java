@@ -26,6 +26,8 @@ public class GameContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture a = contact.getFixtureA();
         Fixture b = contact.getFixtureB();
+        Body bodyA = a.getBody();
+        Body bodyB = b.getBody();
         // Check if one of the fixtures has userData of type BodyUserData
 
         if (a.getUserData() instanceof BodyUserData && b.getUserData() instanceof BodyUserData) {
@@ -38,12 +40,24 @@ public class GameContactListener implements ContactListener {
                 door.playerContact();
             }
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BISON) {
-                 Bison bison = BisonManager.getBisonById(userDataB.getId());
-                 bison.isContacted = true;
-                 if(bison.talkingBison){
-                     b.getBody().setLinearVelocity(0,0);
-                     b.getBody().setAngularVelocity(0);
-                 }
+                Bison bison = BisonManager.getBisonById(userDataB.getId());
+
+                if(!bison.talkingBison) {
+                    bison.playContactSound();
+                    bison.isContacted = true;
+                }else{
+
+                if(bodyA.getPosition().x < bodyB.getPosition().x){
+
+                    bison.isContacted = true;
+                    if(bison.talkingBison){
+                        b.getBody().setLinearVelocity(0,0);
+                        b.getBody().setAngularVelocity(0);
+                    }
+
+                }
+                }
+
 
             } else if (userDataA.getType() == ContactType.BISON && userDataB.getType() == ContactType.PLAYER) {
                 Bison bison =  BisonManager.getBisonById(userDataB.getId());
@@ -66,21 +80,25 @@ public class GameContactListener implements ContactListener {
                 door.playerContact();
 
             }
+            if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BIRD){
+                Bird.playerContact(bodyB, userDataB.getId());
+
+            }
             if (userDataA.getType() == ContactType.BIRD && userDataB.getType() == ContactType.BIRD) {
 
-                a.getBody().setLinearDamping(2f);
-                b.getBody().setLinearDamping(2f);
+                bodyA.setLinearDamping(2f);
+                bodyB.setLinearDamping(2f);
 
             } else if (userDataA.getType() == ContactType.BIRD && userDataB.getType() == ContactType.BISON) {
                 Bird.playerContact(a.getBody(), userDataA.getId());
-                b.getBody().setLinearDamping(7f);
+                bodyB.setLinearDamping(7f);
 
             }else if (userDataA.getType() == ContactType.BISON && userDataB.getType() == ContactType.BIRD) {
-                a.getBody().setLinearDamping(7f);
+                bodyA.setLinearDamping(7f);
                 Bird.playerContact(b.getBody(), userDataB.getId());
             }else if (userDataA.getType() == ContactType.BISON && userDataB.getType() == ContactType.BISON) {
-                a.getBody().setLinearDamping(7f);
-                b.getBody().setLinearDamping(7f);
+               bodyA.setLinearDamping(7f);
+               bodyB.setLinearDamping(7f);
 
             }
 
@@ -111,6 +129,7 @@ public class GameContactListener implements ContactListener {
                         b.getBody().setLinearVelocity(0,0);
                         b.getBody().setAngularVelocity(0);
                     }
+                    bison.endPlayerContact();
                     bison.playerContact(b.getBody(), b.getBody().getLinearVelocity());
                 }
             }else if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.DOOR) {

@@ -2,6 +2,7 @@ package com.mygdx.eightfold;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
@@ -20,6 +21,8 @@ public class GameAssets {
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
         assetManager.load("ethereal.mp3", Music.class);
         assetManager.load("lost & found.mp3", Music.class);
+        assetManager.load("sounds/bison-sound.mp3", Sound.class);
+        assetManager.load("animals/birds/bird.png", Texture.class);
         // Load individual textures for bison grazing
         for (int i = 0; i <= 39; i++) {
             String filename = "animals/bison/grazing/Bison_Grazing_" + i + ".png";
@@ -53,5 +56,11 @@ public class GameAssets {
             throw new IllegalArgumentException("Music asset not loaded: " + musicPath);
         }
         return assetManager.get(musicPath, Music.class);
+    }
+    public Sound getSound(String soundPath) {
+        if (!assetManager.isLoaded(soundPath, Sound.class)) {
+            throw new IllegalArgumentException("Music asset not loaded: " + soundPath);
+        }
+        return assetManager.get(soundPath, Sound.class);
     }
 }
