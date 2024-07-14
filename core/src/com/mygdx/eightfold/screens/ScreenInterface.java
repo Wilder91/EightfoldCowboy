@@ -9,6 +9,7 @@ import objects.inanimate.Boulder;
 import objects.inanimate.Building;
 import objects.inanimate.Door;
 import objects.inanimate.Tree;
+import text.textbox.TextBox;
 
 public interface ScreenInterface {
     void showInfoBox(String message);
@@ -37,4 +38,6 @@ public interface ScreenInterface {
     void showTextBox(String text);
 
     OrthographicCamera getCamera();
+
+    void setTextBox(String filepath);
 }

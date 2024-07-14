@@ -28,6 +28,7 @@ import objects.inanimate.Door;
 import objects.inanimate.Tree;
 import text.infobox.InfoBox;
 import text.textbox.SaloonTextBox;
+import text.textbox.TextBox;
 
 import java.util.ArrayList;
 
@@ -96,6 +97,12 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     public OrthographicCamera getCamera() {
         return camera;
     }
+
+    @Override
+    public void setTextBox(String filepath) {
+
+    }
+
 
     public void hideTextBox() {
         textBox.hideTextBox();

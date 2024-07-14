@@ -9,7 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
-import conversations.firstLevel.FirstLevelBisonConversations;
+import conversations.ConversationManager;
+import conversations.firstLevel.FirstLevelConversations;
 import helper.movement.BisonMovementHelper;
 import helper.movement.SpriteMovementHelper;
 import com.mygdx.eightfold.GameAssets;
@@ -39,7 +40,9 @@ public class Bison extends GameEntity {
     private float pauseDuration;
     private float contactTimer;
     private boolean inConversation = false;
-    private FirstLevelBisonConversations bisonConversations;
+
+    private FirstLevelConversations conversations;
+    private ConversationManager conversationManager;
     private Sound contactSound;
 
     public Bison(float width, float height, float x, float y, Body body, Facing initialDirection,  ScreenInterface screenInterface, int bisonId, GameAssets gameAssets, Boolean talkingBison) {
@@ -51,7 +54,8 @@ public class Bison extends GameEntity {
         this.body = body;
         this.gameAssets = gameAssets;
         this.contactSound = gameAssets.getSound("sounds/bison-sound.mp3");
-
+        this.conversations = new FirstLevelConversations(screenInterface, this, screenInterface.getPlayer(), "commodore64/skin/uiskin.json", "animals/bison/bison-single.png");
+        this.conversationManager = new ConversationManager(1, this, screenInterface.getPlayer(), screenInterface);
         this.movementThreshold = 1f;
         this.restingTime = 0f;
         this.pauseDuration = 3f; // 3 seconds pause duration
@@ -68,7 +72,7 @@ public class Bison extends GameEntity {
         this.sprite = new Sprite(movementHelper.getCurrentAnimation().getKeyFrame(0));
         sprite.setAlpha(.3f);
         BisonManager.addBison(this);
-        this.bisonConversations = new FirstLevelBisonConversations(screenInterface, this, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png");
+        //this.bisonConversations = new FirstLevelBisonConversations(screenInterface, this, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png");
     }
 
     @Override
@@ -121,7 +125,8 @@ public class Bison extends GameEntity {
                         inConversation = true;
                         screenInterface.hideInfoBox();
 
-                        bisonConversations.startBisonConversations(this);
+                        //bisonConversations.startBisonConversations(this);
+                        conversationManager.startConversation();
                     }
                     if (contactTimer >= 1.5) {
                         contactTimer = 0;
@@ -136,7 +141,8 @@ public class Bison extends GameEntity {
         }
         if(inConversation) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-                bisonConversations.bisonNextLine(this);
+                conversations.showNextBisonLine();
+
             }
         }
 

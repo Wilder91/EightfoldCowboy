@@ -7,22 +7,24 @@ import text.textbox.BisonTextBox;
 
 public abstract class Conversation {
     protected int conversationIndex;
-    protected String[] conversationTexts;
+    protected String[] bisonConversationTexts;
+    protected String[] playerConversationTexts;
     protected boolean isTextBoxVisible;
     private BisonTextBox textBox;
     private Skin skin;
 
-    public Conversation(String[] conversationTexts, String filepath, String imagePath) {
+    public Conversation(String[] firstConversationTexts, String[] secondConversationTexts, String filepath, String imagePath) {
         this.conversationIndex = 0;
-        this.conversationTexts = conversationTexts;
+        this.bisonConversationTexts = firstConversationTexts;
+        this.playerConversationTexts = secondConversationTexts;
         this.isTextBoxVisible = false;
         this.skin  = new Skin(Gdx.files.internal(filepath));
-        this.textBox = new BisonTextBox(skin, imagePath);
+        //this.textBox = new BisonTextBox(skin, imagePath);
     }
 
     public void bisonNextLine(Bison bison) {
-        if (conversationIndex < conversationTexts.length) {
-            showTextBox(conversationTexts[conversationIndex]);
+        if (conversationIndex < bisonConversationTexts.length) {
+            showTextBox(bisonConversationTexts[conversationIndex]);
             conversationIndex++;
             isTextBoxVisible = true;
         } else {

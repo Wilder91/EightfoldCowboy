@@ -1,11 +1,8 @@
 package conversations.firstLevel;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.player.Player;
-import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import conversations.Conversation;
-import objects.animals.bison.Bison;
 
 public class FirstLevelPlayerConversations extends Conversation {
     private final ScreenInterface screenInterface;
@@ -13,7 +10,7 @@ public class FirstLevelPlayerConversations extends Conversation {
 
 
     public FirstLevelPlayerConversations(ScreenInterface screenInterface, Player player, String filepath, String imagePath) {
-        super(getPlayerConversationTexts(player), filepath, imagePath);
+        super(getPlayerConversationTexts(player), getPlayerConversationTexts(player), filepath, imagePath);
         this.screenInterface = screenInterface;
         this.player = player;
     }
@@ -40,7 +37,7 @@ public class FirstLevelPlayerConversations extends Conversation {
     }
 
     public boolean isConversationFinished() {
-        return conversationIndex > conversationTexts.length;
+        return conversationIndex > bisonConversationTexts.length;
 
     }
 

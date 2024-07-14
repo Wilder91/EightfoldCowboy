@@ -26,6 +26,7 @@ import objects.inanimate.Tree;
 import com.mygdx.eightfold.player.Player;
 import text.infobox.InfoBox;
 import text.textbox.BisonTextBox;
+import text.textbox.TextBox;
 
 import java.util.ArrayList;
 
@@ -55,8 +56,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         return camera;
     }
 
+
+
     // TextBox
-    private BisonTextBox bisonTextBox;
+    private TextBox textBox;
     private InfoBox infoBox;
 
     public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game) {
@@ -79,18 +82,35 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets, gameContactListener);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/EightfoldMap.tmx");
         // Initialize TextBox
-        this.bisonTextBox = new BisonTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), "animals/bison/bison-single.png");
+        this.textBox = new BisonTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), "animals/bison/bison-single.png");
         this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
-        Gdx.input.setInputProcessor(bisonTextBox.getStage());
+        Gdx.input.setInputProcessor(textBox.getStage());
         Gdx.input.setInputProcessor(infoBox.getStage());
     }
 
+    @Override
+    public void setTextBox(String filepath) {
+        try {
+            this.textBox = new TextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), filepath) {
+                @Override
+                public void setFontColor(float r, float g, float b, float a) {
+
+                }
+            };
+            Gdx.input.setInputProcessor(textBox.getStage());
+        } catch (Exception e) {
+            System.err.println("Error reading file: " + filepath);
+            e.printStackTrace();
+        }
+    }
+
+
     public void showTextBox(String text) {
-        bisonTextBox.showTextBox(text);
+        textBox.showTextBox(text);
     }
 
     public void hideTextBox() {
-        bisonTextBox.hideTextBox();
+        textBox.hideTextBox();
     }
 
     public void showInfoBox(String text) {
@@ -193,7 +213,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             updateDoorScreenReferences(saloonScreen);
         }
 
-        bisonTextBox.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        textBox.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public void enterPauseScreen() {
@@ -305,8 +325,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         batch.end();
 
         // Render the Stage
-        bisonTextBox.getStage().act(delta);
-        bisonTextBox.getStage().draw();
+        textBox.getStage().act(delta);
+        textBox.getStage().draw();
         infoBox.getStage().act(delta);
         infoBox.getStage().draw();
 
@@ -321,8 +341,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         world.dispose();
         box2DDebugRenderer.dispose();
         orthogonalTiledMapRenderer.dispose();
-        bisonTextBox.getStage().dispose();
-        bisonTextBox.getSkin().dispose();
+        textBox.getStage().dispose();
+        textBox.getSkin().dispose();
     }
 
     public void resetPlayer(Player player){

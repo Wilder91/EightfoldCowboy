@@ -43,7 +43,8 @@ public class GameContactListener implements ContactListener {
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BISON) {
                 Bison bison = BisonManager.getBisonById(userDataB.getId());
                 Player player = screenInterface.getPlayer();
-                ConversationManager.startConversation(1, bison, player, screenInterface);
+                //ConversationManager conversationManager = new ConversationManager(1, bison, player, screenInterface);
+                //conversationManager.startConversation();
                 if(!bison.talkingBison) {
                     bison.playContactSound();
                     bison.isContacted = true;
