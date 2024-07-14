@@ -255,6 +255,8 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
+
+
     @Override
     public void addBison(Bison bison) {
 

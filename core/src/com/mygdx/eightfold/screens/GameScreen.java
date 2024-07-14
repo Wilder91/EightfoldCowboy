@@ -14,7 +14,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.mygdx.eightfold.Boot;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
 import helper.tiledmap.TiledMapHelper;
@@ -57,7 +56,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     // TextBox
-    private BisonTextBox textBox;
+    private BisonTextBox bisonTextBox;
     private InfoBox infoBox;
 
     public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game) {
@@ -80,18 +79,18 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets, gameContactListener);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/EightfoldMap.tmx");
         // Initialize TextBox
-        this.textBox = new BisonTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), "animals/bison/bison-single.png");
+        this.bisonTextBox = new BisonTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), "animals/bison/bison-single.png");
         this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
-        Gdx.input.setInputProcessor(textBox.getStage());
+        Gdx.input.setInputProcessor(bisonTextBox.getStage());
         Gdx.input.setInputProcessor(infoBox.getStage());
     }
 
     public void showTextBox(String text) {
-        textBox.showTextBox(text);
+        bisonTextBox.showTextBox(text);
     }
 
     public void hideTextBox() {
-        textBox.hideTextBox();
+        bisonTextBox.hideTextBox();
     }
 
     public void showInfoBox(String text) {
@@ -194,7 +193,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             updateDoorScreenReferences(saloonScreen);
         }
 
-        textBox.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        bisonTextBox.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public void enterPauseScreen() {
@@ -306,8 +305,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         batch.end();
 
         // Render the Stage
-        textBox.getStage().act(delta);
-        textBox.getStage().draw();
+        bisonTextBox.getStage().act(delta);
+        bisonTextBox.getStage().draw();
         infoBox.getStage().act(delta);
         infoBox.getStage().draw();
 
@@ -322,8 +321,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         world.dispose();
         box2DDebugRenderer.dispose();
         orthogonalTiledMapRenderer.dispose();
-        textBox.getStage().dispose();
-        textBox.getSkin().dispose();
+        bisonTextBox.getStage().dispose();
+        bisonTextBox.getSkin().dispose();
     }
 
     public void resetPlayer(Player player){
@@ -336,6 +335,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
         }
     }
+
+
 
     public World getWorld() {
         return world;

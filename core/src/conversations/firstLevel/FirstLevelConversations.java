@@ -5,20 +5,16 @@ import com.mygdx.eightfold.screens.ScreenInterface;
 import conversations.Conversation;
 import objects.animals.bison.Bison;
 
-public class FirstLevelBisonConversations extends Conversation {
-    private final ScreenInterface screenInterface;
-    private FirstLevelPlayerConversations playerConversations;
-    private final Bison bison;
-
-
-    public FirstLevelBisonConversations(ScreenInterface screenInterface, Bison bison, String filepath, String imagePath) {
-        super(getBisonConversationTexts(bison), filepath, imagePath);
-        this.screenInterface = screenInterface;
-        this.bison = bison;
-        this.playerConversations = new FirstLevelPlayerConversations(screenInterface, screenInterface.getPlayer(), "commodore64/skin/uiskin.json", "player/player-single.png");
+public class FirstLevelConversations extends Conversation {
+    public FirstLevelConversations(ScreenInterface screenInterface, Bison bison, Player player, String filepath, String imagePath) {
+        super(getConversationTexts(bison, player), filepath, imagePath);
     }
 
-    private static String[] getBisonConversationTexts(Bison bison) {
+    public void printHello(){
+        System.out.println("hello");
+    }
+
+    private static String[] getConversationTexts(Bison bison, Player player) {
         //System.out.println(bison.getId());
         switch (bison.getId()) {
             case 0:
@@ -36,28 +32,17 @@ public class FirstLevelBisonConversations extends Conversation {
     }
 
     @Override
-    protected void showTextBox(String text) {
-        screenInterface.showTextBox(text);
+    public void showTextBox(String text) {
+
     }
 
     @Override
     protected void hideTextBox() {
-        screenInterface.hideTextBox();
+
     }
 
     @Override
     protected void hideInfoBox() {
-        screenInterface.hideInfoBox();
-    }
 
-    public boolean isConversationFinished() {
-        return conversationIndex > conversationTexts.length;
-
-    }
-
-
-    public void resetConversation() {
-        conversationIndex = 0;
-        screenInterface.hideTextBox();
     }
 }

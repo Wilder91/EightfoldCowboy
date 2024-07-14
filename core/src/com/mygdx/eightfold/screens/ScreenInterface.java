@@ -25,6 +25,7 @@ public interface ScreenInterface {
     World getWorld();
     void addDoor(Door door);
     void setPlayer(Player player);
+    Player getPlayer();
     void addBison(Bison bison);
     void addTree(Tree tree);
 

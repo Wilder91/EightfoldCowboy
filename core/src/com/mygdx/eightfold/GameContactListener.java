@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
+import conversations.ConversationManager;
 import helper.BodyUserData;
 import helper.ContactType;
 import objects.animals.bird.Bird;
@@ -41,7 +42,8 @@ public class GameContactListener implements ContactListener {
             }
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BISON) {
                 Bison bison = BisonManager.getBisonById(userDataB.getId());
-
+                Player player = screenInterface.getPlayer();
+                ConversationManager.startConversation(1, bison, player, screenInterface);
                 if(!bison.talkingBison) {
                     bison.playContactSound();
                     bison.isContacted = true;

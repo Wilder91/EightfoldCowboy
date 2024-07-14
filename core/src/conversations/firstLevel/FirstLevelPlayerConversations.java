@@ -20,11 +20,7 @@ public class FirstLevelPlayerConversations extends Conversation {
 
     private static String[] getPlayerConversationTexts(Player player) {
         //System.out.println(bison.getId());
-
-
-                return new String[]{"Howdy stranger, " + "\n" + "welcome to the ranch", "Nice day today, huh?", "Feel free to take a walk" + "\n" + "around and talk to the other bison. Just stay out of The" + "\n" + "Saloon."};
-
-
+                return new String[]{"Howdy"};
 
     }
 
