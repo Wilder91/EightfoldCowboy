@@ -1,23 +1,23 @@
 package helper.movement;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import static helper.Constants.FRAME_DURATION;
 
 public class SpriteRunningHelper {
     private Map<String, Animation<TextureRegion>> animations;
     private Animation<TextureRegion> currentAnimation;
+    private TextureRegion restingFrame;
     private float stateTime;
     private Sprite sprite;
     private GameAssets gameAssets;
@@ -37,23 +37,14 @@ public class SpriteRunningHelper {
         loadAnimations();
 
         this.currentAnimation = animations.get("runningHorizontal");
+        setRestingFrame("player/character_standing.png");
         this.sprite = new Sprite(this.currentAnimation.getKeyFrame(0));
-    }
+        this.sprite.setOriginCenter();
 
-    public static boolean checkLinearVelocity(Body body, Sprite sprite, boolean isFacingRight) {
-        float velocityThreshold = 0.5f; // Adjust this threshold as needed
-        // Check if the body's velocity exceeds the threshold
-        if (Math.abs(body.getLinearVelocity().x) > velocityThreshold) {
-            // Determine the direction based on the velocity
-            boolean newFacingRight = (body.getLinearVelocity().x > 0);
-            // Flip the sprite if the direction has changed
-            if (newFacingRight != isFacingRight) {
-                sprite.flip(true, false);
-                isFacingRight = newFacingRight;
-            }
+        if (startFlipped) {
+            sprite.flip(true, false);
+            isFacingRight = false;
         }
-        // Return the current direction if no flipping occurred
-        return isFacingRight;
     }
 
     public void loadAnimations() {
@@ -72,10 +63,12 @@ public class SpriteRunningHelper {
             TextureRegion region = atlas.findRegion(regionNamePrefix, i);
             if (region != null) {
                 frames.add(region);
+                System.out.println("Added frame: " + regionNamePrefix + "_" + i); // Debug print
             } else {
-                System.out.println("Region " + regionNamePrefix + "_" + i + " not found!");
+                System.out.println("Region " + regionNamePrefix + "_" + i + " not found!"); // Debug print
             }
         }
+        System.out.println("Total frames for " + regionNamePrefix + ": " + frames.size); // Debug print
         return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
     }
 
@@ -87,20 +80,25 @@ public class SpriteRunningHelper {
 
         if (isMoving) {
             setRunningAnimation(vx, vy);
+            stateTime += delta;
+            TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
+            sprite.setRegion(frame);
+        } else {
+            if (restingFrame != null) {
+                sprite.setRegion(restingFrame);
+            } else {
+                stateTime += delta;
+                TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
+                sprite.setRegion(frame);
+            }
         }
 
-        stateTime += delta;
-
-        TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
-        sprite.setRegion(frame);
-        sprite.setSize(frame.getRegionWidth(), frame.getRegionHeight());
+        sprite.setSize(sprite.getRegionWidth(), sprite.getRegionHeight());
         sprite.setOriginCenter();
 
-        if (startFlipped) {
-            sprite.flip(true, false);
-        }
-        if (!isFacingRight) {
-            sprite.flip(true, false); // Ensure the origin is centered
+        // Adjust the sprite facing direction
+        if (vx != 0) {
+            flipSprite(vx > 0);
         }
     }
 
@@ -118,19 +116,17 @@ public class SpriteRunningHelper {
         } else if (vy < -0.1f) {
             if (vx > 0) {
                 currentAnimation = animations.get("runningDiagonalDown");
-                flipSprite(false);
             } else if (vx < 0) {
                 currentAnimation = animations.get("runningDiagonalDown");
-                flipSprite(true);
             } else {
                 currentAnimation = animations.get("runningDown");
             }
         } else if (vx > 0.1f) {
             currentAnimation = animations.get("runningHorizontal");
-            flipSprite(false);
+            flipSprite(true);
         } else if (vx < -0.1f) {
             currentAnimation = animations.get("runningHorizontal");
-            flipSprite(true);
+            flipSprite(false);
         }
     }
 
@@ -138,11 +134,16 @@ public class SpriteRunningHelper {
         return currentAnimation;
     }
 
-    private void flipSprite(boolean shouldFaceLeft) {
-        if (isFacingRight == shouldFaceLeft) {
+    private void flipSprite(boolean shouldFaceRight) {
+        if (isFacingRight != shouldFaceRight) {
             sprite.flip(true, false); // Flip horizontally
-            isFacingRight = !isFacingRight; // Toggle the facing direction
+            isFacingRight = shouldFaceRight; // Set the new facing direction
         }
+    }
+
+    public void setRestingFrame(String texturePath) {
+        Texture texture = new Texture(texturePath);
+        this.restingFrame = new TextureRegion(texture);
     }
 
     public Sprite getSprite() {

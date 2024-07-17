@@ -34,7 +34,7 @@ public class BisonFactory {
             isStatic = false;
         }
         Body body = BodyHelperService.createBody(
-                boundingRectangle.x + boundingRectangle.width /2 ,
+                boundingRectangle.x + boundingRectangle.width /1.5f ,
                 boundingRectangle.y + boundingRectangle.height / 2,
                 boundingRectangle.width * 1.2f,
                 boundingRectangle.height,
