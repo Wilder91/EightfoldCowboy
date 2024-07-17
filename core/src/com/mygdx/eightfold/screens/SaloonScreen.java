@@ -104,6 +104,7 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     }
 
 
+
     public void hideTextBox() {
         textBox.hideTextBox();
     }

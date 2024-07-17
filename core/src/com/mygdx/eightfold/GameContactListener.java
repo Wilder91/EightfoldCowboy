@@ -44,7 +44,7 @@ public class GameContactListener implements ContactListener {
                 Bison bison = BisonManager.getBisonById(userDataB.getId());
                 Player player = screenInterface.getPlayer();
                 //ConversationManager conversationManager = new ConversationManager(1, bison, player, screenInterface);
-                //conversationManager.startConversation();
+                //conversationManager.startFirstLevelConversation();
                 if(!bison.talkingBison) {
                     bison.playContactSound();
                     bison.isContacted = true;
@@ -88,9 +88,7 @@ public class GameContactListener implements ContactListener {
 
             }
             if (userDataA.getType() == ContactType.BIRD && userDataB.getType() == ContactType.BIRD) {
-
-                bodyA.setLinearDamping(2f);
-                bodyB.setLinearDamping(2f);
+                Bird.playerContact(bodyB, userDataB.getId());
 
             } else if (userDataA.getType() == ContactType.BIRD && userDataB.getType() == ContactType.BISON) {
                 Bird.playerContact(a.getBody(), userDataA.getId());
@@ -102,6 +100,8 @@ public class GameContactListener implements ContactListener {
             }else if (userDataA.getType() == ContactType.BISON && userDataB.getType() == ContactType.BISON) {
                bodyA.setLinearDamping(7f);
                bodyB.setLinearDamping(7f);
+                Bison bison =  BisonManager.getBisonById(userDataA.getId());
+                bison.playContactSound();
 
             }
 

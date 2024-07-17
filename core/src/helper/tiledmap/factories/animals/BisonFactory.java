@@ -25,7 +25,6 @@ public class BisonFactory {
     }
 
     public void createBison(PolygonMapObject polygonMapObject) {
-        System.out.println("creating bison: " + bisonCounter);
         int bisonId = ++bisonCounter;
         Polygon polygon = polygonMapObject.getPolygon();
         Rectangle boundingRectangle = polygon.getBoundingRectangle();

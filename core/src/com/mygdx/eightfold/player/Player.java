@@ -31,6 +31,7 @@ public class Player extends GameEntity {
     private SpriteMovementHelper movementHelper;
     private ScreenInterface screenInterface;
     private Vector2 initialPosition;
+
     public Player(float x, float y, float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
         super(width, height, body, screenInterface, gameAssets);
         this.x = x;

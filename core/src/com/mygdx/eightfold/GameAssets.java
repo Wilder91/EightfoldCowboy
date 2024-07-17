@@ -18,6 +18,7 @@ public class GameAssets {
         assetManager.load("player/atlas/player-horizontal.atlas", TextureAtlas.class);
         assetManager.load("plants/trees/oak-trees.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/bison-movement.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/player-running.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
         assetManager.load("ethereal.mp3", Music.class);
         assetManager.load("lost & found.mp3", Music.class);

@@ -105,6 +105,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     }
 
 
+
     public void showTextBox(String text) {
         textBox.showTextBox(text);
     }

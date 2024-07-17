@@ -7,7 +7,7 @@ import conversations.firstLevel.FirstLevelConversations;
 import objects.animals.bison.Bison;
 
 public class ConversationManager {
-    //private FirstLevelBisonConversations firstLevelBisonConversations;
+    private FirstLevelConversations firstLevelConversations;
     private ScreenInterface screenInterface;
     private int level;
     private GameEntity firstGameEntity;
@@ -20,19 +20,22 @@ public class ConversationManager {
         this.screenInterface = screenInterface;
     }
 
-    public void startConversation() {
-
+    public void startFirstLevelConversation() {
         if (level == 1) {
             if (secondGameEntity instanceof Player) {
-
                 Player player = (Player) secondGameEntity;
                 if (firstGameEntity instanceof Bison) {
-
                     Bison bison = (Bison) firstGameEntity;
-                    FirstLevelConversations conversations = new FirstLevelConversations(screenInterface, bison, player, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png");
-                    conversations.startBisonConversations(bison);
+                    firstLevelConversations = new FirstLevelConversations(screenInterface, bison, player, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png", 0);
+                    firstLevelConversations.startBisonConversations(bison);
                 }
             }
+        }
+    }
+
+    public void nextLine() {
+        if (level == 1 && firstLevelConversations != null) {
+            firstLevelConversations.showNextLine();
         }
     }
 }
