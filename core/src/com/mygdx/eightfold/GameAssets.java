@@ -24,6 +24,9 @@ public class GameAssets {
         assetManager.load("lost & found.mp3", Music.class);
         assetManager.load("sounds/bison-sound.mp3", Sound.class);
         assetManager.load("animals/birds/bird.png", Texture.class);
+        assetManager.load("player/player-single.png", Texture.class);
+        assetManager.load("animals/bison/bison-single.png", Texture.class);
+        assetManager.load("player/player-stationary.png", Texture.class);
         // Load individual textures for bison grazing
         for (int i = 0; i <= 39; i++) {
             String filename = "animals/bison/grazing/Bison_Grazing_" + i + ".png";

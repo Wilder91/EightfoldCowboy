@@ -117,7 +117,7 @@ public class FirstLevelConversations extends Conversation {
                 if (conversationPhase == 0) {
                     return new String[]{"Howdy stranger, welcome\nto the ranch", "Nice day today, huh?", "Feel free to take a walk\naround and talk to the other bison. Just stay out of The Saloon."};
                 } else if (conversationPhase == 1) {
-                    return new String[]{"Oh you'll get used to it", "We're good people around here and we put out", "Plus who cares"};
+                    return new String[]{"Oh you'll get used to it", "We're good people around here", "The smell is just part of our charm."};
                 }
             case 1:
                 if (conversationPhase == 0) {

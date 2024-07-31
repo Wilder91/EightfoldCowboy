@@ -26,6 +26,7 @@ import objects.inanimate.Tree;
 import com.mygdx.eightfold.player.Player;
 import text.infobox.InfoBox;
 import text.textbox.BisonTextBox;
+import text.textbox.DecisionTextBox;
 import text.textbox.TextBox;
 
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     // TextBox
     private TextBox textBox;
+    private DecisionTextBox decisionTextBox;
     private InfoBox infoBox;
 
     public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game) {
@@ -103,12 +105,35 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             e.printStackTrace();
         }
     }
-
-
-
     public void showTextBox(String text) {
         textBox.showTextBox(text);
     }
+    public void showDecisionTextBox(String text) {
+        decisionTextBox.showTextBox(text);
+    }
+
+    public void setDecisionTextBox(String filepath){
+        try {
+            this.textBox = new DecisionTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), filepath) {
+                @Override
+                public void setFontColor(float r, float g, float b, float a) {
+
+                }
+            };
+            Gdx.input.setInputProcessor(textBox.getStage());
+        } catch (Exception e) {
+            System.err.println("Error reading file: " + filepath);
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @Override
+    public void showPlayerTextBox(String playerConversationText) {
+
+    }
+
 
     public void hideTextBox() {
         textBox.hideTextBox();

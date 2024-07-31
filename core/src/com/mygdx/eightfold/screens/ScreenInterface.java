@@ -40,4 +40,10 @@ public interface ScreenInterface {
     OrthographicCamera getCamera();
 
     void setTextBox(String filepath);
+
+    void setDecisionTextBox(String filepath);
+
+    void showDecisionTextBox(String text);
+
+    void showPlayerTextBox(String playerConversationText);
 }

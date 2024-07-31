@@ -103,6 +103,20 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
+    @Override
+    public void setDecisionTextBox(String filepath) {
+
+    }
+
+    @Override
+    public void showDecisionTextBox(String text) {
+
+    }
+
+    @Override
+    public void showPlayerTextBox(String playerConversationText) {
+
+    }
 
 
     public void hideTextBox() {

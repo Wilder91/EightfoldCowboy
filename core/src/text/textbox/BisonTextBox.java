@@ -3,6 +3,7 @@ package text.textbox;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.mygdx.eightfold.GameAssets;
 
 public class BisonTextBox extends TextBox {
 

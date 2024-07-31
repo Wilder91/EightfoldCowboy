@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.eightfold.GameAssets;
 
 public abstract class TextBox {
     protected Stage stage;
@@ -17,7 +18,8 @@ public abstract class TextBox {
     protected Image image;
     protected Dialog dialog;
     private BitmapFont originalFont;
-
+    private GameAssets gameAssets;
+    private Table imageContainer;
     public TextBox(Skin skin, String imagePath) {
         this.skin = skin;
         this.stage = new Stage(new ScreenViewport());
@@ -47,7 +49,8 @@ public abstract class TextBox {
         Stack stack = new Stack();
 
         // Create a table for the image with a border
-        Table imageContainer = new Table();
+        this.imageContainer = new Table();
+
         imageContainer.setBackground(createBackgroundWithBorder(100f / 255f, 130f / 255f, 104f / 255f, .8f, 162f / 255f, 188f / 255f, 104f / 255f, .8f));
         imageContainer.add(image).size(50, 50).pad(5);
 
@@ -61,7 +64,7 @@ public abstract class TextBox {
 
         // Create a background table to add border and background color
         Table backgroundTable = new Table();
-        backgroundTable.setBackground(createBackgroundWithBorder(100F / 255f, 137F / 255f, 109F / 255f, .8f, 162f / 255f, 188f / 255f, 104f / 255f, 0.8f));
+        backgroundTable.setBackground(createBackgroundWithBorder(100F / 255f, 137F / 255f, 109F / 255f, .8f, 162f / 255f, 188F / 255f, 104f / 255f, 0.8f));
         backgroundTable.add(stack).expand().fill().pad(0);
 
         // Add the background table to the dialog
@@ -112,7 +115,7 @@ public abstract class TextBox {
         dialog.setVisible(false);
     }
 
-    private BitmapFont scaleFont(BitmapFont originalFont, float scale) {
+    protected BitmapFont scaleFont(BitmapFont originalFont, float scale) { // Changed to protected
         BitmapFont scaledFont = new BitmapFont(originalFont.getData().fontFile, originalFont.getRegion(), false);
         scaledFont.getData().setScale(scale);
         return scaledFont;
@@ -127,16 +130,33 @@ public abstract class TextBox {
     }
 
     public void resize(int width, int height) {
+        // Adjust the dialog size
         dialog.setSize(width / 2, height / 4);
         dialog.setPosition((width - dialog.getWidth()) / 2, 0);
 
-        // Update image size based on dialog size
-        image.setSize(50, 50); // Maintain the image size
-        stage.getViewport().update(width, height, true);
-//        image.setScale(2,2);
+        // Calculate the scale factor based on the new height
         float scale = height / 720f; // Assuming 720 is the reference height
+
+        // Update the image size and the imageContainer size based on the scale
+        float imageSize = 50 * scale; // Scale the image size
+        image.setSize(imageSize, imageSize); // Maintain the image size proportionally
+
+        // Adjust padding and the image container size
+        imageContainer.clear();
+        imageContainer.setBackground(createBackgroundWithBorder(
+                100f / 255f, 130f / 255f, 104f / 255f, .8f,
+                162f / 255f, 188f / 255f, 104f / 255f, .8f
+        ));
+        imageContainer.add(image).size(imageSize, imageSize).pad(imageSize / 10f);
+
+        // Update the label's font style with the scaled font
         textLabel.setStyle(new Label.LabelStyle(scaleFont(originalFont, scale), textLabel.getStyle().fontColor));
+
+        // Update the stage's viewport
+        stage.getViewport().update(width, height, true);
     }
+
+
 
     public abstract void setFontColor(float r, float g, float b, float a);
 }

@@ -31,7 +31,7 @@ public class Player extends GameEntity {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.speed = 4f;
+        this.speed = 3.5f;
         this.originalSpeed = speed;
         this.isFacingRight = true;
         this.body = body;
@@ -133,8 +133,5 @@ public class Player extends GameEntity {
         return 1;
     }
 
-    public Vector2 getInitialPosition() {
-        initialPosition.set(x, y);
-        return initialPosition;
-    }
+
 }
