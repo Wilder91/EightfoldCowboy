@@ -1,72 +1,163 @@
 package text.textbox;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.eightfold.GameAssets;
 
-public class DecisionTextBox extends TextBox {
-    private Table buttonTable;
-    private BitmapFont buttonFont;
-
+public abstract class DecisionTextBox {
+    protected Stage stage;
+    protected Skin skin;
+    protected Label textLabel;
+    protected Image image;
+    protected Dialog dialog;
+    private BitmapFont originalFont;
+    private GameAssets gameAssets;
+    private Table imageContainer;
     public DecisionTextBox(Skin skin, String imagePath) {
-        super(skin, imagePath);
-        this.buttonTable = new Table();
-        buttonFont = skin.getFont("commodore-64");
-        dialog.getContentTable().row();
-        dialog.getContentTable().add(buttonTable).expandX().fillX().padTop(10);
-        System.out.println("DecisionTextBox initialized, buttonTable: " + (buttonTable != null));
+        this.skin = skin;
+        this.stage = new Stage(new ScreenViewport());
+
+        // Create a LabelStyle with a font from the skin
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        originalFont = skin.getFont("commodore-64");
+        labelStyle.font = originalFont; // Use the exact font name from your skin file
+
+        // Use the LabelStyle to create the Label
+        this.textLabel = new Label("", labelStyle);
+        this.textLabel.setWrap(true); // Enable word wrap
+        this.textLabel.setAlignment(Align.left); // Align text to the left
+
+        // Load the image
+        this.image = new Image(new Texture(Gdx.files.internal(imagePath)));
+
+        // Create the dialog
+        Window.WindowStyle windowStyle = new Window.WindowStyle();
+        windowStyle.background = createSolidColorDrawable(207 / 255f, 185 / 255f, 151 / 255f, 0.3f); // Set dialog background color
+        windowStyle.titleFont = skin.getFont("commodore-64"); // Set the font for the dialog title if needed
+
+        this.dialog = new Dialog("", windowStyle);
+        dialog.setMovable(false); // Make dialog non-movable
+
+        // Create a stack to overlay the image on the left side of the text box
+        Stack stack = new Stack();
+
+        // Create a table for the image with a border
+        this.imageContainer = new Table();
+
+        imageContainer.setBackground(createBackgroundWithBorder(100f / 255f, 130f / 255f, 104f / 255f, .8f, 162f / 255f, 188f / 255f, 104f / 255f, .8f));
+        imageContainer.add(image).size(50, 50).pad(5);
+
+        // Create a table for the text and image
+        Table textImageTable = new Table();
+        textImageTable.add(imageContainer).left().padRight(10); // Add image container with border to the left with padding to the right
+        textImageTable.add(textLabel).expand().fill().left(); // Add text label next to the image
+
+        // Add the textImageTable to the stack
+        stack.add(textImageTable);
+
+        // Create a background table to add border and background color
+        Table backgroundTable = new Table();
+        backgroundTable.setBackground(createBackgroundWithBorder(100F / 255f, 137F / 255f, 109F / 255f, .8f, 162f / 255f, 188F / 255f, 104f / 255f, 0.8f));
+        backgroundTable.add(stack).expand().fill().pad(0);
+
+        // Add the background table to the dialog
+        dialog.getContentTable().add(backgroundTable).expand().fill();
+
+        // Position the dialog at the bottom center of the screen
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        stage.addActor(dialog);
+        dialog.setVisible(false);
     }
 
-    public void addChoiceButtons(String[] choices, ChangeListener[] listeners) {
-        buttonTable.clear();
-
-        if (choices == null || listeners == null || choices.length != listeners.length) {
-            System.err.println("Error: Invalid choices or listeners provided.");
-            return;
-        }
-
-        for (int i = 0; i < choices.length; i++) {
-            TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-            buttonStyle.font = buttonFont;
-            buttonStyle.fontColor = textLabel.getStyle().fontColor;
-            TextButton choiceButton = new TextButton(choices[i], buttonStyle);
-            choiceButton.addListener(listeners[i]);
-            buttonTable.add(choiceButton).expandX().fillX().pad(5);
-            buttonTable.row();
-        }
+    private TextureRegionDrawable createSolidColorDrawable(float r, float g, float b, float a) {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(r, g, b, a);
+        pixmap.fill();
+        TextureRegionDrawable drawable = new TextureRegionDrawable(new Texture(pixmap));
+        pixmap.dispose();
+        return drawable;
     }
 
-    @Override
-    public void setFontColor(float r, float g, float b, float a) {
-        Color newColor = new Color(r, g, b, a);
-        textLabel.getStyle().fontColor = newColor;
+    private TextureRegionDrawable createBackgroundWithBorder(float borderR, float borderG, float borderB, float borderA, float bgR, float bgG, float bgB, float bgA) {
+        int borderWidth = 3;
+        int width = 50;  // Arbitrary size; can be adjusted
+        int height = 50; // Arbitrary size; can be adjusted
 
-        for (Cell<?> cell : buttonTable.getCells()) {
-            if (cell.getActor() instanceof TextButton) {
-                TextButton button = (TextButton) cell.getActor();
-                button.getLabel().setColor(newColor);
-            }
-        }
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
+
+        // Fill with border color
+        pixmap.setColor(borderR, borderG, borderB, borderA);
+        pixmap.fill();
+
+        // Fill the inside with background color
+        pixmap.setColor(bgR, bgG, bgB, bgA);
+        pixmap.fillRectangle(borderWidth, borderWidth, width - 2 * borderWidth, height - 2 * borderWidth);
+
+        TextureRegionDrawable drawable = new TextureRegionDrawable(new Texture(pixmap));
+        pixmap.dispose();
+        return drawable;
     }
 
-    @Override
+    public void showTextBox(String text) {
+        //System.out.println(text);
+        textLabel.setText(text);
+        dialog.setVisible(true);
+    }
+
+    public void hideTextBox() {
+        dialog.setVisible(false);
+    }
+
+    protected BitmapFont scaleFont(BitmapFont originalFont, float scale) { // Changed to protected
+        BitmapFont scaledFont = new BitmapFont(originalFont.getData().fontFile, originalFont.getRegion(), false);
+        scaledFont.getData().setScale(scale);
+        return scaledFont;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
+
     public void resize(int width, int height) {
-        super.resize(width, height);
+        // Adjust the dialog size
+        dialog.setSize(width / 2, height / 4);
+        dialog.setPosition((width - dialog.getWidth()) / 2, 0);
 
-        System.out.println("Resizing, buttonTable: " + (buttonTable != null));
+        // Calculate the scale factor based on the new height
+        float scale = height / 720f; // Assuming 720 is the reference height
 
-        if (buttonTable == null) {
-            System.err.println("Error: buttonTable is null in resize method.");
-            return;
-        }
+        // Update the image size and the imageContainer size based on the scale
+        float imageSize = 50 * scale; // Scale the image size
+        image.setSize(imageSize, imageSize); // Maintain the image size proportionally
 
-        float scale = height / 720f;
-        for (Cell<?> cell : buttonTable.getCells()) {
-            if (cell.getActor() instanceof TextButton) {
-                TextButton button = (TextButton) cell.getActor();
-                button.getLabel().setStyle(new Label.LabelStyle(scaleFont(buttonFont, scale), button.getLabel().getStyle().fontColor));
-            }
-        }
+        // Adjust padding and the image container size
+        imageContainer.clear();
+        imageContainer.setBackground(createBackgroundWithBorder(
+                100f / 255f, 130f / 255f, 104f / 255f, .8f,
+                162f / 255f, 188f / 255f, 104f / 255f, .8f
+        ));
+        imageContainer.add(image).size(imageSize, imageSize).pad(imageSize / 10f);
+
+        // Update the label's font style with the scaled font
+        textLabel.setStyle(new Label.LabelStyle(scaleFont(originalFont, scale), textLabel.getStyle().fontColor));
+
+        // Update the stage's viewport
+        stage.getViewport().update(width, height, true);
     }
+
+
+
+    public abstract void setFontColor(float r, float g, float b, float a);
 }

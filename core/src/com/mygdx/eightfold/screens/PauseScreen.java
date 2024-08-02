@@ -26,16 +26,19 @@ public class PauseScreen implements Screen {
     private Skin skin;
     private int selectedIndex; // To keep track of the selected button
     private TextButton[] buttons; // Array to hold buttons
+    private InventoryScreen inventoryScreen;
 
     public PauseScreen(OrthographicCamera camera, GameAssets gameAssets, GameScreen gameScreen) {
         this.camera = camera;
         this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;
+        this.skin = new Skin(Gdx.files.internal("vhs/skin/vhs-ui.json"));
+        this.inventoryScreen = new InventoryScreen(camera, gameScreen, gameAssets, skin);
 
         // Initialize Scene2D Stage and Skin
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage); // Set input processor to the stage
-        this.skin = new Skin(Gdx.files.internal("vhs/skin/vhs-ui.json"));
+
 
         // Set up the camera
         camera.setToOrtho(false, (Gdx.graphics.getWidth() / PPM), (Gdx.graphics.getHeight() / PPM)); // Set your game width and height
@@ -43,10 +46,11 @@ public class PauseScreen implements Screen {
         // Create UI elements
         Label pauseLabel = new Label("Paused", skin);
         TextButton resumeButton = new TextButton("Resume", skin);
+        TextButton inventoryButton = new TextButton("Inventory", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
         // Store buttons in an array
-        buttons = new TextButton[]{resumeButton, exitButton};
+        buttons = new TextButton[]{resumeButton, inventoryButton, exitButton};
 
         // Set up layout
         Table table = new Table();
@@ -54,19 +58,26 @@ public class PauseScreen implements Screen {
         table.center();
         table.add(pauseLabel).padBottom(20).row();
         table.add(resumeButton).padBottom(20).row();
+        table.add(inventoryButton).padBottom(20).row();
         table.add(exitButton).padBottom(20).row();
         // Add table to the stage
         stage.addActor(table);
 
         // Initialize selectedIndex
         selectedIndex = 0;
-        //updateButtonStyles();
 
         // Add listeners to buttons
         resumeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 resumeGame();
+            }
+        });
+
+        inventoryButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((Game) Gdx.app.getApplicationListener()).setScreen(inventoryScreen);
             }
         });
 
@@ -106,31 +117,19 @@ public class PauseScreen implements Screen {
     private void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             selectedIndex = (selectedIndex - 1 + buttons.length) % buttons.length;
-            //updateButtonStyles();
+            // updateButtonStyles();
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             selectedIndex = (selectedIndex + 1) % buttons.length;
-           // updateButtonStyles();
+            // updateButtonStyles();
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             buttons[selectedIndex].toggle();
             buttons[selectedIndex].getClickListener().clicked(null, 0, 0);
         }
     }
 
-//    private void updateButtonStyles() {
-//        for (int i = 0; i < buttons.length; i++) {
-//            if (i == selectedIndex) {
-//                buttons[i].getStyle().up = skin.newDrawable("button-over"); // Add arrow icon drawable if needed
-//                buttons[i].getLabel().setColor(Color.YELLOW); // Highlight selected button
-//            } else {
-//                buttons[i].getStyle().up = skin.newDrawable("button");
-//                buttons[i].getLabel().setColor(Color.WHITE); // Default color
-//            }
-//        }
-//    }
-private void resumeGame() {
-
-    ((Game) Gdx.app.getApplicationListener()).setScreen(gameScreen);
-}
+    private void resumeGame() {
+        ((Game) Gdx.app.getApplicationListener()).setScreen(gameScreen);
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -145,7 +144,7 @@ private void resumeGame() {
 
     @Override
     public void resume() {
-
+        // Handle the resume event
     }
 
     @Override

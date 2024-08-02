@@ -53,6 +53,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final GameAssets gameAssets;
     private boolean saloonTime = false;
     private Game game;
+    private Skin skin;
     public OrthographicCamera getCamera() {
         return camera;
     }
@@ -84,7 +85,15 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets, gameContactListener);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/EightfoldMap.tmx");
         // Initialize TextBox
-        this.textBox = new BisonTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), "animals/bison/bison-single.png");
+        Skin skin = new Skin(Gdx.files.internal("commodore64/skin/uiskin.json"));
+        this.skin = skin;
+        this.textBox = new BisonTextBox(skin, "animals/bison/bison-single.png");
+        this.decisionTextBox = new DecisionTextBox(skin, "player/player-single.png") {
+            @Override
+            public void setFontColor(float r, float g, float b, float a) {
+
+            }
+        };
         this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
         Gdx.input.setInputProcessor(textBox.getStage());
         Gdx.input.setInputProcessor(infoBox.getStage());
@@ -109,12 +118,13 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         textBox.showTextBox(text);
     }
     public void showDecisionTextBox(String text) {
+       // hideTextBox();
         decisionTextBox.showTextBox(text);
     }
 
     public void setDecisionTextBox(String filepath){
         try {
-            this.textBox = new DecisionTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), filepath) {
+            this.decisionTextBox = new DecisionTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), filepath) {
                 @Override
                 public void setFontColor(float r, float g, float b, float a) {
 

@@ -59,8 +59,8 @@ public class FirstLevelConversations extends Conversation {
             }
         } else {
             if (playerConversationIndex < playerConversationTexts.length) {
-                screenInterface.setTextBox("player/player-single.png");
-                screenInterface.showTextBox(playerConversationTexts[playerConversationIndex]);
+                screenInterface.setDecisionTextBox("player/player-single.png");
+                screenInterface.showDecisionTextBox(playerConversationTexts[playerConversationIndex]);
                 playerConversationIndex++;
                 isTextBoxVisible = true;
             } else {
