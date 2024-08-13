@@ -22,10 +22,7 @@ import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
-import objects.inanimate.Boulder;
-import objects.inanimate.Building;
-import objects.inanimate.Door;
-import objects.inanimate.Tree;
+import objects.inanimate.*;
 import text.infobox.InfoBox;
 import text.textbox.SaloonTextBox;
 import text.textbox.TextBox;
@@ -115,6 +112,16 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     @Override
     public void showPlayerTextBox(String playerConversationText) {
+
+    }
+
+    @Override
+    public void addBush(Bush bush) {
+
+    }
+
+    @Override
+    public void addRock(Rock rock) {
 
     }
 

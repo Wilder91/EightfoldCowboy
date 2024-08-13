@@ -5,10 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.eightfold.player.Player;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
-import objects.inanimate.Boulder;
-import objects.inanimate.Building;
-import objects.inanimate.Door;
-import objects.inanimate.Tree;
+import objects.inanimate.*;
 import text.textbox.TextBox;
 
 public interface ScreenInterface {
@@ -46,4 +43,8 @@ public interface ScreenInterface {
     void showDecisionTextBox(String text);
 
     void showPlayerTextBox(String playerConversationText);
+
+    void addBush(Bush bush);
+
+    void addRock(Rock rock);
 }

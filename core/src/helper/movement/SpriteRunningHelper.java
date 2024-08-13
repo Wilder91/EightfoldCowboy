@@ -63,7 +63,7 @@ public class SpriteRunningHelper {
             TextureRegion region = atlas.findRegion(regionNamePrefix, i);
             if (region != null) {
                 frames.add(region);
-                System.out.println("Added frame: " + regionNamePrefix + "_" + i); // Debug print
+                //System.out.println("Added frame: " + regionNamePrefix + "_" + i); // Debug print
             } else {
                 System.out.println("Region " + regionNamePrefix + "_" + i + " not found!"); // Debug print
             }

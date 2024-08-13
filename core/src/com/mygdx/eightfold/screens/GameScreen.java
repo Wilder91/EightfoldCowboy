@@ -19,10 +19,7 @@ import com.mygdx.eightfold.GameAssets;
 import helper.tiledmap.TiledMapHelper;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
-import objects.inanimate.Boulder;
-import objects.inanimate.Building;
-import objects.inanimate.Door;
-import objects.inanimate.Tree;
+import objects.inanimate.*;
 import com.mygdx.eightfold.player.Player;
 import text.infobox.InfoBox;
 import text.textbox.BisonTextBox;
@@ -39,6 +36,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Building> buildingList;
     private final ArrayList<Boulder> boulderList;
     private final ArrayList<Tree> treeList;
+    private final ArrayList<Bush> bushList;
+    private final ArrayList<Rock> rockList;
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final ScreenInterface screenInterface;
@@ -74,6 +73,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.boulderList = new ArrayList<>();
         this.treeList = new ArrayList<>();
         this.doorList = new ArrayList<>();
+        this.bushList = new ArrayList<>();
+        this.rockList = new ArrayList<>();
         this.batch = new SpriteBatch();
         this.game = game;
         this.music = gameAssets.getMusic("lost & found.mp3");
@@ -143,6 +144,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     public void showPlayerTextBox(String playerConversationText) {
 
     }
+
+
 
 
     public void hideTextBox() {
@@ -325,10 +328,24 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     @Override
+    public void addBush(Bush bush) {
+        if (bushList != null) {
+            bushList.add(bush);
+        }
+
+    }
+
+    @Override
+    public void addRock(Rock rock) {
+        rockList.add(rock);
+
+    }
+
+    @Override
     public void render(float delta) {
         update(delta); // Pass delta time to update method
 
-        Gdx.gl.glClearColor(162f / 255f, 188f / 255f, 104f / 255f, 1);
+        Gdx.gl.glClearColor(168f / 255f, 178f / 255f, 113f / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
@@ -339,6 +356,12 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         // Render game objects
         for (Building building : buildingList) {
             building.render(batch);
+        }
+        for (Rock rock : rockList){
+            rock.render(batch);
+        }
+        for (Bush bush : bushList){
+            bush.render(batch);
         }
         if (player != null) {
             player.render(batch);
@@ -355,6 +378,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Tree tree : treeList) {
             tree.render(batch);
         }
+
+
         for (Door door : doorList) {
             door.render(batch);
         }

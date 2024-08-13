@@ -21,10 +21,7 @@ import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
 import helper.tiledmap.factories.animals.BirdFactory;
-import helper.tiledmap.factories.inanimate.BoulderFactory;
-import helper.tiledmap.factories.inanimate.BuildingFactory;
-import helper.tiledmap.factories.inanimate.DoorFactory;
-import helper.tiledmap.factories.inanimate.TreeFactory;
+import helper.tiledmap.factories.inanimate.*;
 import helper.tiledmap.factories.animals.BisonFactory;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.Player;
@@ -110,6 +107,34 @@ public class TiledMapHelper {
                             break;
                         case "seedling":
                             createTree(polygonMapObject, Tree.SEEDLING);
+                            break;
+                        case "bush_one":
+                            System.out.println("bush!");
+                            createBush(polygonMapObject, 1);
+                            break;
+                        case "bush_two":
+                            createBush(polygonMapObject, 2);
+                            break;
+                        case "bush_three":
+                            createBush(polygonMapObject, 3);
+                            break;
+                        case "bush_four":
+                            createBush(polygonMapObject, 4);
+                            break;
+                        case "bush_five":
+                            createBush(polygonMapObject, 5);
+                            break;
+                        case "small_rock":
+                            createRock(polygonMapObject, 0);
+                            break;
+                        case "medium_rock_one":
+                            createRock(polygonMapObject, 3);
+                            break;
+                        case "medium_rock_two":
+                            createRock(polygonMapObject, 2);
+                            break;
+                        case "large_rock":
+                            createRock(polygonMapObject, 1);
                             break;
                         default:
                             createStaticBody(polygonMapObject);
@@ -229,6 +254,18 @@ public class TiledMapHelper {
         TreeFactory treeFactory = new TreeFactory(screenInterface, gameAssets);
         treeFactory.createTree(polygonMapObject, treeType);
     }
+
+    private void createBush(PolygonMapObject polygonMapObject, int bushType) {
+        //System.out.println("create bush");
+        BushFactory bushFactory = new BushFactory(screenInterface, gameAssets, gameContactListener);
+        bushFactory.createBush(polygonMapObject, bushType);
+    }
+    private void createRock(PolygonMapObject polygonMapObject, int rockType) {
+        System.out.println("create rock");
+        RockFactory rockFactory = new RockFactory(screenInterface, gameAssets, gameContactListener);
+        rockFactory.createRock(polygonMapObject, rockType);
+    }
+
 
     private void createBoulder(PolygonMapObject polygonMapObject) {
         BoulderFactory boulderFactory = new BoulderFactory(screenInterface, gameAssets, gameContactListener);

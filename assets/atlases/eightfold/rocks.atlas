@@ -1,0 +1,13 @@
+rocks.png
+size:256,256
+repeat:none
+Large_Rock
+bounds:2,92,157,127
+Medium_Rock
+index:2
+bounds:2,2,105,88
+Medium_Rock
+index:1
+bounds:109,7,99,83
+Small_Rock
+bounds:161,185,43,34
