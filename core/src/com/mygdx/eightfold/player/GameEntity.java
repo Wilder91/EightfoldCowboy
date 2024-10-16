@@ -6,6 +6,7 @@ import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 
+
 public abstract class GameEntity {
     protected float x, y, velX, velY, speed;
     protected float width, height;

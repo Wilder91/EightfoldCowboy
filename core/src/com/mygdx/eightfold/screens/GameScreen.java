@@ -38,6 +38,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Tree> treeList;
     private final ArrayList<Bush> bushList;
     private final ArrayList<Rock> rockList;
+    private final ArrayList<Rock> upperRockList;
+    private final ArrayList<Rock> lowerRockList;
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final ScreenInterface screenInterface;
@@ -64,7 +66,9 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private DecisionTextBox decisionTextBox;
     private InfoBox infoBox;
 
-    public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game) {
+    public GameScreen( OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game) {
+        this.upperRockList = new ArrayList<>();
+        this.lowerRockList = new ArrayList<>();
         this.screenInterface = screenInterface;
         this.buildingList = new ArrayList<>();
         this.camera = camera;
@@ -214,10 +218,21 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Tree tree : treeList) {
             tree.update(delta);
         }
-
+        for (Rock rock : lowerRockList){
+            rock.update(delta);
+        }
         if (player != null) {
             player.update(delta);
         }
+
+        for (Rock rock : upperRockList){
+            rock.update(delta);
+        }
+
+
+
+
+
 
         for (Bison bison : bisonList) {
             bison.update(delta);
@@ -342,6 +357,19 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     @Override
+    public void addLowerRock(Rock rock) {
+        lowerRockList.add(rock);
+
+    }
+    @Override
+    public void addUpperRock(Rock rock) {
+        upperRockList.add(rock);
+
+    }
+
+
+
+    @Override
     public void render(float delta) {
         update(delta); // Pass delta time to update method
 
@@ -357,14 +385,23 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Building building : buildingList) {
             building.render(batch);
         }
-        for (Rock rock : rockList){
-            rock.render(batch);
-        }
+
         for (Bush bush : bushList){
             bush.render(batch);
         }
+
+        for (Rock rock : lowerRockList){
+            rock.render(batch);
+        }
         if (player != null) {
             player.render(batch);
+        }
+
+        for (Rock rock : upperRockList){
+            rock.render(batch);
+        }
+        for (Rock rock : rockList){
+            rock.render(batch);
         }
         for (Bird bird : birdList) {
             bird.render(batch);
@@ -379,7 +416,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             tree.render(batch);
         }
 
-
         for (Door door : doorList) {
             door.render(batch);
         }
@@ -392,7 +428,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         infoBox.getStage().draw();
 
         // Uncomment for debugging physics bodies
-       //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+       box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
     @Override

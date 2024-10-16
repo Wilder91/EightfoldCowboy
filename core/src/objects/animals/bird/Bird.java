@@ -11,6 +11,7 @@ import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.movement.SpriteMovementHelper;
+
 import objects.animals.object_helper.BirdManager;
 import com.mygdx.eightfold.player.GameEntity;
 
@@ -18,7 +19,7 @@ import java.util.Random;
 
 import static helper.Constants.PPM;
 
-public class Bird extends GameEntity {
+public class Bird extends GameEntity  {
 
     private static final float MOVEMENT_DURATION = 2.0f; // 1 second
     private boolean isMoving; // Removed static keyword
@@ -86,7 +87,6 @@ public class Bird extends GameEntity {
 
         sprite.draw(batch);
     }
-
 
 
 

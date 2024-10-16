@@ -27,8 +27,8 @@ public class BirdFactory {
         Rectangle boundingRectangle = polygon.getBoundingRectangle();
 
         Body body = BodyHelperService.createBody(
-                boundingRectangle.x + boundingRectangle.width / 2,
-                boundingRectangle.y + boundingRectangle.height / 2,
+                boundingRectangle.x + boundingRectangle.width / 4,
+                boundingRectangle.y + boundingRectangle.height / 4,
                 boundingRectangle.width ,
                 boundingRectangle.height ,
                 false,

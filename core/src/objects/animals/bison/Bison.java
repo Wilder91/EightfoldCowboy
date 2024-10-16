@@ -12,6 +12,7 @@ import conversations.ConversationManager;
 import helper.movement.BisonMovementHelper;
 import helper.movement.SpriteMovementHelper;
 import com.mygdx.eightfold.GameAssets;
+
 import objects.animals.object_helper.BisonManager;
 import com.mygdx.eightfold.player.GameEntity;
 import helper.movement.Facing;
@@ -115,6 +116,7 @@ public class Bison extends GameEntity {
             }
         }
     }
+
 
     public void playContactSound() {
         contactSound.play(.05f);

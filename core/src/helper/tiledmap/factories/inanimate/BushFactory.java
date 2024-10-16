@@ -43,20 +43,12 @@ public class BushFactory extends InanimateEntityFactory {
 
         Body bushBody = screenInterface.getWorld().createBody(bodyDef);
 
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(
-                boundingRectangle.width / 2 / PPM,
-                boundingRectangle.height / 2 / PPM
-        );
 
-        Fixture bushFixture = bushBody.createFixture(shape, 0.0f);
-        bushFixture.setUserData(new BodyUserData(bushId, TREE, bushBody));
-        shape.dispose();
+
 
         Filter filter = new Filter();
         filter.categoryBits = TREE.getCategoryBits();
         filter.maskBits = TREE.getMaskBits();
-        bushFixture.setFilterData(filter);
 
         Bush bush = new Bush(
                 bushBody,

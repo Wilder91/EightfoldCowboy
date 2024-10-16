@@ -105,4 +105,6 @@ public class Tree extends InanimateEntity {
             System.err.println("Error getting key frame: " + e.getMessage());
         }
     }
+
+
 }

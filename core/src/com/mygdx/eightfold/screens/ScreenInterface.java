@@ -22,6 +22,11 @@ public interface ScreenInterface {
     boolean isActive();
     World getWorld();
     void addDoor(Door door);
+
+    void addLowerRock(Rock rock);
+
+    void addUpperRock(Rock rock);
+
     void setPlayer(Player player);
     Player getPlayer();
     void addBison(Bison bison);

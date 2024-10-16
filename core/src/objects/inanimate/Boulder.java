@@ -11,9 +11,10 @@ import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 
+
 import static helper.Constants.PPM;
 
-public class Boulder extends InanimateEntity {
+public class Boulder extends InanimateEntity{
     private GameAssets gameAssets;
     private final int boulderId;
     private Sprite sprite;
@@ -54,6 +55,7 @@ public class Boulder extends InanimateEntity {
 
 
     }
+
 
 
 }

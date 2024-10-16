@@ -13,6 +13,7 @@ import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 
+
 import static helper.Constants.PPM;
 
 public class Bush extends InanimateEntity {
@@ -88,4 +89,6 @@ public class Bush extends InanimateEntity {
             System.err.println("Bush texture not loaded, cannot render.");
         }
     }
+
+
 }

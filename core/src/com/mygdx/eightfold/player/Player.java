@@ -80,6 +80,8 @@ public class Player extends GameEntity {
         sprite.setPosition(x - width / 2, y - height / 2);
     }
 
+
+
     private void checkUserInput() {
         velX = 0;
         velY = 0;

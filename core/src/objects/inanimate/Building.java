@@ -11,6 +11,7 @@ import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
+;
 
 import java.util.Random;
 
@@ -74,9 +75,6 @@ public class Building extends GameEntity {
         // Draw the current frame
         batch.draw(currentFrame, spriteX, spriteY, currentFrame.getRegionWidth() * 2, currentFrame.getRegionHeight() * 2);
     }
-
-
-
 
 
     public static void startMoving(Body body) {

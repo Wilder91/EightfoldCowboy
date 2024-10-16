@@ -12,10 +12,11 @@ import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.SaloonScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
+
 import objects.animals.object_helper.DoorManager;
 import static helper.Constants.PPM;
 
-public class Door extends InanimateEntity {
+public class Door extends InanimateEntity  {
     private final int doorId;
     private GameAssets gameAssets;
     private ScreenInterface screen;
@@ -105,6 +106,8 @@ public class Door extends InanimateEntity {
     public void render(SpriteBatch batch) {
         // Render the door sprite here if you have one
     }
+
+
 
     public void playerContact() {
         isContacted = true;

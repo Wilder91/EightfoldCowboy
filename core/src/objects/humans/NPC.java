@@ -6,6 +6,7 @@ import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.GameEntity;
 
+
 public class NPC extends GameEntity {
     public NPC(float width, float height, Body body, GameScreen gameScreen, GameAssets gameAssets) {
         super(width, height, body, gameScreen, gameAssets);
@@ -20,4 +21,6 @@ public class NPC extends GameEntity {
     public void render(SpriteBatch batch) {
 
     }
+
+
 }

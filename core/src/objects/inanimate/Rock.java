@@ -18,6 +18,8 @@ public class Rock extends InanimateEntity {
     public static final int ROCK_LARGE = 1;
     public static final int ROCK_MEDIUM_ONE = 2;
     public static final int ROCK_MEDIUM_TWO = 3;
+    public static final int ROCK_LARGE_TOP = 4;
+    public static final int ROCK_LARGE_BOTTOM= 5;
 
     private final int rockType;
     private float stateTime;
@@ -51,33 +53,40 @@ public class Rock extends InanimateEntity {
             case ROCK_SMALL:
                 return "Small_Rock";
             case ROCK_LARGE:
-                return "Large_Rock";
+                return "Large_Rock";  // This should point to the full large rock
+            case ROCK_LARGE_TOP:
+                return "Large_Rock_Top";  // Correct name for the top half
+            case ROCK_LARGE_BOTTOM:
+                return "Large_Rock_Bottom";  // Correct name for the bottom half
             case ROCK_MEDIUM_ONE:
-                return "Medium_Rock"; // Index 1
+                return "Medium_Rock";  // Medium rock with index 1
             case ROCK_MEDIUM_TWO:
-                return "Medium_Rock"; // Index 2
+                return "Medium_Rock";  // Medium rock with index 2
             default:
                 throw new IllegalArgumentException("Invalid rock type: " + rockType);
         }
     }
 
+
     private void loadTextureFromAtlas(String atlasPath, String regionName) {
         TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
         if (atlas == null) {
-            System.out.println("TextureAtlas " + atlasPath + " not found!");
+            System.err.println("TextureAtlas " + atlasPath + " not found!");
         } else {
+            // Log the loading process for debugging
             System.out.println("Loading texture from atlas: " + atlasPath + ", region: " + regionName + ", rockType: " + rockType);
+
 
             if (rockType == ROCK_MEDIUM_ONE) {
                 rockTexture = atlas.findRegion(regionName, 1);
             } else if (rockType == ROCK_MEDIUM_TWO) {
                 rockTexture = atlas.findRegion(regionName, 2);
             } else {
-                rockTexture = atlas.findRegion(regionName);
+                rockTexture = atlas.findRegion(regionName);  // For Large_Rock_Top and Large_Rock_Bottom
             }
 
             if (rockTexture == null) {
-                System.out.println("Region " + regionName + " with index " + (rockType == ROCK_MEDIUM_ONE ? 1 : rockType == ROCK_MEDIUM_TWO ? 2 : 0) + " not found in atlas " + atlasPath + "!");
+                System.err.println("Region " + regionName + " not found in atlas " + atlasPath + "!");
             } else {
                 // Set the width and height based on the texture size
                 this.width = rockTexture.getRegionWidth();
@@ -86,8 +95,13 @@ public class Rock extends InanimateEntity {
                 // Update the body shape to match the texture size
                 updateBodyShape();
             }
+            System.out.println("Attempting to load region: " + regionName);
+            if (rockTexture == null) {
+                System.err.println("Failed to load texture region: " + regionName);
+            }
         }
     }
+
 
     private void updateBodyShape() {
         // Assuming the body has been created, we update its shape
@@ -116,4 +130,6 @@ public class Rock extends InanimateEntity {
             System.err.println("Rock texture not loaded, cannot render.");
         }
     }
+
+
 }
