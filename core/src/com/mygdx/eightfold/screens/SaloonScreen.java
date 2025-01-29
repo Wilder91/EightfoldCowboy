@@ -315,6 +315,8 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
+
+
     @Override
     public void addBuilding(Building building) {
 

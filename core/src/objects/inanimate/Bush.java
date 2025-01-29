@@ -59,7 +59,7 @@ public class Bush extends InanimateEntity {
     private void updateBodyShape() {
         // Assuming the body has been created, we update its shape
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 4 / PPM, height / 4 / PPM);
+        shape.setAsBox(width / 6 / PPM, height / 8 / PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;

@@ -35,6 +35,9 @@ public interface ScreenInterface {
     void addBird(Bird bird);
 
     void addBoulder(Boulder boulder);
+
+
+
     void addBuilding(Building building);
     void hideTextBox();
     void showTextBox(String text);

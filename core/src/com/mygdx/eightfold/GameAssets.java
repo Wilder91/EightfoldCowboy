@@ -5,6 +5,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import objects.inanimate.Rock;
 
 public class GameAssets {
     public AssetManager assetManager;
@@ -53,6 +55,8 @@ public class GameAssets {
         return assetManager.get(atlasPath, TextureAtlas.class);
     }
 
+
+
     public Texture getTexture(String texturePath) {
         return assetManager.get(texturePath, Texture.class);
     }
@@ -72,5 +76,44 @@ public class GameAssets {
             throw new IllegalArgumentException("Music asset not loaded: " + soundPath);
         }
         return assetManager.get(soundPath, Sound.class);
+    }
+
+    public TextureRegion getRockTopTexture(int rockType) {
+        TextureAtlas atlas = getAtlas("atlases/eightfold/rocks.atlas");
+        String regionName = getRockRegionName(rockType, true); // true for top
+        TextureRegion region = atlas.findRegion(regionName);
+        if (region == null) {
+            throw new IllegalArgumentException("Rock top texture region not found: " + regionName);
+        }
+        return region;
+    }
+
+    public TextureRegion getRockBottomTexture(int rockType) {
+        TextureAtlas atlas = getAtlas("atlases/eightfold/rocks.atlas");
+        String regionName = getRockRegionName(rockType, false); // false for bottom
+        TextureRegion region = atlas.findRegion(regionName);
+        if (region == null) {
+            throw new IllegalArgumentException("Rock bottom texture region not found: " + regionName);
+        }
+        return region;
+    }
+
+    // Private helper method for mapping rock types
+    private String getRockRegionName(int rockType, boolean isTop) {
+        System.out.println(rockType);
+        System.out.println(isTop);
+        String suffix = isTop ? "_Top" : "_Bottom";
+        switch (rockType) {
+            case 0:
+                return "Small_Rock_1" + suffix;
+            case 3:
+                return "Medium_Rock_1" + suffix;
+            case 2:
+                return "Medium_Rock_2" + suffix;
+            case 1:
+                return "Large_Rock" + suffix;
+            default:
+                throw new IllegalArgumentException("Invalid rock type: " + rockType);
+        }
     }
 }

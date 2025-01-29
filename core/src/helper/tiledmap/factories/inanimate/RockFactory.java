@@ -1,5 +1,6 @@
 package helper.tiledmap.factories.inanimate;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,9 +11,7 @@ import com.mygdx.eightfold.screens.ScreenInterface;
 import com.mygdx.eightfold.GameAssets;
 import objects.inanimate.Rock;
 
-
 import static helper.Constants.PPM;
-import static helper.ContactType.TREE;
 
 public class RockFactory extends InanimateEntityFactory {
     private static int rockCounter = 0;
@@ -34,45 +33,24 @@ public class RockFactory extends InanimateEntityFactory {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
 
-        // Adjust the positioning based on the rock type (top or bottom)
-        if (rockType == Rock.ROCK_LARGE_TOP) {
-            bodyDef.position.set(
-                    (boundingRectangle.x + boundingRectangle.width / 2) / PPM,
-                    (boundingRectangle.y + boundingRectangle.height / 2 + boundingRectangle.height / 4) / PPM // Adjust for top half
-            );
-        } else if (rockType == Rock.ROCK_LARGE_BOTTOM) {
-            bodyDef.position.set(
-                    (boundingRectangle.x + boundingRectangle.width / 2) / PPM,
-                    (boundingRectangle.y + boundingRectangle.height / 2 - boundingRectangle.height / 4) / PPM // Adjust for bottom half
-            );
-        } else {
-            // For other rocks (not split rocks), center them normally
-            bodyDef.position.set(
-                    (boundingRectangle.x + boundingRectangle.width / 4) / PPM,
-                    (boundingRectangle.y + boundingRectangle.height / 4) / PPM
-            );
-        }
+        // Position the rock at the center of its bounding rectangle
+        bodyDef.position.set(
+                (boundingRectangle.x + boundingRectangle.width / 2) / PPM,
+                (boundingRectangle.y + boundingRectangle.height / 2) / PPM
+        );
 
         // Create the physics body for the rock
         Body rockBody = screenInterface.getWorld().createBody(bodyDef);
-
-        // Define the shape of the rock (use a polygon or bounding box)
+        TextureRegion topTexture = gameAssets.getRockTopTexture(rockType);
+        TextureRegion bottomTexture = gameAssets.getRockBottomTexture(rockType);
+        // Define the shape of the rock (using a polygon based on its vertices)
         PolygonShape shape = new PolygonShape();
         float[] vertices = polygon.getTransformedVertices();
         Vector2[] worldVertices = new Vector2[vertices.length / 2];
 
-        // Adjust hitbox size based on rock type
-        float hitboxScale = 1.0f; // Default scale for normal rocks
-
-        if (rockType == Rock.ROCK_LARGE_TOP || rockType == Rock.ROCK_LARGE_BOTTOM) {
-            hitboxScale = 0.1f; // Scale hitbox down to 70% for split rocks
-        }
-
-        // Apply the scaling to the vertices
+        // Convert vertices to world coordinates
         for (int i = 0; i < vertices.length / 2; i++) {
-            Vector2 current = new Vector2(vertices[i * 2] / PPM, vertices[i * 2 + 1] / PPM);
-            current.scl(hitboxScale); // Scale the hitbox size
-            worldVertices[i] = current;
+            worldVertices[i] = new Vector2(vertices[i * 2] / PPM, vertices[i * 2 + 1] / PPM);
         }
 
         shape.set(worldVertices);
@@ -92,20 +70,14 @@ public class RockFactory extends InanimateEntityFactory {
                 rockBody,
                 screenInterface,
                 rockType,
-                rockId,
+                1,
+                topTexture,
+                bottomTexture,
                 gameAssets,
                 gameContactListener
         );
 
-        // Add the rock to the appropriate list in the ScreenInterface
-        if (rockType == Rock.ROCK_LARGE_TOP) {
-            screenInterface.addUpperRock(rock);  // Add to top rock list
-        } else if (rockType == Rock.ROCK_LARGE_BOTTOM) {
-            screenInterface.addLowerRock(rock);  // Add to bottom rock list
-        } else {
-            screenInterface.addRock(rock);  // For non-split rocks, use the default rock list
-        }
+        // Add the rock to the default rock list in the ScreenInterface
+        screenInterface.addRock(rock);
     }
-
 }
-

@@ -136,12 +136,7 @@ public class TiledMapHelper {
                         case "large_rock":
                             createRock(polygonMapObject, 1);
                             break;
-                        case "large_rock_top":
-                            createRock(polygonMapObject, 4);
-                            break;  // <--- Add this break
-                        case "large_rock_bottom":
-                            createRock(polygonMapObject, 5);
-                            break;
+
                         default:
                             createStaticBody(polygonMapObject);
                             break;

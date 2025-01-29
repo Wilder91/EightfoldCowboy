@@ -38,8 +38,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Tree> treeList;
     private final ArrayList<Bush> bushList;
     private final ArrayList<Rock> rockList;
-    private final ArrayList<Rock> upperRockList;
-    private final ArrayList<Rock> lowerRockList;
+    private final ArrayList<Rock> rockTopList;
+
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final ScreenInterface screenInterface;
@@ -59,16 +59,13 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         return camera;
     }
 
-
-
     // TextBox
     private TextBox textBox;
     private DecisionTextBox decisionTextBox;
     private InfoBox infoBox;
 
-    public GameScreen( OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game) {
-        this.upperRockList = new ArrayList<>();
-        this.lowerRockList = new ArrayList<>();
+    public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game) {
+
         this.screenInterface = screenInterface;
         this.buildingList = new ArrayList<>();
         this.camera = camera;
@@ -79,6 +76,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.doorList = new ArrayList<>();
         this.bushList = new ArrayList<>();
         this.rockList = new ArrayList<>();
+        this.rockTopList = new ArrayList<>();
+
         this.batch = new SpriteBatch();
         this.game = game;
         this.music = gameAssets.getMusic("lost & found.mp3");
@@ -218,16 +217,12 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Tree tree : treeList) {
             tree.update(delta);
         }
-        for (Rock rock : lowerRockList){
-            rock.update(delta);
-        }
+
         if (player != null) {
             player.update(delta);
         }
 
-        for (Rock rock : upperRockList){
-            rock.update(delta);
-        }
+
 
 
 
@@ -302,6 +297,16 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
+    @Override
+    public void addLowerRock(Rock rock) {
+
+    }
+
+    @Override
+    public void addUpperRock(Rock rock) {
+
+    }
+
     public void removePlayerBody() {
         System.out.println("player body before : " + player.getBody());
         if (player != null && player.getBody() != null) {
@@ -327,6 +332,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             boulderList.add(boulder);
         }
     }
+
+
+
+
 
     @Override
     public void addBuilding(Building building) {
@@ -356,80 +365,83 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
-    @Override
-    public void addLowerRock(Rock rock) {
-        lowerRockList.add(rock);
 
-    }
-    @Override
-    public void addUpperRock(Rock rock) {
-        upperRockList.add(rock);
-
-    }
 
 
 
     @Override
     public void render(float delta) {
-        update(delta); // Pass delta time to update method
+        // Update the game state
+        update(delta);
 
+        // Clear the screen
         Gdx.gl.glClearColor(168f / 255f, 178f / 255f, 113f / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Set up the tiled map renderer to follow the camera
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
-        music.setVolume(.1f);
-        //music.play();
+
+        // Begin drawing with the SpriteBatch
         batch.begin();
 
-        // Render game objects
+        // 1. Render background elements like buildings, bushes, and boulders
         for (Building building : buildingList) {
             building.render(batch);
         }
 
-        for (Bush bush : bushList){
+        for (Boulder boulder : boulderList) {
+            boulder.render(batch);
+        }
+
+        // 2. Render the bottom part of the rocks (below the player)
+        for (Rock rock : rockList) {
+            rock.renderBottom(batch); // Render only the bottom texture of the rock
+        }
+
+        // 3. Render dynamic entities like the player, birds, and bison
+        if (player != null) {
+            player.render(batch); // Player should be between bottom and top layers of rocks
+        }
+
+        for (Bush bush : bushList) {
             bush.render(batch);
         }
 
-        for (Rock rock : lowerRockList){
-            rock.render(batch);
-        }
-        if (player != null) {
-            player.render(batch);
-        }
-
-        for (Rock rock : upperRockList){
-            rock.render(batch);
-        }
-        for (Rock rock : rockList){
-            rock.render(batch);
-        }
         for (Bird bird : birdList) {
             bird.render(batch);
         }
         for (Bison bison : bisonList) {
             bison.render(batch);
         }
-        for (Boulder boulder : boulderList) {
-            boulder.render(batch);
+
+        // 4. Render the top part of the rocks (above the player)
+        for (Rock rock : rockList) {
+            rock.renderTop(batch); // Render only the top texture of the rock
         }
+
+        // 5. Render other front-layer elements like trees and doors
         for (Tree tree : treeList) {
             tree.render(batch);
         }
-
         for (Door door : doorList) {
             door.render(batch);
         }
+
+        // End drawing with the SpriteBatch
         batch.end();
 
-        // Render the Stage
+        // Render the UI elements (TextBox and InfoBox)
         textBox.getStage().act(delta);
         textBox.getStage().draw();
         infoBox.getStage().act(delta);
         infoBox.getStage().draw();
 
-        // Uncomment for debugging physics bodies
-       box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        // Optional: Render the Box2D debug renderer for physics bodies
+        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
+
+
 
     @Override
     public void dispose() {

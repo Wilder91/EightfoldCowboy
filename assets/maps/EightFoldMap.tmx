@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="871">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="872">
  <editorsettings>
   <chunksize width="32" height="32"/>
  </editorsettings>
@@ -217,9 +217,6 @@
   <object id="832" name="bush_four" x="915.861" y="954.71">
    <polygon points="0,0 45.034,0 44.2575,45.4444 -2.32934,44.7559"/>
   </object>
-  <object id="836" name="large_rock_top" x="969.638" y="791.027">
-   <polygon points="0,0 90.2287,0 88.6729,28.9738 -4.667,28.5349"/>
-  </object>
   <object id="837" name="medium_rock_two" x="1113.28" y="806.291">
    <polygon points="0,0 52.8818,0 51.9699,55.1203 -2.73526,54.2852"/>
   </object>
@@ -229,13 +226,7 @@
   <object id="842" name="small_rock" x="945.026" y="647.273">
    <polygon points="0,0 19.3315,0 18.9982,23.93 -0.999905,23.5674"/>
   </object>
-  <object id="850" name="bush_five" x="820.136" y="711.987">
-   <polygon points="0,0 54.3244,0 53.3877,54.1272 -2.80988,53.3071"/>
-  </object>
-  <object id="855" name="large_rock_bottom" x="964.811" y="819.037">
-   <polygon points="0,0 98.6417,0 96.9408,55.8862 -5.10215,55.0395"/>
-  </object>
-  <object id="856" name="large_rock" x="842.44" y="808.188">
+  <object id="856" name="large_rock" x="723.843" y="705.06">
    <polygon points="0,0 98.6417,0 96.9408,55.8862 -5.10215,55.0395"/>
   </object>
   <object id="858" name="bison" x="599.572" y="672.989">
@@ -269,6 +260,9 @@
    <polygon points="0,0 54.3244,0 53.3877,54.1272 -2.80988,53.3071"/>
   </object>
   <object id="870" name="large_rock" x="256.959" y="882.533">
+   <polygon points="0,0 98.6417,0 96.9408,55.8862 -5.10215,55.0395"/>
+  </object>
+  <object id="871" name="large_rock" x="892.059" y="778.618">
    <polygon points="0,0 98.6417,0 96.9408,55.8862 -5.10215,55.0395"/>
   </object>
  </objectgroup>
