@@ -83,7 +83,7 @@ public class FirstLevelConversations extends Conversation {
         // Ensure indices are reset for the new phase
         bisonConversationIndex = 0;
         playerConversationIndex = 0;
-        isBisonTurn = true;
+        isBisonTurn = !isBisonTurn;
         showNextLine();
     }
 
@@ -107,9 +107,7 @@ public class FirstLevelConversations extends Conversation {
         this.playerConversationTexts = getPlayerConversationTexts(); // Update the texts for the new phase
     }
 
-    private void setConversationPhase(int phase) {
-        conversationPhase = phase;
-    }
+
 
     private String[] getBisonConversationTexts() {
         switch (bison.getId()) {
@@ -119,12 +117,14 @@ public class FirstLevelConversations extends Conversation {
                 } else if (conversationPhase == 1) {
                     return new String[]{"Oh you'll get used to it", "We're good people around here", "The smell is just part of our charm."};
                 }
+
             case 1:
                 if (conversationPhase == 0) {
                     return new String[]{"Wassup", "I'm the evil one"};
                 } else if (conversationPhase == 1) {
                     return new String[]{"Good luck with that."};
                 }
+
             case 2:
                 return new String[]{"Welcome to Bison Land", "Even the people are bison\nhere"};
             case 3:
@@ -145,8 +145,12 @@ public class FirstLevelConversations extends Conversation {
                     return new String[]{"Fair enough"};
                 }
             case 1:
+                if(conversationPhase == 0){
+                    return new String[]{"Cool.", "I'm Chaotic Good myself"};
+                    }else {
+                    return new String[]{};
+                }
 
-                return new String[]{"Cool.", "I'm Chaotic Good myself"};
             case 2:
                 return new String[]{"Not me bro"};
             case 3:
@@ -154,6 +158,7 @@ public class FirstLevelConversations extends Conversation {
             default:
                 return new String[]{"Fuck off."};
         }
+
     }
 
     @Override

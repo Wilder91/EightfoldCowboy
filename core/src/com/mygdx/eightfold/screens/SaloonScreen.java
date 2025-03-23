@@ -9,15 +9,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.Boot;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
-import helper.BodyUserData;
-import helper.ContactType;
 import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
 import objects.animals.bird.Bird;
@@ -25,7 +22,6 @@ import objects.animals.bison.Bison;
 import objects.inanimate.*;
 import text.infobox.InfoBox;
 import text.textbox.SaloonTextBox;
-import text.textbox.TextBox;
 
 import java.util.ArrayList;
 
@@ -71,7 +67,8 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
         this.player = Boot.INSTANCE.getGameScreen().getPlayer();
 
-        player.createBody(world);
+        Door door = null;
+        player.createBody(world, door);
 
 
         if (player == null) {
@@ -187,8 +184,9 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         }
 
         if (player != null) {
+            Door door = doorList.get(0);
             if (!playerPositionInitialized) {
-                player.getBody().setTransform(15, 2, 0); // Set the initial position
+                player.getBody().setTransform(door.getBody().getPosition().x, 2, 0); // Set the initial position
                 playerPositionInitialized = true; // Set the flag to true to avoid resetting the position
             }
 
@@ -200,6 +198,11 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     public void enterPauseScreen() {
         ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, gameScreen));
+    }
+
+    public void playerArrives(){
+        Door door = doorList.get(0);
+       player.getBody().setTransform(door.getBody().getPosition().x, 2, 0);
     }
 
     private void cameraUpdate() {
@@ -270,7 +273,7 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         infoBox.getStage().draw();
 
         // Uncomment for debugging physics bodies
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+       // box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
     @Override
@@ -278,6 +281,7 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         // Dispose of assets properly
         batch.dispose();
         world.dispose();
+
         box2DDebugRenderer.dispose();
         orthogonalTiledMapRenderer.dispose();
         textBox.getStage().dispose();
@@ -288,8 +292,10 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     public void setPlayer(Player player) {
         this.player = player;
+
+        Door door = null;
         if (player != null && player.getBody() == null) {
-            player.createBody(world); // Create a new body in the new world
+            player.createBody(world, door); // Create a new body in the new world
         }
     }
 

@@ -61,7 +61,7 @@ public abstract class BaseScreen extends ScreenAdapter implements Screen {
     public void dispose() {
         batch.dispose();
         world.dispose();
-        box2DDebugRenderer.dispose();
+        //box2DDebugRenderer.dispose();
         textBox.getStage().dispose();
         textBox.getSkin().dispose();
         infoBox.getStage().dispose();

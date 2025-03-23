@@ -12,6 +12,7 @@ import helper.BodyHelperService;
 import helper.ContactType;
 import com.mygdx.eightfold.GameAssets;
 import helper.movement.SpriteRunningHelper;
+import objects.inanimate.Door;
 
 import static helper.Constants.PPM;
 
@@ -49,9 +50,7 @@ public class Player extends GameEntity {
         y = setY;
     }
 
-    public Sprite getSprite() {
-        return sprite;
-    }
+
 
     @Override
     public void update(float delta) {
@@ -63,9 +62,14 @@ public class Player extends GameEntity {
         updateAnimation(delta);
     }
 
-    public void createBody(World world) {
+    public void createBody(World world, Door door) {
         this.body = BodyHelperService.createBody(
                 x, y, width, height, false, world, ContactType.PLAYER, 1);
+    }
+
+    public void screenChange(World world, Door door) {
+        this.body = BodyHelperService.createBody(
+                door.getBody().getPosition().x, door.getBody().getPosition().y, width, height, false, world, ContactType.PLAYER, 1);
     }
 
     public void setPosition(float x, float y) {

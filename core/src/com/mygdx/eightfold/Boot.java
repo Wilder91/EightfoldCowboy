@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.eightfold.player.Player;
+
 import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.SaloonScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
+import objects.inanimate.Door;
 
 
 public class Boot extends Game {
@@ -40,7 +42,7 @@ public class Boot extends Game {
         this.game = this;
         gameAssets.loadAssets();
         gameAssets.finishLoading();
-        this.gameScreen = new GameScreen(orthographicCamera, screenInterface, gameAssets, this);
+        this.gameScreen = new GameScreen(orthographicCamera, screenInterface, gameAssets, this, "start");
         setScreen(gameScreen);
        // setScreen(new SaloonScreen(orthographicCamera, gameAssets, new GameScreen(orthographicCamera, screenInterface, gameAssets), world, screenInterface));
 
@@ -54,19 +56,18 @@ public class Boot extends Game {
     }
 
 
-    public void switchToSaloonScreen(Player player) {
-        if (saloonScreen == null) {
-            saloonScreen = new SaloonScreen(orthographicCamera, gameAssets, gameScreen,world, screenInterface, player, this);
-
-        }
+    public void switchToSaloonScreen(Player player, Door door) {
+        saloonScreen = new SaloonScreen(orthographicCamera, gameAssets, gameScreen,world, screenInterface, player, this);
         saloonScreen.setPlayer(player);
-        player.setPosition(50,50);
         setScreen(this.saloonScreen);
+        saloonScreen.playerArrives();
     }
 
-    public void switchToGameScreen(Player player) {
-        setScreen(gameScreen);
-        gameScreen.resetPlayer(player);
+    public void switchToGameScreen(Player player, Door door) {
+        GameScreen newGameScreen = new GameScreen(orthographicCamera, screenInterface, gameAssets, game, "saloon");
+        setScreen(newGameScreen);
+        gameScreen.setPlayer(player);
+        gameScreen.playerArrives();
     }
 
     // Method to change the screen

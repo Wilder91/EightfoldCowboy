@@ -67,7 +67,7 @@ public class GameInitializer {
     public void dispose() {
         batch.dispose();
         world.dispose();
-        box2DDebugRenderer.dispose();
+        //box2DDebugRenderer.dispose();
         orthogonalTiledMapRenderer.dispose();
     }
 }

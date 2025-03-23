@@ -63,8 +63,9 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private TextBox textBox;
     private DecisionTextBox decisionTextBox;
     private InfoBox infoBox;
+    private String origin;
 
-    public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game) {
+    public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
 
         this.screenInterface = screenInterface;
         this.buildingList = new ArrayList<>();
@@ -77,7 +78,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.bushList = new ArrayList<>();
         this.rockList = new ArrayList<>();
         this.rockTopList = new ArrayList<>();
-
+        this.origin = origin;
         this.batch = new SpriteBatch();
         this.game = game;
         this.music = gameAssets.getMusic("lost & found.mp3");
@@ -101,6 +102,16 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
         Gdx.input.setInputProcessor(textBox.getStage());
         Gdx.input.setInputProcessor(infoBox.getStage());
+        adjustLocation();
+    }
+
+    private void adjustLocation() {
+
+        if(origin == "saloon"){
+            Door door = doorList.get(0);
+           System.out.println("fromSaloon true");
+           player.getBody().setTransform(door.getBody().getPosition().x, door.getBody().getPosition().y - 2, 0);
+        }
     }
 
     @Override
@@ -302,6 +313,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
+    public void playerArrives(){
+        Door door = doorList.get(0);
+        player.getBody().setTransform(door.getBody().getPosition().x, door.getBody().getPosition().y +200, 0);
+    }
+
     @Override
     public void addUpperRock(Rock rock) {
 
@@ -438,7 +454,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         infoBox.getStage().draw();
 
         // Optional: Render the Box2D debug renderer for physics bodies
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
 
@@ -448,21 +464,18 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         // Dispose of assets properly
         batch.dispose();
         world.dispose();
-        box2DDebugRenderer.dispose();
+        //box2DDebugRenderer.dispose();
         orthogonalTiledMapRenderer.dispose();
         textBox.getStage().dispose();
         textBox.getSkin().dispose();
     }
 
-    public void resetPlayer(Player player){
-        player.createBody(world);
+    public void resetPlayer(Player player, Door door){
+        player.screenChange(world, door);
     }
 
     public void setPlayer(Player player) {
         this.player = player;
-        if(player.getBody() == null) {
-
-        }
     }
 
 
@@ -471,7 +484,4 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         return world;
     }
 
-    public Game getGame() {
-        return game;
-    }
 }

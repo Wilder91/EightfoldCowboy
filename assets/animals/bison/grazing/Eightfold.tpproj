@@ -76,7 +76,7 @@ prettyPrint=false
 legacyOutput=false
 
 scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
-inputFiles=[{path:../../../rocks/Large_Rock.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_1.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_2.png,type:Input,regionName:null},{path:../../../rocks/Small_Rock.png,type:Input,regionName:null}]
+inputFiles=[{path:../../../rocks/Large_Rock.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_1.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_2.png,type:Input,regionName:null},{path:../../../rocks/Small_Rock.png,type:Input,regionName:null},{path:../../../rocks/Small_Rock_1_Bottom.png,type:Input,regionName:null},{path:../../../rocks/Small_Rock_1_Top.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_2_Bottom.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_2_Top.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_1_Bottom.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_1_Top.png,type:Input,regionName:null},{path:../../../rocks/Large_Rock_Top.png,type:Input,regionName:null},{path:../../../rocks/Large_Rock_Bottom.png,type:Input,regionName:null}]
 keepInputFileExtensions=false
 
 
