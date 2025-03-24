@@ -34,15 +34,9 @@ public class PauseScreen implements Screen {
         this.gameScreen = gameScreen;
         this.skin = new Skin(Gdx.files.internal("vhs/skin/vhs-ui.json"));
         this.inventoryScreen = new InventoryScreen(camera, gameScreen, gameAssets, skin);
-
         // Initialize Scene2D Stage and Skin
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage); // Set input processor to the stage
-
-
-        // Set up the camera
-        camera.setToOrtho(false, (Gdx.graphics.getWidth() / PPM), (Gdx.graphics.getHeight() / PPM)); // Set your game width and height
-
         // Create UI elements
         Label pauseLabel = new Label("Paused", skin);
         TextButton resumeButton = new TextButton("Resume", skin);

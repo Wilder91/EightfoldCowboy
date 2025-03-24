@@ -7,55 +7,66 @@ import objects.animals.bison.Bison;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Handles multi-phase conversations between the player and various bison in the first level.
+ */
 public class FirstLevelConversations extends Conversation {
     private final Bison bison;
     private final Player player;
     private ScreenInterface screenInterface;
+
     private int bisonConversationIndex = 0;
     private int playerConversationIndex = 0;
     private int conversationPhase = 0;
+
     private boolean isTextBoxVisible = false;
     private boolean isBisonTurn = true;
 
-    // Map to store the number of phases for each bison
+    // Static map that defines how many conversation phases each bison has
     private static final Map<Integer, Integer> bisonPhases = new HashMap<>();
 
     static {
-        // Initialize the number of phases for each bison
-        bisonPhases.put(0, 2); // Bison with ID 0 has 2 phases
-        bisonPhases.put(1, 2); // Bison with ID 1 has 2 phases
-        bisonPhases.put(2, 1); // Bison with ID 2 has 1 phase
-        bisonPhases.put(3, 1); // Bison with ID 3 has 1 phase
+        bisonPhases.put(0, 2); // Ranch bison
+        bisonPhases.put(1, 2); // "Evil" bison
+        bisonPhases.put(2, 1); // Welcoming bison
+        bisonPhases.put(3, 1); // Haunted saloon bison
     }
 
     public FirstLevelConversations(ScreenInterface screenInterface, Bison bison, Player player, String filepath, String imagePath, int bisonConversationPhase) {
-        super(null, null, filepath, imagePath); // Initialize with null, will be set below
+        super(null, null, filepath, imagePath); // Superclass handles audio/image, null for now
         this.screenInterface = screenInterface;
         this.bison = bison;
         this.player = player;
         this.conversationPhase = bisonConversationPhase;
+
+        // Initialize conversation text arrays for both bison and player
         this.bisonConversationTexts = getBisonConversationTexts();
         this.playerConversationTexts = getPlayerConversationTexts();
     }
 
+    /**
+     * Starts the conversation with a bison if no text box is currently visible.
+     */
     public void startBisonConversations(Bison bison) {
         if (!isTextBoxVisible) {
-            hideInfoBox();
-            showNextLine();
+            hideInfoBox(); // Clear any HUD/instruction info
+            showNextLine(); // Begin conversation
         }
     }
 
+    /**
+     * Displays the next line in the conversation, alternating between bison and player.
+     */
     public void showNextLine() {
         if (isBisonTurn) {
             if (bisonConversationIndex < bisonConversationTexts.length) {
                 screenInterface.setTextBox("animals/bison/bison-single.png");
                 screenInterface.showTextBox(bisonConversationTexts[bisonConversationIndex]);
                 bisonConversationIndex++;
-                //isTextBoxVisible = true;
             } else {
                 isBisonTurn = false;
-                playerConversationIndex = 0; // Reset player index for the new phase
-                showNextLine(); // Show the next line for the player
+                playerConversationIndex = 0; // Reset for player phase
+                showNextLine(); // Immediately show player's first response
             }
         } else {
             if (playerConversationIndex < playerConversationTexts.length) {
@@ -64,11 +75,14 @@ public class FirstLevelConversations extends Conversation {
                 playerConversationIndex++;
                 isTextBoxVisible = true;
             } else {
-                checkNextPhase(conversationPhase);
+                checkNextPhase(conversationPhase); // Move to next phase or end
             }
         }
     }
 
+    /**
+     * Determines whether the conversation should progress to the next phase or end entirely.
+     */
     private void checkNextPhase(int conversationPhase) {
         int totalPhases = bisonPhases.getOrDefault(bison.getId(), 1);
         if (conversationPhase < totalPhases - 1) {
@@ -78,15 +92,20 @@ public class FirstLevelConversations extends Conversation {
         }
     }
 
+    /**
+     * Progresses the conversation to the next phase and resets indices.
+     */
     private void nextConversationPhase() {
         incrementBisonConversationPhase();
-        // Ensure indices are reset for the new phase
         bisonConversationIndex = 0;
         playerConversationIndex = 0;
-        isBisonTurn = !isBisonTurn;
+        isBisonTurn = !isBisonTurn; // Alternate who starts the next phase
         showNextLine();
     }
 
+    /**
+     * Resets everything when the conversation is complete.
+     */
     private void endConversation() {
         screenInterface.hideTextBox();
         bison.setInConversation(false);
@@ -96,83 +115,109 @@ public class FirstLevelConversations extends Conversation {
         this.bisonConversationTexts = getBisonConversationTexts();
         this.playerConversationTexts = getPlayerConversationTexts();
         isTextBoxVisible = false;
-        isBisonTurn = true; // Ensure bison starts the next conversation
+        isBisonTurn = true; // Default to bison starting next time
     }
 
+    /**
+     * Increments the conversation phase and reloads the appropriate conversation text.
+     */
     private void incrementBisonConversationPhase() {
         conversationPhase++;
         this.bisonConversationTexts = null;
         this.playerConversationTexts = null;
-        this.bisonConversationTexts = getBisonConversationTexts(); // Update the texts for the new phase
-        this.playerConversationTexts = getPlayerConversationTexts(); // Update the texts for the new phase
+        this.bisonConversationTexts = getBisonConversationTexts();
+        this.playerConversationTexts = getPlayerConversationTexts();
     }
 
-
-
+    /**
+     * Returns the lines the bison should say based on their ID and current phase.
+     */
     private String[] getBisonConversationTexts() {
         switch (bison.getId()) {
             case 0:
                 if (conversationPhase == 0) {
-                    return new String[]{"Howdy stranger, welcome\nto the ranch", "Nice day today, huh?", "Feel free to take a walk\naround and talk to the other bison. Just stay out of The Saloon."};
+                    return new String[]{
+                            "Howdy stranger, welcome\nto the ranch",
+                            "Nice day today, huh?",
+                            "Feel free to take a walk\naround and talk to the other bison. Just stay out of The Saloon."
+                    };
                 } else if (conversationPhase == 1) {
-                    return new String[]{"Oh you'll get used to it", "We're good people around here", "The smell is just part of our charm."};
+                    return new String[]{
+                            "Oh you'll get used to it",
+                            "We're good people around here",
+                            "The smell is just part of our charm."
+                    };
                 }
-
+                break;
             case 1:
                 if (conversationPhase == 0) {
                     return new String[]{"Wassup", "I'm the evil one"};
                 } else if (conversationPhase == 1) {
                     return new String[]{"Good luck with that."};
                 }
-
+                break;
             case 2:
-                return new String[]{"Welcome to Bison Land", "Even the people are bison\nhere"};
+                return new String[]{
+                        "Welcome to Bison Land",
+                        "Even the people are bison\nhere"
+                };
             case 3:
                 if (conversationPhase == 0) {
-                    return new String[]{"Stay out of the Saloon," + "\n" + "I've heard it's haunted", "I don't believe in that" + "\n" + "crap but I have heard" + "\n" + "strange noises emanating" + "\n" + "from within"};
+                    return new String[]{
+                            "Stay out of the Saloon,\nI've heard it's haunted",
+                            "I don't believe in that\ncrap but I have heard\nstrange noises emanating\nfrom within"
+                    };
                 }
-            default:
-                return new String[]{"Leave my ass alone."};
+                break;
         }
+        return new String[]{"Leave my ass alone."}; // Default/fallback
     }
 
+    /**
+     * Returns the player's responses based on the bison's ID and current phase.
+     */
     private String[] getPlayerConversationTexts() {
         switch (bison.getId()) {
             case 0:
                 if (conversationPhase == 0) {
-                    return new String[]{"Nice, I'm Kath", "It's a pleasure to meet you", "You smell like fermented hell"};
+                    return new String[]{
+                            "Nice, I'm Kath",
+                            "It's a pleasure to meet you",
+                            "You smell like fermented hell"
+                    };
                 } else {
                     return new String[]{"Fair enough"};
                 }
             case 1:
-                if(conversationPhase == 0){
-                    return new String[]{"Cool.", "I'm Chaotic Good myself"};
-                    }else {
-                    return new String[]{};
+                if (conversationPhase == 0) {
+                    return new String[]{
+                            "Cool.", "I'm Chaotic Good myself"
+                    };
+                } else {
+                    return new String[]{}; // No reply in phase 1
                 }
-
             case 2:
                 return new String[]{"Not me bro"};
             case 3:
                 return new String[]{"That's great man, seems like\n a weird place"};
             default:
-                return new String[]{"Fuck off."};
+                return new String[]{"Fuck off."}; // Fallback/default
         }
-
     }
 
-    @Override
+    // These methods would be defined in the base Conversation class and are overridden here
+
     public void showTextBox(String text) {
-        // Implementation to show text box with the given text
+        // Custom implementation to show a text box
     }
 
     @Override
     protected void hideTextBox() {
-        // Implementation to hide the text box
+        // Custom implementation to hide the text box
     }
 
     @Override
     protected void hideInfoBox() {
-        // Implementation to hide the info box
+        // Custom implementation to hide HUD or info overlay
     }
 }
