@@ -37,7 +37,7 @@ public class SpriteRunningHelper {
         loadAnimations();
 
         this.currentAnimation = animations.get("runningHorizontal");
-        setRestingFrame("player/character_standing.png");
+        setRestingFrame("player/Character_Down_Run_1.png");
         this.sprite = new Sprite(this.currentAnimation.getKeyFrame(0));
         this.sprite.setOriginCenter();
 
@@ -106,10 +106,10 @@ public class SpriteRunningHelper {
         if (vy > 0.1f) {
             if (vx > 0) {
                 currentAnimation = animations.get("runningDiagonalUp");
-                flipSprite(false);
+                flipSprite(true);
             } else if (vx < 0) {
                 currentAnimation = animations.get("runningDiagonalUp");
-                flipSprite(true);
+                flipSprite(false);
             } else {
                 currentAnimation = animations.get("runningUp");
             }

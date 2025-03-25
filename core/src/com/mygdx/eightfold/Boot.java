@@ -59,7 +59,7 @@ public class Boot extends Game {
     public void switchToSaloonScreen(Player player, Door door) {
         saloonScreen = new SaloonScreen(orthographicCamera, gameAssets, gameScreen,world, screenInterface, player, this);
         saloonScreen.setPlayer(player);
-        setScreen(this.saloonScreen);
+        setScreen(saloonScreen);
         saloonScreen.playerArrives();
     }
 

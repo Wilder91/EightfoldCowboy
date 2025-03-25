@@ -33,7 +33,7 @@
   <object id="264" name="wall" x="33.2969" y="1061.33">
    <polygon points="0,0 633.499,-3.09023 631.599,26.267 1.26827,27.8121"/>
   </object>
-  <object id="267" name="player" type="human" x="1093.77" y="697.357" width="31.0551" height="59.7148"/>
+  <object id="267" name="player" type="human" x="1093.77" y="697.357" width="34" height="34"/>
   <object id="275" name="wall" x="735.769" y="1061.7">
    <polygon points="0,0 1185.59,-3.09023 1182.04,26.267 2.37356,27.8121"/>
   </object>

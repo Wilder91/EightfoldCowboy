@@ -79,7 +79,6 @@ public class Door extends InanimateEntity  {
                         case "leave_saloon":
                             if (screen instanceof SaloonScreen) {
 
-                                Game game = ((SaloonScreen) screen).getGame();
                                 Boot.INSTANCE.switchToGameScreen((Boot.INSTANCE.getGameScreen()).getPlayer(), this);
                                 messageState = 0;
 
