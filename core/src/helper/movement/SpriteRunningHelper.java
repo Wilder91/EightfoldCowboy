@@ -91,12 +91,21 @@ public class SpriteRunningHelper {
             }
         }
 
+
+
         sprite.setSize(sprite.getRegionWidth(), sprite.getRegionHeight());
         sprite.setOriginCenter();
 
         // Adjust the sprite facing direction
         if (vx != 0) {
             flipSprite(vx > 0);
+        }
+    }
+
+    public void setFacingRight(boolean shouldFaceRight) {
+        if (isFacingRight != shouldFaceRight) {
+            sprite.flip(true, false);
+            isFacingRight = shouldFaceRight;
         }
     }
 

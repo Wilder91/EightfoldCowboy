@@ -37,16 +37,17 @@ public class SpriteIdleHelper {
 
     private void loadAnimations() {
         String atlasPath = "atlases/eightfold/" + characterType + "-movement.atlas";
-        animations.put("idleDown", createAnimation(characterType + "_Idle_Down", 18, atlasPath));
-        animations.put("idleUp", createAnimation(characterType + "_Idle_Up", 1, atlasPath));
-        animations.put("idleDiagonalUp", createAnimation(characterType + "_Idle_DiagUP", 8, atlasPath));
-        animations.put("idleDiagonalDown", createAnimation(characterType + "_Idle_DiagDOWN", 18, atlasPath));
-        animations.put("idleSide", createAnimation(characterType + "_Idle_Horizontal", 4, atlasPath));
+        animations.put("idleDown", createAnimation(characterType + "_Idle_Down", 18, atlasPath, .3f));
+        animations.put("idleUp", createAnimation(characterType + "_Idle_Up", 1, atlasPath, .1f));
+        animations.put("idleDiagonalUp", createAnimation(characterType + "_Idle_DiagUP", 8, atlasPath, .1f));
+        animations.put("idleDiagonalDown", createAnimation(characterType + "_Idle_DiagDOWN", 18, atlasPath, .3f));
+        animations.put("idleSide", createAnimation(characterType + "_Idle_Horizontal", 4, atlasPath, .3f));
     }
 
-    private Animation<TextureRegion> createAnimation(String regionPrefix, int frameCount, String atlasPath) {
+    private Animation<TextureRegion> createAnimation(String regionPrefix, int frameCount, String atlasPath, float frameDuration) {
         Array<TextureRegion> frames = new Array<>();
         TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
+        System.out.println("Loaded " + frames.size + " frames for " + regionPrefix);
 
         for (int i = 1; i <= frameCount; i++) {
             TextureRegion region = atlas.findRegion(regionPrefix, i);
@@ -57,49 +58,35 @@ public class SpriteIdleHelper {
             }
         }
 
-        return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
+        return new Animation<>(frameDuration, frames, Animation.PlayMode.LOOP);
     }
 
     public void update(float delta) {
         stateTime += delta;
-        sprite.setRegion(currentAnimation.getKeyFrame(stateTime, true));
-        sprite.setSize(sprite.getRegionWidth(), sprite.getRegionHeight());
+        TextureRegion region = currentAnimation.getKeyFrame(stateTime, true);
+        sprite.setRegion(region);
+        sprite.setSize(region.getRegionWidth(), region.getRegionHeight());
         sprite.setOriginCenter();
+        sprite.setFlip(isFacingRight, false); // <- Ensure flip is applied each frame
     }
 
-    public void updateAnimation(Vector2 velocity, float delta) {
-        float vx = velocity.x;
-        float vy = velocity.y;
-
-        if (vy > 0.1f) {
-            if (Math.abs(vx) > 0.1f) {
-                setDirection("idleDiagonalUp");
-                flipSprite(vx > 0);
-            } else {
-                setDirection("idleUp");
-            }
-        } else if (vy < -0.1f) {
-            if (Math.abs(vx) > 0.1f) {
-                setDirection("idleDiagonalDown");
-                flipSprite(vx > 0);
-            } else {
-                setDirection("idleDown");
-            }
-        } else if (vx > 0.1f) {
-            setDirection("idleSide");
-            flipSprite(true);
-        } else if (vx < -0.1f) {
-            setDirection("idleSide");
-            flipSprite(false);
-        }
-
-        update(delta);
+    public void setFacingRight(boolean right) {
+        isFacingRight = !right;
+         // Flip X if facing left
     }
+
+
 
     public void setDirection(String direction) {
-        if (animations.containsKey(direction)) {
-            currentAnimation = animations.get(direction);
+        Animation<TextureRegion> newAnimation = animations.get(direction);
+        if (newAnimation != null && newAnimation != currentAnimation) {
+            currentAnimation = newAnimation;
+            stateTime = 0f; // Optional: reset to start of idle loop on direction change
         }
+    }
+
+    public void resetStateTime() {
+        this.stateTime = 0f;
     }
 
     private void flipSprite(boolean shouldFaceRight) {
@@ -116,4 +103,9 @@ public class SpriteIdleHelper {
     public float getStateTime() {
         return stateTime;
     }
+
+    public void getFacingDirection(Vector2 velocity, Vector2 absVelocity) {
+    }
 }
+
+
