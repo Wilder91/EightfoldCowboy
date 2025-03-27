@@ -20,7 +20,9 @@ import conversations.DialogueLine;
 import helper.tiledmap.TiledMapHelper;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
+import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
+import objects.animals.bugs.Dragonfly;
 import objects.inanimate.*;
 import com.mygdx.eightfold.player.Player;
 import text.infobox.InfoBox;
@@ -44,6 +46,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Rock> rockTopList;
     private final ArrayList<Pond> pondList;
     private final ArrayList<Butterfly> butterflyList;
+    private final ArrayList<Dragonfly> dragonflyList;
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final ScreenInterface screenInterface;
@@ -84,6 +87,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.bushList = new ArrayList<>();
         this.rockList = new ArrayList<>();
         this.butterflyList = new ArrayList<>();
+        this.dragonflyList = new ArrayList<>();
         this.rockTopList = new ArrayList<>();
         this.origin = origin;
         this.batch = new SpriteBatch();
@@ -251,6 +255,14 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Tree tree : treeList) {
             tree.update(delta);
         }
+        for (Butterfly butterfly : butterflyList){
+            butterfly.update(delta);
+        }
+
+        for (Dragonfly dragonfly : dragonflyList){
+            dragonfly.update(delta);
+        }
+
 
         if (player != null) {
             player.update(delta);
@@ -273,9 +285,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             boulder.update(delta);
         }
 
-        for (Butterfly butterfly : butterflyList){
-            butterfly.update(delta);
-        }
+
 
         for (Pond pond : pondList) {
             pond.update(delta);
@@ -357,6 +367,23 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             System.err.println("butterflyList is null.");
         }
     }
+
+
+
+    @Override
+    public void addBug(Bug bug) {
+
+    }
+
+    @Override
+    public void addDragonfly(Dragonfly dragonfly) {
+        if (dragonflyList != null) {
+            dragonflyList.add(dragonfly);
+        } else {
+            System.err.println("butterflyList is null.");
+        }
+    }
+
 
     @Override
     public void addLowerRock(Rock rock) {
@@ -468,13 +495,18 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Rock rock : rockList) {
             rock.renderBottom(batch); // Render only the bottom texture of the rock
         }
-        for (Butterfly butterfly : butterflyList) {
-            butterfly.render(batch);
-        }
+
 
         // 3. Render dynamic entities like the player, birds, and bison
         if (player != null) {
             player.render(batch); // Player should be between bottom and top layers of rocks
+        }
+        for (Butterfly butterfly : butterflyList) {
+            butterfly.render(batch);
+        }
+
+        for (Dragonfly dragonfly : dragonflyList){
+            dragonfly.render(batch);
         }
 
         for (Bush bush : bushList) {

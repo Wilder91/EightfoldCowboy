@@ -20,7 +20,9 @@ import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
+import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
+import objects.animals.bugs.Dragonfly;
 import objects.inanimate.*;
 import text.infobox.InfoBox;
 import text.textbox.SaloonTextBox;
@@ -96,6 +98,16 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     @Override
     public void addButterfly(Butterfly butterfly) {
+
+    }
+
+    @Override
+    public void addBug(Bug bug) {
+
+    }
+
+    @Override
+    public void addDragonfly(Dragonfly dragonfly) {
 
     }
 

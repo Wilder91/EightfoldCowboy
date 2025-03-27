@@ -20,7 +20,7 @@ import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
-import helper.tiledmap.factories.animals.bugs.ButterflyFactory;
+import helper.tiledmap.factories.animals.bugs.BugFactory;
 import helper.tiledmap.factories.animals.BirdFactory;
 import helper.tiledmap.factories.inanimate.*;
 import helper.tiledmap.factories.animals.BisonFactory;
@@ -146,8 +146,17 @@ public class TiledMapHelper {
                         case "pond":
                             createPond(polygonMapObject, 0);
                             break;
-                        case "small-white-butterfly":
-                            createButterfly(polygonMapObject, 0);
+                        case "cliff_one":
+                            createRock(polygonMapObject, 5);
+                            break;
+                        case "cliff_two":
+                            createRock(polygonMapObject, 6);
+                            break;
+                        case "small_white_butterfly":
+                            createBug(polygonMapObject, 0);
+                            break;
+                        case "dragonfly":
+                            createBug(polygonMapObject, 1);
                             break;
 
                         default:
@@ -181,7 +190,6 @@ public class TiledMapHelper {
             }
         }
     }
-
 
 
 
@@ -268,9 +276,16 @@ public class TiledMapHelper {
     }
 
     private void createButterfly(PolygonMapObject polygonMapObject, int butterflyType) {
-        ButterflyFactory butterflyFactory = new ButterflyFactory(screenInterface, gameAssets);
-        butterflyFactory.createButterfly(polygonMapObject, butterflyType);
+
     }
+
+    private void createBug(PolygonMapObject polygonMapObject, int bugType ) {
+        BugFactory butterflyFactory = new BugFactory(screenInterface, gameAssets);
+        butterflyFactory.createBug(polygonMapObject, bugType);
+        //System.out.println("bug id: " + bugType);
+
+    }
+
 
     private void createTree(PolygonMapObject polygonMapObject, int treeType) {
         TreeFactory treeFactory = new TreeFactory(screenInterface, gameAssets);

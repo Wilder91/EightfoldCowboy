@@ -22,7 +22,7 @@ public class GameAssets {
         assetManager.load("atlases/eightfold/bison-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Character-running.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/pond.atlas", TextureAtlas.class);
-        assetManager.load("atlases/eightfold/butterfly.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/bugs.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
 
         assetManager.load("ethereal.mp3", Music.class);
@@ -117,6 +117,10 @@ public class GameAssets {
                 return "Medium_Rock_2" + suffix;
             case 1:
                 return "Large_Rock" + suffix;
+            case 5:
+                return "Cliff_1" + suffix;
+            case 6:
+                return "Cliff_2" + suffix;
             default:
                 throw new IllegalArgumentException("Invalid rock type: " + rockType);
         }

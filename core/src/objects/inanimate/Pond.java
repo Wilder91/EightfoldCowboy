@@ -70,7 +70,7 @@ public class Pond extends InanimateEntity {
             }
         }
 
-        pondAnimations[type] = new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
+        pondAnimations[type] = new Animation<>(.5f, frames, Animation.PlayMode.LOOP);
     }
 
     @Override

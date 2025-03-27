@@ -70,7 +70,7 @@ public class RockFactory extends InanimateEntityFactory {
                 rockBody,
                 screenInterface,
                 rockType,
-                1,
+                rockId,
                 topTexture,
                 bottomTexture,
                 gameAssets,

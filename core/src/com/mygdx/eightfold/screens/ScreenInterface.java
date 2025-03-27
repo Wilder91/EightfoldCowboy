@@ -6,7 +6,9 @@ import com.mygdx.eightfold.player.Player;
 import conversations.DialogueLine;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
+import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
+import objects.animals.bugs.Dragonfly;
 import objects.inanimate.*;
 
 public interface ScreenInterface {
@@ -77,4 +79,8 @@ public interface ScreenInterface {
     void addPond(Pond pond);
 
     void addButterfly(Butterfly butterfly);
+
+    void addBug(Bug bug);
+
+    void addDragonfly(Dragonfly dragonfly);
 }

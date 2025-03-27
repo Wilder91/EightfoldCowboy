@@ -1,5 +1,6 @@
 package helper.tiledmap.factories.inanimate;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -62,10 +63,18 @@ public class TreeFactory {
         treeFixture.setFilterData(filter);
 
         shape.dispose();
+        TextureRegion texture = gameAssets.getAtlas("plants/trees/oak-trees.atlas").findRegion("Aspen_Tree" );
+        if (texture == null) {
+            System.err.println("Pond texture not found for type: " + treeType);
+            return;
+        }
+
+        float textureWidth = texture.getRegionWidth();
+        float textureHeight = texture.getRegionHeight();
 
         Tree tree = new Tree(
-                boundingRectangle.width,
-                boundingRectangle.height,
+                textureWidth,
+                textureHeight,
                 treeBody,
                 screenInterface,
                 treeType,
