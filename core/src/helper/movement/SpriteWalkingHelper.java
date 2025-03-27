@@ -14,7 +14,7 @@ import java.util.Map;
 
 import static helper.Constants.FRAME_DURATION;
 
-public class SpriteRunningHelper {
+public class SpriteWalkingHelper {
     private Map<String, Animation<TextureRegion>> animations;
     private Animation<TextureRegion> currentAnimation;
     private TextureRegion restingFrame;
@@ -26,18 +26,17 @@ public class SpriteRunningHelper {
     private int[] frameCounts;
     private boolean startFlipped;
 
-    public SpriteRunningHelper(GameAssets gameAssets, String animalType, int[] frameCounts, boolean startFlipped) {
+    public SpriteWalkingHelper(GameAssets gameAssets, String animalType, int[] frameCounts, boolean startFlipped) {
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.stateTime = 0f;
         this.animations = new HashMap<>();
         this.frameCounts = frameCounts;
         this.startFlipped = startFlipped;
-
         loadAnimations();
 
-        this.currentAnimation = animations.get("runningHorizontal");
-        setRestingFrame("Sprites/Character/Idle/Idle Down (300)/Character_Idle_Down_1.png");
+        this.currentAnimation = animations.get("walkingUp");
+        setRestingFrame("player/Character_Down_Run_1.png");
         this.sprite = new Sprite(restingFrame);
         this.sprite.setOriginCenter();
 
@@ -48,15 +47,18 @@ public class SpriteRunningHelper {
     }
 
     public void loadAnimations() {
+
         // Populate the animations map with all available running animations
-        animations.put("runningUp", createAnimation(animalType + "_Up_Run", frameCounts[0], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningDown", createAnimation(animalType + "_Down_Run", frameCounts[1], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningHorizontal", createAnimation(animalType + "_Horizontal_Run", frameCounts[2], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningDiagonalUp", createAnimation(animalType + "_DiagUP_Run", frameCounts[3], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningDiagonalDown", createAnimation(animalType + "_DiagDOWN_Run", frameCounts[4], "atlases/eightfold/" + animalType + "-running.atlas"));
+        System.out.println("Trying to load: " + animalType + " from " + "atlases/eightfold/" + animalType + "-movement.atlas" );
+        animations.put("walkingUp", createAnimation(animalType + "_Up_Walk", frameCounts[0], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("walkingDown", createAnimation(animalType + "_Down_Walk", frameCounts[1], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("walkingHorizontal", createAnimation(animalType + "_Horizontal_Walk", frameCounts[2], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("walkingDiagonalUp", createAnimation(animalType + "_DiagUP_Walk", frameCounts[3], "atlases/eightfold/" + animalType + "-movement.atlas"));
+        animations.put("walkingDiagonalDown", createAnimation(animalType + "_DiagDOWN_Walk", frameCounts[4], "atlases/eightfold/" + animalType + "-movement.atlas"));
     }
 
     private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount, String atlasPath) {
+        System.out.println("Trying to load: " + regionNamePrefix + " from " + atlasPath);
         Array<TextureRegion> frames = new Array<>();
         TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
         for (int i = 1; i <= frameCount; i++) {
@@ -77,7 +79,7 @@ public class SpriteRunningHelper {
         float vy = linearVelocity.y;
         boolean isMoving = Math.abs(vx) > 0.1f || Math.abs(vy) > 0.1f;
         if (isMoving) {
-            setRunningAnimation(vx, vy);
+            setWalkingAnimation(vx, vy);
             stateTime += delta;
             TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
             sprite.setRegion(frame);
@@ -100,30 +102,30 @@ public class SpriteRunningHelper {
         }
     }
 
-    private void setRunningAnimation(float vx, float vy) {
+    private void setWalkingAnimation(float vx, float vy) {
         if (vy > 0.1f) {
             if (vx > 0) {
-                currentAnimation = animations.get("runningDiagonalUp");
+                currentAnimation = animations.get("walkingDiagonalUp");
                 flipSprite(true);
             } else if (vx < 0) {
-                currentAnimation = animations.get("runningDiagonalUp");
+                currentAnimation = animations.get("walkingDiagonalUp");
                 flipSprite(false);
             } else {
-                currentAnimation = animations.get("runningUp");
+                currentAnimation = animations.get("walkingUp");
             }
         } else if (vy < -0.1f) {
             if (vx > 0) {
-                currentAnimation = animations.get("runningDiagonalDown");
+                currentAnimation = animations.get("walkingDiagonalDown");
             } else if (vx < 0) {
-                currentAnimation = animations.get("runningDiagonalDown");
+                currentAnimation = animations.get("walkingDiagonalDown");
             } else {
-                currentAnimation = animations.get("runningDown");
+                currentAnimation = animations.get("walkingDown");
             }
         } else if (vx > 0.1f) {
-            currentAnimation = animations.get("runningHorizontal");
+            currentAnimation = animations.get("walkingHorizontal");
             flipSprite(true);
         } else if (vx < -0.1f) {
-            currentAnimation = animations.get("runningHorizontal");
+            currentAnimation = animations.get("walkingHorizontal");
             flipSprite(false);
         }
     }

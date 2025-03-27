@@ -11,7 +11,8 @@ import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
 import com.mygdx.eightfold.GameAssets;
-import helper.movement.SpriteRunningHelper;
+import helper.movement.*;
+
 import objects.inanimate.Door;
 
 import static helper.Constants.PPM;
@@ -25,6 +26,9 @@ public class Player extends GameEntity {
     private ScreenInterface screenInterface;
     private Vector2 initialPosition;
     private SpriteRunningHelper runningHelper;
+    //private SpriteWalkingHelper walkingHelper;
+    private SpriteIdleHelper idleHelper;
+    private String lastDirection = "idleDown";
 
     public Player(float x, float y, float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
         super(width, height, body, screenInterface, gameAssets);
@@ -39,9 +43,12 @@ public class Player extends GameEntity {
         this.gameAssets = gameAssets;
         System.out.println("x: " + Gdx.graphics.getWidth() / 2);
         this.initialPosition = new Vector2(300, 100);
-        int[] frameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
-        this.runningHelper = new SpriteRunningHelper(gameAssets, "Character", frameCounts, false);
-        this.sprite = new Sprite(runningHelper.getCurrentAnimation().getKeyFrame(0));
+        int[] runningFrameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
+        int[] walkingFrameCounts = {8, 8, 8, 8, 8};
+        this.runningHelper = new SpriteRunningHelper(gameAssets, "Character", runningFrameCounts, false);
+        //this.walkingHelper = new SpriteWalkingHelper(gameAssets, "Character", walkingFrameCounts, false);
+        this.idleHelper = new SpriteIdleHelper(gameAssets,"Character");
+        this.sprite = new Sprite();
         this.sprite.setSize(width, height);
     }
 
@@ -118,8 +125,28 @@ public class Player extends GameEntity {
 
     private void updateAnimation(float delta) {
         Vector2 velocity = body.getLinearVelocity();
-        runningHelper.updateAnimation(velocity, delta);
-        sprite = runningHelper.getSprite();
+        Vector2 absVelocity = new Vector2(Math.abs(velocity.x), Math.abs(velocity.y));
+        if (velocity.y > 0.1f) {
+            lastDirection = "idleUp";
+        } else if (velocity.y < -0.1f) {
+            lastDirection = "idleDown";
+        } else if (Math.abs(velocity.x) > 0.1f) {
+            lastDirection = "idleSide";
+        }
+        if (absVelocity.x > .1 || absVelocity.y > .1){
+            runningHelper.updateAnimation(velocity, delta);
+            sprite = runningHelper.getSprite();
+        } else{
+            //System.out.println("WALK");
+            idleHelper.setDirection(lastDirection);
+            idleHelper.updateAnimation(velocity, delta);
+            sprite = idleHelper.getSprite();
+            //walkingHelper.updateAnimation(velocity, delta);
+            //sprite = walkingHelper.getSprite();
+        }
+
+
+        //System.out.println("Player Velocity: " + absVelocity);
 
         // Flip the sprite if needed
         if (velocity.x < 0) {

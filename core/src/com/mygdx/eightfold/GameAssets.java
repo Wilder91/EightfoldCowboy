@@ -21,6 +21,7 @@ public class GameAssets {
         assetManager.load("plants/trees/oak-trees.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/bison-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Character-running.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/Character-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/pond.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/bugs.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
