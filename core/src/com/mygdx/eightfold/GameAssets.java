@@ -21,7 +21,10 @@ public class GameAssets {
         assetManager.load("plants/trees/oak-trees.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/bison-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Character-running.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/pond.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/butterfly.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
+
         assetManager.load("ethereal.mp3", Music.class);
         assetManager.load("lost & found.mp3", Music.class);
         assetManager.load("sounds/bison-sound.mp3", Sound.class);
@@ -106,6 +109,8 @@ public class GameAssets {
         switch (rockType) {
             case 0:
                 return "Small_Rock_1" + suffix;
+            case 4:
+                return "Small_Rock_2" + suffix;
             case 3:
                 return "Medium_Rock_1" + suffix;
             case 2:

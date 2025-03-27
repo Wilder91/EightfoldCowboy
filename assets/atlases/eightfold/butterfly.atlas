@@ -1,0 +1,15 @@
+butterfly.png
+size:128,32
+repeat:none
+Butterfly_Small_White
+index:3
+bounds:2,2,16,16
+Butterfly_Small_White
+index:2
+bounds:20,2,16,16
+Butterfly_Small_White
+index:4
+bounds:38,2,16,16
+Butterfly_Small_White
+index:1
+bounds:56,2,16,16

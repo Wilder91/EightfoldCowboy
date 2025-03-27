@@ -23,12 +23,10 @@ public abstract class TextBox {
     public TextBox(Skin skin, String imagePath) {
         this.skin = skin;
         this.stage = new Stage(new ScreenViewport());
-
         // Create a LabelStyle with a font from the skin
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         originalFont = skin.getFont("commodore-64");
         labelStyle.font = originalFont; // Use the exact font name from your skin file
-
         // Use the LabelStyle to create the Label
         this.textLabel = new Label("", labelStyle);
         this.textLabel.setWrap(true); // Enable word wrap
@@ -105,7 +103,7 @@ public abstract class TextBox {
         pixmap.dispose();
         return drawable;
     }
-
+    //displays selected dialogue
     public void showTextBox(String text) {
         textLabel.setText(text);
         dialog.setVisible(true);

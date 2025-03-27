@@ -15,10 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.Boot;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
+import conversations.DialogueLine;
 import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
+import objects.animals.bugs.Butterfly;
 import objects.inanimate.*;
 import text.infobox.InfoBox;
 import text.textbox.SaloonTextBox;
@@ -88,6 +90,16 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     @Override
+    public void addPond(Pond pond) {
+
+    }
+
+    @Override
+    public void addButterfly(Butterfly butterfly) {
+
+    }
+
+    @Override
     public OrthographicCamera getCamera() {
         return camera;
     }
@@ -104,6 +116,11 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     @Override
     public void showDecisionTextBox(String text) {
+
+    }
+
+    @Override
+    public void showDecisionTextbox(DialogueLine dialogueLine) {
 
     }
 
@@ -127,7 +144,10 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         textBox.hideTextBox();
     }
 
+    @Override
+    public void showTextBox(DialogueLine line) {
 
+    }
 
     public void showInfoBox(String text) {
         infoBox.showInfoBox(text);

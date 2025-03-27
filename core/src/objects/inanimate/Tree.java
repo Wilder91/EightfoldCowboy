@@ -22,6 +22,7 @@ public class Tree extends InanimateEntity {
     public static final int SMALL = 3;
     public static final int JUVENILE = 4;
     public static final int SEEDLING = 5;
+    public static final int ASPEN = 6;
 
     private final int treeType;
     private float stateTime;
@@ -33,7 +34,7 @@ public class Tree extends InanimateEntity {
         super(width, height, body, screenInterface, id, gameAssets, gameContactListener);
         this.stateTime = 0f;
         this.treeType = treeType;
-        treeAnimations = new Animation[6]; // Array to hold animations for 6 tree types
+        treeAnimations = new Animation[7]; // Array to hold animations for 6 tree types
         this.gameAssets = gameAssets;
         initAnimations();
     }
@@ -55,6 +56,7 @@ public class Tree extends InanimateEntity {
         loadAnimation(SMALL, atlas, 1, 29, "Oak_Small");
         loadAnimation(JUVENILE, atlas, 1, 1, "Oak_Sapling");
         loadAnimation(SEEDLING, atlas, 1, 1, "Oak_Seedling");
+        loadAnimation(ASPEN, atlas, 1, 1, "Aspen_Tree");
     }
 
     private void loadAnimation(int treeType, TextureAtlas atlas, int startFrame, int endFrame, String prefix) {

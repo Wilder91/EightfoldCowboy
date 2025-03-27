@@ -32,7 +32,7 @@ public class Player extends GameEntity {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.speed = 3.5f;
+        this.speed = 2.5f;
         this.originalSpeed = speed;
         this.isFacingRight = true;
         this.body = body;

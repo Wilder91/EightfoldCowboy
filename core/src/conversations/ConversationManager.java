@@ -26,6 +26,7 @@ public class ConversationManager {
                 Player player = (Player) secondGameEntity;
                 if (firstGameEntity instanceof Bison) {
                     Bison bison = (Bison) firstGameEntity;
+                    //System.out.println("here I am!");
                     firstLevelConversations = new FirstLevelConversations(screenInterface, bison, player, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png", 0);
                     firstLevelConversations.startBisonConversations(bison);
                 }

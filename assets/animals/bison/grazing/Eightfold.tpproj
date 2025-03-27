@@ -125,7 +125,7 @@ keepInputFileExtensions=false
 ---
 
 name=player-running
-filename=
+filename=character-running.atlas
 output=../../../atlases/eightfold
 
 alias=true
@@ -141,8 +141,8 @@ maxHeight=2048
 maxWidth=2048
 minHeight=16
 minWidth=16
-paddingX=2
-paddingY=2
+paddingX=0
+paddingY=0
 pot=true
 mof=false
 rotation=false
@@ -160,7 +160,7 @@ prettyPrint=false
 legacyOutput=false
 
 scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
-inputFiles=[{path:../../../../../../Downloads/Character PNG Folders/Character Diagonal Up,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:../../../../../../Downloads/Character PNG Folders/Character Diagonal Down,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:../../../../../../Downloads/Character PNG Folders/Character Down,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:../../../../../../Downloads/Character PNG Folders/Character Horizontal,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:../../../../../../Downloads/Character PNG Folders/Character Up,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false}]
+inputFiles=[{path:../../../../../../Downloads/Character Sprite/Running (Up),type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:../../../../../../Downloads/Character Sprite/Running (Horizontal),type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:../../../../../../Downloads/Character Sprite/Running (Down),type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:../../../../../../Downloads/Character Sprite/Running (Diagonal Up),type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:../../../../../../Downloads/Character Sprite/Running (Diagonal Down),type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false}]
 keepInputFileExtensions=false
 
 

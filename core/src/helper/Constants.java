@@ -2,5 +2,5 @@ package helper;
 
 public class Constants {
     public static final float PPM = 32.0f;
-    public static final float FRAME_DURATION = 0.1f;
+    public static final float FRAME_DURATION = .09f;
 }

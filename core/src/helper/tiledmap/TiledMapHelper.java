@@ -20,6 +20,7 @@ import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
+import helper.tiledmap.factories.animals.bugs.ButterflyFactory;
 import helper.tiledmap.factories.animals.BirdFactory;
 import helper.tiledmap.factories.inanimate.*;
 import helper.tiledmap.factories.animals.BisonFactory;
@@ -105,6 +106,9 @@ public class TiledMapHelper {
                         case "juvenile":
                             createTree(polygonMapObject, Tree.JUVENILE);
                             break;
+                        case "aspen_tree":
+                            createTree(polygonMapObject, Tree.ASPEN);
+                            break;
                         case "seedling":
                             createTree(polygonMapObject, Tree.SEEDLING);
                             break;
@@ -124,7 +128,7 @@ public class TiledMapHelper {
                         case "bush_five":
                             createBush(polygonMapObject, 5);
                             break;
-                        case "small_rock":
+                        case "small_rock_one":
                             createRock(polygonMapObject, 0);
                             break;
                         case "medium_rock_one":
@@ -135,6 +139,15 @@ public class TiledMapHelper {
                             break;
                         case "large_rock":
                             createRock(polygonMapObject, 1);
+                            break;
+                        case "small_rock_two":
+                            createRock(polygonMapObject, 4);
+                            break;
+                        case "pond":
+                            createPond(polygonMapObject, 0);
+                            break;
+                        case "small-white-butterfly":
+                            createButterfly(polygonMapObject, 0);
                             break;
 
                         default:
@@ -168,6 +181,9 @@ public class TiledMapHelper {
             }
         }
     }
+
+
+
 
     private void parseWallObjects(MapObjects mapObjects) {
         for (MapObject mapObject : mapObjects) {
@@ -251,9 +267,19 @@ public class TiledMapHelper {
         doorFactory.createDoor(polygonMapObject, polygonName); // Call createDoor method from DoorFactory
     }
 
+    private void createButterfly(PolygonMapObject polygonMapObject, int butterflyType) {
+        ButterflyFactory butterflyFactory = new ButterflyFactory(screenInterface, gameAssets);
+        butterflyFactory.createButterfly(polygonMapObject, butterflyType);
+    }
+
     private void createTree(PolygonMapObject polygonMapObject, int treeType) {
         TreeFactory treeFactory = new TreeFactory(screenInterface, gameAssets);
         treeFactory.createTree(polygonMapObject, treeType);
+    }
+
+    private void createPond(PolygonMapObject polygonMapObject, int pondType) {
+        PondFactory pondFactory = new PondFactory(screenInterface, gameAssets, gameContactListener);
+        pondFactory.createPond(polygonMapObject, 0);
     }
 
     private void createBush(PolygonMapObject polygonMapObject, int bushType) {

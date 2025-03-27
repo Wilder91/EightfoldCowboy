@@ -16,9 +16,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
+import conversations.DialogueLine;
 import helper.tiledmap.TiledMapHelper;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
+import objects.animals.bugs.Butterfly;
 import objects.inanimate.*;
 import com.mygdx.eightfold.player.Player;
 import text.infobox.InfoBox;
@@ -26,6 +28,7 @@ import text.textbox.BisonTextBox;
 import text.textbox.DecisionTextBox;
 import text.textbox.TextBox;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static helper.Constants.PPM;
@@ -39,7 +42,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Bush> bushList;
     private final ArrayList<Rock> rockList;
     private final ArrayList<Rock> rockTopList;
-
+    private final ArrayList<Pond> pondList;
+    private final ArrayList<Butterfly> butterflyList;
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final ScreenInterface screenInterface;
@@ -65,11 +69,13 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private InfoBox infoBox;
     private String origin;
 
-    public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
+    public GameScreen( OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
+
 
         this.screenInterface = screenInterface;
         this.buildingList = new ArrayList<>();
         this.camera = camera;
+        this.pondList = new ArrayList<>();
         this.bisonList = new ArrayList<>();
         this.birdList = new ArrayList<>();
         this.boulderList = new ArrayList<>();
@@ -77,6 +83,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.doorList = new ArrayList<>();
         this.bushList = new ArrayList<>();
         this.rockList = new ArrayList<>();
+        this.butterflyList = new ArrayList<>();
         this.rockTopList = new ArrayList<>();
         this.origin = origin;
         this.batch = new SpriteBatch();
@@ -114,6 +121,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
+
+
     @Override
     public void setTextBox(String filepath) {
         try {
@@ -132,9 +141,17 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     public void showTextBox(String text) {
         textBox.showTextBox(text);
     }
+
+
+
     public void showDecisionTextBox(String text) {
        // hideTextBox();
         decisionTextBox.showTextBox(text);
+    }
+
+    @Override
+    public void showDecisionTextbox(DialogueLine dialogueLine) {
+
     }
 
     public void setDecisionTextBox(String filepath){
@@ -154,6 +171,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
 
 
+
     @Override
     public void showPlayerTextBox(String playerConversationText) {
 
@@ -164,6 +182,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     public void hideTextBox() {
         textBox.hideTextBox();
+    }
+
+    @Override
+    public void showTextBox(DialogueLine line) {
+
     }
 
     public void showInfoBox(String text) {
@@ -250,6 +273,14 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             boulder.update(delta);
         }
 
+        for (Butterfly butterfly : butterflyList){
+            butterfly.update(delta);
+        }
+
+        for (Pond pond : pondList) {
+            pond.update(delta);
+        }
+
         for (Building building : buildingList) {
             building.update(delta);
         }
@@ -305,6 +336,25 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             doorList.add(door);
         } else {
             System.err.println("doorList is null. Cannot add door.");
+        }
+    }
+
+    @Override
+    public void addPond(Pond pond) {
+        if (pondList != null) {
+            pondList.add(pond);
+        } else {
+            System.err.println("pondList is null.");
+        }
+
+    }
+
+    @Override
+    public void addButterfly(Butterfly butterfly) {
+        if (butterflyList != null) {
+            butterflyList.add(butterfly);
+        } else {
+            System.err.println("butterflyList is null.");
         }
     }
 
@@ -410,9 +460,16 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             boulder.render(batch);
         }
 
+        for (Pond pond : pondList){
+            pond.render(batch);
+        }
+
         // 2. Render the bottom part of the rocks (below the player)
         for (Rock rock : rockList) {
             rock.renderBottom(batch); // Render only the bottom texture of the rock
+        }
+        for (Butterfly butterfly : butterflyList) {
+            butterfly.render(batch);
         }
 
         // 3. Render dynamic entities like the player, birds, and bison
@@ -450,6 +507,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         // Render the UI elements (TextBox and InfoBox)
         textBox.getStage().act(delta);
         textBox.getStage().draw();
+        decisionTextBox.getStage().act(delta);
+        decisionTextBox.getStage().draw();
         infoBox.getStage().act(delta);
         infoBox.getStage().draw();
 

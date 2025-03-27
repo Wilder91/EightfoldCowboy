@@ -20,6 +20,7 @@ public class FirstLevelConversations extends Conversation {
     private int conversationPhase = 0;
 
     private boolean isTextBoxVisible = false;
+    private boolean isDecisionTextboxVisible = false;
     private boolean isBisonTurn = true;
 
     // Static map that defines how many conversation phases each bison has
@@ -52,6 +53,10 @@ public class FirstLevelConversations extends Conversation {
             hideInfoBox(); // Clear any HUD/instruction info
             showNextLine(); // Begin conversation
         }
+        if(!isDecisionTextboxVisible){
+            hideTextBox();
+
+        }
     }
 
     /**
@@ -70,8 +75,9 @@ public class FirstLevelConversations extends Conversation {
             }
         } else {
             if (playerConversationIndex < playerConversationTexts.length) {
-                screenInterface.setTextBox("player/player-single.png");
-                screenInterface.showTextBox(playerConversationTexts[playerConversationIndex]);
+                isTextBoxVisible = false;
+                screenInterface.setDecisionTextBox("player/player-single.png");
+                screenInterface.showDecisionTextBox(playerConversationTexts[playerConversationIndex]);
                 playerConversationIndex++;
                 isTextBoxVisible = true;
             } else {

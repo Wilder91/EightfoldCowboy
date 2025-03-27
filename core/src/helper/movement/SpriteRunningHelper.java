@@ -50,10 +50,10 @@ public class SpriteRunningHelper {
     public void loadAnimations() {
         // Populate the animations map with all available running animations
         animations.put("runningUp", createAnimation(animalType + "_Up_Run", frameCounts[0], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningDiagonalUp", createAnimation(animalType + "_DiagUP_Run", frameCounts[1], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningDown", createAnimation(animalType + "_Down_Run", frameCounts[2], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningDiagonalDown", createAnimation(animalType + "_DiagDOWN_Run", frameCounts[3], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningHorizontal", createAnimation(animalType + "_Horizontal_Run", frameCounts[4], "atlases/eightfold/" + animalType + "-running.atlas"));
+        animations.put("runningDown", createAnimation(animalType + "_Down_Run", frameCounts[1], "atlases/eightfold/" + animalType + "-running.atlas"));
+        animations.put("runningHorizontal", createAnimation(animalType + "_Horizontal_Run", frameCounts[2], "atlases/eightfold/" + animalType + "-running.atlas"));
+        animations.put("runningDiagonalUp", createAnimation(animalType + "_DiagUP_Run", frameCounts[3], "atlases/eightfold/" + animalType + "-running.atlas"));
+        animations.put("runningDiagonalDown", createAnimation(animalType + "_DiagDOWN_Run", frameCounts[4], "atlases/eightfold/" + animalType + "-running.atlas"));
     }
 
     private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount, String atlasPath) {
@@ -75,9 +75,7 @@ public class SpriteRunningHelper {
     public void updateAnimation(Vector2 linearVelocity, float delta) {
         float vx = linearVelocity.x;
         float vy = linearVelocity.y;
-
         boolean isMoving = Math.abs(vx) > 0.1f || Math.abs(vy) > 0.1f;
-
         if (isMoving) {
             setRunningAnimation(vx, vy);
             stateTime += delta;
@@ -85,7 +83,7 @@ public class SpriteRunningHelper {
             sprite.setRegion(frame);
         } else {
             if (restingFrame != null) {
-                sprite.setRegion(restingFrame);
+                sprite.setRegion(currentAnimation.getKeyFrame(stateTime));
             } else {
                 stateTime += delta;
                 TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);

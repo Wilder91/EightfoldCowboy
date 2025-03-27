@@ -1,0 +1,15 @@
+pond.png
+size:1024,128
+repeat:none
+Pond
+index:4
+bounds:2,2,211,108
+Pond
+index:2
+bounds:2,2,211,108
+Pond
+index:1
+bounds:215,2,211,108
+Pond
+index:3
+bounds:428,2,211,108

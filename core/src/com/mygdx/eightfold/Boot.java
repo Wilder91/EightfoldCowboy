@@ -38,6 +38,7 @@ public class Boot extends Game {
         this.world = new World(new Vector2(0, 0), false);
         this.orthographicCamera = new OrthographicCamera();
         this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
+
         this.gameAssets = new GameAssets();
         this.game = this;
         gameAssets.loadAssets();
