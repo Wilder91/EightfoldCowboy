@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="931">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="938">
  <editorsettings>
   <chunksize width="32" height="32"/>
  </editorsettings>
@@ -130,8 +130,8 @@
   <object id="896" name="small_rock_two" x="1028.96" y="769.766">
    <polygon points="0,0 19.3315,0 18.9982,23.93 -0.999905,23.5674"/>
   </object>
-  <object id="897" name="pond" x="1537.2" y="864.307">
-   <polygon points="0,0 125.165,-0.367067 125.88,67.5403 -1.43046,63.1355"/>
+  <object id="897" name="pond" x="1583.16" y="885.116">
+   <polygon points="0,0 25.6547,-0.0897107 25.8013,16.5068 -0.293197,15.4302"/>
   </object>
   <object id="905" name="aspen_tree" x="1426.77" y="690.228">
    <polygon points="0,0 -11.685,14.022 -19.2802,36.2234 -18.1117,93.4798 18.1117,93.4798 18.1117,29.2124 11.1007,8.17948"/>
@@ -148,9 +148,6 @@
   <object id="909" name="aspen_tree" x="1617.81" y="734.58">
    <polygon points="0,0 -11.685,14.022 -19.2802,36.2234 -18.1117,93.4798 18.1117,93.4798 18.1117,29.2124 11.1007,8.17948"/>
   </object>
-  <object id="910" name="roots" x="1613.72" y="823.607">
-   <polygon points="0,0 5.84249,-2.62912 9.34798,0.584249 6.42674,2.04487 -0.584249,2.04487"/>
-  </object>
   <object id="911" name="aspen_tree" x="1479.17" y="882">
    <polygon points="0,0 -11.685,14.022 -19.2802,36.2234 -18.1117,93.4798 18.1117,93.4798 18.1117,29.2124 11.1007,8.17948"/>
   </object>
@@ -163,11 +160,8 @@
   <object id="914" name="roots" x="1686.56" y="955.232">
    <polygon points="0,0 5.84249,-2.62912 9.34798,0.584249 6.42674,2.04487 -0.584249,2.04487"/>
   </object>
-  <object id="915" name="aspen_tree" x="1541.47" y="762.66">
+  <object id="915" name="aspen_tree" x="1545.2" y="759.861">
    <polygon points="0,0 -11.685,14.022 -19.2802,36.2234 -18.1117,93.4798 18.1117,93.4798 18.1117,29.2124 11.1007,8.17948"/>
-  </object>
-  <object id="916" name="roots" x="1537.38" y="851.687">
-   <polygon points="0,0 5.84249,-2.62912 9.34798,0.584249 6.42674,2.04487 -0.584249,2.04487"/>
   </object>
   <object id="918" name="cliff_one" x="1763.78" y="829.238">
    <polygon points="0,0 -7.89751,130.748 121.095,127.238 117.585,-7.89751"/>
@@ -184,6 +178,14 @@
   <object id="925" name="dragonfly" x="1631.27" y="985.433">
    <polygon points="0,0 8.77501,0 8.77501,11.4075 0,10.647"/>
   </object>
+  <object id="932" name="large_rock" x="1412.39" y="880.055">
+   <polygon points="0,0 52.8818,0 51.9699,55.1203 -2.73526,54.2852"/>
+  </object>
+  <object id="934" name="roots" x="1540.46" y="833.931">
+   <polygon points="0,0 8.82466,0 9.37621,14.3401 1.65462,14.3401"/>
+  </object>
+  <object id="935" name="jim" x="1501.3" y="839.446" width="25.9225" height="33.644"/>
+  <object id="937" name="martha" x="1579.34" y="806.078" width="25.9225" height="33.644"/>
  </objectgroup>
  <objectgroup id="4" name="wall">
   <object id="285" name="wall" x="838.417" y="237.932">

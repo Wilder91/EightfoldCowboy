@@ -20,7 +20,6 @@ public class GameContactListener implements ContactListener {
 
     public GameContactListener(ScreenInterface screenInterface) {
         this.screenInterface = screenInterface;
-
     }
 
     @Override
@@ -34,6 +33,9 @@ public class GameContactListener implements ContactListener {
         if (a.getUserData() instanceof BodyUserData && b.getUserData() instanceof BodyUserData) {
             BodyUserData userDataA = (BodyUserData) a.getUserData();
             BodyUserData userDataB = (BodyUserData) b.getUserData();
+            if (userDataB.getType() == ContactType.PLAYER && userDataA.getType() == ContactType.BUG){
+                System.out.println("BUG CONTACT");
+            }
             if(userDataA.getType() ==ContactType.PLAYER && userDataB.getType() == ContactType.DOOR){
                // System.out.println(userDataB);
                 Door door = DoorManager.getDoorById(userDataB.getId());
@@ -67,6 +69,7 @@ public class GameContactListener implements ContactListener {
 
 
             }
+
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.DOOR) {
                 //System.out.println(DoorManager.getDoorMap());
 

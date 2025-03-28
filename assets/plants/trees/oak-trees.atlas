@@ -4,6 +4,10 @@ repeat:none
 Aspen_Tree
 index:1
 bounds:1981,1927,56,119
+Aspen_Tree_1_Bottom
+bounds:2,26,56,19
+Aspen_Tree_1_Top
+bounds:1981,1825,56,100
 Oak_Large
 index:13
 bounds:2,1780,266,266
@@ -221,9 +225,9 @@ Oak_Medium_2
 index:17
 bounds:1626,18,198,200
 Oak_Sapling
-bounds:1981,1861,44,64
+bounds:1981,1759,44,64
 Oak_Seedling
-bounds:2,24,16,21
+bounds:2,3,16,21
 Oak_Small
 index:4
 bounds:2,47,101,123

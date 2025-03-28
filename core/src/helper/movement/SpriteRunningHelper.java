@@ -22,13 +22,15 @@ public class SpriteRunningHelper {
     private Sprite sprite;
     private GameAssets gameAssets;
     private String animalType;
+    private String animalName;
     private boolean isFacingRight = true; // Track the facing direction
     private int[] frameCounts;
     private boolean startFlipped;
 
-    public SpriteRunningHelper(GameAssets gameAssets, String animalType, int[] frameCounts, boolean startFlipped) {
+    public SpriteRunningHelper(GameAssets gameAssets, String animalType, String animalName, int[] frameCounts, boolean startFlipped) {
         this.gameAssets = gameAssets;
         this.animalType = animalType;
+        this.animalName = animalName;
         this.stateTime = 0f;
         this.animations = new HashMap<>();
         this.frameCounts = frameCounts;
@@ -65,10 +67,10 @@ public class SpriteRunningHelper {
                 frames.add(region);
                 //System.out.println("Added frame: " + regionNamePrefix + "_" + i); // Debug print
             } else {
-                System.out.println("Region " + regionNamePrefix + "_" + i + " not found!"); // Debug print
+                //System.out.println("Region " + regionNamePrefix + "_" + i + " not found!"); // Debug print
             }
         }
-        System.out.println("Total frames for " + regionNamePrefix + ": " + frames.size); // Debug print
+        //System.out.println("Total frames for " + regionNamePrefix + ": " + frames.size); // Debug print
         return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
     }
 

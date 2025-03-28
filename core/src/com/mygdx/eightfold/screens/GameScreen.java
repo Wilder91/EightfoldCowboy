@@ -23,6 +23,7 @@ import objects.animals.bison.Bison;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
+import objects.humans.NPC;
 import objects.inanimate.*;
 import com.mygdx.eightfold.player.Player;
 import text.infobox.InfoBox;
@@ -47,6 +48,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Pond> pondList;
     private final ArrayList<Butterfly> butterflyList;
     private final ArrayList<Dragonfly> dragonflyList;
+    private final ArrayList<NPC> NPCList;
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final ScreenInterface screenInterface;
@@ -89,6 +91,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.butterflyList = new ArrayList<>();
         this.dragonflyList = new ArrayList<>();
         this.rockTopList = new ArrayList<>();
+        this.NPCList = new ArrayList<>();
         this.origin = origin;
         this.batch = new SpriteBatch();
         this.game = game;
@@ -120,7 +123,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
         if(origin == "saloon"){
             Door door = doorList.get(0);
-           System.out.println("fromSaloon true");
+           //System.out.println("fromSaloon true");
            player.getBody().setTransform(door.getBody().getPosition().x, door.getBody().getPosition().y - 2, 0);
         }
     }
@@ -263,6 +266,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             dragonfly.update(delta);
         }
 
+        for(NPC npc : NPCList){
+            npc.update(delta);
+        }
+
 
         if (player != null) {
             player.update(delta);
@@ -384,6 +391,14 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
+    @Override
+    public void addNPC(NPC npc) {
+        if (NPCList != null){
+            NPCList.add(npc);
+        }
+
+    }
+
 
     @Override
     public void addLowerRock(Rock rock) {
@@ -444,6 +459,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
+
+
     @Override
     public void addBush(Bush bush) {
         if (bushList != null) {
@@ -490,6 +507,13 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Pond pond : pondList){
             pond.render(batch);
         }
+        for (NPC npc : NPCList){
+            npc.render(batch);
+        }
+
+        for (Tree tree : treeList){
+            tree.renderBottom(batch);
+        }
 
         // 2. Render the bottom part of the rocks (below the player)
         for (Rock rock : rockList) {
@@ -520,15 +544,16 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             bison.render(batch);
         }
 
-        // 4. Render the top part of the rocks (above the player)
+        // Render the top part of the rocks (above the player)
         for (Rock rock : rockList) {
             rock.renderTop(batch); // Render only the top texture of the rock
         }
 
-        // 5. Render other front-layer elements like trees and doors
-        for (Tree tree : treeList) {
-            tree.render(batch);
+        for (Tree tree : treeList){
+            tree.renderTop(batch);
         }
+
+
         for (Door door : doorList) {
             door.render(batch);
         }
@@ -566,6 +591,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     public void setPlayer(Player player) {
+
         this.player = player;
     }
 

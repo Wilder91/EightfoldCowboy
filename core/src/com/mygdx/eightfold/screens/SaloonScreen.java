@@ -23,6 +23,7 @@ import objects.animals.bison.Bison;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
+import objects.humans.NPC;
 import objects.inanimate.*;
 import text.infobox.InfoBox;
 import text.textbox.SaloonTextBox;
@@ -77,7 +78,7 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
         if (player == null) {
 
-            System.out.println("Player is null!");
+            //System.out.println("Player is null!");
         }
 
         // Initialize TextBox and InfoBox
@@ -108,6 +109,11 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     @Override
     public void addDragonfly(Dragonfly dragonfly) {
+
+    }
+
+    @Override
+    public void addNPC(NPC npc) {
 
     }
 
@@ -248,7 +254,7 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     public void addDoor(Door door) {
-        System.out.println("HELLLLO");
+        //System.out.println("HELLLLO");
         if (doorList != null) {
             doorList.add(door);
             System.out.println(door);

@@ -24,6 +24,7 @@ import helper.tiledmap.factories.animals.bugs.BugFactory;
 import helper.tiledmap.factories.animals.BirdFactory;
 import helper.tiledmap.factories.inanimate.*;
 import helper.tiledmap.factories.animals.BisonFactory;
+import helper.tiledmap.factories.animals.NpcFactory;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.Player;
 import objects.inanimate.Tree;
@@ -113,7 +114,7 @@ public class TiledMapHelper {
                             createTree(polygonMapObject, Tree.SEEDLING);
                             break;
                         case "bush_one":
-                            System.out.println("bush!");
+                            //System.out.println("bush!");
                             createBush(polygonMapObject, 1);
                             break;
                         case "bush_two":
@@ -174,20 +175,60 @@ public class TiledMapHelper {
 
                 if (rectangleName != null && rectangleName.equals("player")) {
                     //System.out.println("PLAYER");
+//                    System.out.println("Raw Tiled coords: x=" + rectangle.x + ", y=" + rectangle.y);
+//                    System.out.println("Width: " + rectangle.width + ", Height: " + rectangle.height);
+//                    System.out.println("PPM = " + PPM);
+                    float centerX = (rectangle.x + rectangle.width / 2f) ;
+                    float centerY = (rectangle.y + rectangle.height / 2f);
+                    float bodyWidth = rectangle.width / PPM;
+                    float bodyHeight = rectangle.height / PPM;
                     int playerId = 1;
+
+
+
                     Body body = BodyHelperService.createBody(
-                            rectangle.x + rectangle.width / PPM,
-                            rectangle.y  + rectangle.height / PPM,
-                            rectangle.width,
-                            rectangle.height,
+                            centerX,
+                            centerY,
+                            bodyWidth,
+                            bodyHeight,
                             false,
                             screenInterface.getWorld(),
                             ContactType.PLAYER,
                             playerId
                     );
-                    screenInterface.setPlayer(new Player(rectangle.x + rectangle.width / PPM, rectangle.y  + rectangle.height / PPM,rectangle.width, rectangle.height, body, screenInterface, gameAssets));
+//                    System.out.println("Body pos (meters): " + body.getPosition());
+//                    System.out.println("Expected center (meters): " + centerX + ", " + centerY);
+//                    System.out.println("Player pos in pixels: " + centerY + ", " + centerY);
+//
+//                    System.out.println("Tiled map position: " + rectangle.x + ", " + rectangle.y);
+
+                    screenInterface.setPlayer(new Player(
+                            centerX * PPM,
+                            centerY * PPM,
+                            rectangle.width,
+                            rectangle.height,
+                            body,
+                            screenInterface,
+                            gameAssets
+                    ));
+
+                }
+                if (rectangleName != null && rectangleName.equals("jim")) {
+                    System.out.println("there it is!");
+                    RectangleMapObject rectObj = (RectangleMapObject) mapObject;
+                    NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener);
+                    System.out.println(npcFactory);
+                    npcFactory.createNPC(rectObj);
+                }
+                if (rectangleName != null && rectangleName.equals("martha")) {
+                    System.out.println("there it is!");
+                    RectangleMapObject rectObj = (RectangleMapObject) mapObject;
+                    NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener);
+                    System.out.println(npcFactory);
+                    npcFactory.createNPC(rectObj);
                 }
             }
+
         }
     }
 
@@ -280,8 +321,8 @@ public class TiledMapHelper {
     }
 
     private void createBug(PolygonMapObject polygonMapObject, int bugType ) {
-        BugFactory butterflyFactory = new BugFactory(screenInterface, gameAssets);
-        butterflyFactory.createBug(polygonMapObject, bugType);
+        BugFactory bugFactory = new BugFactory(screenInterface, gameAssets);
+        bugFactory.createBug(polygonMapObject, bugType);
         //System.out.println("bug id: " + bugType);
 
     }
@@ -303,10 +344,12 @@ public class TiledMapHelper {
         bushFactory.createBush(polygonMapObject, bushType);
     }
     private void createRock(PolygonMapObject polygonMapObject, int rockType) {
-        System.out.println("create rock");
+        //System.out.println("create rock");
         RockFactory rockFactory = new RockFactory(screenInterface, gameAssets, gameContactListener);
         rockFactory.createRock(polygonMapObject, rockType);
     }
+
+
 
 
     private void createBoulder(PolygonMapObject polygonMapObject) {

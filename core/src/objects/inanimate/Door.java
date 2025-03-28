@@ -85,7 +85,7 @@ public class Door extends InanimateEntity  {
                             }
                             break;
                         default:
-                            System.out.println("Unknown door name: " + name);
+                            //System.out.println("Unknown door name: " + name);
                             break;
                     }
                 }

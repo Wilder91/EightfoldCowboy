@@ -43,22 +43,20 @@ public class Player extends GameEntity {
         this.body = body;
         this.gameAssets = gameAssets;
         this.justSwitchedHelpers = false;
-        System.out.println("x: " + Gdx.graphics.getWidth() / 2);
-        this.initialPosition = new Vector2(300, 100);
+        //System.out.println("x: " + Gdx.graphics.getWidth() / 2);
+        //this.initialPosition = new Vector2(300, 100);
         int[] runningFrameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
-        int[] walkingFrameCounts = {8, 8, 8, 8, 8};
-        this.runningHelper = new SpriteRunningHelper(gameAssets, "Character", runningFrameCounts, false);
+        int[] idleFrameCounts = {18, 1, 8, 18, 4};
+        this.runningHelper = new SpriteRunningHelper(gameAssets, "Character", "Character", runningFrameCounts, false);
         //this.walkingHelper = new SpriteWalkingHelper(gameAssets, "Character", walkingFrameCounts, false);
-        this.idleHelper = new SpriteIdleHelper(gameAssets,"Character");
+        this.idleHelper = new SpriteIdleHelper(gameAssets,"Character", "Character", idleFrameCounts, 0f);
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
 
+
     }
 
-    public void setPosition(int setX, int setY) {
-        x = setX;
-        y = setY;
-    }
+
 
 
 
@@ -136,23 +134,33 @@ public class Player extends GameEntity {
         Vector2 velocity = body.getLinearVelocity();
         Vector2 absVelocity = new Vector2(Math.abs(velocity.x), Math.abs(velocity.y));
         idleHelper.getFacingDirection(velocity, absVelocity);
-
         if (velocity.y > 0.1f) {
-            lastDirection = "idleUp";
+            if (Math.abs(velocity.x) > 0.1f) {
+                lastDirection = "idleDiagonalUp";
+            } else {
+                lastDirection = "idleUp";
+            }
         } else if (velocity.y < -0.1f) {
-            lastDirection = "idleDown";
+            if (Math.abs(velocity.x) > 0.1f) {
+                lastDirection = "idleDiagonalDown";
+            } else {
+                lastDirection = "idleDown";
+            }
         } else if (Math.abs(velocity.x) > 0.1f) {
             lastDirection = "idleSide";
-            if(velocity.x < -.1){
-                //System.out.println("left?");
-                isFacingRight = false;
-            }
+        }
 
+// Update facing direction
+        if (velocity.x < -0.1f) {
+            isFacingRight = false;
+        } else if (velocity.x > 0.1f) {
+            isFacingRight = true;
         }
         if (absVelocity.x > .01 || absVelocity.y > .01) {
             runningHelper.updateAnimation(velocity, delta);
             sprite = runningHelper.getSprite();
         } else {
+            //System.out.println("Last direction: " + lastDirection);
             idleHelper.setDirection(lastDirection);
             //System.out.println("is facing right: " + isFacingRight);
             idleHelper.setFacingRight(isFacingRight); // Pass flip info here

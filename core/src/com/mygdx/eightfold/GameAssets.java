@@ -23,6 +23,9 @@ public class GameAssets {
         assetManager.load("atlases/eightfold/Character-running.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Character-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Character-idle.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/Jim-movement.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/Martha-movement.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/NPC-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/pond.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/bugs.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
@@ -105,8 +108,8 @@ public class GameAssets {
 
     // Private helper method for mapping rock types
     private String getRockRegionName(int rockType, boolean isTop) {
-        System.out.println(rockType);
-        System.out.println(isTop);
+        //System.out.println(rockType);
+        //System.out.println(isTop);
         String suffix = isTop ? "_Top" : "_Bottom";
         switch (rockType) {
             case 0:

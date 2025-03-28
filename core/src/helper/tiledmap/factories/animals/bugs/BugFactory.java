@@ -42,7 +42,7 @@ public class BugFactory {
 
     private void createButterfly(PolygonMapObject polygonMapObject) {
         int bugId = ++bugCounter;
-        Body bugBody = createBodyFromPolygon(polygonMapObject, bugId);
+        Body bugBody = createBodyFromPolygon(polygonMapObject, bugId, "butterfly");
 
         Rectangle bounds = polygonMapObject.getPolygon().getBoundingRectangle();
         Butterfly butterfly = new Butterfly(
@@ -56,13 +56,13 @@ public class BugFactory {
                 screenInterface,
                 gameAssets
         );
-        System.out.println("Butterfly created! Type: " );
+        //System.out.println("Butterfly created! Type: " );
         screenInterface.addButterfly(butterfly);
     }
 
     private void createDragonfly(PolygonMapObject polygonMapObject) {
         int bugId = ++bugCounter;
-        Body bugBody = createBodyFromPolygon(polygonMapObject, bugId);
+        Body bugBody = createBodyFromPolygon(polygonMapObject, bugId, "dragonfly");
 
         Rectangle bounds = polygonMapObject.getPolygon().getBoundingRectangle();
         Dragonfly dragonfly = new Dragonfly(
@@ -80,7 +80,7 @@ public class BugFactory {
         screenInterface.addDragonfly(dragonfly);
     }
 
-    private Body createBodyFromPolygon(PolygonMapObject polygonMapObject, int bugId) {
+    private Body createBodyFromPolygon(PolygonMapObject polygonMapObject, int bugId, String bugType ) {
         Polygon polygon = polygonMapObject.getPolygon();
         Rectangle bounds = polygon.getBoundingRectangle();
 
@@ -105,7 +105,8 @@ public class BugFactory {
         shape.set(worldVertices);
         shape.setAsBox(bounds.width / 2 / PPM, bounds.height / 2 / PPM);
         Fixture fixture = body.createFixture(shape, 0.0f);
-        fixture.setUserData(new BodyUserData(bugId, ContactType.BUG, body));
+
+        fixture.setUserData(new BodyUserData(bugId, ContactType.BUTTERFLY, body));
 
         Filter filter = new Filter();
         filter.categoryBits = ContactType.BUG.getCategoryBits();

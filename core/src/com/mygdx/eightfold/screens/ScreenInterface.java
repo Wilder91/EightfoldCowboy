@@ -9,6 +9,7 @@ import objects.animals.bison.Bison;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
+import objects.humans.NPC;
 import objects.inanimate.*;
 
 public interface ScreenInterface {
@@ -83,4 +84,6 @@ public interface ScreenInterface {
     void addBug(Bug bug);
 
     void addDragonfly(Dragonfly dragonfly);
+
+    void addNPC(NPC npc);
 }

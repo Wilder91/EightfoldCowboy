@@ -55,7 +55,7 @@ public class Pond extends InanimateEntity {
         if (endFrame == 1) {
             TextureRegion region = atlas.findRegion(prefix);
             if (region == null) {
-                System.out.println("Region " + prefix + " not found!");
+                //System.out.println("Region " + prefix + " not found!");
             } else {
                 frames.add(region);
             }

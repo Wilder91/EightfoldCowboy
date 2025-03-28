@@ -63,7 +63,9 @@ public class Butterfly extends Bug {
         TextureRegion currentFrame = animation.getKeyFrame(stateTime, true);
         batch.draw(currentFrame, x - width / 2, y - height / 2, width, height);
     }
+    public void playerContact(){
 
+    }
     public int getId() {
         return id;
     }
