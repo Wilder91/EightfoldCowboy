@@ -50,12 +50,13 @@ public class SpriteRunningHelper {
     }
 
     public void loadAnimations() {
+        String atlasPath = "atlases/eightfold/" + animalType + "-running.atlas";
         // Populate the animations map with all available running animations
-        animations.put("runningUp", createAnimation(animalType + "_Up_Run", frameCounts[0], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningDown", createAnimation(animalType + "_Down_Run", frameCounts[1], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningHorizontal", createAnimation(animalType + "_Horizontal_Run", frameCounts[2], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningDiagonalUp", createAnimation(animalType + "_DiagUP_Run", frameCounts[3], "atlases/eightfold/" + animalType + "-running.atlas"));
-        animations.put("runningDiagonalDown", createAnimation(animalType + "_DiagDOWN_Run", frameCounts[4], "atlases/eightfold/" + animalType + "-running.atlas"));
+        animations.put("runningUp", createAnimation(animalName + "_Up_Run", frameCounts[0], atlasPath));
+        animations.put("runningDown", createAnimation(animalName + "_Down_Run", frameCounts[1], atlasPath));
+        animations.put("runningHorizontal", createAnimation(animalName + "_Horizontal_Run", frameCounts[2], atlasPath));
+        animations.put("runningDiagonalUp", createAnimation(animalName + "_DiagUP_Run", frameCounts[3], atlasPath));
+        animations.put("runningDiagonalDown", createAnimation(animalName + "_DiagDOWN_Run", frameCounts[4], atlasPath));
     }
 
     private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount, String atlasPath) {
