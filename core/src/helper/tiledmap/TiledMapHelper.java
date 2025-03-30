@@ -212,6 +212,7 @@ public class TiledMapHelper {
                             gameAssets
                     ));
 
+
                 }
                 if (rectangleName != null && rectangleName.equals("jim")) {
                     System.out.println("there it is!");

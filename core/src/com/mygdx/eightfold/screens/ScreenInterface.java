@@ -65,6 +65,7 @@ public interface ScreenInterface {
         showDecisionTextbox(new DialogueLine(text, false));
     }
 
+
     void showDecisionTextbox(DialogueLine dialogueLine);
 
     void showPlayerTextBox(String playerConversationText);

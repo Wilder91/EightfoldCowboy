@@ -26,7 +26,7 @@ public class NPC extends GameEntity {
     private boolean isContacted = false;
     private boolean inConversation = false;
     private ConversationManager conversationManager;
-
+    private int conversationPhase;
 
     public NPC(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, int npcId) {
         super(width, height, body, screenInterface, gameAssets);
@@ -37,6 +37,7 @@ public class NPC extends GameEntity {
         this.screenInterface = screenInterface;
         this.conversationManager = new ConversationManager(1, this, screenInterface.getPlayer(), screenInterface);
         String characterName = getCharacterNameFromType(npcId);
+        this.conversationPhase = 0;
         int[] frameCounts = getFrameCountsFromType(npcId);
         float stateTime = getStateTimeFromType(npcId);
 
@@ -117,7 +118,7 @@ public class NPC extends GameEntity {
         }
 
         if (inConversation) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.E)) {
                 conversationManager.nextLine();
             }
         }
@@ -135,5 +136,13 @@ public class NPC extends GameEntity {
     }
 
     public void endPlayerContact() {
+    }
+
+    public int getConversationPhase() {
+        return conversationPhase;
+    }
+
+    public void advanceConversationPhase() {
+        conversationPhase++;
     }
 }

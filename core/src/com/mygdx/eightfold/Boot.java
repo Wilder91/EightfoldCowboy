@@ -44,6 +44,7 @@ public class Boot extends Game {
         gameAssets.loadAssets();
         gameAssets.finishLoading();
         this.gameScreen = new GameScreen(orthographicCamera, screenInterface, gameAssets, this, "start");
+        //gameScreen.enablePlayerLight();
         setScreen(gameScreen);
        // setScreen(new SaloonScreen(orthographicCamera, gameAssets, new GameScreen(orthographicCamera, screenInterface, gameAssets), world, screenInterface));
 
@@ -67,8 +68,8 @@ public class Boot extends Game {
     public void switchToGameScreen(Player player, Door door) {
         GameScreen newGameScreen = new GameScreen(orthographicCamera, screenInterface, gameAssets, game, "saloon");
         setScreen(newGameScreen);
-        gameScreen.setPlayer(player);
-        gameScreen.playerArrives();
+        newGameScreen.setPlayer(player);
+        newGameScreen.playerArrives();
     }
 
     // Method to change the screen

@@ -54,6 +54,7 @@ public class Player extends GameEntity {
         this.sprite.setSize(width, height);
 
 
+
     }
 
 
@@ -189,6 +190,7 @@ public class Player extends GameEntity {
 
     public void setBody(Body body) {
         this.body = body;
+
     }
 
     public int getId() {
