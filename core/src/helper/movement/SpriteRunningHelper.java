@@ -115,6 +115,7 @@ public class SpriteRunningHelper {
     private void setRunningAnimation(float vx, float vy) {
         if (vy > 0.1f) {
             if (vx > 0) {
+
                 currentAnimation = animations.get("runningDiagonalUp");
                 flipSprite(true);
             } else if (vx < 0) {
@@ -125,6 +126,7 @@ public class SpriteRunningHelper {
             }
         } else if (vy < -0.1f) {
             if (vx > 0) {
+
                 currentAnimation = animations.get("runningDiagonalDown");
             } else if (vx < 0) {
                 currentAnimation = animations.get("runningDiagonalDown");

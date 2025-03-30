@@ -11,6 +11,7 @@ import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import objects.humans.NPC;
+import objects.humans.NPCManager;
 
 import static helper.Constants.PPM;
 import static helper.ContactType.NPC;
@@ -20,11 +21,13 @@ public class NpcFactory {
     private GameAssets gameAssets;
     private GameContactListener gameContactListener;
     private static int npcCounter = 0;
+    private NPCManager npcManager;
 
     public NpcFactory(ScreenInterface screenInterface, GameAssets gameAssets, GameContactListener gameContactListener) {
         this.screenInterface = screenInterface;
         this.gameAssets = gameAssets;
         this.gameContactListener = gameContactListener;
+
     }
 
     public void createNPC(RectangleMapObject rectangleMapObject) {
@@ -37,7 +40,7 @@ public class NpcFactory {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(centerX, centerY);
-
+        this.npcManager = npcManager;
         Body npcBody = screenInterface.getWorld().createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
@@ -53,6 +56,7 @@ public class NpcFactory {
         shape.dispose();
 
         NPC npc = new NPC(rectangle.width, rectangle.height, npcBody, screenInterface, gameAssets, npcId);
+        //npcManager.addNPC(npc);
         screenInterface.addNPC(npc);
     }
 }

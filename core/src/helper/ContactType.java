@@ -9,7 +9,9 @@ public enum ContactType {
     BUG(0x0060, 0),
     BUTTERFLY(0x0080, 0x0001 | 0x0002 | 0x0004 | 0x0010),
     DRAGONFLY(0x0100, 0x0001 | 0x0002 | 0x0004 | 0x0010),
-    NPC(0x0120, 0);
+    NPC(0x0120, 0),
+    JIM(0x0121, 0x0001);
+
     // Allow collisions with PLAYER and INANIMATE
 
     private final short categoryBits;

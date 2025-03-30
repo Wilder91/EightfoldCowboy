@@ -3,85 +3,90 @@ package conversations.firstLevel;
 import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import conversations.Conversation;
-import objects.animals.bison.Bison;
+import objects.humans.NPC;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Handles multi-phase conversations between the player and various bison in the first level.
+ * Handles multi-phase conversations between the player and various NPCs in the first level.
  */
 public class FirstLevelConversations extends Conversation {
-    private final Bison bison;
+    private final NPC npc;
     private final Player player;
-    private ScreenInterface screenInterface;
+    private final ScreenInterface screenInterface;
 
-    private int bisonConversationIndex = 0;
+    private int npcConversationIndex = 0;
     private int playerConversationIndex = 0;
     private int conversationPhase = 0;
 
     private boolean isTextBoxVisible = false;
     private boolean isDecisionTextboxVisible = false;
-    private boolean isBisonTurn = true;
+    private boolean isNPCTurn = true;
 
-    // Static map that defines how many conversation phases each bison has
-    private static final Map<Integer, Integer> bisonPhases = new HashMap<>();
+    // Static map that defines how many conversation phases each NPC has
+    private static final Map<Integer, Integer> npcPhases = new HashMap<>();
 
     static {
-        bisonPhases.put(0, 2); // Ranch bison
-        bisonPhases.put(1, 2); // "Evil" bison
-        bisonPhases.put(2, 1); // Welcoming bison
-        bisonPhases.put(3, 1); // Haunted saloon bison
+        npcPhases.put(0, 2); // Jim
+        npcPhases.put(1, 2); // Martha
+        npcPhases.put(2, 1); // Miner
+        npcPhases.put(3, 1); // Cowboy
     }
 
-    public FirstLevelConversations(ScreenInterface screenInterface, Bison bison, Player player, String filepath, String imagePath, int bisonConversationPhase) {
+    public FirstLevelConversations(ScreenInterface screenInterface, NPC npc, Player player, String filepath, String imagePath, int npcConversationPhase) {
         super(null, null, filepath, imagePath); // Superclass handles audio/image, null for now
         this.screenInterface = screenInterface;
-        this.bison = bison;
+        this.npc = npc;
         this.player = player;
-        this.conversationPhase = bisonConversationPhase;
-
-        // Initialize conversation text arrays for both bison and player
-        this.bisonConversationTexts = getBisonConversationTexts();
+        this.conversationPhase = npcConversationPhase;
+        this.npcConversationTexts = getNPCConversationTexts();
         this.playerConversationTexts = getPlayerConversationTexts();
     }
 
     /**
-     * Starts the conversation with a bison if no text box is currently visible.
+     * Starts the conversation with an NPC if no text box is currently visible.
      */
-    public void startBisonConversations(Bison bison) {
-        if (!isTextBoxVisible) {
-            hideInfoBox(); // Clear any HUD/instruction info
-            showNextLine(); // Begin conversation
-        }
-        if(!isDecisionTextboxVisible){
-            hideTextBox();
+    public void startNPCConversation(NPC npc) {
+        hideInfoBox();
 
+        if (!isTextBoxVisible) {
+            //hideInfoBox();
+            showNextLine();
+        }
+        if (!isDecisionTextboxVisible) {
+            hideTextBox();
         }
     }
 
     /**
-     * Displays the next line in the conversation, alternating between bison and player.
+     * Displays the next line in the conversation, alternating between NPC and player.
      */
     public void showNextLine() {
-        if (isBisonTurn) {
-            if (bisonConversationIndex < bisonConversationTexts.length) {
-                screenInterface.setTextBox("animals/bison/bison-single.png");
-                screenInterface.showTextBox(bisonConversationTexts[bisonConversationIndex]);
-                bisonConversationIndex++;
+        hideInfoBox();
+        if (isNPCTurn) {
+            //hideInfoBox();
+            if (npcConversationIndex < npcConversationTexts.length) {
+                if(npc.getId() == 1) {
+                    screenInterface.setTextBox("Jim_Idle_Down_1 copy.png");
+                } else if (npc.getId() == 2){
+                    screenInterface.setTextBox("Martha_Idle_Down_1 copy.png");
+                }
+                screenInterface.showTextBox(npcConversationTexts[npcConversationIndex]);
+                npcConversationIndex++;
             } else {
-                isBisonTurn = false;
-                playerConversationIndex = 0; // Reset for player phase
-                showNextLine(); // Immediately show player's first response
+                // Flip to player's turn AFTER NPC is done
+                isNPCTurn = false;
+                showNextLine(); // Immediately call again to start player's dialogue
             }
         } else {
             if (playerConversationIndex < playerConversationTexts.length) {
-                isTextBoxVisible = false;
-                screenInterface.setDecisionTextBox("player/player-single.png");
-                screenInterface.showDecisionTextBox(playerConversationTexts[playerConversationIndex]);
+                screenInterface.setTextBox("Character_Idle_Down_1 copy.png");
+                screenInterface.showTextBox(playerConversationTexts[playerConversationIndex]);
                 playerConversationIndex++;
                 isTextBoxVisible = true;
             } else {
-                checkNextPhase(conversationPhase); // Move to next phase or end
+                checkNextPhase(conversationPhase);
             }
         }
     }
@@ -90,7 +95,7 @@ public class FirstLevelConversations extends Conversation {
      * Determines whether the conversation should progress to the next phase or end entirely.
      */
     private void checkNextPhase(int conversationPhase) {
-        int totalPhases = bisonPhases.getOrDefault(bison.getId(), 1);
+        int totalPhases = npcPhases.getOrDefault(npc.getId(), 1);
         if (conversationPhase < totalPhases - 1) {
             nextConversationPhase();
         } else {
@@ -102,10 +107,10 @@ public class FirstLevelConversations extends Conversation {
      * Progresses the conversation to the next phase and resets indices.
      */
     private void nextConversationPhase() {
-        incrementBisonConversationPhase();
-        bisonConversationIndex = 0;
+        incrementNPCConversationPhase();
+        npcConversationIndex = 0;
         playerConversationIndex = 0;
-        isBisonTurn = !isBisonTurn; // Alternate who starts the next phase
+        isNPCTurn = !isNPCTurn;
         showNextLine();
     }
 
@@ -114,100 +119,108 @@ public class FirstLevelConversations extends Conversation {
      */
     private void endConversation() {
         screenInterface.hideTextBox();
-        bison.setInConversation(false);
-        bisonConversationIndex = 0;
+        npc.setInConversation(false);
+        npcConversationIndex = 0;
         playerConversationIndex = 0;
         conversationPhase = 0;
-        this.bisonConversationTexts = getBisonConversationTexts();
+        this.npcConversationTexts = getNPCConversationTexts();
         this.playerConversationTexts = getPlayerConversationTexts();
         isTextBoxVisible = false;
-        isBisonTurn = true; // Default to bison starting next time
+        isNPCTurn = true;
     }
 
     /**
      * Increments the conversation phase and reloads the appropriate conversation text.
      */
-    private void incrementBisonConversationPhase() {
+    private void incrementNPCConversationPhase() {
         conversationPhase++;
-        this.bisonConversationTexts = null;
+        this.npcConversationTexts = null;
         this.playerConversationTexts = null;
-        this.bisonConversationTexts = getBisonConversationTexts();
+        this.npcConversationTexts = getNPCConversationTexts();
         this.playerConversationTexts = getPlayerConversationTexts();
     }
 
     /**
-     * Returns the lines the bison should say based on their ID and current phase.
+     * Returns the lines the NPC should say based on their ID and current phase.
      */
-    private String[] getBisonConversationTexts() {
-        switch (bison.getId()) {
-            case 0:
-                if (conversationPhase == 0) {
-                    return new String[]{
-                            "Howdy stranger, welcome\nto the ranch",
-                            "Nice day today, huh?",
-                            "Feel free to take a walk\naround and talk to the other bison. Just stay out of The Saloon."
-                    };
-                } else if (conversationPhase == 1) {
-                    return new String[]{
-                            "Oh you'll get used to it",
-                            "We're good people around here",
-                            "The smell is just part of our charm."
-                    };
-                }
-                break;
+    private String[] getNPCConversationTexts() {
+        switch (npc.getId()) {
             case 1:
                 if (conversationPhase == 0) {
-                    return new String[]{"Wassup", "I'm the evil one"};
+                    return new String[]{
+                            "Hey there, I'm Old Jim.",
+                            "Nice day today, huh?",
+                            "Feel free to walk around and chat with the others." + System.lineSeparator() + "Just stay out of The Saloon."
+                    };
+
                 } else if (conversationPhase == 1) {
-                    return new String[]{"Good luck with that."};
+                    return new String[]{
+                            "It gets awful lonely out here",
+                            "Just me and Martha",
+                            "A man starts to wonder what" + System.lineSeparator() + "it's all for"
+                    };
                 }
                 break;
             case 2:
-                return new String[]{
-                        "Welcome to Bison Land",
-                        "Even the people are bison\nhere"
-                };
-            case 3:
                 if (conversationPhase == 0) {
                     return new String[]{
-                            "Stay out of the Saloon,\nI've heard it's haunted",
-                            "I don't believe in that\ncrap but I have heard\nstrange noises emanating\nfrom within"
+                            "Oh hello sweetheart, you can call me Martha",
+                            "That's my name, Martha",
+                            "The smell is just part of our charm."
+                    };
+                } else if (conversationPhase == 1) {
+                    return new String[]{
+                            "Good luck with that."
+                    };
+                }
+                break;
+            case 3:
+                return new String[]{
+                        "Welcome to town.",
+                        "Even the dogs talk here."
+                };
+
+            case 4:
+                if (conversationPhase == 0) {
+                    return new String[]{
+                            "Stay out of the Saloon, it's bad news.",
+                            "I don't believe in ghosts, but I've heard some weird stuff coming from there."
                     };
                 }
                 break;
         }
-        return new String[]{"Leave my ass alone."}; // Default/fallback
+        return new String[]{"Not now, I'm busy."}; // Fallback/default
     }
 
     /**
-     * Returns the player's responses based on the bison's ID and current phase.
+     * Returns the player's responses based on the NPC's ID and current phase.
      */
     private String[] getPlayerConversationTexts() {
-        switch (bison.getId()) {
-            case 0:
-                if (conversationPhase == 0) {
-                    return new String[]{
-                            "Nice, I'm Kath",
-                            "It's a pleasure to meet you",
-                            "You smell like fermented hell"
-                    };
-                } else {
-                    return new String[]{"Fair enough"};
-                }
+        switch (npc.getId()) {
             case 1:
                 if (conversationPhase == 0) {
                     return new String[]{
-                            "Cool.", "I'm Chaotic Good myself"
+                            "Nice, I'm Kath.",
+                            "It's a pleasure to meet you.",
+                            "It's beautiful here."
                     };
                 } else {
-                    return new String[]{}; // No reply in phase 1
+                    return new String[]{"Well, it's a pleasure to meet you"};
                 }
             case 2:
-                return new String[]{"Not me bro"};
+                if (conversationPhase == 0) {
+                    return new String[]{
+                            "It's a pleasure, Martha", "My name is Kath"
+                    };
+                } else {
+                    return new String[]{}; // No reply
+                }
             case 3:
-                return new String[]{"That's great man, seems like\n a weird place"};
+                return new String[]{"Not me bro."};
+            case 4:
+                return new String[]{"That's great man, seems like a weird place."};
             default:
-                return new String[]{"Fuck off."}; // Fallback/default
+                return new String[]{"Okay then."}; // Fallback/default
         }
     }
 

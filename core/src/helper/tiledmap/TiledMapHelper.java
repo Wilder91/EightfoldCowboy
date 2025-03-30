@@ -174,7 +174,7 @@ public class TiledMapHelper {
                 String rectangleName = mapObject.getName();
 
                 if (rectangleName != null && rectangleName.equals("player")) {
-                    //System.out.println("PLAYER");
+//                    System.out.println("PLAYER");
 //                    System.out.println("Raw Tiled coords: x=" + rectangle.x + ", y=" + rectangle.y);
 //                    System.out.println("Width: " + rectangle.width + ", Height: " + rectangle.height);
 //                    System.out.println("PPM = " + PPM);

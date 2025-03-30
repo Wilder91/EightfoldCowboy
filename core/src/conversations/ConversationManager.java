@@ -5,6 +5,7 @@ import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import conversations.firstLevel.FirstLevelConversations;
 import objects.animals.bison.Bison;
+import objects.humans.NPC;
 
 public class ConversationManager {
     private FirstLevelConversations firstLevelConversations;
@@ -24,11 +25,11 @@ public class ConversationManager {
         if (level == 1) {
             if (secondGameEntity instanceof Player) {
                 Player player = (Player) secondGameEntity;
-                if (firstGameEntity instanceof Bison) {
-                    Bison bison = (Bison) firstGameEntity;
+                if (firstGameEntity instanceof NPC) {
+                    NPC npc = (NPC) firstGameEntity;
                     //System.out.println("here I am!");
-                    firstLevelConversations = new FirstLevelConversations(screenInterface, bison, player, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png", 0);
-                    firstLevelConversations.startBisonConversations(bison);
+                    firstLevelConversations = new FirstLevelConversations(screenInterface, npc, player, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png", 0);
+                    firstLevelConversations.startNPCConversation(npc);
                 }
             }
         }

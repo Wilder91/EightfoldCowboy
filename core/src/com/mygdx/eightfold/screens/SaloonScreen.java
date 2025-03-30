@@ -118,6 +118,11 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     @Override
+    public void getNPCById(int id) {
+
+    }
+
+    @Override
     public OrthographicCamera getCamera() {
         return camera;
     }

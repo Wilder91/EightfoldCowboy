@@ -86,4 +86,6 @@ public interface ScreenInterface {
     void addDragonfly(Dragonfly dragonfly);
 
     void addNPC(NPC npc);
+
+    void getNPCById(int id);
 }

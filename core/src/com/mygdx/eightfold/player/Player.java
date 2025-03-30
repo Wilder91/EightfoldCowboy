@@ -84,6 +84,10 @@ public class Player extends GameEntity {
                 door.getBody().getPosition().x, door.getBody().getPosition().y, width, height, false, world, ContactType.PLAYER, 1);
     }
 
+    public void setSpeed(Float speed){
+        this.speed = speed;
+    }
+
     public void setPosition(float x, float y) {
         if (body != null) {
             body.setTransform(x / PPM, y / PPM, body.getAngle()); // Set initial position
@@ -101,19 +105,16 @@ public class Player extends GameEntity {
 
 
     private void checkUserInput() {
-        velX = 0;
-        velY = 0;
+        float velX = 0;
+        float velY = 0;
+
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             velX = 1;
-            if (!isFacingRight) {
-                isFacingRight = true;
-            }
+            if (!isFacingRight) isFacingRight = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             velX = -1;
-            if (isFacingRight) {
-                isFacingRight = false;
-            }
+            if (isFacingRight) isFacingRight = false;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             velY = 1;
@@ -121,13 +122,18 @@ public class Player extends GameEntity {
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             velY = -1;
         }
-        body.setLinearVelocity(velX * speed, velY * speed);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
-            speed = speed * 3 / 2;
+
+        // Combine input direction and normalize to avoid diagonal speed boost
+        Vector2 direction = new Vector2(velX, velY);
+        if (direction.len() > 0) {
+            direction.nor();
         }
-        if (!Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-            speed = originalSpeed;
-        }
+
+        // Optional sprint logic
+        float currentSpeed = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ? speed * 1.5f : speed;
+
+        // Apply movement
+        body.setLinearVelocity(direction.x * currentSpeed, direction.y * currentSpeed);
     }
 
     private void updateAnimation(float delta) {

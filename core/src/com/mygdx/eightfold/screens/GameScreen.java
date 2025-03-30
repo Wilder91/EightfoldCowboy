@@ -399,6 +399,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
+    @Override
+    public void getNPCById(int id) {
+
+    }
+
 
     @Override
     public void addLowerRock(Rock rock) {

@@ -12,6 +12,8 @@ import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
 import objects.animals.object_helper.BisonManager;
 import objects.animals.object_helper.DoorManager;
+import objects.humans.NPC;
+import objects.humans.NPCManager;
 import objects.inanimate.Door;
 
 public class GameContactListener implements ContactListener {
@@ -37,10 +39,20 @@ public class GameContactListener implements ContactListener {
                 System.out.println("BUG CONTACT");
             }
             if(userDataA.getType() ==ContactType.PLAYER && userDataB.getType() == ContactType.DOOR){
-               // System.out.println(userDataB);
+
                 Door door = DoorManager.getDoorById(userDataB.getId());
+                System.out.println("Door: " + door);
                // System.out.println("Player began contact with door: " + door.getName());
                 door.playerContact();
+            }
+            if(userDataA.getType() ==ContactType.PLAYER && userDataB.getType() == ContactType.NPC){
+                System.out.println("user data: " + userDataB.getId());
+                NPC npc = NPCManager.getNPCById(userDataB.getId());
+                //screenInterface.getNPCById(userDataB.getId());
+                System.out.println(npc);
+
+                // System.out.println("Player began contact with door: " + door.getName());
+                npc.playerContact(npc);
             }
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BISON) {
                 Bison bison = BisonManager.getBisonById(userDataB.getId());
@@ -138,7 +150,8 @@ public class GameContactListener implements ContactListener {
                     bison.endPlayerContact();
                     bison.playerContact(b.getBody(), b.getBody().getLinearVelocity());
                 }
-            }else if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.DOOR) {
+            }
+            else if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.DOOR) {
                 Door door = DoorManager.getDoorById(userDataB.getId());
                System.out.println("Player ended contact with door: " + door.getName());
                 door.playerLeave();
