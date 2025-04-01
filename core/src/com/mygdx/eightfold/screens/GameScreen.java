@@ -4,14 +4,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.ai.utils.Ray;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -22,6 +20,7 @@ import com.mygdx.eightfold.GameAssets;
 import conversations.DialogueLine;
 import helper.ContactType;
 import helper.tiledmap.TiledMapHelper;
+import helper.world.time.TimeOfDayHelper;
 import objects.animals.bird.Bird;
 import objects.animals.bison.Bison;
 import objects.animals.bugs.Bug;
@@ -36,16 +35,9 @@ import text.textbox.DecisionTextBox;
 import text.textbox.TextBox;
 import box2dLight.RayHandler;
 import box2dLight.PointLight;
-import box2dLight.DirectionalLight;
 //import box2dLight.AmbientLight;
-import box2dLight.ConeLight;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
-
-import static box2dLight.RayHandler.useDiffuseLight;
 
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static helper.Constants.PPM;
@@ -74,6 +66,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private Player player;
     private Music music;
     private final GameContactListener gameContactListener;
+    private final TimeOfDayHelper timeOfDayHelper;
     private final GameAssets gameAssets;
     private boolean saloonTime = false;
     private Game game;
@@ -90,10 +83,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private InfoBox infoBox;
     private String origin;
 
-    public GameScreen( OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
+    public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
 
 
         this.screenInterface = screenInterface;
+        this.timeOfDayHelper = new TimeOfDayHelper();
         this.buildingList = new ArrayList<>();
         this.camera = camera;
         this.pondList = new ArrayList<>();
@@ -140,41 +134,16 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         //rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 1f);  // Very dark to make lights more visible
         //new PointLight(rayHandler, 128, new Color(1, 0, 0, 1), 20f, 60f, 20f);
         //new PointLight(rayHandler, 128, new Color(1, 1, 0.5f, 1), 10f, 50f, 10f);
-        float timeOfDay = .7f;
-        //rayHandler.setAmbientLight(0.3f, 0.3f, 0.3f, 1f);
+        String timeOfDay = "dusk";
         float camX = camera.position.x * PPM; // Convert to Box2D coordinates
-        float camY = camera.position.y * PPM;
-        float posX = player.getBody().getPosition().x;
-        float posY = player.getBody().getPosition().y;
-        DirectionalLight sunlight = new DirectionalLight(
-                rayHandler,
-                128,                                // number of rays (higher = smoother shadows)
-                new Color(1f, 0.95f, 0.8f, 1f),     // warm sunlight color
-                -1f                               // direction Y
-        );
-
-// Optional: softer, more realistic shadows
-        sunlight.setSoft(true);
-        sunlight.setSoftnessLength(2f);
-//        PointLight testLight = new PointLight(rayHandler, 128, new Color(1f, 1f, 0f, 1f), 6f,
-//                player.getBody().getPosition().x,
-//                player.getBody().getPosition().y);
-//        testLight.setSoftnessLength(1f);         // Optional: softer shadows
-//        testLight.setSoft(true);                 // Enable soft shadows
-//               // (optional) Optimizes shadow calc if light doesn’t move
-//        testLight.setXray(false);
-//        testLight.setStaticLight(true);
-        //rayHandler.setCombinedMatrix(camera.combined);
-        System.out.println("Test light position: " + camX + ", " + camY);// darker environment // night
-        rayHandler.setAmbientLight(timeOfDay, timeOfDay, timeOfDay, 1f); // neutral light
-
-
-
-
-// Optional: soften shadows, tweak performance
+        float camY = camera.position.y * PPM;        //rayHandler.setCombinedMatrix(camera.combined);
+        //em.out.println("Test light position: " + camX + ", " + camY);// darker environment // night
+        float[] ambientColor = timeOfDayHelper.returnTime(timeOfDay);
+        rayHandler.setAmbientLight(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);// neutral light
+        // Optional: soften shadows, tweak performance
         rayHandler.setBlur(true);
-       rayHandler.setShadows(true);
-       setPlayer(player);
+        rayHandler.setShadows(true);
+        setPlayer(player);
         //enablePlayerLight();
         Gdx.input.setInputProcessor(textBox.getStage());
         Gdx.input.setInputProcessor(infoBox.getStage());
@@ -268,7 +237,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     public void setSaloonTime(boolean time) {
         music.stop();
-        System.out.println("CLOSE!");
+        //System.out.println("CLOSE!");
         this.saloonTime = time;
     }
 
@@ -315,13 +284,13 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         world.step(1 / 60f, 6, 2);
         cameraUpdate();
 
-        System.out.println("Camera position: " + camera.position.x + ", " + camera.position.y);
+        //System.out.println("Camera position: " + camera.position.x + ", " + camera.position.y);
 
 
         if (player != null && playerLight != null) {
             Vector2 pos = player.getBody().getPosition();
-            System.out.println("playerLight x: " + pos.x * 32);
-            System.out.println("playerLight y: " + pos.y * 32);
+//            System.out.println("playerLight x: " + pos.x * PPM);
+//            System.out.println("playerLight y: " + pos.y * PPM);
             playerLight.setPosition(pos.x + .1f , pos.y);
 
         }
@@ -647,17 +616,9 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Door door : doorList) {
             door.render(batch);
         }
-
-        //rayHandler.updateAndRender();
-
-        // End drawing with the SpriteBatch
         batch.end();
         rayHandler.setCombinedMatrix(camera.combined.cpy().scl(  PPM));
         rayHandler.updateAndRender();
-
-//        System.out.println("Camera (pixels): " + camera.position);
-//        System.out.println("Player (meters): " + player.getBody().getPosition());
-
         // Render the UI elements (TextBox and InfoBox)
         textBox.getStage().act(delta);
         textBox.getStage().draw();
@@ -665,7 +626,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         decisionTextBox.getStage().draw();
         infoBox.getStage().act(delta);
         infoBox.getStage().draw();
-
         // Optional: Render the Box2D debug renderer for physics bodies
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
@@ -677,7 +637,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         // Dispose of assets properly
         batch.dispose();
         world.dispose();
-        //box2DDebugRenderer.dispose();
         orthogonalTiledMapRenderer.dispose();
         textBox.getStage().dispose();
         textBox.getSkin().dispose();
@@ -690,37 +649,28 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     public void enablePlayerLight() {
         if (rayHandler != null && player != null && player.getBody() != null) {
-            //System.out.println("Attempting to create player light...");
             if (playerLight != null) {
                 playerLight.remove(); // Remove old light if it exists
             }
 
             // Get the current position
             Vector2 pos = player.getBody().getPosition();
-            //System.out.println("Player position: " + pos.x + ", " + pos.y);
+
 
             // Create a new light (note: light radius is in world units, not pixels)
-
-            playerLight = new PointLight(rayHandler, 128, new Color(1f, 1f, 1f, 1f), 1.2f, 0, 0);
+            playerLight = new PointLight(rayHandler, 128, new Color(.5f, .4f, .5f, 1f), .4f, 0, 0);
             playerLight.setSoftnessLength(1f);
             playerLight.setContactFilter(ContactType.LIGHT.getCategoryBits(),
                     ContactType.LIGHT.getMaskBits(),
                     (short) 0);
 
-            //System.out.println("Player light created and attached.");
-        } else {
-            //System.out.println("Failed to create player light - player or rayHandler not ready.");
         }
     }
 
 
     public void setPlayer(Player player) {
         this.player = player;
-        //System.out.println("Player: " + player);
-        //System.out.println("Player body position: " + player.getBody().getPosition());
         enablePlayerLight();
-
-
     }
 
 

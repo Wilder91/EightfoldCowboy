@@ -29,7 +29,7 @@ public class ConversationManager {
                     NPC npc = (NPC) firstGameEntity;
                     //System.out.println("here I am!");
                     firstLevelConversations = new FirstLevelConversations(screenInterface, npc, player, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png", npc.getConversationPhase());
-                    firstLevelConversations.startNPCConversation(npc);
+                    firstLevelConversations.startNPCConversation();
                 }
             }
         }
@@ -38,7 +38,9 @@ public class ConversationManager {
     public void nextLine() {
         if (level == 1 && firstLevelConversations != null) {
             //firstLevelConversations.showCurrentLine();
+            //firstLevelConversations.showCurrentLine();
             firstLevelConversations.advanceConversation();
+
         }
     }
 }

@@ -1,7 +1,10 @@
 package com.mygdx.eightfold.player;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -30,6 +33,9 @@ public class Player extends GameEntity {
     private SpriteIdleHelper idleHelper;
     private String lastDirection = "idleDown";
     private boolean justSwitchedHelpers;
+    private PointLight playerLight;
+    private RayHandler rayHandler;
+
 
     public Player(float x, float y, float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
         super(width, height, body, screenInterface, gameAssets);
@@ -43,19 +49,30 @@ public class Player extends GameEntity {
         this.body = body;
         this.gameAssets = gameAssets;
         this.justSwitchedHelpers = false;
+        this.rayHandler = new RayHandler(screenInterface.getWorld());
         //System.out.println("x: " + Gdx.graphics.getWidth() / 2);
         //this.initialPosition = new Vector2(300, 100);
         int[] runningFrameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
         int[] idleFrameCounts = {18, 1, 8, 18, 4};
         this.runningHelper = new SpriteRunningHelper(gameAssets, "Character", "Character", runningFrameCounts, false);
         //this.walkingHelper = new SpriteWalkingHelper(gameAssets, "Character", walkingFrameCounts, false);
-        this.idleHelper = new SpriteIdleHelper(gameAssets,"Character", "Character", idleFrameCounts, 0f);
+        this.idleHelper = new SpriteIdleHelper(gameAssets, "Character", "Character", idleFrameCounts, 0f);
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
+        playerLight = new PointLight(rayHandler, 128, new Color(.5f, .4f, .5f, .8f), .4f, 0, 0);
+        playerLight.setSoftnessLength(1f);
+        playerLight.setContactFilter(ContactType.LIGHT.getCategoryBits(),
+                ContactType.LIGHT.getMaskBits(),
+                (short) 0);
 
 
+        System.out.println("playerLight x: " + x * PPM);
+        System.out.println("playerLight y: " + y * PPM);
+        playerLight.setPosition(x + .1f, y);
 
     }
+
+
 
 
 

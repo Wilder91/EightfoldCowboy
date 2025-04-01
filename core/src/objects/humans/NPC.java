@@ -28,6 +28,7 @@ public class NPC extends GameEntity {
     private ConversationManager conversationManager;
     private int conversationPhase;
 
+
     public NPC(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, int npcId) {
         super(width, height, body, screenInterface, gameAssets);
 
@@ -115,9 +116,7 @@ public class NPC extends GameEntity {
                 screenInterface.hideInfoBox();
                 conversationManager.startFirstLevelConversation();
             }
-        }
-
-        if (inConversation) {
+            }else if (inConversation) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.E)) {
                 conversationManager.nextLine();
             }

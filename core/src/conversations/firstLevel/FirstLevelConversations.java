@@ -28,7 +28,7 @@ public class FirstLevelConversations extends Conversation {
     private static final Map<Integer, Integer> npcPhases = new HashMap<>();
 
     static {
-        npcPhases.put(0, 3); // Jim
+        npcPhases.put(0, 2); // Jim
         npcPhases.put(1, 2); // Martha
         npcPhases.put(2, 1); // Miner
         npcPhases.put(3, 1); // Cowboy
@@ -47,38 +47,25 @@ public class FirstLevelConversations extends Conversation {
     /**
      * Starts the conversation with an NPC if no text box is currently visible.
      */
-    public void startNPCConversation(NPC npc) {
+    public void startNPCConversation() {
         npcConversationIndex = 0;
         playerConversationIndex = 0;
         isNPCTurn = true;
         isTextBoxVisible = false;
-        System.out.println("start npc conversation: " + npcConversationIndex);
-        showCurrentLine(); // 👈 Only shows line, doesn't advance index
+        showCurrentLine(); // Just show the first line
     }
 
     public void showCurrentLine() {
         hideInfoBox();
-        System.out.println("show current line: " + npcConversationIndex);
-        //npcConversationIndex = 0;
-        if (isNPCTurn) {
-            if (npcConversationIndex < npcConversationTexts.length) {
-                setPortrait();
-                screenInterface.showTextBox(npcConversationTexts[npcConversationIndex]);
-            } else {
-                isNPCTurn = false;
-                //showCurrentLine(); // Show first player line
-            }
-        } else {
-            if (playerConversationIndex < playerConversationTexts.length) {
-                screenInterface.setTextBox("Character_Idle_Down_1 copy.png");
-                npcConversationIndex++;
-                screenInterface.showTextBox(playerConversationTexts[playerConversationIndex]);
-                isTextBoxVisible = true;
-            } else {
-                checkNextPhase(conversationPhase);
-            }
+        if (isNPCTurn && npcConversationIndex < npcConversationTexts.length) {
+            setPortrait();
+            screenInterface.showTextBox(npcConversationTexts[npcConversationIndex]);
+        } else if (!isNPCTurn && playerConversationIndex < playerConversationTexts.length) {
+            screenInterface.setTextBox("Character_Idle_Down_1 copy.png");
+            screenInterface.showTextBox(playerConversationTexts[playerConversationIndex]);
         }
     }
+
     private void setPortrait() {
         if (npc.getId() == 1) {
             screenInterface.setTextBox("Jim_Idle_Down_1 copy.png");
@@ -93,46 +80,21 @@ public class FirstLevelConversations extends Conversation {
     public void advanceConversation() {
         if (isNPCTurn) {
             npcConversationIndex++;
+            if (npcConversationIndex >= npcConversationTexts.length) {
+                // Finished NPC lines, now switch to player
+                isNPCTurn = false;
+                playerConversationIndex = 0; // Just in case
+            }
         } else {
             playerConversationIndex++;
-        }
-        showCurrentLine(); // Show the next line after increment
-    }
 
-
-
-    /**
-     * Displays the next line in the conversation, alternating between NPC and player.
-     */
-    public void showNextLine() {
-        //npcConversationIndex++;
-        hideInfoBox();
-        if (isNPCTurn) {
-            //hideInfoBox();
-            System.out.println("npc convo index: " + npcConversationIndex);
-            System.out.println("npc convo text length: " + npcConversationTexts.length);
-            if (npcConversationIndex < npcConversationTexts.length) {
-                if(npc.getId() == 1) {
-                    screenInterface.setTextBox("Jim_Idle_Down_1 copy.png");
-                } else if (npc.getId() == 2){
-                    screenInterface.setTextBox("Martha_Idle_Down_1 copy.png");
-                }
-                screenInterface.showTextBox(npcConversationTexts[npcConversationIndex]);
-            } else {
-                // Flip to player's turn AFTER NPC is done
-                isNPCTurn = false;
-                advanceConversation(); // Immediately call again to start player's dialogue
-            }
-        } else {
-            if (playerConversationIndex < playerConversationTexts.length) {
-                screenInterface.setTextBox("Character_Idle_Down_1 copy.png");
-                screenInterface.showTextBox(playerConversationTexts[playerConversationIndex]);
-                playerConversationIndex++;
-                isTextBoxVisible = true;
-            } else {
-                checkNextPhase(conversationPhase);
+            if (playerConversationIndex >= playerConversationTexts.length) {
+                checkNextPhase(conversationPhase); // End or move to next phase
+                return;
             }
         }
+
+        showCurrentLine(); // Only call if there are lines to show
     }
 
 
@@ -142,7 +104,7 @@ public class FirstLevelConversations extends Conversation {
      */
     private void checkNextPhase(int conversationPhase) {
         int totalPhases = npcPhases.getOrDefault(npc.getId(), 0);
-        if (conversationPhase < totalPhases - 1) {
+        if (conversationPhase < totalPhases ) {
             nextConversationPhase();
         } else {
             endConversation();
@@ -156,8 +118,8 @@ public class FirstLevelConversations extends Conversation {
         incrementNPCConversationPhase();
         npcConversationIndex = 0;
         playerConversationIndex = 0;
-        isNPCTurn = !isNPCTurn;
-       advanceConversation();
+        isNPCTurn = true; // Always start new phase with NPC
+        showCurrentLine(); // ✅ Show first NPC line without advancing
     }
 
     /**
@@ -172,7 +134,7 @@ public class FirstLevelConversations extends Conversation {
         this.npcConversationTexts = getNPCConversationTexts();
         this.playerConversationTexts = getPlayerConversationTexts();
         isTextBoxVisible = false;
-        npc.advanceConversationPhase();
+        //npc.advanceConversationPhase();
         isNPCTurn = true;
     }
 
@@ -192,6 +154,7 @@ public class FirstLevelConversations extends Conversation {
      */
     private String[] getNPCConversationTexts() {
         System.out.println("conversation phase: " + conversationPhase);
+        System.out.println("get npc texts index: " + npcConversationIndex);
         switch (npc.getId()) {
             case 1:
                 if (conversationPhase == 0) {
@@ -200,6 +163,7 @@ public class FirstLevelConversations extends Conversation {
                     };
 
                 } else if (conversationPhase == 1 ){
+                    npcConversationIndex = 0;
                     return new String[]{
                             "Nice day today, huh?",
                             "Feel free to walk around and explore the forest." + System.lineSeparator() + "I'll be here watching" + System.lineSeparator() + "the pond."
@@ -215,13 +179,11 @@ public class FirstLevelConversations extends Conversation {
             case 2:
                 if (conversationPhase == 0) {
                     return new String[]{
-                            "Oh hello sweetheart, you can call me Martha",
-                            "That's my name, Martha",
-                            "The smell is just part of our charm."
+                            "Oh hello sweetheart, you can call me Martha"
                     };
                 } else if (conversationPhase == 1) {
                     return new String[]{
-                            "Good luck with that."
+                            "How precious"
                     };
                 }
                 break;
@@ -247,6 +209,7 @@ public class FirstLevelConversations extends Conversation {
      * Returns the player's responses based on the NPC's ID and current phase.
      */
     private String[] getPlayerConversationTexts() {
+        System.out.println("get player texts index: " + playerConversationIndex);
         switch (npc.getId()) {
             case 1:
                 if (conversationPhase == 0) {
@@ -255,8 +218,8 @@ public class FirstLevelConversations extends Conversation {
                             "It's a pleasure to meet you.",
                             "It's beautiful here."
                     };
-                } else {
-                    return new String[]{"Well, it's a pleasure to meet you"};
+                } else if(conversationPhase ==1) {
+                    return new String[]{"Thank you Jim, I look forward to exploring"};
                 }
             case 2:
                 if (conversationPhase == 0) {

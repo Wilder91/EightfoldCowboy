@@ -79,7 +79,7 @@ public class TreeFactory {
         }
 
         shape.set(worldVertices);
-        shape.setAsBox(boundingRectangle.width / 2/  PPM, boundingRectangle.height /2 / PPM);
+        shape.setAsBox(boundingRectangle.width / 4/  PPM, boundingRectangle.height /4 / PPM);
         Fixture treeFixture = treeBody.createFixture(shape, 0.0f);
         treeFixture.setUserData(new BodyUserData(treeId, TREE, treeBody));
 
