@@ -1,7 +1,7 @@
 package helper;
 
 public enum ContactType {
-    PLAYER(0x0001, 0x0002 | 0x0004 | 0x0008 | 0x0010), // Can collide with everything
+    PLAYER(0x0001, 0x0002 | 0x0004 | 0x0008 | 0x0010 | 0x0400), // Can collide with everything
     BISON(0x0002, 0xFFFF),
     BIRD(0x0004, 0xFFFF),
     TREE(0x0008, 0x0002 | 0x0004),
@@ -11,7 +11,7 @@ public enum ContactType {
     DRAGONFLY(0x0080, 0xFFFF),
     NPC(0x0100, 0xFFFF),
     JIM(0x0200, 0x0001), // Only collide with player
-    LIGHT(0x0400, 0xFFFF); // Lights see everything
+    LIGHT(0x0400, 0xFFFF | 0x0001); // Lights see everything
 
     private final short categoryBits;
     private final short maskBits;

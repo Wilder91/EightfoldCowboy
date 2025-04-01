@@ -24,6 +24,7 @@ public abstract class TextBox {
         this.skin = skin;
         this.stage = new Stage(new ScreenViewport());
         // Create a LabelStyle with a font from the skin
+
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         originalFont = skin.getFont("commodore-64");
         labelStyle.font = originalFont; // Use the exact font name from your skin file
