@@ -89,4 +89,9 @@ public interface ScreenInterface {
     void addNPC(NPC npc);
 
     void getNPCById(int id);
+
+
+    void hideDecisionTextBox();
+
+    void setChoices(String... choices);
 }

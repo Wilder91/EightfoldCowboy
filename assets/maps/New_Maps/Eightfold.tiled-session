@@ -1,0 +1,40 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Eightfold.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "/Users/michaelwilder/Desktop/Eightfold/assets/maps/Bison_Horizontal_Walk_3.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "Aspen.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Eightfold.tmx": {
+            "scale": 1.52,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 376.6447368421053,
+                "y": 284.2105263157895
+            }
+        }
+    },
+    "last.imagePath": "/Users/michaelwilder/Desktop/Eightfold/assets/Sprites/Pond (500)",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "Eightfold.tmx",
+        "Aspen.tsx"
+    ],
+    "project": "Eightfold.tiled-project",
+    "recentFiles": [
+        "Aspen.tsx",
+        "Eightfold.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

@@ -1,5 +1,6 @@
 package helper.tiledmap.factories.animals.bugs;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -43,11 +44,18 @@ public class BugFactory {
     private void createButterfly(PolygonMapObject polygonMapObject) {
         int bugId = ++bugCounter;
         Body bugBody = createBodyFromPolygon(polygonMapObject, bugId, "butterfly");
+        TextureRegion texture = gameAssets.getAtlas("atlases/eightfold/bugs.atlas").findRegion("Butterfly_Small_White" );
+        if (texture == null) {
+            System.err.println("Pond texture not found for type: " + bugId);
+            return;
+        }
+        float textureWidth = texture.getRegionWidth();
+        float textureHeight = texture.getRegionHeight();
 
         Rectangle bounds = polygonMapObject.getPolygon().getBoundingRectangle();
         Butterfly butterfly = new Butterfly(
-                bounds.width,
-                bounds.height,
+                textureWidth,
+                textureHeight,
                 bounds.x + bounds.width / 2,
                 bounds.y + bounds.height / 2,
                 bugBody,
@@ -65,9 +73,17 @@ public class BugFactory {
         Body bugBody = createBodyFromPolygon(polygonMapObject, bugId, "dragonfly");
 
         Rectangle bounds = polygonMapObject.getPolygon().getBoundingRectangle();
+        TextureRegion texture = gameAssets.getAtlas("atlases/eightfold/bugs.atlas").findRegion("Dragonfly" );
+        if (texture == null) {
+            System.err.println("Pond texture not found for type: " + bugId);
+            return;
+        }
+        float textureWidth = texture.getRegionWidth();
+        float textureHeight = texture.getRegionHeight();
+        System.out.println(textureWidth);
         Dragonfly dragonfly = new Dragonfly(
-                bounds.width,
-                bounds.height,
+                textureWidth,
+                textureHeight,
                 bounds.x + bounds.width / 2,
                 bounds.y + bounds.height / 2,
                 bugBody,

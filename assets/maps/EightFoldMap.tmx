@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="940">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="60" height="34" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="941">
  <editorsettings>
   <chunksize width="32" height="32"/>
  </editorsettings>
@@ -14,7 +14,7 @@
  <tileset firstgid="237" source="path.tsx"/>
  <tileset firstgid="2446" source="fence.tsx"/>
  <tileset firstgid="2449" source="Bison_Horizontal_Walk_3.tsx"/>
- <tileset firstgid="2455" source="aspen.tsx"/>
+ <tileset firstgid="2455" source="New_Maps/Aspen.tsx"/>
  <objectgroup id="2" name="objects">
   <object id="92" name="saloon" type="building" x="772.21" y="5.98346">
    <polygon points="0,0 410.736,0 410.736,376.064 -2.93382,378.848"/>
@@ -96,9 +96,6 @@
   <object id="896" name="small_rock_two" x="1028.96" y="769.766">
    <polygon points="0,0 19.3315,0 18.9982,23.93 -0.999905,23.5674"/>
   </object>
-  <object id="897" name="pond" x="1583.16" y="885.116">
-   <polygon points="0,0 25.6547,-0.0897107 25.8013,16.5068 -0.293197,15.4302"/>
-  </object>
   <object id="905" name="aspen_tree" x="1426.77" y="690.228">
    <polygon points="0,0 -11.685,14.022 -19.2802,36.2234 -18.1117,93.4798 18.1117,93.4798 18.1117,29.2124 11.1007,8.17948"/>
   </object>
@@ -153,6 +150,9 @@
   <object id="935" name="jim" x="1501.3" y="839.446" width="25.9225" height="33.644"/>
   <object id="937" name="martha" x="1579.34" y="806.078" width="25.9225" height="33.644"/>
   <object id="938" x="1440.08" y="832.828" width="32" height="32"/>
+  <object id="940" x="1550.9" y="880">
+   <polygon points="0,0 0,38.0952 44.8677,37.8325 41.6912,1.0509"/>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="wall">
   <object id="285" name="wall" x="838.417" y="237.932">
@@ -168,7 +168,7 @@
    <polygon points="0,0 43.0834,14.6819 24.2344,55.7911 -2.6927,49.9183"/>
   </object>
  </objectgroup>
- <layer id="5" name="path" width="60" height="34">
+ <layer id="5" name="path" width="60" height="34" opacity="0.97">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

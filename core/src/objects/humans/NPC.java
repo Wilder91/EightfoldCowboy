@@ -38,7 +38,10 @@ public class NPC extends GameEntity {
         this.screenInterface = screenInterface;
         this.conversationManager = new ConversationManager(1, this, screenInterface.getPlayer(), screenInterface);
         String characterName = getCharacterNameFromType(npcId);
-        this.conversationPhase = 0;
+
+        // REMOVE this line - no longer needed
+        // this.conversationPhase = 0;
+
         int[] frameCounts = getFrameCountsFromType(npcId);
         float stateTime = getStateTimeFromType(npcId);
 
@@ -106,23 +109,24 @@ public class NPC extends GameEntity {
 
     @Override
     public void render(SpriteBatch batch) {
-        sprite.setPosition(x - width / 2, y - height / 2);
-
-        if (isContacted && !inConversation) {
-            //screenInterface.showInfoBox("Press E to begin Conversation");
+        // In NPC.render():
+        if (inConversation) {
+            // Check for key press only once
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+                System.out.println("Key pressed - advancing conversation");
+                conversationManager.nextLine();
+            }
+        } else if (isContacted) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
                 inConversation = true;
-                isContacted = false; // 👈 Prevent it from immediately retriggering
+                isContacted = false;
                 screenInterface.hideInfoBox();
                 conversationManager.startFirstLevelConversation();
-            }
-            }else if (inConversation) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-                conversationManager.nextLine();
             }
         }
 
         sprite.draw(batch);
+        sprite.setPosition(x - width / 2, y - height / 2);
     }
 
     public Integer getId() {
