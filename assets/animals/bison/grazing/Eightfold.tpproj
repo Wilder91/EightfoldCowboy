@@ -41,7 +41,7 @@ keepInputFileExtensions=false
 ---
 
 name=NPCs
-filename=Jim-movement.atlas
+filename=NPC-movement.atlas
 output=../../../atlases/eightfold
 
 alias=true

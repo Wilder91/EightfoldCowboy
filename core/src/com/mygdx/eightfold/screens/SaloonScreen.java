@@ -123,6 +123,18 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     @Override
+    public void hideDecisionTextBox() {
+
+    }
+
+    @Override
+    public void setChoices(String... choices) {
+
+    }
+
+
+
+    @Override
     public OrthographicCamera getCamera() {
         return camera;
     }
@@ -146,6 +158,7 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     public void showDecisionTextbox(DialogueLine dialogueLine) {
 
     }
+
 
     @Override
     public void showPlayerTextBox(String playerConversationText) {

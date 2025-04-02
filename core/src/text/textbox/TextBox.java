@@ -85,7 +85,7 @@ public abstract class TextBox {
         return drawable;
     }
 
-    private TextureRegionDrawable createBackgroundWithBorder(float borderR, float borderG, float borderB, float borderA, float bgR, float bgG, float bgB, float bgA) {
+    TextureRegionDrawable createBackgroundWithBorder(float borderR, float borderG, float borderB, float borderA, float bgR, float bgG, float bgB, float bgA) {
         int borderWidth = 3;
         int width = 50;  // Arbitrary size; can be adjusted
         int height = 50; // Arbitrary size; can be adjusted

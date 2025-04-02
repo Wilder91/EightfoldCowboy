@@ -112,7 +112,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.world.setContactListener(this.gameContactListener);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets, gameContactListener);
-        this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/EightfoldMap.tmx");
+        this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/new_Maps/Eightfold.tmx");
         // Initialize TextBox
         Skin skin = new Skin(Gdx.files.internal("commodore64/skin/uiskin.json"));
         this.skin = skin;
@@ -134,7 +134,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         //rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 1f);  // Very dark to make lights more visible
         //new PointLight(rayHandler, 128, new Color(1, 0, 0, 1), 20f, 60f, 20f);
         //new PointLight(rayHandler, 128, new Color(1, 1, 0.5f, 1), 10f, 50f, 10f);
-        String timeOfDay = "dusk";
+        String timeOfDay = "day";
         float camX = camera.position.x * PPM; // Convert to Box2D coordinates
         float camY = camera.position.y * PPM;        //rayHandler.setCombinedMatrix(camera.combined);
         //em.out.println("Test light position: " + camX + ", " + camY);// darker environment // night
@@ -221,6 +221,17 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     public void hideTextBox() {
         textBox.hideTextBox();
     }
+
+    public void hideDecisionTextBox() {
+        decisionTextBox.hideTextBox();
+    }
+
+    @Override
+    public void setChoices(String... choices) {
+        //decisionTextBox.setChoices(choices);
+    }
+
+
 
     @Override
     public void showTextBox(DialogueLine line) {
