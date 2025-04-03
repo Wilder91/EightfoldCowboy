@@ -89,8 +89,11 @@ public class TiledMapHelper {
                         case "boulder":
                             createBoulder(polygonMapObject);
                             break;
-                        case "saloon":
-                            createSaloon(polygonMapObject);
+                        case "shop":
+                            createBuilding(polygonMapObject, 0);
+                            break;
+                        case "barn":
+                            createBuilding(polygonMapObject, 1);
                             break;
                         case "large_oak":
                             createTree(polygonMapObject, Tree.LARGE_OAK);
@@ -358,9 +361,10 @@ public class TiledMapHelper {
         boulderFactory.createBoulder(polygonMapObject);
     }
 
-    private void createSaloon(PolygonMapObject polygonMapObject) {
+    private void createBuilding(PolygonMapObject polygonMapObject, int buildingId) {
         BuildingFactory buildingFactory = new BuildingFactory(screenInterface, gameAssets);
-        buildingFactory.createBuilding(polygonMapObject);
+        //System.out.println("building id" + buildingId);
+        buildingFactory.createBuilding(polygonMapObject, buildingId);
     }
 
     private void createStaticBody(PolygonMapObject polygonMapObject) {

@@ -1,102 +1,152 @@
 package objects.inanimate;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.utils.Array;
-import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
-import com.mygdx.eightfold.player.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
-;
 
-import java.util.Random;
-
-import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
 
-public class Building extends GameEntity {
+public class Building {
+    private float width;
+    private float height;
+    private float x;
+    private float y;
+    private Body body;
+    private boolean isCollidable;
+    private ScreenInterface screenInterface;
+    private int buildingId;
+    private GameAssets gameAssets;
 
-    private static final float MOVEMENT_DURATION = 2.0f; // 1 second
-    // Duration of each frame in the animation
-    private boolean isMoving;
-    private float moveTimer;
-    private Animation<TextureRegion> animation;
-    private float stateTime; // Time elapsed since the animation started
-    private int id;
+    // Top and bottom textures
+    private Sprite topSprite;
+    private Sprite bottomSprite;
 
-    public Building(float width, float height, float x, float y, Body body, boolean isFacingRight, ScreenInterface screenInterface, int buildingId, GameAssets gameAssets) {
-        super(0, 0, body, screenInterface, gameAssets);
+    // Y-coordinate where top and bottom parts split
+    private float splitY;
 
-        this.speed = 15f;
-        this.moveTimer = 0;
+    public Building(float width, float height, float x, float y, Body body, boolean isCollidable,
+                    ScreenInterface screenInterface, int buildingId, GameAssets gameAssets,
+                    String topTextureName, String bottomTextureName) {
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
         this.body = body;
-        this.stateTime = 0f;
-        this.id = buildingId;
+        this.isCollidable = isCollidable;
+        this.screenInterface = screenInterface;
+        this.buildingId = buildingId;
+        this.gameAssets = gameAssets;
 
-        // Load the animation frames
-        Array<TextureRegion> frames = new Array<>();
-        for (int i = 0; i < 40; i++) { // Assuming there are 40 frames
-            Texture frameTexture = new Texture(Gdx.files.internal("Saloon/Saloon" + i + ".png"));
-            TextureRegion frame = new TextureRegion(frameTexture);
-            frames.add(frame);
+        // Initialize sprites
+        this.topSprite = new Sprite(gameAssets.getTexture("buildings/" + topTextureName + ".png"));
+        this.bottomSprite = new Sprite(gameAssets.getTexture("buildings/" + bottomTextureName + ".png"));
+
+        // Set sprite positions and sizes
+        setupSprites();
+
+        // Calculate split Y position (middle of the building by default)
+        this.splitY = y * PPM;
+    }
+
+    // Constructor for backward compatibility
+    public Building(float width, float height, float x, float y, Body body, boolean isCollidable,
+                    ScreenInterface screenInterface, int buildingId, GameAssets gameAssets) {
+        this(width, height, x, y, body, isCollidable, screenInterface, buildingId, gameAssets,
+                "buildings/barns/" + getBuildingNameFromId(buildingId) + "_Top",
+                "buildings/barns/" + getBuildingNameFromId(buildingId) + "_Bottom");
+    }
+
+    private static String getBuildingNameFromId(int buildingId) {
+        switch (buildingId) {
+            case 0:
+                return "Shop";
+            case 1:
+                return "Barn";
+            // Add more cases for other building types
+            default:
+                return "Building_" + buildingId;
         }
-        this.animation = new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
-        // Randomly select a starting frame
-        Random random = new Random();
-        int randomFrame = random.nextInt(40); // Random number between 0 and 39
-        this.stateTime = randomFrame * FRAME_DURATION;
     }
 
-    @Override
-    public void update(float delta) {
-        stateTime += delta; // Update the state time
+    private void setupSprites() {
+        float splitOffset;
 
-        if (isMoving) {
-            startMoving(body);
-            moveTimer += delta;
-            if (moveTimer >= MOVEMENT_DURATION) {
-                stopMoving();
-            }
+        // Customize split offset based on building type
+        if (buildingId == 0) { // Shop
+            splitOffset = bottomSprite.getHeight();
+        } else if (buildingId == 1) { // Barn
+            splitOffset = bottomSprite.getHeight() / 2;
+        } else {
+            // Default behavior
+            splitOffset = bottomSprite.getHeight();
         }
-        x = body.getPosition().x * PPM;
-        y = body.getPosition().y * PPM;
+
+        // Bottom sprite positioning
+        bottomSprite.setPosition(
+                (x - width/2) * PPM,
+                (y - height/2) * PPM
+        );
+
+        // Top sprite positioning with custom offset
+        topSprite.setPosition(
+                (x - width/2) * PPM,
+                (y - height/2) * PPM + splitOffset
+        );
+
+        // The split Y uses the same offset
+        this.splitY = (y - height/2) * PPM + splitOffset;
     }
 
-    @Override
-    public void render(SpriteBatch batch) {
-        TextureRegion currentFrame = animation.getKeyFrame(stateTime, true);
-        float spriteX = x - currentFrame.getRegionWidth() ;
-        float spriteY = y - currentFrame.getRegionHeight() ;
-
-        // Draw the current frame
-        batch.draw(currentFrame, spriteX, spriteY, currentFrame.getRegionWidth() * 2, currentFrame.getRegionHeight() * 2);
+    // Method to draw the building with depth sorting
+    public void draw(SpriteBatch batch) {
+        // Only draw the sprites, don't handle the depth sorting here
+        // That should be done in the main rendering code
+        bottomSprite.draw(batch);
+        // topSprite will be drawn later in the rendering order
     }
 
-
-    public static void startMoving(Body body) {
-        // Apply linear damping to gradually reduce velocity
-        body.setLinearDamping(1.5f);
+    public void drawTop(SpriteBatch batch) {
+        topSprite.draw(batch);
     }
 
-    public void stopMoving() {
-        isMoving = false;
-        moveTimer = 0;
-        body.setLinearVelocity(0, 0);
+    // Getter methods for sprites
+    public Sprite getTopSprite() {
+        return topSprite;
     }
 
-    public boolean isMoving() {
-        return isMoving;
+    public Sprite getBottomSprite() {
+        return bottomSprite;
     }
 
-    public void toggleMoving() {
-        isMoving = !isMoving;
+    // Additional methods for getting collision data
+    public float getSplitY() {
+        return splitY;
     }
 
-    public int getId() {
-        return id;
+    // Getters and setters
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public int getBuildingId() {
+        return buildingId;
     }
 }

@@ -11,6 +11,7 @@ import com.mygdx.eightfold.GameAssets;
 import objects.inanimate.Building;
 
 import static helper.Constants.PPM;
+import static helper.ContactType.BUILDING;
 import static helper.ContactType.TREE;
 
 public class BuildingFactory {
@@ -23,8 +24,7 @@ public class BuildingFactory {
         this.gameAssets = gameAssets;
     }
 
-    public void createBuilding(PolygonMapObject polygonMapObject) {
-        int buildingId = ++buildingCounter;
+    public void createBuilding(PolygonMapObject polygonMapObject, int buildingId) {
         Polygon polygon = polygonMapObject.getPolygon();
         Rectangle boundingRectangle = polygon.getBoundingRectangle();
 
@@ -47,14 +47,22 @@ public class BuildingFactory {
         );
 
         Fixture buildingFixture = buildingBody.createFixture(shape, 0.0f);
-        buildingFixture.setUserData(new BodyUserData(buildingId, TREE, buildingBody));
+        buildingFixture.setUserData(new BodyUserData(buildingId, BUILDING, buildingBody));
         shape.dispose();
 
         Filter filter = new Filter();
-        filter.categoryBits = TREE.getCategoryBits();
-        filter.maskBits = TREE.getMaskBits();
+        filter.categoryBits = BUILDING.getCategoryBits();
+        filter.maskBits = BUILDING.getMaskBits();
         buildingFixture.setFilterData(filter);
 
+        System.out.println("building id: " + buildingId);
+
+        // Determine texture names based on building ID
+        String buildingName = getBuildingNameFromId(buildingId);
+        String topTextureName = buildingName + "_Top";
+        String bottomTextureName = buildingName + "_Bottom";
+
+        // Create building with top and bottom textures
         Building building = new Building(
                 boundingRectangle.width / PPM,
                 boundingRectangle.height / PPM,
@@ -64,9 +72,24 @@ public class BuildingFactory {
                 true,
                 screenInterface,
                 buildingId,
-                gameAssets
+                gameAssets,
+                topTextureName,
+                bottomTextureName
         );
 
         screenInterface.addBuilding(building);
+    }
+
+    // Helper method to get building name from ID
+    private String getBuildingNameFromId(int buildingId) {
+        switch (buildingId) {
+            case 0:
+                return "Shop";
+            case 1:
+                return "Barn";
+            // Add more cases for other building types
+            default:
+                return "Building_" + buildingId;
+        }
     }
 }

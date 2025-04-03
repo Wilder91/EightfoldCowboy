@@ -154,8 +154,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
         if(origin == "saloon"){
             Door door = doorList.get(0);
-           //System.out.println("fromSaloon true");
-           player.getBody().setTransform(door.getBody().getPosition().x, door.getBody().getPosition().y - 2, 0);
+            //System.out.println("fromSaloon true");
+            player.getBody().setTransform(door.getBody().getPosition().x, door.getBody().getPosition().y - 2, 0);
         }
     }
 
@@ -183,7 +183,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
 
     public void showDecisionTextBox(String text) {
-       // hideTextBox();
+        // hideTextBox();
         decisionTextBox.showTextBox(text);
     }
 
@@ -351,9 +351,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             pond.update(delta);
         }
 
-        for (Building building : buildingList) {
-            building.update(delta);
-        }
+
         for (Door door : doorList) {
             door.update(delta);
         }
@@ -367,7 +365,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
         if (saloonTime) {
             World newWorld = new World(new Vector2(0, 0), false); // Create a new World instance for the new screen
-             // Create a new GameContactListener instance
+            // Create a new GameContactListener instance
             SaloonScreen saloonScreen = new SaloonScreen(camera, gameAssets,   this, newWorld, this, player, game);
             // Use new instances
             ((Game) Gdx.app.getApplicationListener()).setScreen(saloonScreen);
@@ -565,9 +563,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         // Begin drawing with the SpriteBatch
         batch.begin();
 
-        // 1. Render background elements like buildings, bushes, and boulders
         for (Building building : buildingList) {
-            building.render(batch);
+            building.getBottomSprite().draw(batch);
         }
 
         for (Boulder boulder : boulderList) {
@@ -626,6 +623,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
         for (Door door : doorList) {
             door.render(batch);
+        }
+
+        // Draw all building tops last
+        for (Building building : buildingList) {
+            building.getTopSprite().draw(batch);
         }
         batch.end();
         rayHandler.setCombinedMatrix(camera.combined.cpy().scl(  PPM));

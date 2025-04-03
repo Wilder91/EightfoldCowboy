@@ -6,12 +6,13 @@ public enum ContactType {
     BIRD(0x0004, 0xFFFF),
     TREE(0x0008, 0x0002 | 0x0004),
     DOOR(0x0010, 0x0001 | 0x0002), // Only collide with player and bison
-    BUG(0x0020, 0xFFFF),
-    BUTTERFLY(0x0040, 0xFFFF),
+    BUG(0x0020, 0),
+    BUTTERFLY(0x0040, 0),
     DRAGONFLY(0x0080, 0xFFFF),
     NPC(0x0100, 0xFFFF),
     JIM(0x0200, 0x0001), // Only collide with player
-    LIGHT(0x0400, 0xFFFF | 0x0001); // Lights see everything
+    LIGHT(0x0400, 0xFFFF | 0x0001), // Lights see everything
+    BUILDING(0x0800, 0);
 
     private final short categoryBits;
     private final short maskBits;

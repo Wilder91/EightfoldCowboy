@@ -29,7 +29,8 @@ public class GameAssets {
         assetManager.load("atlases/eightfold/pond.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/bugs.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
-
+        assetManager.load("buildings/barns/Barn-1.png", Texture.class);
+        assetManager.load("buildings/shops/Shop-1.png", Texture.class);
         assetManager.load("ethereal.mp3", Music.class);
         assetManager.load("lost & found.mp3", Music.class);
         assetManager.load("sounds/bison-sound.mp3", Sound.class);
@@ -43,6 +44,10 @@ public class GameAssets {
         assetManager.load("plants/bushes/Bush_4.png", Texture.class);
         assetManager.load("plants/bushes/Bush_5.png", Texture.class);
         assetManager.load("atlases/eightfold/rocks.atlas", TextureAtlas.class);
+        assetManager.load("buildings/Barn_Top.png", Texture.class);
+        assetManager.load("buildings/Barn_Bottom.png", Texture.class);
+        assetManager.load("buildings/Shop_Top.png", Texture.class);
+        assetManager.load("buildings/Shop_Bottom.png", Texture.class);
         // Load individual textures for bison grazing
         for (int i = 0; i <= 39; i++) {
             String filename = "animals/bison/grazing/Bison_Grazing_" + i + ".png";
