@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,7 +23,7 @@ import helper.ContactType;
 import helper.tiledmap.TiledMapHelper;
 import helper.world.time.TimeOfDayHelper;
 import objects.animals.bird.Bird;
-import objects.animals.bison.Bison;
+
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
@@ -30,7 +31,7 @@ import objects.humans.NPC;
 import objects.inanimate.*;
 import com.mygdx.eightfold.player.Player;
 import text.infobox.InfoBox;
-import text.textbox.BisonTextBox;
+
 import text.textbox.DecisionTextBox;
 import text.textbox.TextBox;
 import box2dLight.RayHandler;
@@ -43,7 +44,6 @@ import java.util.ArrayList;
 import static helper.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter implements ScreenInterface {
-    private final ArrayList<Bison> bisonList;
     private final ArrayList<Bird> birdList;
     private final ArrayList<Building> buildingList;
     private final ArrayList<Boulder> boulderList;
@@ -73,6 +73,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private Skin skin;
     private RayHandler rayHandler;
     private PointLight playerLight;
+    private FPSLogger fpsLogger = new FPSLogger();
     public OrthographicCamera getCamera() {
         return camera;
     }
@@ -91,7 +92,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.buildingList = new ArrayList<>();
         this.camera = camera;
         this.pondList = new ArrayList<>();
-        this.bisonList = new ArrayList<>();
+
         this.birdList = new ArrayList<>();
         this.boulderList = new ArrayList<>();
         this.treeList = new ArrayList<>();
@@ -116,7 +117,12 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         // Initialize TextBox
         Skin skin = new Skin(Gdx.files.internal("commodore64/skin/uiskin.json"));
         this.skin = skin;
-        this.textBox = new BisonTextBox(skin, "animals/bison/bison-single.png");
+        this.textBox = new TextBox(skin, "player/player-single.png") {
+            @Override
+            public void setFontColor(float r, float g, float b, float a) {
+                // Empty implementation
+            }
+        };
         this.decisionTextBox = new DecisionTextBox(skin, "player/player-single.png") {
             @Override
             public void setFontColor(float r, float g, float b, float a) {
@@ -308,9 +314,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
-        for (Tree tree : treeList) {
-            tree.update(delta);
-        }
+
         for (Butterfly butterfly : butterflyList){
             butterfly.update(delta);
         }
@@ -335,15 +339,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
 
 
-        for (Bison bison : bisonList) {
-            bison.update(delta);
-        }
         for (Bird bird : birdList) {
             bird.update(delta);
         }
-        for (Boulder boulder : boulderList) {
-            boulder.update(delta);
-        }
+
 
 
 
@@ -352,9 +351,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
 
 
-        for (Door door : doorList) {
-            door.update(delta);
-        }
+
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             enterPauseScreen();
@@ -399,14 +396,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     }
 
 
-    @Override
-    public void addBison(Bison bison) {
-        if (bisonList != null) {
-            bisonList.add(bison);
-        } else {
-            System.err.println("bisonList is null. Cannot add bison.");
-        }
-    }
+
 
     @Override
     public void addDoor(Door door) {
@@ -552,6 +542,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         camera.update();
 
 
+
         // Clear the screen
         Gdx.gl.glClearColor(168f / 255f, 178f / 255f, 113f / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -607,9 +598,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Bird bird : birdList) {
             bird.render(batch);
         }
-        for (Bison bison : bisonList) {
-            bison.render(batch);
-        }
+
 
         // Render the top part of the rocks (above the player)
         for (Rock rock : rockList) {
@@ -641,6 +630,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         infoBox.getStage().draw();
         // Optional: Render the Box2D debug renderer for physics bodies
         //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        // Optional: Log the frame rate once per second
+        //fpsLogger.log();
     }
 
 

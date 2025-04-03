@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.eightfold.player.Player;
 import conversations.DialogueLine;
 import objects.animals.bird.Bird;
-import objects.animals.bison.Bison;
+
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
@@ -41,7 +41,7 @@ public interface ScreenInterface {
 
     Player getPlayer();
 
-    void addBison(Bison bison);
+
 
     void addTree(Tree tree);
 

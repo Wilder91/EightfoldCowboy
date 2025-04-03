@@ -2,13 +2,13 @@ package helper;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import objects.animals.bird.Bird;
-import objects.animals.bison.Bison;
+
 
 
 public class BodyUserData {
     private int id;
     private ContactType type;
-    private Bison bison;
+
     private Body body;
     private Bird bird;
 

@@ -23,7 +23,6 @@ import helper.ContactType;
 import helper.tiledmap.factories.animals.bugs.BugFactory;
 import helper.tiledmap.factories.animals.BirdFactory;
 import helper.tiledmap.factories.inanimate.*;
-import helper.tiledmap.factories.animals.BisonFactory;
 import helper.tiledmap.factories.animals.NpcFactory;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.Player;
@@ -77,12 +76,6 @@ public class TiledMapHelper {
                 String polygonName = mapObject.getName();
                 if (polygonName != null) {
                     switch (polygonName) {
-                        case "bison":
-                            createBison(polygonMapObject);
-                            break;
-                        case "talking-bison":
-                            createTalkingBison(polygonMapObject);
-                            break;
                         case "bird":
                             createBird(polygonMapObject);
                             break;
@@ -303,16 +296,6 @@ public class TiledMapHelper {
     private void createBird(PolygonMapObject polygonMapObject) {
         BirdFactory birdFactory = new BirdFactory(screenInterface, gameAssets);
         birdFactory.createBird(polygonMapObject);
-    }
-
-    private void createBison(PolygonMapObject polygonMapObject) {
-        BisonFactory bisonFactory = new BisonFactory(screenInterface, gameAssets, false); // Instantiate the BisonFactory
-        bisonFactory.createBison(polygonMapObject); // Call createBison method from BisonFactory
-    }
-
-    private void createTalkingBison(PolygonMapObject polygonMapObject) {
-        BisonFactory bisonFactory = new BisonFactory(screenInterface, gameAssets, true); // Instantiate the BisonFactory
-        bisonFactory.createBison(polygonMapObject); // Call createBison method from BisonFactory
     }
 
     private void createDoor(PolygonMapObject polygonMapObject, String polygonName) {

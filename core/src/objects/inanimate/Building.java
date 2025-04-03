@@ -77,7 +77,7 @@ public class Building {
         if (buildingId == 0) { // Shop
             splitOffset = bottomSprite.getHeight();
         } else if (buildingId == 1) { // Barn
-            splitOffset = bottomSprite.getHeight() / 2;
+            splitOffset = bottomSprite.getHeight() -3.5f;
         } else {
             // Default behavior
             splitOffset = bottomSprite.getHeight();

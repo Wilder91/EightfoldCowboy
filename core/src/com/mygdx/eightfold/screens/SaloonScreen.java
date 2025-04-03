@@ -19,7 +19,6 @@ import conversations.DialogueLine;
 import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
 import objects.animals.bird.Bird;
-import objects.animals.bison.Bison;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
@@ -82,7 +81,7 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         }
 
         // Initialize TextBox and InfoBox
-        this.textBox = new SaloonTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), "animals/bison/bison-single.png");
+
         this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
         Gdx.input.setInputProcessor(textBox.getStage());
         Gdx.input.setInputProcessor(infoBox.getStage());
@@ -355,12 +354,6 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
-
-
-    @Override
-    public void addBison(Bison bison) {
-
-    }
 
     @Override
     public void addTree(Tree tree) {

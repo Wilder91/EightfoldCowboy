@@ -1,6 +1,6 @@
 package objects.humans;
 
-import objects.animals.bison.Bison;
+
 
 import java.util.HashMap;
 import java.util.Map;

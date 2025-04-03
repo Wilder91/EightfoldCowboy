@@ -2,7 +2,7 @@ package conversations;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import objects.animals.bison.Bison;
+
 import objects.humans.NPC;
 import text.textbox.BisonTextBox;
 
@@ -24,18 +24,7 @@ public abstract class Conversation {
         //this.textBox = new BisonTextBox(skin, imagePath);
     }
 
-    public void bisonNextLine(Bison bison) {
-        if (conversationIndex < bisonConversationTexts.length) {
-            showTextBox(bisonConversationTexts[conversationIndex]);
-            conversationIndex++;
-            isTextBoxVisible = true;
-        } else {
-            hideTextBox();
-            bison.setInConversation(false);
-            conversationIndex = 0;
-            isTextBoxVisible = false;
-        }
-    }
+
     private void npcNextLine(NPC npc) {
 
             if (conversationIndex < npcConversationTexts.length) {
@@ -51,13 +40,6 @@ public abstract class Conversation {
             }
     }
 
-
-    public void startBisonConversations(Bison bison) {
-        if (!isTextBoxVisible) {
-            hideInfoBox();
-            bisonNextLine(bison);
-        }
-    }
 
     public void startNPCConversations(NPC npc) {
         if(!isTextBoxVisible){

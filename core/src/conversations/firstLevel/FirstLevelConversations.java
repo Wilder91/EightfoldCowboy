@@ -97,7 +97,7 @@ public class FirstLevelConversations extends Conversation {
             case 1: // Jim
                 if (phase == 0) {
                     return new String[]{
-                            "Nice, I'm Kath.",
+                            "Nice, I'm Tully.",
                             "It's a pleasure to meet you.",
                             "It's beautiful here."
                     };
@@ -110,7 +110,7 @@ public class FirstLevelConversations extends Conversation {
             case 2: // Martha
                 if (phase == 0) {
                     return new String[]{
-                            "It's a pleasure, Martha", "My name is Kath"
+                            "It's a pleasure, Martha", "My name is Tully"
                     };
                 } else {
                     return new String[]{}; // No reply
