@@ -19,6 +19,7 @@ import conversations.DialogueLine;
 import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
 import objects.animals.bird.Bird;
+import objects.animals.bird.Chicken;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
@@ -89,6 +90,11 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     public void showTextBox(String text) {
         textBox.showTextBox(text);
+    }
+
+    @Override
+    public void addChicken(Chicken chicken) {
+
     }
 
     @Override

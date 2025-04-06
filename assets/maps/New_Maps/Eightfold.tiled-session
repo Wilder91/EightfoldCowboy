@@ -3,13 +3,20 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Eightfold.tmx",
+    "activeFile": "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx",
     "expandedProjectPaths": [
         "."
     ],
     "fileStates": {
+        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles.tsx": {
-            "dynamicWrapping": true
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "/Users/michaelwilder/Desktop/Eightfold/assets/maps/Bison_Horizontal_Walk_3.tsx": {
             "dynamicWrapping": false,
@@ -20,11 +27,11 @@
             "scaleInEditor": 1
         },
         "Eightfold.tmx": {
-            "scale": 0.6444,
-            "selectedLayer": 0,
+            "scale": 1.75,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 564.090626939789,
-                "y": 280.88144009931716
+                "x": 414.5714285714285,
+                "y": 136
             }
         },
         "Grass Tiles.tsx": {
@@ -42,31 +49,57 @@
             "scaleInEditor": 1
         },
         "aspen.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "aspen_1.tsx": {
             "dynamicWrapping": false
+        },
+        "barn.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "large_rock.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "pond.tsx": {
+            "scaleInDock": 1.0025,
+            "scaleInEditor": 1
+        },
         "shop.tsx": {
-            "dynamicWrapping": false
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
-    "last.imagePath": "/Users/michaelwilder/Desktop/Eightfold/assets/buildings/barns",
+    "last.imagePath": "/Users/michaelwilder/Desktop/Eightfold/assets/Aspens",
     "map.lastUsedFormat": "tmx",
     "openFiles": [
         "Eightfold.tmx",
         "Rocks.tsx",
         "large_rock.tsx",
-        "Grass Tiles.tsx"
+        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles.tsx",
+        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx",
+        "shop.tsx",
+        "pond.tsx",
+        "aspen.tsx",
+        "barn.tsx"
     ],
     "project": "Eightfold.tiled-project",
     "recentFiles": [
-        "Grass Tiles.tsx",
-        "large_rock.tsx",
-        "Rocks.tsx",
         "Eightfold.tmx",
+        "Rocks.tsx",
+        "large_rock.tsx",
+        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles.tsx",
+        "barn.tsx",
+        "aspen.tsx",
+        "pond.tsx",
+        "shop.tsx",
+        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx",
+        "Grass Tiles.tsx",
         "Aspen.tsx",
         "Pond_1.tsx"
     ],

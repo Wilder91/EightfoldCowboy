@@ -22,6 +22,7 @@ public class TreeFactory {
     private GameContactListener gameContactListener;
     TextureRegion topTexture = null;
     TextureRegion bottomTexture = null;
+    private String atlasLink = "atlases/eightfold/trees.atlas";
 
     public TreeFactory(ScreenInterface screenInterface, GameAssets gameAssets){
         this.gameAssets = gameAssets;
@@ -29,28 +30,20 @@ public class TreeFactory {
         this.gameContactListener = gameContactListener;
     }
 
-
-
     public void createTree(PolygonMapObject polygonMapObject, int treeType) {
         int treeId = ++treeCounter;
 
+        // Define the base name based on tree type
+        String treeName = getTreeBaseName(treeType);
 
-
-
-        switch (treeType) {
-            case Tree.LARGE_OAK:
-                topTexture = gameAssets.getAtlas("plants/trees/oak-trees.atlas").findRegion("Oak_Large_Top");
-                bottomTexture = gameAssets.getAtlas("plants/trees/oak-trees.atlas").findRegion("Oak_Large_Bottom");
-                break;
-            case Tree.ASPEN:
-                topTexture = gameAssets.getAtlas("plants/trees/oak-trees.atlas").findRegion("Aspen_Tree_1_Top");
-                bottomTexture = gameAssets.getAtlas("plants/trees/oak-trees.atlas").findRegion("Aspen_Tree_1_Bottom");
-                break;
-            // Add other tree types here...
-            default:
-                System.err.println("Unknown treeType: " + treeType);
-                return;
+        if (treeName.isEmpty()) {
+            System.err.println("Unknown treeType: " + treeType);
+            return;
         }
+
+        // Use the tree name to construct the region names
+        topTexture = gameAssets.getAtlas(atlasLink).findRegion(treeName + "_Top");
+        bottomTexture = gameAssets.getAtlas(atlasLink).findRegion(treeName + "_Bottom");
 
         if (topTexture == null || bottomTexture == null) {
             System.err.println("Missing texture(s) for treeType: " + treeType);
@@ -83,23 +76,12 @@ public class TreeFactory {
         Fixture treeFixture = treeBody.createFixture(shape, 0.0f);
         treeFixture.setUserData(new BodyUserData(treeId, TREE, treeBody));
 
-
         Filter filter = new Filter();
         filter.categoryBits = TREE.getCategoryBits();
         filter.maskBits = TREE.getMaskBits();
         treeFixture.setFilterData(filter);
 
         shape.dispose();
-        TextureRegion texture = gameAssets.getAtlas("plants/trees/oak-trees.atlas").findRegion("Aspen_Tree" );
-        if (texture == null) {
-            System.err.println("Pond texture not found for type: " + treeType);
-            return;
-        }
-
-
-
-        float textureWidth = texture.getRegionWidth();
-        float textureHeight = texture.getRegionHeight();
 
         Tree tree = new Tree(
                 treeBody,
@@ -113,5 +95,28 @@ public class TreeFactory {
         );
 
         screenInterface.addTree(tree);
+    }
+
+    /**
+     * Returns the base name for a tree type to be used in texture region lookups
+     */
+    private String getTreeBaseName(int treeType) {
+        switch (treeType) {
+            case Tree.ASPEN_1:
+                return "Aspen_Tree_1";
+            case Tree.ASPEN_2:
+                return "Aspen_Tree_2";
+            case Tree.ASPEN_3:
+                return "Aspen_Tree_3";
+            case Tree.ASPEN_BABY:
+                return "Aspen_Tree_Baby";
+            case Tree.ASPEN_YOUNG:
+                return "Aspen_Tree_Young";
+            case Tree.ASPEN_STUMP:
+                return "Aspen_Tree_Stump";
+            // Add other tree types here...
+            default:
+                return "";
+        }
     }
 }

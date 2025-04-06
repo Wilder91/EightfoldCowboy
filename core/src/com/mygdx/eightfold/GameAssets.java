@@ -18,8 +18,9 @@ public class GameAssets {
     public void loadAssets() {
         // Load the texture atlas
         assetManager.load("player/atlas/player-horizontal.atlas", TextureAtlas.class);
-        assetManager.load("plants/trees/oak-trees.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/trees.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/bison-movement.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/character-running.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Character-running.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Character-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Character-idle.atlas", TextureAtlas.class);
@@ -28,6 +29,9 @@ public class GameAssets {
         assetManager.load("atlases/eightfold/NPC-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/pond.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/bugs.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/bushes.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/farm_animal.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/farm_animal-idle.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
         assetManager.load("buildings/barns/Barn-1.png", Texture.class);
         assetManager.load("buildings/shops/Shop-1.png", Texture.class);

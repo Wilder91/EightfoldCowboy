@@ -24,6 +24,7 @@ import helper.tiledmap.TiledMapHelper;
 import helper.world.time.TimeOfDayHelper;
 import objects.animals.bird.Bird;
 
+import objects.animals.bird.Chicken;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
@@ -54,6 +55,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Pond> pondList;
     private final ArrayList<Butterfly> butterflyList;
     private final ArrayList<Dragonfly> dragonflyList;
+    private final ArrayList<Chicken> chickenList;
     private final ArrayList<NPC> NPCList;
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
@@ -99,6 +101,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.doorList = new ArrayList<>();
         this.bushList = new ArrayList<>();
         this.rockList = new ArrayList<>();
+        this.chickenList = new ArrayList<>();
         this.butterflyList = new ArrayList<>();
         this.dragonflyList = new ArrayList<>();
         this.rockTopList = new ArrayList<>();
@@ -322,6 +325,9 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Dragonfly dragonfly : dragonflyList){
             dragonfly.update(delta);
         }
+        for (Chicken chicken : chickenList) {
+            chicken.update(delta); // Render only the bottom texture of the rock
+        }
 
         for(NPC npc : NPCList){
             npc.update(delta);
@@ -402,6 +408,15 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     public void addDoor(Door door) {
         if (doorList != null) {
             doorList.add(door);
+        } else {
+            System.err.println("doorList is null. Cannot add door.");
+        }
+    }
+
+    @Override
+    public void addChicken(Chicken chicken) {
+        if (chickenList != null) {
+            chickenList.add(chicken);
         } else {
             System.err.println("doorList is null. Cannot add door.");
         }
@@ -579,12 +594,16 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
 
 
+
         // 3. Render dynamic entities like the player, birds, and bison
         if (player != null) {
             player.render(batch); // Player should be between bottom and top layers of rocks
         }
         for (Butterfly butterfly : butterflyList) {
             butterfly.render(batch);
+        }
+        for (Chicken chicken : chickenList) {
+            chicken.render(batch);
         }
 
         for (Dragonfly dragonfly : dragonflyList){

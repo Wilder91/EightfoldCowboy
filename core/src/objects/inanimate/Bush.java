@@ -1,18 +1,14 @@
 package objects.inanimate;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
-
 
 import static helper.Constants.PPM;
 
@@ -23,11 +19,11 @@ public class Bush extends InanimateEntity {
     public static final int BUSH_3 = 2;
     public static final int BUSH_4 = 3;
     public static final int BUSH_5 = 4;
-    public static final int BUSH_6 = 5;
+
 
     private final int bushType;
     private float stateTime;
-    private String bushTexturePath;
+    private String atlasPath;
     private TextureRegion bushTexture;
     private GameAssets gameAssets;
 
@@ -36,23 +32,68 @@ public class Bush extends InanimateEntity {
         this.stateTime = 0f;
         this.bushType = bushType;
         this.gameAssets = gameAssets;
-        this.bushTexturePath = "plants/bushes/Bush_";
+        this.atlasPath = "atlases/eightfold/bushes.atlas";
         initTexture();
     }
 
     private void initTexture() {
-        Texture texture = gameAssets.getTexture(bushTexturePath + bushType + ".png");
-        if (texture == null) {
-            System.out.println("Texture " + bushTexturePath + bushType + ".png" + " not found!");
+        // Get bush texture region name based on bush type
+        String regionName = getBushRegionName(bushType);
+
+        if (regionName.isEmpty()) {
+            System.err.println("Unknown bushType: " + bushType);
+            return;
+        }
+
+        // Get the texture from the atlas
+        TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
+        if (atlas == null) {
+            System.err.println("Bush atlas not found: " + atlasPath);
+            return;
+        }
+
+        // Add debug output to check available regions
+        System.out.println("Available regions in atlas:");
+        for (TextureAtlas.AtlasRegion region : atlas.getRegions()) {
+            System.out.println(" - " + region.name);
+        }
+
+        // Find the region in the atlas
+        bushTexture = atlas.findRegion(regionName);
+
+        if (bushTexture == null) {
+            System.err.println("Bush texture region not found: " + regionName + " for bush type: " + bushType);
+            return;
         } else {
-            bushTexture = new TextureRegion(texture);
+            System.out.println("Successfully loaded texture for: " + regionName + " (type: " + bushType + ")");
+        }
 
-            // Set the width and height based on the texture size
-            this.width = bushTexture.getRegionWidth();
-            this.height = bushTexture.getRegionHeight();
+        // Set the width and height based on the texture size
+        this.width = bushTexture.getRegionWidth();
+        this.height = bushTexture.getRegionHeight();
+        System.out.println("Texture dimensions: " + width + "x" + height + " for bush type: " + bushType);
 
-            // Update the body shape to match the texture size
-            updateBodyShape();
+        // Update the body shape to match the texture size
+        updateBodyShape();
+    }
+
+    /**
+     * Returns the region name for a bush type to be used in texture lookups
+     */
+    private String getBushRegionName(int bushType) {
+        switch (bushType) {
+            case BUSH_1:
+                return "Bush-1";
+            case BUSH_2:
+                return "Bush-2";
+            case BUSH_3:
+                return "Bush-3";
+            case BUSH_4:
+                return "Bush-4";
+            case BUSH_5:
+                return "Bush-5";
+            default:
+                return "";
         }
     }
 
@@ -86,9 +127,7 @@ public class Bush extends InanimateEntity {
             float y = body.getPosition().y * PPM - height / 2;
             batch.draw(bushTexture, x, y, width, height);
         } else {
-            System.err.println("Bush texture not loaded, cannot render.");
+            System.err.println("Bush texture not loaded, cannot render. Bush type: " + bushType);
         }
     }
-
-
 }

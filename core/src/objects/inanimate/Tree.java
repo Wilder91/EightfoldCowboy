@@ -16,7 +16,13 @@ public class Tree extends InanimateEntity {
     public static final int SMALL = 3;
     public static final int JUVENILE = 4;
     public static final int SEEDLING = 5;
-    public static final int ASPEN = 6;
+    public static final int ASPEN_1 = 6;
+    public static final int ASPEN_2 = 7;
+    public static final int ASPEN_3 = 8;
+    public static final int ASPEN_BABY = 9;
+    public static final int ASPEN_YOUNG = 10;
+    public static final int ASPEN_STUMP = 11;
+
 
     private final TextureRegion topTexture;
     private final TextureRegion bottomTexture;
@@ -60,7 +66,7 @@ public class Tree extends InanimateEntity {
 
     public void renderTop(SpriteBatch batch) {
         if (topTexture != null) {
-            float drawX = body.getPosition().x * PPM - width / 2;
+            float drawX = body.getPosition().x * PPM - width / 2 ;
             float drawY = body.getPosition().y * PPM - height / 2 + bottomTexture.getRegionHeight();
             batch.draw(topTexture, drawX, drawY, width, topTexture.getRegionHeight());
         }

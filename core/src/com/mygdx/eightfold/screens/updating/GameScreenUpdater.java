@@ -13,7 +13,7 @@ import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.PauseScreen;
 import com.mygdx.eightfold.screens.SaloonScreen;
 import objects.animals.bird.Bird;
-import objects.animals.bison.Bison;
+
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
 import objects.humans.NPC;

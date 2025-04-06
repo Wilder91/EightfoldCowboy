@@ -6,6 +6,7 @@ import com.mygdx.eightfold.player.Player;
 import conversations.DialogueLine;
 import objects.animals.bird.Bird;
 
+import objects.animals.bird.Chicken;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
@@ -77,6 +78,8 @@ public interface ScreenInterface {
     default void showTextBox(String text) {
         showTextBox(new DialogueLine(text, false));
     }
+
+    void addChicken(Chicken chicken);
 
     void addPond(Pond pond);
 

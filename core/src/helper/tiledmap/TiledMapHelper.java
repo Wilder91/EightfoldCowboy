@@ -20,6 +20,7 @@ import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
+import helper.tiledmap.factories.animals.ChickenFactory;
 import helper.tiledmap.factories.animals.bugs.BugFactory;
 import helper.tiledmap.factories.animals.BirdFactory;
 import helper.tiledmap.factories.inanimate.*;
@@ -103,27 +104,42 @@ public class TiledMapHelper {
                         case "juvenile":
                             createTree(polygonMapObject, Tree.JUVENILE);
                             break;
-                        case "aspen_tree":
-                            createTree(polygonMapObject, Tree.ASPEN);
+                        case "aspen_1":
+                            createTree(polygonMapObject, Tree.ASPEN_1);
+                            break;
+                        case "aspen_2":
+                            createTree(polygonMapObject, Tree.ASPEN_2);
+                            break;
+                        case "aspen_3":
+                            createTree(polygonMapObject, Tree.ASPEN_3);
+                            break;
+                        case "aspen_baby":
+                            createTree(polygonMapObject, Tree.ASPEN_BABY);
+                            break;
+                        case "aspen_young":
+                            createTree(polygonMapObject, Tree.ASPEN_YOUNG);
+                            break;
+                        case "aspen_stump":
+                            createTree(polygonMapObject, Tree.ASPEN_STUMP);
                             break;
                         case "seedling":
                             createTree(polygonMapObject, Tree.SEEDLING);
                             break;
                         case "bush_one":
                             //System.out.println("bush!");
-                            createBush(polygonMapObject, 1);
+                            createBush(polygonMapObject, 0);
                             break;
                         case "bush_two":
-                            createBush(polygonMapObject, 2);
+                            createBush(polygonMapObject, 1);
                             break;
                         case "bush_three":
-                            createBush(polygonMapObject, 3);
+                            createBush(polygonMapObject, 2);
                             break;
                         case "bush_four":
-                            createBush(polygonMapObject, 4);
+                            createBush(polygonMapObject, 3);
                             break;
                         case "bush_five":
-                            createBush(polygonMapObject, 5);
+                            createBush(polygonMapObject, 4);
                             break;
                         case "small_rock_one":
                             createRock(polygonMapObject, 0);
@@ -154,6 +170,9 @@ public class TiledMapHelper {
                             break;
                         case "dragonfly":
                             createBug(polygonMapObject, 1);
+                            break;
+                        case "chicken":
+                            createChicken(polygonMapObject);
                             break;
 
                         default:
@@ -231,6 +250,7 @@ public class TiledMapHelper {
 
 
 
+
     private void parseWallObjects(MapObjects mapObjects) {
         for (MapObject mapObject : mapObjects) {
             if (mapObject instanceof PolygonMapObject) {
@@ -304,6 +324,12 @@ public class TiledMapHelper {
     }
 
     private void createButterfly(PolygonMapObject polygonMapObject, int butterflyType) {
+
+    }
+
+    private void createChicken(PolygonMapObject polygonMapObject) {
+        ChickenFactory chickenFactory = new ChickenFactory(screenInterface, gameAssets, false);
+        chickenFactory.createChicken(polygonMapObject);
 
     }
 

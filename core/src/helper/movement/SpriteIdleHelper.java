@@ -41,7 +41,7 @@ public class SpriteIdleHelper {
     }
 
     private void loadAnimations() {
-
+        System.out.println("character TYPE: " + characterType);
         String atlasPath = "atlases/eightfold/" + characterType + "-movement.atlas";
         animations.put("idleDown", createAnimation(characterName + "_Idle_Down", frameCounts[0], atlasPath, .3f));
         animations.put("idleUp", createAnimation(characterName + "_Idle_Up", frameCounts[1], atlasPath, .1f));
@@ -60,7 +60,7 @@ public class SpriteIdleHelper {
             if (region != null) {
                 frames.add(region);
             } else {
-                System.err.println("Missing frame: " + regionPrefix + " " + i);
+                System.err.println("Missing frame: " + regionPrefix + " " + i + ", character type: " + atlas);
             }
         }
 
