@@ -355,7 +355,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
 
 
-
         if (player != null) {
             player.update(delta);
         }
