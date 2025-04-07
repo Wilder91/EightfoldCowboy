@@ -22,16 +22,18 @@ public class NpcFactory {
     private GameContactListener gameContactListener;
     private static int npcCounter = 0;
     private NPCManager npcManager;
+    private int npcId;
 
-    public NpcFactory(ScreenInterface screenInterface, GameAssets gameAssets, GameContactListener gameContactListener) {
+    public NpcFactory(ScreenInterface screenInterface, GameAssets gameAssets, GameContactListener gameContactListener, int npcId) {
         this.screenInterface = screenInterface;
         this.gameAssets = gameAssets;
         this.gameContactListener = gameContactListener;
+        this.npcId = npcId;
 
     }
 
-    public void createNPC(RectangleMapObject rectangleMapObject) {
-        int npcId = ++npcCounter;
+    public void createNPC(RectangleMapObject rectangleMapObject, String name) {
+
         Rectangle rectangle = rectangleMapObject.getRectangle();
         float centerX = (rectangle.x + rectangle.width / 2) / PPM;
         float centerY = (rectangle.y + rectangle.height / 2) / PPM;
@@ -55,7 +57,7 @@ public class NpcFactory {
 
         shape.dispose();
 
-        NPC npc = new NPC(rectangle.width, rectangle.height, npcBody, screenInterface, gameAssets, npcId);
+        NPC npc = new NPC(rectangle.width, rectangle.height, npcBody, screenInterface, gameAssets, npcId, name);
         //npcManager.addNPC(npc);
         screenInterface.addNPC(npc);
     }

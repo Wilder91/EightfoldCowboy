@@ -21,6 +21,7 @@ import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
 import helper.tiledmap.factories.animals.ChickenFactory;
+import helper.tiledmap.factories.animals.SquirrelFactory;
 import helper.tiledmap.factories.animals.bugs.BugFactory;
 import helper.tiledmap.factories.animals.BirdFactory;
 import helper.tiledmap.factories.inanimate.*;
@@ -174,7 +175,9 @@ public class TiledMapHelper {
                         case "chicken":
                             createChicken(polygonMapObject);
                             break;
-
+                        case "squirrel":
+                            createSquirrel(polygonMapObject);
+                            break;
                         default:
                             createStaticBody(polygonMapObject);
                             break;
@@ -232,16 +235,16 @@ public class TiledMapHelper {
                 if (rectangleName != null && rectangleName.equals("jim")) {
                     System.out.println("there it is!");
                     RectangleMapObject rectObj = (RectangleMapObject) mapObject;
-                    NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener);
+                    NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener, 0);
                     System.out.println(npcFactory);
-                    npcFactory.createNPC(rectObj);
+                    npcFactory.createNPC(rectObj, rectangleName);
                 }
                 if (rectangleName != null && rectangleName.equals("martha")) {
                     System.out.println("there it is!");
                     RectangleMapObject rectObj = (RectangleMapObject) mapObject;
-                    NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener);
+                    NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener, 1);
                     System.out.println(npcFactory);
-                    npcFactory.createNPC(rectObj);
+                    npcFactory.createNPC(rectObj, rectangleName);
                 }
             }
 
@@ -330,6 +333,12 @@ public class TiledMapHelper {
     private void createChicken(PolygonMapObject polygonMapObject) {
         ChickenFactory chickenFactory = new ChickenFactory(screenInterface, gameAssets, false);
         chickenFactory.createChicken(polygonMapObject);
+
+    }
+
+    private void createSquirrel(PolygonMapObject polygonMapObject) {
+        SquirrelFactory squirrelFactory = new SquirrelFactory(screenInterface, gameAssets, false);
+        squirrelFactory.createSquirrel(polygonMapObject);
 
     }
 

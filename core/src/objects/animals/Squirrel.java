@@ -1,4 +1,4 @@
-package objects.animals.bird;
+package objects.animals;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,42 +7,43 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
+import helper.movement.HorizontalSpriteHelper;
 import helper.movement.SimpleIdleHelper;
 import helper.movement.SimpleSpriteRunningHelper;
 
 import static helper.Constants.PPM;
 
-public class Chicken extends GameEntity {
-    private SimpleSpriteRunningHelper chickenWalkingHelper;
-    private SimpleIdleHelper chickenIdleHelper;
+public class Squirrel extends GameEntity {
+    private HorizontalSpriteHelper squirrelWalkingHelper;
+    private SimpleIdleHelper squirrelIdleHelper;
     private Sprite sprite;
     private float stateTime;
     private boolean isFacingRight = true;
     private float movementTimer = 0;
-    private float movementDuration = 1.2f; // Duration of movement in one direction
-    private float restTimer = (float) (Math.random() * 3f); // Random initial rest time between 0 and 3
-    private float restDuration = 3f; // Duration of rest between movements
+    private float movementDuration = 0.7f; // Duration of movement in one direction
+    private float restTimer = (float) (Math.random() * 1.5f); // Random initial rest time between 0 and 1.5
+    private float restDuration = 1.5f; // Duration of rest between movements
     private boolean isMoving = false;
-    private Vector2 currentDirection = new Vector2(0, 0);
-    private float chickenSpeed = 0.8f;
+    private float squirrelSpeed = 1.2f; // Faster than chicken
+    private int moveDirection = 1; // 1 for right, -1 for left
 
     // Track original position and movement count
     private Vector2 originalPosition = new Vector2();
     private int moveCount = 0;
     private boolean returningToOrigin = false;
 
-    public Chicken(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
+    public Squirrel(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
         super(width, height, body, screenInterface, gameAssets);
-        int[] frameCounts = {4, 4, 4};  // [up, down, horizontal]
-        int idleFrameCount = 25;
-        this.chickenWalkingHelper = new SimpleSpriteRunningHelper(gameAssets, "farm_animal", "Chicken", frameCounts, false);
-        this.chickenIdleHelper = new SimpleIdleHelper(gameAssets, "farm_animal", "Chicken", idleFrameCount, 0.4f);
+        int[] frameCounts = {0, 0, 4};  // [up, down, horizontal]
+        int idleFrameCount = 20;
+        this.squirrelWalkingHelper = new HorizontalSpriteHelper(gameAssets, "wild-animal", "Squirrel", 4, false);
+        this.squirrelIdleHelper = new SimpleIdleHelper(gameAssets, "wild-animal", "Squirrel", idleFrameCount, 0.3f);
 
         // Initialize sprite
-        this.sprite = chickenIdleHelper.getSprite();
+        this.sprite = squirrelIdleHelper.getSprite();
         if (this.sprite == null) {
             this.sprite = new Sprite();
-            System.err.println("Warning: Could not initialize chicken sprite from idle helper");
+            System.err.println("Warning: Could not initialize squirrel sprite from idle helper");
         }
         this.sprite.setSize(width, height);
 
@@ -58,7 +59,7 @@ public class Chicken extends GameEntity {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
 
-        // Update chicken movement
+        // Update squirrel movement
         updateMovement(delta);
 
         // Update animation
@@ -67,7 +68,7 @@ public class Chicken extends GameEntity {
 
     private void updateMovement(float delta) {
         if (isMoving) {
-            // Chicken is currently moving
+            // Squirrel is currently moving
             movementTimer += delta;
             if (movementTimer >= movementDuration) {
                 // Stop movement and start resting
@@ -90,7 +91,7 @@ public class Chicken extends GameEntity {
                 }
             }
         } else {
-            // Chicken is resting
+            // Squirrel is resting
             restTimer += delta;
             if (restTimer >= restDuration) {
                 // Start moving
@@ -98,12 +99,11 @@ public class Chicken extends GameEntity {
                 movementTimer = 0;
 
                 if (returningToOrigin) {
-                    // Calculate direction vector to the original position
-                    Vector2 currentPos = body.getPosition();
-                    currentDirection.set(originalPosition.x - currentPos.x, originalPosition.y - currentPos.y);
+                    // Calculate horizontal direction to original position
+                    float xDiff = originalPosition.x - body.getPosition().x;
 
-                    // Check if we're already very close to the origin
-                    if (currentDirection.len() < 0.1f) {
+                    // Check if we're already very close to the origin horizontally
+                    if (Math.abs(xDiff) < 0.1f) {
                         // If very close, just teleport to exact position
                         body.setTransform(originalPosition.x, originalPosition.y, body.getAngle());
                         body.setLinearVelocity(0, 0);
@@ -113,24 +113,22 @@ public class Chicken extends GameEntity {
                         return;
                     }
 
-                    // Normalize the direction vector
-                    currentDirection.nor();
+                    // Set direction based on where original position is
+                    moveDirection = xDiff > 0 ? 1 : -1;
                 } else {
-                    // Choose a random direction
-                    float angle = (float) (Math.random() * 2 * Math.PI);
-                    currentDirection.set((float) Math.cos(angle), (float) Math.sin(angle));
-                    currentDirection.nor(); // Normalize to get direction vector
+                    // Randomly choose left or right
+                    moveDirection = Math.random() > 0.5 ? 1 : -1;
                 }
 
-                // Apply the movement
-                body.setLinearVelocity(currentDirection.x * chickenSpeed, currentDirection.y * chickenSpeed);
+                // Apply horizontal movement only
+                body.setLinearVelocity(moveDirection * squirrelSpeed, 0);
             }
         }
     }
 
     private void updateAnimation(float delta) {
         Vector2 velocity = body.getLinearVelocity();
-        Vector2 absVelocity = new Vector2(Math.abs(velocity.x), Math.abs(velocity.y));
+        float absVelocityX = Math.abs(velocity.x);
 
         // Update facing direction
         if (velocity.x < -0.1f) {
@@ -140,40 +138,39 @@ public class Chicken extends GameEntity {
         }
 
         // Choose between walking and idle animations based on movement
-        if (absVelocity.x > 0.01 || absVelocity.y > 0.01) {
-            chickenWalkingHelper.updateAnimation(velocity, delta);
-            sprite = chickenWalkingHelper.getSprite();
+        if (absVelocityX > 0.01) {
+            squirrelWalkingHelper.updateAnimation(velocity, delta);
+            sprite = squirrelWalkingHelper.getSprite();
         } else {
-            chickenIdleHelper.setFacingRight(isFacingRight);
-            chickenIdleHelper.update(delta);
-            sprite = chickenIdleHelper.getSprite();
+            squirrelIdleHelper.setFacingRight(isFacingRight);
+            squirrelIdleHelper.update(delta);
+            sprite = squirrelIdleHelper.getSprite();
         }
     }
 
     @Override
     public void render(SpriteBatch batch) {
         if (isFacingRight){
-            sprite.flip(true,false);
+            sprite.flip(true, false);
         }
         if (sprite != null) {
             sprite.setPosition(x - width / 2, y - height / 2);
-
             sprite.draw(batch);
         } else {
-            System.err.println("Error: Cannot render chicken, sprite is null");
+            System.err.println("Error: Cannot render squirrel, sprite is null");
         }
     }
 
     /**
-     * Sets the chicken's movement speed
+     * Sets the squirrel's movement speed
      * @param speed Movement speed in units per second
      */
-    public void setChickenSpeed(float speed) {
-        this.chickenSpeed = speed;
+    public void setSquirrelSpeed(float speed) {
+        this.squirrelSpeed = speed;
     }
 
     /**
-     * Sets how long the chicken moves in one direction before resting
+     * Sets how long the squirrel moves in one direction before resting
      * @param duration Duration in seconds
      */
     public void setMovementDuration(float duration) {
@@ -181,7 +178,7 @@ public class Chicken extends GameEntity {
     }
 
     /**
-     * Sets how long the chicken rests before moving again
+     * Sets how long the squirrel rests before moving again
      * @param duration Duration in seconds
      */
     public void setRestDuration(float duration) {
@@ -197,7 +194,7 @@ public class Chicken extends GameEntity {
     }
 
     /**
-     * Checks if the chicken is currently returning to origin
+     * Checks if the squirrel is currently returning to origin
      * @return True if returning to origin, false otherwise
      */
     public boolean isReturningToOrigin() {

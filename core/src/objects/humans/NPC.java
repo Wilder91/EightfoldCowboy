@@ -25,19 +25,21 @@ public class NPC extends GameEntity {
     private ScreenInterface screenInterface;
     private boolean isContacted = false;
     private boolean inConversation = false;
+    private String name;
     private ConversationManager conversationManager;
     private int conversationPhase;
 
 
-    public NPC(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, int npcId) {
+    public NPC(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, int npcId, String name) {
         super(width, height, body, screenInterface, gameAssets);
 
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
         this.id = npcId;
+        this.name = name;
         this.screenInterface = screenInterface;
         this.conversationManager = new ConversationManager(1, this, screenInterface.getPlayer(), screenInterface);
-        String characterName = getCharacterNameFromType(npcId);
+        String characterName = getCharacterNameFromType(name);
 
         // REMOVE this line - no longer needed
         // this.conversationPhase = 0;
@@ -52,7 +54,7 @@ public class NPC extends GameEntity {
 
     private int getStateTimeFromType(int npcType) {
         switch (npcType) {
-            case 2:
+            case 1:
                 return 12;
             default:
                 return 0;
@@ -62,27 +64,21 @@ public class NPC extends GameEntity {
 
     private int[] getFrameCountsFromType(int npcType) {
         switch (npcType) {
-            case 1:
+            case 0:
                 return new int[]{23, 0, 0, 0, 0};
-            case 2:
+            case 1:
                 return new int[]{24, 0, 0, 0, 0};
             default:
                 return new int[]{0,0,0,0,0};
         }
     }
 
-    private String getCharacterNameFromType(int npcType) {
-        switch (npcType) {
-            case 1:
+    private String getCharacterNameFromType(String name) {
+        switch (name) {
+            case "jim":
                 return "Jim";
-            case 2:
+            case "martha":
                 return "Martha";
-            case 3:
-                return "Miner";
-            case 4:
-                return "Cowboy";
-            case 5:
-                return "Blacksmith";
             default:
                 return "NPC";
         }

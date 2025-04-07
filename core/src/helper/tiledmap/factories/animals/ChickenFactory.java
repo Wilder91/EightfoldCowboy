@@ -74,7 +74,7 @@ public class ChickenFactory {
         chicken.setChickenSpeed(customSpeed);
 
         // If you want to randomize movement durations to create variety
-        float randomMovementDuration = 1.5f + (float)(Math.random() * 1.5f); // 1.5 to 3 seconds
+        float randomMovementDuration = .5f + (float)(Math.random() * 1f); // .5 to 1.5 seconds
         float randomRestDuration = 1.0f + (float)(Math.random() * 2.0f); // 1 to 3 seconds
         chicken.setMovementDuration(randomMovementDuration);
         chicken.setRestDuration(randomRestDuration);

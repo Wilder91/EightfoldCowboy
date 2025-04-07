@@ -18,10 +18,12 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
+import com.mygdx.eightfold.player.GameEntity;
 import conversations.DialogueLine;
 import helper.ContactType;
 import helper.tiledmap.TiledMapHelper;
 import helper.world.time.TimeOfDayHelper;
+import objects.animals.Squirrel;
 import objects.animals.bird.Bird;
 
 import objects.animals.bird.Chicken;
@@ -41,6 +43,8 @@ import box2dLight.PointLight;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static helper.Constants.PPM;
 
@@ -56,6 +60,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Butterfly> butterflyList;
     private final ArrayList<Dragonfly> dragonflyList;
     private final ArrayList<Chicken> chickenList;
+    private final ArrayList<Squirrel> squirrelList;
     private final ArrayList<NPC> NPCList;
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
@@ -75,6 +80,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private Skin skin;
     private RayHandler rayHandler;
     private PointLight playerLight;
+    private Boolean debugRendering;
     private FPSLogger fpsLogger = new FPSLogger();
     public OrthographicCamera getCamera() {
         return camera;
@@ -102,6 +108,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.bushList = new ArrayList<>();
         this.rockList = new ArrayList<>();
         this.chickenList = new ArrayList<>();
+        this.squirrelList = new ArrayList<>();
         this.butterflyList = new ArrayList<>();
         this.dragonflyList = new ArrayList<>();
         this.rockTopList = new ArrayList<>();
@@ -115,6 +122,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.gameContactListener = new GameContactListener(this);
         this.world.setContactListener(this.gameContactListener);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
+        this.debugRendering = false;
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets, gameContactListener);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/new_Maps/Eightfold.tmx");
         // Initialize TextBox
@@ -242,6 +250,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
 
 
+
     @Override
     public void showTextBox(DialogueLine line) {
 
@@ -325,12 +334,19 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Dragonfly dragonfly : dragonflyList){
             dragonfly.update(delta);
         }
+        for (Squirrel squirrel : squirrelList) {
+            squirrel.update(delta);
+        }
         for (Chicken chicken : chickenList) {
-            chicken.update(delta); // Render only the bottom texture of the rock
+            chicken.update(delta);
         }
 
         for(NPC npc : NPCList){
             npc.update(delta);
+        }
+
+        for(Bush bush: bushList){
+            bush.update(delta);
         }
 
 
@@ -419,6 +435,15 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             chickenList.add(chicken);
         } else {
             System.err.println("doorList is null. Cannot add door.");
+        }
+    }
+
+    @Override
+    public void addSquirrel(Squirrel squirrel) {
+        if (squirrelList != null) {
+            squirrelList.add(squirrel);
+        } else {
+            System.err.println("squirrelList is null. Cannot add squirrel");
         }
     }
 
@@ -556,8 +581,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         update(delta);
         camera.update();
 
-
-
         // Clear the screen
         Gdx.gl.glClearColor(168f / 255f, 178f / 255f, 113f / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -566,68 +589,60 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
 
+        // Create a list for all entities that need Y-sorting
+        List<GameEntity> sortedEntities = new ArrayList<>();
+
+        // Add all entities that should be sorted
+        if (player != null) sortedEntities.add(player);
+        sortedEntities.addAll(chickenList);
+        sortedEntities.addAll(squirrelList);
+        sortedEntities.addAll(birdList);
+        sortedEntities.addAll(butterflyList);
+        sortedEntities.addAll(dragonflyList);
+        sortedEntities.addAll(NPCList);
+        sortedEntities.addAll(bushList);
+        // Add any other entities that should be Y-sorted
+
+        // Sort by Y position
+        Collections.sort(sortedEntities, GameEntity.Y_COMPARATOR);
+
         // Begin drawing with the SpriteBatch
         batch.begin();
 
+        // Render background elements that are always behind
         for (Building building : buildingList) {
             building.getBottomSprite().draw(batch);
         }
 
-        for (Boulder boulder : boulderList) {
-            boulder.render(batch);
-        }
 
         for (Pond pond : pondList){
             pond.render(batch);
-        }
-        for (NPC npc : NPCList){
-            npc.render(batch);
         }
 
         for (Tree tree : treeList){
             tree.renderBottom(batch);
         }
 
-        // 2. Render the bottom part of the rocks (below the player)
+        // Render rocks bottom
         for (Rock rock : rockList) {
-            rock.renderBottom(batch); // Render only the bottom texture of the rock
+            rock.renderBottom(batch);
         }
 
 
 
-        // 3. Render dynamic entities like the player, birds, and bison
-        if (player != null) {
-            player.render(batch); // Player should be between bottom and top layers of rocks
-        }
-        for (Butterfly butterfly : butterflyList) {
-            butterfly.render(batch);
-        }
-        for (Chicken chicken : chickenList) {
-            chicken.render(batch);
+        // Render all Y-sorted entities
+        for (GameEntity entity : sortedEntities) {
+            entity.render(batch);
         }
 
-        for (Dragonfly dragonfly : dragonflyList){
-            dragonfly.render(batch);
-        }
-
-        for (Bush bush : bushList) {
-            bush.render(batch);
-        }
-
-        for (Bird bird : birdList) {
-            bird.render(batch);
-        }
-
-
-        // Render the top part of the rocks (above the player)
+        // Render elements that are always on top
         for (Rock rock : rockList) {
-            rock.renderTop(batch); // Render only the top texture of the rock
+            rock.renderTop(batch);
         }
 
         for (Tree tree : treeList){
             tree.renderTop(batch);
         }
-
 
         for (Door door : doorList) {
             door.render(batch);
@@ -638,19 +653,17 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             building.getTopSprite().draw(batch);
         }
         batch.end();
-        rayHandler.setCombinedMatrix(camera.combined.cpy().scl(  PPM));
+
+        // Rest of your render method (lights, UI, etc.)
+        rayHandler.setCombinedMatrix(camera.combined.cpy().scl(PPM));
         rayHandler.updateAndRender();
-        // Render the UI elements (TextBox and InfoBox)
+
+        // Render UI elements
         textBox.getStage().act(delta);
         textBox.getStage().draw();
-        decisionTextBox.getStage().act(delta);
-        decisionTextBox.getStage().draw();
-        infoBox.getStage().act(delta);
-        infoBox.getStage().draw();
-        // Optional: Render the Box2D debug renderer for physics bodies
-        //box2DDebugRenderer.render(world, camera.combined.scl(PPM));
-        // Optional: Log the frame rate once per second
-        //fpsLogger.log();
+        if(debugRendering) {
+            box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+        }
     }
 
 
@@ -703,4 +716,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         return world;
     }
 
+    public void flipDebugRendering() {
+        debugRendering = !debugRendering;
+
+    }
 }

@@ -12,9 +12,9 @@ bounds:254,199,256,52
 Large_Rock
 bounds:259,70,157,127
 Large_Rock_Bottom
-bounds:418,123,84,36
+bounds:418,123,84,20
 Large_Rock_Top
-bounds:418,161,84,36
+bounds:418,145,84,52
 Medium_Rock
 index:2
 bounds:2,4,105,88

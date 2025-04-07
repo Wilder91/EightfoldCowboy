@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx",
+    "activeFile": "Eightfold.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -27,11 +27,11 @@
             "scaleInEditor": 1
         },
         "Eightfold.tmx": {
-            "scale": 1.75,
+            "scale": 0.9074,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 414.5714285714285,
-                "y": 136
+                "x": 553.7800308573948,
+                "y": 369.73771214458895
             }
         },
         "Grass Tiles.tsx": {
@@ -54,6 +54,11 @@
             "scaleInEditor": 1
         },
         "aspen_1.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "aspen_stump.tsx": {
             "dynamicWrapping": false
         },
         "barn.tsx": {
@@ -75,7 +80,7 @@
             "scaleInEditor": 1
         }
     },
-    "last.imagePath": "/Users/michaelwilder/Desktop/Eightfold/assets/Aspens",
+    "last.imagePath": "/Users/michaelwilder/Downloads/PNG Assets/Trees/Aspens",
     "map.lastUsedFormat": "tmx",
     "openFiles": [
         "Eightfold.tmx",
@@ -86,23 +91,28 @@
         "shop.tsx",
         "pond.tsx",
         "aspen.tsx",
-        "barn.tsx"
+        "barn.tsx",
+        "aspen_1.tsx"
     ],
     "project": "Eightfold.tiled-project",
     "recentFiles": [
-        "Eightfold.tmx",
-        "Rocks.tsx",
-        "large_rock.tsx",
-        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles.tsx",
+        "aspen_1.tsx",
         "barn.tsx",
         "aspen.tsx",
         "pond.tsx",
         "shop.tsx",
         "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx",
+        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles.tsx",
+        "large_rock.tsx",
+        "Rocks.tsx",
+        "Eightfold.tmx",
         "Grass Tiles.tsx",
-        "Aspen.tsx",
-        "Pond_1.tsx"
+        "Aspen.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 9,
+        "width": 9
+    },
     "tileset.type": 0
 }

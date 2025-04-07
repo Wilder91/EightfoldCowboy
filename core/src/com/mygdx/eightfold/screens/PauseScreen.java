@@ -41,6 +41,7 @@ public class PauseScreen implements Screen {
         Label pauseLabel = new Label("Paused", skin);
         TextButton resumeButton = new TextButton("Resume", skin);
         TextButton inventoryButton = new TextButton("Inventory", skin);
+        TextButton debugButton = new TextButton("Debugger", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
         // Store buttons in an array
@@ -53,6 +54,7 @@ public class PauseScreen implements Screen {
         table.add(pauseLabel).padBottom(20).row();
         table.add(resumeButton).padBottom(20).row();
         table.add(inventoryButton).padBottom(20).row();
+        table.add(debugButton).padBottom(20).row();
         table.add(exitButton).padBottom(20).row();
         // Add table to the stage
         stage.addActor(table);
@@ -72,6 +74,14 @@ public class PauseScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(inventoryScreen);
+            }
+        });
+
+        debugButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+               gameScreen.flipDebugRendering();
+               resumeGame();
             }
         });
 

@@ -18,6 +18,7 @@ import com.mygdx.eightfold.GameAssets;
 import conversations.DialogueLine;
 import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
+import objects.animals.Squirrel;
 import objects.animals.bird.Bird;
 import objects.animals.bird.Chicken;
 import objects.animals.bugs.Bug;
@@ -137,6 +138,10 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
+    @Override
+    public void addSquirrel(Squirrel squirrel) {
+
+    }
 
 
     @Override

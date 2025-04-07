@@ -6,7 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import objects.inanimate.Rock;
+
 
 public class GameAssets {
     public AssetManager assetManager;
@@ -31,7 +31,7 @@ public class GameAssets {
         assetManager.load("atlases/eightfold/bugs.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/bushes.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/farm_animal.atlas", TextureAtlas.class);
-        assetManager.load("atlases/eightfold/farm_animal-idle.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/wild-animal.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
         assetManager.load("buildings/barns/Barn-1.png", Texture.class);
         assetManager.load("buildings/shops/Shop-1.png", Texture.class);

@@ -3,35 +3,36 @@ package objects.inanimate;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameContactListener;
-import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
+import com.mygdx.eightfold.player.GameEntity;
 
-
-public abstract class InanimateEntity  {
+public abstract class InanimateEntity extends GameEntity {
     private final int id;
-    protected float x, y, velX, velY, speed;
-    protected float width, height;
-    
-    protected Body body;
+    private final GameContactListener gameContactListener;
 
-    public InanimateEntity(float width, float height, Body body, ScreenInterface screen, int id, GameAssets gameAssets, GameContactListener gameContactListener) {
-        this.x = body.getPosition().x;
-        this.y = body.getPosition().y;
-        this.width = width;
-        this.height = height;
-        this.body = body;
+    public InanimateEntity(float width, float height, Body body, ScreenInterface screen, int id,
+                           GameAssets gameAssets, GameContactListener gameContactListener) {
+        // Call the parent constructor with the common parameters
+        super(width, height, body, screen, gameAssets);
+
+        // Set inanimate-specific fields
         this.id = id;
-        this.speed = 0;
+        this.gameContactListener = gameContactListener;
+        this.speed = 0; // Inanimate objects typically don't move
     }
 
-    public abstract void update(float delta);
+    // No need to redeclare these methods as they're inherited from GameEntity:
+    // - update(float delta)
+    // - render(SpriteBatch batch)
+    // - getBody()
 
+    // Add any inanimate-specific methods
+    public int getId() {
+        return id;
+    }
 
-
-    public abstract void render(SpriteBatch batch);
-
-    public Body getBody() {
-        return body;
+    public GameContactListener getGameContactListener() {
+        return gameContactListener;
     }
 }

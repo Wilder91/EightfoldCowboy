@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.eightfold.player.Player;
 import conversations.DialogueLine;
+import objects.animals.Squirrel;
 import objects.animals.bird.Bird;
 
 import objects.animals.bird.Chicken;
@@ -97,4 +98,6 @@ public interface ScreenInterface {
     void hideDecisionTextBox();
 
     void setChoices(String... choices);
+
+    void addSquirrel(Squirrel squirrel);
 }
