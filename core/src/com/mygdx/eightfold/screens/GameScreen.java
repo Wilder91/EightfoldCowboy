@@ -345,9 +345,15 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             npc.update(delta);
         }
 
+        for (Tree tree : treeList) {
+            tree.update(delta);
+        }
+
         for(Bush bush: bushList){
             bush.update(delta);
         }
+
+
 
 
         if (player != null) {
@@ -601,6 +607,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         sortedEntities.addAll(dragonflyList);
         sortedEntities.addAll(NPCList);
         sortedEntities.addAll(bushList);
+        sortedEntities.addAll(treeList);
         // Add any other entities that should be Y-sorted
 
         // Sort by Y position
@@ -619,9 +626,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             pond.render(batch);
         }
 
-        for (Tree tree : treeList){
-            tree.renderBottom(batch);
-        }
 
         // Render rocks bottom
         for (Rock rock : rockList) {
@@ -640,9 +644,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             rock.renderTop(batch);
         }
 
-        for (Tree tree : treeList){
-            tree.renderTop(batch);
-        }
+
 
         for (Door door : doorList) {
             door.render(batch);

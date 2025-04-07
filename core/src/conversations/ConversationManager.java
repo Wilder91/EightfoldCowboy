@@ -111,7 +111,7 @@ public class ConversationManager {
                 conversation.setPortrait(npc);
                 String text = npcLines[npcLineIndex];
                 System.out.println("Showing NPC text: " + text);
-                screenInterface.hideDecisionTextBox();
+                screenInterface.hideTextBox();
                 screenInterface.showTextBox(text);
             }
         } else {
@@ -121,7 +121,7 @@ public class ConversationManager {
                 String text = playerLines[playerLineIndex];
                 System.out.println("Showing player text: " + text);
                 screenInterface.hideTextBox();
-                screenInterface.showDecisionTextBox(text);
+                screenInterface.showTextBox(text);
             }
         }
     }

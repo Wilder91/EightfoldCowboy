@@ -15,7 +15,7 @@ public class FirstLevelConversations extends Conversation {
     private final ScreenInterface screenInterface;
 
     public FirstLevelConversations(ScreenInterface screenInterface, NPC npc, Player player) {
-        super(null, null, "commodore64/skin/uiskin.json", "animals/bison/bison-single.png");
+        super(null, null, "commodore64/skin/uiskin.json");
         this.screenInterface = screenInterface;
         this.npc = npc;
         this.player = player;
@@ -26,13 +26,13 @@ public class FirstLevelConversations extends Conversation {
      */
     public void setPortrait(Object character) {
         if(character == npc) {
-            if (npc.getId() == 1) {
+            if (npc.getId() == 0) {
                 screenInterface.setTextBox("Jim_Idle_Down_1 copy.png");
-            } else if (npc.getId() == 2) {
+            } else if (npc.getId() == 1) {
                 screenInterface.setTextBox("Martha_Idle_Down_1 copy.png");
             }
         } else {
-            screenInterface.setDecisionTextBox("Character_Idle_Down_1 copy.png");
+            screenInterface.setTextBox("Character_Idle_Down_1 copy.png");
         }
     }
 
@@ -42,7 +42,7 @@ public class FirstLevelConversations extends Conversation {
     public String[] getNPCLines(int phase) {
         System.out.println("Getting NPC texts for phase: " + phase);
         switch (npc.getId()) {
-            case 1: // Jim
+            case 0: // Jim
                 if (phase == 0) {
                     return new String[]{
                             "Hey there, I'm Old Jim."
@@ -60,7 +60,7 @@ public class FirstLevelConversations extends Conversation {
                     };
                 }
                 break;
-            case 2: // Martha
+            case 1: // Martha
                 if (phase == 0) {
                     return new String[]{
                             "Oh hello sweetheart, you can call me Martha"
@@ -94,7 +94,7 @@ public class FirstLevelConversations extends Conversation {
     public String[] getPlayerLines(int phase) {
         System.out.println("Getting player texts for phase: " + phase);
         switch (npc.getId()) {
-            case 1: // Jim
+            case 0: // Jim
                 if (phase == 0) {
                     return new String[]{
                             "Nice, I'm Tully.",
@@ -107,7 +107,7 @@ public class FirstLevelConversations extends Conversation {
                     return new String[]{"10-4 good buddy"};
                 }
                 break;
-            case 2: // Martha
+            case 1: // Martha
                 if (phase == 0) {
                     return new String[]{
                             "It's a pleasure, Martha", "My name is Tully"

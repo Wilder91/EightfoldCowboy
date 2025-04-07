@@ -53,10 +53,7 @@ public class Bush extends InanimateEntity {
         }
 
         // Add debug output to check available regions
-        System.out.println("Available regions in atlas:");
-        for (TextureAtlas.AtlasRegion region : atlas.getRegions()) {
-            System.out.println(" - " + region.name);
-        }
+
 
         // Find the region in the atlas
         bushTexture = atlas.findRegion(regionName);

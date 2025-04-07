@@ -16,32 +16,28 @@ public class Tree extends InanimateEntity {
     public static final int SMALL = 3;
     public static final int JUVENILE = 4;
     public static final int SEEDLING = 5;
-    public static final int ASPEN_1 = 6;
-    public static final int ASPEN_2 = 7;
-    public static final int ASPEN_3 = 8;
+    public static final int ASPEN_ONE = 6;
+    public static final int ASPEN_TWO = 7;
+    public static final int ASPEN_THREE = 8;
     public static final int ASPEN_BABY = 9;
     public static final int ASPEN_YOUNG = 10;
     public static final int ASPEN_STUMP = 11;
 
-
-    private final TextureRegion topTexture;
-    private final TextureRegion bottomTexture;
-
+    private final TextureRegion treeTexture;
     private final int treeType;
     private final GameAssets gameAssets;
 
     public Tree(Body body, ScreenInterface screenInterface, int treeType, int id,
-                TextureRegion topTexture, TextureRegion bottomTexture,
-                GameAssets gameAssets, GameContactListener gameContactListener) {
+                TextureRegion treeTexture, GameAssets gameAssets,
+                GameContactListener gameContactListener) {
         super(0, 0, body, screenInterface, id, gameAssets, gameContactListener);
         this.treeType = treeType;
-        this.topTexture = topTexture;
-        this.bottomTexture = bottomTexture;
+        this.treeTexture = treeTexture;
         this.gameAssets = gameAssets;
 
         // Use texture size for width/height
-        this.width = bottomTexture.getRegionWidth();
-        this.height = topTexture.getRegionHeight() + bottomTexture.getRegionHeight();
+        this.width = treeTexture.getRegionWidth();
+        this.height = treeTexture.getRegionHeight();
     }
 
     @Override
@@ -52,23 +48,13 @@ public class Tree extends InanimateEntity {
 
     @Override
     public void render(SpriteBatch batch) {
-        renderBottom(batch);
-        renderTop(batch);
-    }
-
-    public void renderBottom(SpriteBatch batch) {
-        if (bottomTexture != null) {
-            float drawX = body.getPosition().x * PPM - width / 2;
-            float drawY = body.getPosition().y * PPM - height / 2;
-            batch.draw(bottomTexture, drawX, drawY, width, bottomTexture.getRegionHeight());
-        }
-    }
-
-    public void renderTop(SpriteBatch batch) {
-        if (topTexture != null) {
-            float drawX = body.getPosition().x * PPM - width / 2 ;
-            float drawY = body.getPosition().y * PPM - height / 2 + bottomTexture.getRegionHeight();
-            batch.draw(topTexture, drawX, drawY, width, topTexture.getRegionHeight());
+        if (treeTexture != null) {
+            //System.out.println("Rendering tree at: " + x + ", " + y);
+            float drawX = x - width / 2;
+            float drawY = y - height / 2;
+            batch.draw(treeTexture, drawX, drawY, width, height);
+        } else {
+            System.err.println("Tree texture is null!");
         }
     }
 }

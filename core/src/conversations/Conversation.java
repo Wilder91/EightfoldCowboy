@@ -15,7 +15,7 @@ public abstract class Conversation {
     private BisonTextBox textBox;
     private Skin skin;
 
-    public Conversation(String[] firstConversationTexts, String[] secondConversationTexts, String filepath, String imagePath) {
+    public Conversation(String[] firstConversationTexts, String[] secondConversationTexts, String filepath) {
         this.conversationIndex = 0;
         this.npcConversationTexts = firstConversationTexts;
         this.playerConversationTexts = secondConversationTexts;

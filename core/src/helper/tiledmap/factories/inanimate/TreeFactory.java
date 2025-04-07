@@ -41,12 +41,11 @@ public class TreeFactory {
             return;
         }
 
-        // Use the tree name to construct the region names
-        topTexture = gameAssets.getAtlas(atlasLink).findRegion(treeName + "_Top");
-        bottomTexture = gameAssets.getAtlas(atlasLink).findRegion(treeName + "_Bottom");
+        // Use the tree name to construct the region name - no more Top/Bottom suffixes
+        TextureRegion treeTexture = gameAssets.getAtlas(atlasLink).findRegion(treeName);
 
-        if (topTexture == null || bottomTexture == null) {
-            System.err.println("Missing texture(s) for treeType: " + treeType);
+        if (treeTexture == null) {
+            System.err.println("Missing texture for treeType: " + treeType);
             return;
         }
 
@@ -57,7 +56,7 @@ public class TreeFactory {
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(
                 (boundingRectangle.x + boundingRectangle.width / 2) / PPM,
-                (boundingRectangle.y + boundingRectangle.height / 2) / PPM
+                (boundingRectangle.y + boundingRectangle.height / 2 ) / PPM
         );
 
         Body treeBody = screenInterface.getWorld().createBody(bodyDef);
@@ -88,8 +87,7 @@ public class TreeFactory {
                 screenInterface,
                 treeType,
                 treeId,
-                topTexture,
-                bottomTexture,
+                treeTexture,
                 gameAssets,
                 gameContactListener
         );
@@ -102,12 +100,12 @@ public class TreeFactory {
      */
     private String getTreeBaseName(int treeType) {
         switch (treeType) {
-            case Tree.ASPEN_1:
-                return "Aspen_Tree_1";
-            case Tree.ASPEN_2:
-                return "Aspen_Tree_2";
-            case Tree.ASPEN_3:
-                return "Aspen_Tree_3";
+            case Tree.ASPEN_ONE:
+                return "Aspen_Tree-1";
+            case Tree.ASPEN_TWO:
+                return "Aspen_Tree-2";
+            case Tree.ASPEN_THREE:
+                return "Aspen_Tree-3";
             case Tree.ASPEN_BABY:
                 return "Aspen_Tree_Baby";
             case Tree.ASPEN_YOUNG:

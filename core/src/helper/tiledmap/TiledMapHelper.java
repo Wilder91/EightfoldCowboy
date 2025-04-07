@@ -106,13 +106,13 @@ public class TiledMapHelper {
                             createTree(polygonMapObject, Tree.JUVENILE);
                             break;
                         case "aspen_1":
-                            createTree(polygonMapObject, Tree.ASPEN_1);
+                            createTree(polygonMapObject, Tree.ASPEN_ONE);
                             break;
                         case "aspen_2":
-                            createTree(polygonMapObject, Tree.ASPEN_2);
+                            createTree(polygonMapObject, Tree.ASPEN_TWO);
                             break;
                         case "aspen_3":
-                            createTree(polygonMapObject, Tree.ASPEN_3);
+                            createTree(polygonMapObject, Tree.ASPEN_THREE);
                             break;
                         case "aspen_baby":
                             createTree(polygonMapObject, Tree.ASPEN_BABY);
@@ -232,18 +232,18 @@ public class TiledMapHelper {
 
 
                 }
-                if (rectangleName != null && rectangleName.equals("jim")) {
-                    System.out.println("there it is!");
+                if (rectangleName != null && rectangleName.equals("Jim")) {
+                   // System.out.println("there's jIm!");
                     RectangleMapObject rectObj = (RectangleMapObject) mapObject;
                     NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener, 0);
-                    System.out.println(npcFactory);
+                    System.out.println(rectangleName);
                     npcFactory.createNPC(rectObj, rectangleName);
                 }
-                if (rectangleName != null && rectangleName.equals("martha")) {
-                    System.out.println("there it is!");
+                if (rectangleName != null && rectangleName.equals("Martha")) {
+                    //System.out.println("there it is!");
                     RectangleMapObject rectObj = (RectangleMapObject) mapObject;
                     NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener, 1);
-                    System.out.println(npcFactory);
+                   // System.out.println(npcFactory);
                     npcFactory.createNPC(rectObj, rectangleName);
                 }
             }

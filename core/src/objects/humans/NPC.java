@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.GameEntity;
-import com.mygdx.eightfold.screens.SaloonScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import conversations.ConversationManager;
 import helper.movement.SpriteIdleHelper;
@@ -26,6 +25,7 @@ public class NPC extends GameEntity {
     private boolean isContacted = false;
     private boolean inConversation = false;
     private String name;
+    private String characterName;
     private ConversationManager conversationManager;
     private int conversationPhase;
 
@@ -39,22 +39,22 @@ public class NPC extends GameEntity {
         this.name = name;
         this.screenInterface = screenInterface;
         this.conversationManager = new ConversationManager(1, this, screenInterface.getPlayer(), screenInterface);
-        String characterName = getCharacterNameFromType(name);
+        this.characterName = getCharacterNameFromName(name);
 
         // REMOVE this line - no longer needed
         // this.conversationPhase = 0;
 
-        int[] frameCounts = getFrameCountsFromType(npcId);
-        float stateTime = getStateTimeFromType(npcId);
+        int[] frameCounts = getFrameCountsFromName(characterName);
+        float stateTime = getStateTimeFromName(characterName);
 
         System.out.println("character name: " + npcId);
         NPCManager.addNPC(this);
         this.idleHelper = new SpriteIdleHelper(gameAssets, "NPC", characterName, frameCounts, stateTime);
     }
 
-    private int getStateTimeFromType(int npcType) {
-        switch (npcType) {
-            case 1:
+    private int getStateTimeFromName(String characterName) {
+        switch (characterName) {
+            case "Jim":
                 return 12;
             default:
                 return 0;
@@ -62,22 +62,22 @@ public class NPC extends GameEntity {
 
     }
 
-    private int[] getFrameCountsFromType(int npcType) {
-        switch (npcType) {
-            case 0:
+    private int[] getFrameCountsFromName(String characterName) {
+        switch (characterName) {
+            case "Jim":
                 return new int[]{23, 0, 0, 0, 0};
-            case 1:
+            case "Martha":
                 return new int[]{24, 0, 0, 0, 0};
             default:
                 return new int[]{0,0,0,0,0};
         }
     }
 
-    private String getCharacterNameFromType(String name) {
-        switch (name) {
-            case "jim":
+    private String getCharacterNameFromName(String characterName) {
+        switch (characterName) {
+            case "Jim":
                 return "Jim";
-            case "martha":
+            case "Martha":
                 return "Martha";
             default:
                 return "NPC";

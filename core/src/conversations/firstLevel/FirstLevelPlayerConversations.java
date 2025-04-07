@@ -9,8 +9,8 @@ public class FirstLevelPlayerConversations extends Conversation {
     private final Player player;
 
 
-    public FirstLevelPlayerConversations(ScreenInterface screenInterface, Player player, String filepath, String imagePath) {
-        super(getPlayerConversationTexts(player), getPlayerConversationTexts(player), filepath, imagePath);
+    public FirstLevelPlayerConversations(ScreenInterface screenInterface, Player player, String filepath) {
+        super(getPlayerConversationTexts(player), getPlayerConversationTexts(player), filepath);
         this.screenInterface = screenInterface;
         this.player = player;
     }
