@@ -22,12 +22,7 @@ public abstract class InanimateEntity extends GameEntity {
         this.speed = 0; // Inanimate objects typically don't move
     }
 
-    // No need to redeclare these methods as they're inherited from GameEntity:
-    // - update(float delta)
-    // - render(SpriteBatch batch)
-    // - getBody()
 
-    // Add any inanimate-specific methods
     public int getId() {
         return id;
     }

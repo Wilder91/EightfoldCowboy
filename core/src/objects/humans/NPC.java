@@ -125,7 +125,7 @@ public class NPC extends GameEntity {
         sprite.setPosition(x - width / 2, y - height / 2);
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

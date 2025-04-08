@@ -62,13 +62,13 @@ public class Bush extends InanimateEntity {
             System.err.println("Bush texture region not found: " + regionName + " for bush type: " + bushType);
             return;
         } else {
-            System.out.println("Successfully loaded texture for: " + regionName + " (type: " + bushType + ")");
+            //System.out.println("Successfully loaded texture for: " + regionName + " (type: " + bushType + ")");
         }
 
         // Set the width and height based on the texture size
         this.width = bushTexture.getRegionWidth();
         this.height = bushTexture.getRegionHeight();
-        System.out.println("Texture dimensions: " + width + "x" + height + " for bush type: " + bushType);
+        //System.out.println("Texture dimensions: " + width + "x" + height + " for bush type: " + bushType);
 
         // Update the body shape to match the texture size
         updateBodyShape();

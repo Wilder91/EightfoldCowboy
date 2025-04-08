@@ -42,8 +42,8 @@ public class BuildingFactory {
         PolygonShape shape = new PolygonShape();
         // Adjust size calculation
         shape.setAsBox(
-                boundingRectangle.width / 2 / PPM,
-                boundingRectangle.height / 2 / PPM
+                boundingRectangle.width / 4 / PPM,
+                boundingRectangle.height / 4 / PPM
         );
 
         Fixture buildingFixture = buildingBody.createFixture(shape, 0.0f);
@@ -59,8 +59,8 @@ public class BuildingFactory {
 
         // Determine texture names based on building ID
         String buildingName = getBuildingNameFromId(buildingId);
-        String topTextureName = buildingName + "_Top";
-        String bottomTextureName = buildingName + "_Bottom";
+        String textureName  = buildingName;
+
 
         // Create building with top and bottom textures
         Building building = new Building(
@@ -73,8 +73,7 @@ public class BuildingFactory {
                 screenInterface,
                 buildingId,
                 gameAssets,
-                topTextureName,
-                bottomTextureName
+                textureName
         );
 
         screenInterface.addBuilding(building);

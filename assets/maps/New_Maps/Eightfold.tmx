@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="134">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="288">
  <tileset firstgid="1" source="large_rock.tsx"/>
  <tileset firstgid="5" source="../../grass/Grass Tiles.tsx"/>
  <tileset firstgid="14" source="pond.tsx"/>
@@ -7,9 +7,9 @@
  <layer id="1" name="Tile Layer 1" width="30" height="20">
   <data encoding="csv">
 0,0,0,10,0,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,5,0,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,13,0,0,0,38,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,
-0,0,0,0,0,7,44,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,0,
+0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,13,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,
+0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,0,
 0,6,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,0,0,
 0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -40,14 +40,14 @@
    <polygon points="0,0 16.6871,0 16.6871,14.2331 -0.490798,14.2331"/>
   </object>
   <object id="40" name="Martha" x="245.204" y="195.684" width="34" height="34"/>
-  <object id="41" name="Jim" x="401.251" y="196.11" width="34" height="34"/>
+  <object id="41" name="Jim" x="194.625" y="177.704" width="34" height="34"/>
   <object id="46" name="large_rock" x="192.111" y="320.69">
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
   <object id="51" name="barn" x="418.082" y="31.6115">
    <polygon points="0,0 222.159,0 221.221,192.53 -1.87475,191.528"/>
   </object>
-  <object id="53" name="shop" x="192.132" y="30.6081">
+  <object id="53" name="shop" x="193.32" y="31.2019">
    <polygon points="0,0 -1.55183,193.979 203.29,193.979 198.634,0"/>
   </object>
   <object id="73" x="437.336" y="176.607">
@@ -80,7 +80,7 @@
   <object id="90" name="aspen_3" x="474.209" y="327.107">
    <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
   </object>
-  <object id="91" name="aspen_baby" x="565.18" y="352.269">
+  <object id="91" name="aspen_baby" x="439.304" y="295.269">
    <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
   </object>
   <object id="92" name="aspen_stump" x="413.582" y="314.904">
@@ -202,11 +202,11 @@
   <object id="129" x="572.554" y="450.922">
    <polygon points="0,0 10.7137,-9.45329 3.4662,-19.5368 -8.50796,-10.3986"/>
   </object>
-  <object id="131" x="331.441" y="302.317">
-   <polygon points="0,0 20.7532,-2.61595 19.3997,31.3914 0.902314,34.0074"/>
+  <object id="131" x="332.035" y="284.25">
+   <polygon points="0,0 20.7532,-2.95524 19.3997,35.4628 0.902314,38.4181"/>
   </object>
-  <object id="132" x="485.259" y="267.132">
-   <polygon points="0,0 12.2078,-1.78757 11.4116,21.4508 0.530773,23.2384"/>
+  <object id="132" x="485.259" y="257.674">
+   <polygon points="0,0 16.3641,-3.01749 15.2968,36.2098 0.71148,39.2273"/>
   </object>
  </objectgroup>
 </map>

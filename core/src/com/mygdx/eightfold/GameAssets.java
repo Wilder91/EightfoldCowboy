@@ -33,8 +33,8 @@ public class GameAssets {
         assetManager.load("atlases/eightfold/farm_animal.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/wild-animal.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
-        assetManager.load("buildings/barns/Barn-1.png", Texture.class);
-        assetManager.load("buildings/shops/Shop-1.png", Texture.class);
+        assetManager.load("buildings/Barns/Barn-1.png", Texture.class);
+        assetManager.load("buildings/Shops/Shop-1.png", Texture.class);
         assetManager.load("ethereal.mp3", Music.class);
         assetManager.load("lost & found.mp3", Music.class);
         assetManager.load("sounds/bison-sound.mp3", Sound.class);

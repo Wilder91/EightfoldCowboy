@@ -2,7 +2,6 @@ package com.mygdx.eightfold.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 
@@ -13,11 +12,15 @@ public abstract class GameEntity {
     protected float x, y, velX, velY, speed;
     protected float width, height;
     protected Body body;
+    private int entityId;
+    private float depth;
 
 
     public GameEntity(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
         this.x = body.getPosition().x;
         this.y = body.getPosition().y;
+        this.depth = y;
+        this.entityId = entityId;
         this.width = width;
         this.height = height;
         this.body = body;
@@ -41,5 +44,13 @@ public abstract class GameEntity {
 
     public float getY() {
         return y;
+    }
+
+    public int getId() {
+        return getId();
+    }
+
+    public void setId(int i) {
+        entityId = i;
     }
 }
