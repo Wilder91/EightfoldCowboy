@@ -23,6 +23,7 @@ import com.mygdx.eightfold.player.IsometricPlayer;
 import conversations.DialogueLine;
 import helper.ContactType;
 import helper.IsometricBodyHelperService;
+import helper.IsometricCamera;
 import helper.tiledmap.IsometricTiledMapHelper;
 import helper.world.time.TimeOfDayHelper;
 import objects.animals.Squirrel;
@@ -62,7 +63,8 @@ public class IsometricGameScreen extends ScreenAdapter implements ScreenInterfac
     private final ArrayList<Chicken> chickenList;
     private final ArrayList<Squirrel> squirrelList;
     private final ArrayList<NPC> NPCList;
-    private final OrthographicCamera camera;
+    private final IsometricCamera camera;
+    private OrthographicCamera originalCamera = null;
     private final SpriteBatch batch;
     private final ScreenInterface screenInterface;
     private final ArrayList<Door> doorList;
@@ -97,11 +99,17 @@ public class IsometricGameScreen extends ScreenAdapter implements ScreenInterfac
     private InfoBox infoBox;
     private String origin;
 
-    public IsometricGameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
+    public IsometricGameScreen(OrthographicCamera orthographicCamera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
         this.screenInterface = this; // Set this as the screen interface
         this.timeOfDayHelper = new TimeOfDayHelper();
         this.buildingList = new ArrayList<>();
-        this.camera = camera;
+        this.originalCamera = orthographicCamera;
+        this.camera = new IsometricCamera(originalCamera.viewportWidth, originalCamera.viewportHeight);
+        this.camera.position.set(originalCamera.position);
+        this.camera.zoom = 0.5f; // Adjust zoom for isometric view
+        // Set the isometric properties
+        this.camera.setIsometricAngle(30f); // Classic isometric angle
+        this.camera.setIsometricScale(0.75f);
         this.pondList = new ArrayList<>();
         this.player = player;
         this.birdList = new ArrayList<>();

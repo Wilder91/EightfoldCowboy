@@ -11,6 +11,8 @@ import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.screens.IsometricGameScreen;
 import com.mygdx.eightfold.screens.IsometricSaloonScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
+import helper.IsometricCamera;
+import helper.IsometricViewport;
 import objects.inanimate.Door;
 
 
@@ -19,6 +21,8 @@ public class Boot extends Game {
     public static Boot INSTANCE;
     private int widthScreen, heightScreen;
     private OrthographicCamera orthographicCamera;
+    private IsometricCamera camera;
+    private IsometricViewport viewport;
     private GameAssets gameAssets;
     private ScreenInterface screenInterface;
     private Game game;
@@ -37,9 +41,19 @@ public class Boot extends Game {
         this.world = new World(new Vector2(0, 0), false);
         this.orthographicCamera = new OrthographicCamera();
         this.orthographicCamera.setToOrtho(false, widthScreen, heightScreen);
+        this.camera = new IsometricCamera(widthScreen, heightScreen);
+        this.camera.setIsometricAngle(30f); // Classic isometric angle
+        this.camera.setIsometricScale(0.75f); // Adjust as needed
 
+        // Position the camera
+        this.camera.position.set(widthScreen / 2f, heightScreen / 2f, 0);
+
+        // Set a smaller zoom for isometric view (zooms out)
+        this.camera.zoom = 0.5f;
         // Adjusting zoom for isometric view - a smaller value for zooming out
         this.orthographicCamera.zoom = 0.5f;
+        this.viewport = new IsometricViewport(widthScreen, heightScreen, camera);
+        this.viewport.update(widthScreen, heightScreen, true);
 
         this.gameAssets = new GameAssets();
         this.game = this;
@@ -47,7 +61,7 @@ public class Boot extends Game {
         gameAssets.finishLoading();
 
         // Create IsometricGameScreen instead of GameScreen
-        this.gameScreen = new IsometricGameScreen(orthographicCamera, screenInterface, gameAssets, this, "start");
+        this.gameScreen = new IsometricGameScreen(camera, screenInterface, gameAssets, this, "start");
         setScreen(gameScreen);
     }
 

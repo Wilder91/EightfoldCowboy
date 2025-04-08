@@ -42,8 +42,8 @@
             "scale": 2.4046,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 478.87382516842723,
-                "y": 321.6751226815271
+                "x": 480.12143391832325,
+                "y": 320.01164434833237
             }
         },
         "Eightfold_Iso.tmx": {
@@ -51,11 +51,11 @@
                 2,
                 4
             ],
-            "scale": 1.1356,
-            "selectedLayer": 2,
+            "scale": 0.8238,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 459.2286016202889,
-                "y": 438.97499119408246
+                "x": 855.1832969167274,
+                "y": 363.55911629036177
             }
         },
         "Grass Tiles.tsx": {
@@ -106,7 +106,7 @@
             "scaleInEditor": 1
         }
     },
-    "last.imagePath": "/Users/michaelwilder/Downloads/PNG Assets/Trees/Aspens",
+    "last.imagePath": "/Users/michaelwilder/Desktop/Eightfold/assets/Aspens",
     "map.height": 30,
     "map.lastUsedFormat": "tmx",
     "map.orientation": "2",
@@ -141,8 +141,8 @@
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
-        "height": 9,
-        "width": 9
+        "height": 32,
+        "width": 64
     },
     "tileset.type": 0
 }
