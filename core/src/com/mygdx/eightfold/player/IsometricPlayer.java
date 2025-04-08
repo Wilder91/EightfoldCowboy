@@ -20,7 +20,7 @@ import objects.inanimate.Door;
 
 import static helper.Constants.PPM;
 
-public class Player extends GameEntity {
+public class IsometricPlayer extends GameEntity {
     private final float originalSpeed;
     private GameAssets gameAssets;
     private Sprite sprite;
@@ -39,7 +39,7 @@ public class Player extends GameEntity {
     private float tileWidth;
     private float tileHeight;
 
-    public Player(float x, float y, float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
+    public IsometricPlayer(float x, float y, float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
         super(width, height, body, screenInterface, gameAssets);
         this.x = x;
         this.y = y;
@@ -254,5 +254,13 @@ public class Player extends GameEntity {
 
     public int getId() {
         return 1;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 }

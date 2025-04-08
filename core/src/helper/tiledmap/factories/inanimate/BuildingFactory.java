@@ -4,7 +4,6 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import com.mygdx.eightfold.GameAssets;
@@ -12,7 +11,6 @@ import objects.inanimate.Building;
 
 import static helper.Constants.PPM;
 import static helper.ContactType.BUILDING;
-import static helper.ContactType.TREE;
 
 public class BuildingFactory {
     private static int buildingCounter = 0;

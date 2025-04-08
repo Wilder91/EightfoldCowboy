@@ -18,7 +18,7 @@ import com.mygdx.eightfold.GameAssets;
 public class BisonConversationScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final GameAssets gameAssets;
-    private final GameScreen gameScreen;
+    private final IsometricGameScreen gameScreen;
     private Stage stage;
     private Skin skin;
     private Label dialogueLabel;
@@ -28,7 +28,7 @@ public class BisonConversationScreen extends ScreenAdapter {
     private Texture characterTexture;
     private int bisonId;
 
-    public BisonConversationScreen(OrthographicCamera camera, GameAssets gameAssets, GameScreen gameScreen, int bisonId) {
+    public BisonConversationScreen(OrthographicCamera camera, GameAssets gameAssets, IsometricGameScreen gameScreen, int bisonId) {
         this.camera = camera;
         this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;

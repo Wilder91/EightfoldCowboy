@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -19,9 +19,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.GameEntity;
+import com.mygdx.eightfold.player.IsometricPlayer;
 import conversations.DialogueLine;
 import helper.ContactType;
-import helper.tiledmap.TiledMapHelper;
+import helper.IsometricBodyHelperService;
+import helper.tiledmap.IsometricTiledMapHelper;
 import helper.world.time.TimeOfDayHelper;
 import objects.animals.Squirrel;
 import objects.animals.bird.Bird;
@@ -39,8 +41,6 @@ import text.textbox.DecisionTextBox;
 import text.textbox.TextBox;
 import box2dLight.RayHandler;
 import box2dLight.PointLight;
-//import box2dLight.AmbientLight;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +48,7 @@ import java.util.List;
 
 import static helper.Constants.PPM;
 
-public class GameScreen extends ScreenAdapter implements ScreenInterface {
+public class IsometricGameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Bird> birdList;
     private final ArrayList<Building> buildingList;
     private final ArrayList<Boulder> boulderList;
@@ -68,9 +68,9 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final ArrayList<Door> doorList;
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
-    private final TiledMapHelper tiledMapHelper;
-    private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
-    private Player player;
+    private final IsometricTiledMapHelper tiledMapHelper;
+    private IsometricTiledMapRenderer isometricTiledMapRenderer;
+    private IsometricPlayer player;  // Changed from Player to IsometricPlayer
     private Music music;
     private final GameContactListener gameContactListener;
     private final TimeOfDayHelper timeOfDayHelper;
@@ -82,6 +82,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private PointLight playerLight;
     private Boolean debugRendering;
     private FPSLogger fpsLogger = new FPSLogger();
+
+    // Isometric-specific fields
+    private float tileWidth;
+    private float tileHeight;
+
     public OrthographicCamera getCamera() {
         return camera;
     }
@@ -92,15 +97,13 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private InfoBox infoBox;
     private String origin;
 
-    public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
-
-
-        this.screenInterface = screenInterface;
+    public IsometricGameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
+        this.screenInterface = this; // Set this as the screen interface
         this.timeOfDayHelper = new TimeOfDayHelper();
         this.buildingList = new ArrayList<>();
         this.camera = camera;
         this.pondList = new ArrayList<>();
-
+        this.player = player;
         this.birdList = new ArrayList<>();
         this.boulderList = new ArrayList<>();
         this.treeList = new ArrayList<>();
@@ -122,9 +125,21 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.gameContactListener = new GameContactListener(this);
         this.world.setContactListener(this.gameContactListener);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-        this.debugRendering = false;
-        this.tiledMapHelper = new TiledMapHelper(this, gameAssets, gameContactListener);
-        this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/new_Maps/Eightfold.tmx");
+        this.debugRendering = true; // Set to true to help debug
+
+        // Use IsometricTiledMapHelper instead of TiledMapHelper
+        this.tiledMapHelper = new IsometricTiledMapHelper(this, gameAssets, gameContactListener);
+
+        // Use isometric map file - make sure this file exists and is configured for isometric view in Tiled
+        this.isometricTiledMapRenderer = tiledMapHelper.setupMap("maps/new_Maps/Eightfold_Iso.tmx");
+
+        // Store tile dimensions from the map for coordinate conversions
+        this.tileWidth = isometricTiledMapRenderer.getMap().getProperties().get("tilewidth", Integer.class);
+        this.tileHeight = isometricTiledMapRenderer.getMap().getProperties().get("tileheight", Integer.class);
+
+        // Set the tile dimensions for the IsometricBodyHelperService
+        IsometricBodyHelperService.setTileDimensions(tileWidth, tileHeight);
+        camera.zoom = .8f;
         // Initialize TextBox
         Skin skin = new Skin(Gdx.files.internal("commodore64/skin/uiskin.json"));
         this.skin = skin;
@@ -148,35 +163,49 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         rayHandler.setCulling(true);  // Ensure lights are not culled
         rayHandler.setBlurNum(1);      // Low blur for better performance during testing
         rayHandler.setShadows(true);
-        //rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 1f);  // Very dark to make lights more visible
-        //new PointLight(rayHandler, 128, new Color(1, 0, 0, 1), 20f, 60f, 20f);
-        //new PointLight(rayHandler, 128, new Color(1, 1, 0.5f, 1), 10f, 50f, 10f);
+
         String timeOfDay = "day";
-        float camX = camera.position.x * PPM; // Convert to Box2D coordinates
-        float camY = camera.position.y * PPM;        //rayHandler.setCombinedMatrix(camera.combined);
-        //em.out.println("Test light position: " + camX + ", " + camY);// darker environment // night
         float[] ambientColor = timeOfDayHelper.returnTime(timeOfDay);
-        rayHandler.setAmbientLight(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);// neutral light
+        rayHandler.setAmbientLight(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
+
         // Optional: soften shadows, tweak performance
         rayHandler.setBlur(true);
         rayHandler.setShadows(true);
-        setPlayer(player);
-        //enablePlayerLight();
+
         Gdx.input.setInputProcessor(textBox.getStage());
         Gdx.input.setInputProcessor(infoBox.getStage());
-        adjustLocation();
+
+        // Note: player will be set by the map parser when it finds the player object
+    }
+
+    /**
+     * Converts isometric coordinates to Cartesian coordinates
+     * @param isoX X coordinate in isometric space
+     * @param isoY Y coordinate in isometric space
+     * @return Vector2 containing Cartesian coordinates
+     */
+    private Vector2 isoToCartesian(float isoX, float isoY) {
+        return IsometricBodyHelperService.isoToCartesian(isoX, isoY);
+    }
+
+    /**
+     * Converts Cartesian coordinates to isometric coordinates
+     * @param cartX X coordinate in Cartesian space
+     * @param cartY Y coordinate in Cartesian space
+     * @return Vector2 containing isometric coordinates
+     */
+    private Vector2 cartesianToIso(float cartX, float cartY) {
+        return IsometricBodyHelperService.cartesianToIso(cartX, cartY);
     }
 
     private void adjustLocation() {
-
-        if(origin == "saloon"){
+        if(origin == "saloon" && !doorList.isEmpty()){
             Door door = doorList.get(0);
-            //System.out.println("fromSaloon true");
-            player.getBody().setTransform(door.getBody().getPosition().x, door.getBody().getPosition().y - 2, 0);
+            Vector2 doorPos = door.getBody().getPosition();
+            Vector2 offsetPos = new Vector2(doorPos.x, doorPos.y - 2);
+            player.getBody().setTransform(offsetPos, 0);
         }
     }
-
-
 
     @Override
     public void setTextBox(String filepath) {
@@ -193,14 +222,12 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             e.printStackTrace();
         }
     }
+
     public void showTextBox(String text) {
         textBox.showTextBox(text);
     }
 
-
-
     public void showDecisionTextBox(String text) {
-        // hideTextBox();
         decisionTextBox.showTextBox(text);
     }
 
@@ -224,16 +251,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
-
-
-
     @Override
     public void showPlayerTextBox(String playerConversationText) {
 
     }
-
-
-
 
     public void hideTextBox() {
         textBox.hideTextBox();
@@ -247,9 +268,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     public void setChoices(String... choices) {
         //decisionTextBox.setChoices(choices);
     }
-
-
-
 
     @Override
     public void showTextBox(DialogueLine line) {
@@ -266,7 +284,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     public void setSaloonTime(boolean time) {
         music.stop();
-        //System.out.println("CLOSE!");
         this.saloonTime = time;
     }
 
@@ -275,7 +292,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
-    public Player getPlayer() {
+    public IsometricPlayer getPlayer() {
         return player;
     }
 
@@ -287,9 +304,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     public void transitionToScreen(ScreenInterface newScreen) {
         removePlayerBody();
         ((Game) Gdx.app.getApplicationListener()).setScreen((ScreenAdapter) newScreen);
-
         updateDoorScreenReferences(newScreen);
-
     }
 
     @Override
@@ -313,20 +328,15 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         world.step(1 / 60f, 6, 2);
         cameraUpdate();
 
-        //System.out.println("Camera position: " + camera.position.x + ", " + camera.position.y);
-
-
         if (player != null && playerLight != null) {
             Vector2 pos = player.getBody().getPosition();
-//            System.out.println("playerLight x: " + pos.x * PPM);
-//            System.out.println("playerLight y: " + pos.y * PPM);
-            playerLight.setPosition(pos.x + .1f , pos.y);
-
+            playerLight.setPosition(pos.x + .1f, pos.y);
         }
 
         batch.setProjectionMatrix(camera.combined);
-        orthogonalTiledMapRenderer.setView(camera);
+        isometricTiledMapRenderer.setView(camera);
 
+        // Update all game entities
         for (Butterfly butterfly : butterflyList){
             butterfly.update(delta);
         }
@@ -334,9 +344,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Dragonfly dragonfly : dragonflyList){
             dragonfly.update(delta);
         }
+
         for (Squirrel squirrel : squirrelList) {
             squirrel.update(delta);
         }
+
         for (Chicken chicken : chickenList) {
             chicken.update(delta);
         }
@@ -353,33 +365,28 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             bush.update(delta);
         }
 
-
-
+        // Debug output for player position
         if (player != null) {
             player.update(delta);
+
+            // Print player position for debugging
+            if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+                Vector2 pos = player.getBody().getPosition();
+                Vector2 vel = player.getBody().getLinearVelocity();
+                System.out.println("Player position: " + pos.x + ", " + pos.y);
+                System.out.println("Player velocity: " + vel.x + ", " + vel.y);
+            }
         }
-
-
-
-
-
-
-
 
         for (Bird bird : birdList) {
             bird.update(delta);
         }
 
-
-
-
         for (Pond pond : pondList) {
             pond.update(delta);
         }
 
-
-
-
+        // Input handling
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             enterPauseScreen();
         }
@@ -387,11 +394,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
         }
+
         if (saloonTime) {
-            World newWorld = new World(new Vector2(0, 0), false); // Create a new World instance for the new screen
-            // Create a new GameContactListener instance
-            SaloonScreen saloonScreen = new SaloonScreen(camera, gameAssets,   this, newWorld, this, player, game);
-            // Use new instances
+            World newWorld = new World(new Vector2(0, 0), false);
+            IsometricSaloonScreen saloonScreen = new IsometricSaloonScreen(camera, gameAssets, this, newWorld, this, player, game);
             ((Game) Gdx.app.getApplicationListener()).setScreen(saloonScreen);
             updateDoorScreenReferences(saloonScreen);
         }
@@ -406,24 +412,17 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private void cameraUpdate() {
         if (player != null) {
             Vector3 position = camera.position;
+
+            // In isometric view, we need to get the screen position, not the physics position
             Vector2 target = player.getBody().getPosition().scl(PPM);
-            position.x += (target.x - position.x) * 0.1f; // smoothing factor
+
+            // Apply smoothing to camera movement
+            position.x += (target.x - position.x) * 0.1f;
             position.y += (target.y - position.y) * 0.1f;
             camera.position.set(position);
             camera.update();
-
-            // 👇 Set player light position (if not attached to body)
-//            if (playerLight != null) {
-//                //System.out.println("player light exists");
-//                Vector2 lightPos = player.getBody().getPosition();
-//                System.out.println("lightpos = " + lightPos);
-//                playerLight.setPosition(lightPos);
-//            }
         }
     }
-
-
-
 
     @Override
     public void addDoor(Door door) {
@@ -459,7 +458,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         } else {
             System.err.println("pondList is null.");
         }
-
     }
 
     @Override
@@ -470,8 +468,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             System.err.println("butterflyList is null.");
         }
     }
-
-
 
     @Override
     public void addBug(Bug bug) {
@@ -492,7 +488,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         if (NPCList != null){
             NPCList.add(npc);
         }
-
     }
 
     @Override
@@ -500,15 +495,20 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
-
     @Override
     public void addLowerRock(Rock rock) {
 
     }
 
     public void playerArrives(){
+        if (doorList.isEmpty()) {
+            System.err.println("No doors available for player arrival point");
+            return;
+        }
+
         Door door = doorList.get(0);
-        player.getBody().setTransform(door.getBody().getPosition().x, door.getBody().getPosition().y +200, 0);
+        // In isometric view, y-offset might need to be adjusted
+        player.getBody().setTransform(door.getBody().getPosition().x, door.getBody().getPosition().y + 2, 0);
     }
 
     @Override
@@ -517,14 +517,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     public void removePlayerBody() {
-        //System.out.println("player body before : " + player.getBody());
         if (player != null && player.getBody() != null) {
             world.destroyBody(player.getBody());
             player.setBody(null);
-            //System.out.println("player body after: " + player.getBody());// Clear the reference to the old body
         }
     }
-
 
     @Override
     public void addBird(Bird bird) {
@@ -542,10 +539,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
-
-
-
-
     @Override
     public void addBuilding(Building building) {
         if (buildingList != null) {
@@ -560,25 +553,17 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
-
-
     @Override
     public void addBush(Bush bush) {
         if (bushList != null) {
             bushList.add(bush);
         }
-
     }
 
     @Override
     public void addRock(Rock rock) {
         rockList.add(rock);
-
     }
-
-
-
-
 
     @Override
     public void render(float delta) {
@@ -586,15 +571,15 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         update(delta);
         camera.update();
 
-        // Clear the screen
+        // Clear the screen with a suitable background color
         Gdx.gl.glClearColor(168f / 255f, 178f / 255f, 113f / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Set up the tiled map renderer to follow the camera
-        orthogonalTiledMapRenderer.setView(camera);
-        orthogonalTiledMapRenderer.render();
+        // Set up the isometric map renderer to follow the camera
+        isometricTiledMapRenderer.setView(camera);
+        isometricTiledMapRenderer.render();
 
-        // Create a list for all entities that need Y-sorting
+        // Create a list for all entities that need depth sorting
         List<GameEntity> sortedEntities = new ArrayList<>();
 
         // Add all entities that should be sorted
@@ -607,9 +592,9 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         sortedEntities.addAll(NPCList);
         sortedEntities.addAll(bushList);
         sortedEntities.addAll(treeList);
-        // Add any other entities that should be Y-sorted
 
-        // Sort by Y position
+        // Sort by Y position for isometric depth
+        // For isometric view, we might need a custom comparator based on isometric coordinates
         Collections.sort(sortedEntities, GameEntity.Y_COMPARATOR);
 
         // Begin drawing with the SpriteBatch
@@ -620,20 +605,16 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             building.getBottomSprite().draw(batch);
         }
 
-
         for (Pond pond : pondList){
             pond.render(batch);
         }
-
 
         // Render rocks bottom
         for (Rock rock : rockList) {
             rock.renderBottom(batch);
         }
 
-
-
-        // Render all Y-sorted entities
+        // Render all depth-sorted entities
         for (GameEntity entity : sortedEntities) {
             entity.render(batch);
         }
@@ -642,8 +623,6 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         for (Rock rock : rockList) {
             rock.renderTop(batch);
         }
-
-
 
         for (Door door : doorList) {
             door.render(batch);
@@ -655,26 +634,26 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
         batch.end();
 
-        // Rest of your render method (lights, UI, etc.)
+        // Render lights
         rayHandler.setCombinedMatrix(camera.combined.cpy().scl(PPM));
         rayHandler.updateAndRender();
 
         // Render UI elements
         textBox.getStage().act(delta);
         textBox.getStage().draw();
+
+        // Debug rendering if enabled
         if(debugRendering) {
             box2DDebugRenderer.render(world, camera.combined.scl(PPM));
         }
     }
-
-
 
     @Override
     public void dispose() {
         // Dispose of assets properly
         batch.dispose();
         world.dispose();
-        orthogonalTiledMapRenderer.dispose();
+        isometricTiledMapRenderer.dispose();
         textBox.getStage().dispose();
         textBox.getSkin().dispose();
         rayHandler.dispose();
@@ -693,25 +672,38 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             // Get the current position
             Vector2 pos = player.getBody().getPosition();
 
-
             // Create a new light (note: light radius is in world units, not pixels)
             playerLight = new PointLight(rayHandler, 128, new Color(.5f, .4f, .5f, 1f), .4f, 0, 0);
             playerLight.setSoftnessLength(1f);
             playerLight.setContactFilter(ContactType.LIGHT.getCategoryBits(),
                     ContactType.LIGHT.getMaskBits(),
                     (short) 0);
-
         }
     }
 
+    public void setPlayer(IsometricPlayer player) {
+        if (player instanceof IsometricPlayer) {
+            this.player = (IsometricPlayer) player;
+        } else {
+            // Create a new IsometricPlayer with the same properties
+            System.out.println("WARNING: Converting Player to IsometricPlayer");
+            Vector2 pos = player.getBody().getPosition();
+            float width = player.getWidth();
+            float height = player.getHeight();
 
-    public void setPlayer(Player player) {
-        this.player = player;
+            // Create IsometricPlayer with same position and dimensions
+            this.player = new IsometricPlayer(
+                    pos.x * PPM,
+                    pos.y * PPM,
+                    width,
+                    height,
+                    player.getBody(),
+                    this,
+                    gameAssets
+            );
+        }
         enablePlayerLight();
     }
-
-
-
 
     public World getWorld() {
         return world;
@@ -719,6 +711,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     public void flipDebugRendering() {
         debugRendering = !debugRendering;
+        System.out.println("Debug rendering: " + (debugRendering ? "ON" : "OFF"));
+    }
 
+    public IsometricPlayer getIsometricPlayer() {
+        return player;
     }
 }

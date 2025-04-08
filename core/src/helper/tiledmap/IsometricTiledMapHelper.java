@@ -7,7 +7,7 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameContactListener;
+import com.mygdx.eightfold.player.IsometricPlayer;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
@@ -32,34 +33,40 @@ import objects.inanimate.Tree;
 
 import static helper.Constants.PPM;
 
-public class TiledMapHelper {
+public class IsometricTiledMapHelper {
 
     private TiledMap tiledMap;
     private ShapeRenderer shapeRenderer;
     private GameAssets gameAssets;
     private GameContactListener gameContactListener;
     private ScreenInterface screenInterface;
+    private float tileWidth;
+    private float tileHeight;
 
-    public TiledMapHelper(ScreenInterface screenInterface, GameAssets gameAssets, GameContactListener gameContactListener) {
+    public IsometricTiledMapHelper(ScreenInterface screenInterface, GameAssets gameAssets, GameContactListener gameContactListener) {
         this.shapeRenderer = new ShapeRenderer();
         this.gameAssets = gameAssets;
         this.gameContactListener = gameContactListener;
         this.screenInterface = screenInterface;
     }
 
-    public OrthogonalTiledMapRenderer setupMap(String fileName) {
+    public IsometricTiledMapRenderer setupMap(String fileName) {
         // Clear existing bodies
         clearWorldBodies(screenInterface.getWorld());
 
         // Load the new map
         tiledMap = new TmxMapLoader().load(fileName);
 
+        // Store tile dimensions for coordinate conversions
+        tileWidth = tiledMap.getProperties().get("tilewidth", Integer.class);
+        tileHeight = tiledMap.getProperties().get("tileheight", Integer.class);
+
         // Parse the objects in the new map
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
         parseWallObjects(tiledMap.getLayers().get("wall").getObjects());
 
-        // Return the new map renderer
-        return new OrthogonalTiledMapRenderer(tiledMap);
+        // Return the new isometric map renderer
+        return new IsometricTiledMapRenderer(tiledMap);
     }
 
     private void clearWorldBodies(World world) {
@@ -70,9 +77,34 @@ public class TiledMapHelper {
         }
     }
 
+    /**
+     * Converts isometric coordinates to Cartesian coordinates
+     * @param isoX X coordinate in isometric space
+     * @param isoY Y coordinate in isometric space
+     * @return Vector2 containing Cartesian coordinates
+     */
+    private Vector2 isoToCartesian(float isoX, float isoY) {
+        // Convert from isometric to cartesian
+        float cartX = (isoX / tileWidth + isoY / tileHeight) / 2;
+        float cartY = (isoY / tileHeight - isoX / tileWidth) / 2;
+        return new Vector2(cartX, cartY);
+    }
+
+    /**
+     * Converts Cartesian coordinates to isometric coordinates
+     * @param cartX X coordinate in Cartesian space
+     * @param cartY Y coordinate in Cartesian space
+     * @return Vector2 containing isometric coordinates
+     */
+    private Vector2 cartesianToIso(float cartX, float cartY) {
+        // Convert from cartesian to isometric
+        float isoX = (cartX - cartY) * tileWidth;
+        float isoY = (cartX + cartY) * tileHeight;
+        return new Vector2(isoX, isoY);
+    }
+
     private void parseMapObjects(MapObjects mapObjects) {
         for (MapObject mapObject : mapObjects) {
-            //System.out.println(mapObject.getProperties().get("type", String.class));
             if (mapObject instanceof PolygonMapObject) {
                 PolygonMapObject polygonMapObject = (PolygonMapObject) mapObject;
                 String polygonName = mapObject.getName();
@@ -127,7 +159,6 @@ public class TiledMapHelper {
                             createTree(polygonMapObject, Tree.SEEDLING);
                             break;
                         case "bush_one":
-                            //System.out.println("bush!");
                             createBush(polygonMapObject, 0);
                             break;
                         case "bush_two":
@@ -192,17 +223,19 @@ public class TiledMapHelper {
                 String rectangleName = mapObject.getName();
 
                 if (rectangleName != null && rectangleName.equals("player")) {
-//                    System.out.println("PLAYER");
-//                    System.out.println("Raw Tiled coords: x=" + rectangle.x + ", y=" + rectangle.y);
-//                    System.out.println("Width: " + rectangle.width + ", Height: " + rectangle.height);
-//                    System.out.println("PPM = " + PPM);
-                    float centerX = (rectangle.x + rectangle.width / 2f) ;
-                    float centerY = (rectangle.y + rectangle.height / 2f);
+                    // Convert isometric coordinates to Cartesian for physics world
+                    float centerIsoX = rectangle.x + rectangle.width / 2f;
+                    float centerIsoY = rectangle.y + rectangle.height / 2f;
+
+                    // Convert to Cartesian for physics
+                    Vector2 cartesianPos = isoToCartesian(centerIsoX, centerIsoY);
+                    float centerX = cartesianPos.x;
+                    float centerY = cartesianPos.y;
+
+                    // Scale dimensions appropriately for isometric view
                     float bodyWidth = rectangle.width / PPM;
                     float bodyHeight = rectangle.height / PPM;
                     int playerId = 1;
-
-
 
                     Body body = BodyHelperService.createBody(
                             centerX,
@@ -214,45 +247,33 @@ public class TiledMapHelper {
                             ContactType.PLAYER,
                             playerId
                     );
-//                    System.out.println("Body pos (meters): " + body.getPosition());
-//                    System.out.println("Expected center (meters): " + centerX + ", " + centerY);
-//                    System.out.println("Player pos in pixels: " + centerY + ", " + centerY);
-//
-//                    System.out.println("Tiled map position: " + rectangle.x + ", " + rectangle.y);
 
-//                    screenInterface.setPlayer(new Player(
-//                            centerX * PPM,
-//                            centerY * PPM,
-//                            rectangle.width,
-//                            rectangle.height,
-//                            body,
-//                            screenInterface,
-//                            gameAssets
-//                    ));
-
-
+                    // Use isometric coordinates for the sprite position
+                    screenInterface.setPlayer(new IsometricPlayer(
+                            centerIsoX,
+                            centerIsoY,
+                            rectangle.width,
+                            rectangle.height,
+                            body,
+                            screenInterface,
+                            gameAssets
+                    ));
                 }
                 if (rectangleName != null && rectangleName.equals("Jim")) {
-                   // System.out.println("there's jIm!");
+
                     RectangleMapObject rectObj = (RectangleMapObject) mapObject;
                     NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener, 0);
                     System.out.println(rectangleName);
                     npcFactory.createNPC(rectObj, rectangleName);
                 }
                 if (rectangleName != null && rectangleName.equals("Martha")) {
-                    //System.out.println("there it is!");
                     RectangleMapObject rectObj = (RectangleMapObject) mapObject;
                     NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener, 1);
-                   // System.out.println(npcFactory);
                     npcFactory.createNPC(rectObj, rectangleName);
                 }
             }
-
         }
     }
-
-
-
 
     private void parseWallObjects(MapObjects mapObjects) {
         for (MapObject mapObject : mapObjects) {
@@ -293,26 +314,6 @@ public class TiledMapHelper {
                     createStaticBody(polygonMapObject);
                 }
             }
-
-//            if (mapObject instanceof RectangleMapObject) {
-//                Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-//                String rectangleName = mapObject.getName();
-//
-//                if (rectangleName != null && rectangleName.equals("player")) {
-//                    int playerId = 1;
-//                    Body body = BodyHelperService.createBody(
-//                            rectangle.x + rectangle.width / 2,
-//                            rectangle.y + rectangle.height / 2,
-//                            rectangle.width,
-//                            rectangle.height,
-//                            false,
-//                            screenInterface.getWorld(),
-//                            ContactType.PLAYER,
-//                            playerId
-//                    );
-//                    screenInterface.setPlayer(new Player(rectangle.width, rectangle.height, body, screenInterface, gameAssets));
-////                }
-//            }
         }
     }
 
@@ -322,33 +323,24 @@ public class TiledMapHelper {
     }
 
     private void createDoor(PolygonMapObject polygonMapObject, String polygonName) {
-        DoorFactory doorFactory = new DoorFactory(screenInterface, gameAssets); // Instantiate the DoorFactory
-        doorFactory.createDoor(polygonMapObject, polygonName); // Call createDoor method from DoorFactory
-    }
-
-    private void createButterfly(PolygonMapObject polygonMapObject, int butterflyType) {
-
+        DoorFactory doorFactory = new DoorFactory(screenInterface, gameAssets);
+        doorFactory.createDoor(polygonMapObject, polygonName);
     }
 
     private void createChicken(PolygonMapObject polygonMapObject) {
         ChickenFactory chickenFactory = new ChickenFactory(screenInterface, gameAssets, false);
         chickenFactory.createChicken(polygonMapObject);
-
     }
 
     private void createSquirrel(PolygonMapObject polygonMapObject) {
         SquirrelFactory squirrelFactory = new SquirrelFactory(screenInterface, gameAssets, false);
         squirrelFactory.createSquirrel(polygonMapObject);
-
     }
 
-    private void createBug(PolygonMapObject polygonMapObject, int bugType ) {
+    private void createBug(PolygonMapObject polygonMapObject, int bugType) {
         BugFactory bugFactory = new BugFactory(screenInterface, gameAssets);
         bugFactory.createBug(polygonMapObject, bugType);
-        //System.out.println("bug id: " + bugType);
-
     }
-
 
     private void createTree(PolygonMapObject polygonMapObject, int treeType) {
         TreeFactory treeFactory = new TreeFactory(screenInterface, gameAssets);
@@ -361,18 +353,14 @@ public class TiledMapHelper {
     }
 
     private void createBush(PolygonMapObject polygonMapObject, int bushType) {
-        //System.out.println("create bush");
         BushFactory bushFactory = new BushFactory(screenInterface, gameAssets, gameContactListener);
         bushFactory.createBush(polygonMapObject, bushType);
     }
+
     private void createRock(PolygonMapObject polygonMapObject, int rockType) {
-        //System.out.println("create rock");
         RockFactory rockFactory = new RockFactory(screenInterface, gameAssets, gameContactListener);
         rockFactory.createRock(polygonMapObject, rockType);
     }
-
-
-
 
     private void createBoulder(PolygonMapObject polygonMapObject) {
         BoulderFactory boulderFactory = new BoulderFactory(screenInterface, gameAssets, gameContactListener);
@@ -381,7 +369,6 @@ public class TiledMapHelper {
 
     private void createBuilding(PolygonMapObject polygonMapObject, int buildingId) {
         BuildingFactory buildingFactory = new BuildingFactory(screenInterface, gameAssets);
-        //System.out.println("building id" + buildingId);
         buildingFactory.createBuilding(polygonMapObject, buildingId);
     }
 
@@ -390,7 +377,7 @@ public class TiledMapHelper {
         bodyDef.type = BodyDef.BodyType.StaticBody;
         Body body = screenInterface.getWorld().createBody(bodyDef);
         Shape shape = createPolygonShape(polygonMapObject);
-        body.setUserData("static_body"); // Set userData to some meaningful data
+        body.setUserData("static_body");
         body.createFixture(shape, 1000);
         shape.dispose();
     }
@@ -400,7 +387,13 @@ public class TiledMapHelper {
         Vector2[] worldVertices = new Vector2[vertices.length / 2];
 
         for (int i = 0; i < vertices.length / 2; i++) {
-            Vector2 current = new Vector2(vertices[i * 2] / PPM, vertices[i * 2 + 1] / PPM);
+            // Convert isometric coordinates to Cartesian for Box2D physics
+            float isoX = vertices[i * 2];
+            float isoY = vertices[i * 2 + 1];
+            Vector2 cartesian = isoToCartesian(isoX, isoY);
+
+            // Scale down for Box2D
+            Vector2 current = new Vector2(cartesian.x / PPM, cartesian.y / PPM);
             worldVertices[i] = current;
         }
 

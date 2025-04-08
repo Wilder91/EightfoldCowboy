@@ -79,7 +79,7 @@ public class StartScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 // Transition to the game screen
                // ((Game) Gdx.app.getApplicationListener())
-                Boot.INSTANCE.changeScreen(new GameScreen(camera, screenInterface, gameAssets, game, "start"));
+                Boot.INSTANCE.changeScreen(new IsometricGameScreen(camera, screenInterface, gameAssets, game, "start"));
             }
         });
         stage.addActor(startButton);
@@ -87,7 +87,7 @@ public class StartScreen extends ScreenAdapter {
 
     private void checkInput(){
         if(Gdx.input.isKeyPressed(Input.Keys.ENTER)){
-            Boot.INSTANCE.changeScreen(new GameScreen(camera, screenInterface, gameAssets, game, "start"));
+            Boot.INSTANCE.changeScreen(new IsometricGameScreen(camera, screenInterface, gameAssets, game, "start"));
         }
 
 

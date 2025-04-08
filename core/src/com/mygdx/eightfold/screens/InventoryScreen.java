@@ -19,7 +19,7 @@ public class InventoryScreen extends ScreenAdapter {
     private Skin skin;
     private Game game;
 
-    public InventoryScreen(OrthographicCamera camera, GameScreen gameScreen, GameAssets gameAssets, Skin skin) {
+    public InventoryScreen(OrthographicCamera camera, IsometricGameScreen gameScreen, GameAssets gameAssets, Skin skin) {
         this.camera = camera;
         this.gameAssets = gameAssets;
         this.skin = skin;  // Ensure the skin is passed and assigned

@@ -2,6 +2,7 @@ package com.mygdx.eightfold.screens;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.eightfold.player.IsometricPlayer;
 import com.mygdx.eightfold.player.Player;
 import conversations.DialogueLine;
 import objects.animals.Squirrel;
@@ -39,9 +40,9 @@ public interface ScreenInterface {
 
     void addUpperRock(Rock rock);
 
-    void setPlayer(Player player);
+    void setPlayer(IsometricPlayer player);
 
-    Player getPlayer();
+    IsometricPlayer getPlayer();
 
 
 

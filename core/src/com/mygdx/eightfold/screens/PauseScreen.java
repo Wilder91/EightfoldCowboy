@@ -19,19 +19,21 @@ import com.mygdx.eightfold.GameAssets;
 import static helper.Constants.PPM;
 
 public class PauseScreen implements Screen {
+    private final Screen screen;
     private OrthographicCamera camera;
     private GameAssets gameAssets;
-    private GameScreen gameScreen;
+    private IsometricGameScreen gameScreen;
     private Stage stage;
     private Skin skin;
     private int selectedIndex; // To keep track of the selected button
     private TextButton[] buttons; // Array to hold buttons
     private InventoryScreen inventoryScreen;
 
-    public PauseScreen(OrthographicCamera camera, GameAssets gameAssets, GameScreen gameScreen) {
+    public PauseScreen(OrthographicCamera camera, GameAssets gameAssets, IsometricGameScreen isometricGameScreen) {
         this.camera = camera;
         this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;
+        this.screen = isometricGameScreen;
         this.skin = new Skin(Gdx.files.internal("vhs/skin/vhs-ui.json"));
         this.inventoryScreen = new InventoryScreen(camera, gameScreen, gameAssets, skin);
         // Initialize Scene2D Stage and Skin
@@ -80,7 +82,7 @@ public class PauseScreen implements Screen {
         debugButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-               gameScreen.flipDebugRendering();
+               isometricGameScreen.flipDebugRendering();
                resumeGame();
             }
         });

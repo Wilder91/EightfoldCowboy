@@ -1,16 +1,13 @@
 package objects.inanimate;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.mygdx.eightfold.Boot;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.GameContactListener;
-import com.mygdx.eightfold.screens.GameScreen;
-import com.mygdx.eightfold.screens.SaloonScreen;
+import com.mygdx.eightfold.screens.IsometricSaloonScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
 
 import objects.animals.object_helper.DoorManager;
@@ -26,7 +23,7 @@ public class Door extends InanimateEntity  {
     private float messageTimer;
     private int messageState;
     private String name;
-    private SaloonScreen saloonScreen;
+    private IsometricSaloonScreen saloonScreen;
 
     public Door(float width, float height, Body body, ScreenInterface screen, int doorId, GameAssets gameAssets, GameContactListener gameContactListener, String doorName) {
         super(width, height, body, screen, doorId, gameAssets, gameContactListener);
@@ -70,16 +67,16 @@ public class Door extends InanimateEntity  {
                 if (name != null) {
                     switch (name) {
                         case "enter_saloon":
-                            if (screen instanceof GameScreen) {
+                            if (screen instanceof IsometricSaloonScreen) {
                                 //((GameScreen) screen).removePlayerBody();
-                                Boot.INSTANCE.switchToSaloonScreen(screen.getPlayer(), this);
+                                //Boot.INSTANCE.switchToSaloonScreen(screen.getPlayer(), this);
                                 messageState = 0;
                             }
                             break;
                         case "leave_saloon":
-                            if (screen instanceof SaloonScreen) {
+                            if (screen instanceof IsometricSaloonScreen) {
 
-                                Boot.INSTANCE.switchToGameScreen((Boot.INSTANCE.getGameScreen()).getPlayer(), this);
+                                //Boot.INSTANCE.switchToGameScreen((Boot.INSTANCE.getGameScreen()).getPlayer(), this);
                                 messageState = 0;
 
                             }

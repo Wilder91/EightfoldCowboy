@@ -29,7 +29,6 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="31" name="player" x="489.379" y="361.916" width="34" height="34"/>
   <object id="37" name="pond" x="448.436" y="351.086">
    <polygon points="0,0 210.739,0 210.739,109.059 0,109.059"/>
   </object>
@@ -44,7 +43,7 @@
   <object id="46" name="large_rock" x="192.111" y="320.69">
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
-  <object id="51" name="barn" x="418.082" y="31.6115">
+  <object id="51" name="barn" x="418.082" y="31.6115" rotation="90">
    <polygon points="0,0 222.159,0 221.221,192.53 -1.87475,191.528"/>
   </object>
   <object id="53" name="shop" x="192.132" y="30.6081">
