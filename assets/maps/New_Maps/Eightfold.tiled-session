@@ -42,13 +42,14 @@
             "scale": 2.4046,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 401.10621309157455,
-                "y": 269.6914247691924
+                "x": 478.87382516842723,
+                "y": 321.6751226815271
             }
         },
         "Eightfold_Iso.tmx": {
             "expandedObjectLayers": [
-                2
+                2,
+                4
             ],
             "scale": 1.1356,
             "selectedLayer": 2,
@@ -125,8 +126,8 @@
     ],
     "project": "Eightfold.tiled-project",
     "recentFiles": [
-        "Eightfold_Iso.tmx",
         "Eightfold.tmx",
+        "Eightfold_Iso.tmx",
         "Rocks.tsx",
         "large_rock.tsx",
         "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles.tsx",

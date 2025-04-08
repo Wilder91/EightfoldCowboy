@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="isometric" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="5">
+<map version="1.10" tiledversion="1.10.2" orientation="isometric" renderorder="right-down" width="30" height="30" tilewidth="64" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="10">
  <layer id="1" name="Tile Layer 1" width="30" height="30">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -36,9 +36,15 @@
  </layer>
  <objectgroup id="2" name="objects">
   <object id="1" name="player" x="445.717" y="511.178" width="34" height="34"/>
+  <object id="9" name="jim" x="351.89" y="552.82" width="34" height="34"/>
  </objectgroup>
  <objectgroup id="4" name="wall">
   <object id="3" x="242.966" y="530.194"/>
-  <object id="4" name="Jim" x="329.876" y="502.627" width="34" height="34"/>
+  <object id="7" x="438.457" y="553.089">
+   <polygon points="0,0 0,-135.611 -49.3131,-42.2684"/>
+  </object>
+  <object id="8" x="412.039" y="484.403">
+   <polygon points="0,0 47.552,-324.058 -140.895,-320.535 -235.118,80.1338"/>
+  </object>
  </objectgroup>
 </map>
