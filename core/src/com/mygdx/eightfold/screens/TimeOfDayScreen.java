@@ -16,48 +16,44 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.eightfold.GameAssets;
 
-import static helper.Constants.PPM;
-
-public class PauseScreen implements Screen {
+public class TimeOfDayScreen implements Screen {
     private OrthographicCamera camera;
-    private GameAssets gameAssets;
     private GameScreen gameScreen;
+    private GameAssets gameAssets;
     private Stage stage;
     private Skin skin;
     private int selectedIndex; // To keep track of the selected button
     private TextButton[] buttons; // Array to hold buttons
-    private TimeOfDayScreen timeOfDayScreen;
 
-    public PauseScreen(OrthographicCamera camera, GameAssets gameAssets, GameScreen gameScreen) {
+    public TimeOfDayScreen(OrthographicCamera camera, GameScreen gameScreen, GameAssets gameAssets, Skin skin) {
         this.camera = camera;
-        this.gameAssets = gameAssets;
         this.gameScreen = gameScreen;
-        this.skin = new Skin(Gdx.files.internal("vhs/skin/vhs-ui.json"));
-        this.timeOfDayScreen = new TimeOfDayScreen(camera, gameScreen, gameAssets, skin);
+        this.gameAssets = gameAssets;
+        this.skin = skin;
 
-        // Initialize Scene2D Stage and Skin
+        // Initialize Scene2D Stage
         this.stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage); // Set input processor to the stage
+        Gdx.input.setInputProcessor(stage);
 
         // Create UI elements
-        Label pauseLabel = new Label("Paused", skin);
-        TextButton resumeButton = new TextButton("Resume", skin);
-        TextButton timeOfDayButton = new TextButton("Time of Day", skin);
-        TextButton debugButton = new TextButton("Debugger", skin);
-        TextButton exitButton = new TextButton("Exit", skin);
+        Label titleLabel = new Label("Time of Day", skin);
+        TextButton dayButton = new TextButton("Day", skin);
+        TextButton duskButton = new TextButton("Dusk", skin);
+        TextButton nightButton = new TextButton("Night", skin);
+        TextButton returnButton = new TextButton("Return", skin);
 
-        // Store buttons in an array
-        buttons = new TextButton[]{resumeButton, timeOfDayButton, debugButton, exitButton};
+        // Store buttons in an array for keyboard navigation
+        buttons = new TextButton[] {dayButton, duskButton, nightButton, returnButton};
 
         // Set up layout
         Table table = new Table();
         table.setFillParent(true);
         table.center();
-        table.add(pauseLabel).padBottom(20).row();
-        table.add(resumeButton).padBottom(20).row();
-        table.add(timeOfDayButton).padBottom(20).row();
-        table.add(debugButton).padBottom(20).row();
-        table.add(exitButton).padBottom(20).row();
+        table.add(titleLabel).padBottom(30).row();
+        table.add(dayButton).width(200).padBottom(20).row();
+        table.add(duskButton).width(200).padBottom(20).row();
+        table.add(nightButton).width(200).padBottom(20).row();
+        table.add(returnButton).width(200).padBottom(20).row();
 
         // Add table to the stage
         stage.addActor(table);
@@ -65,60 +61,73 @@ public class PauseScreen implements Screen {
         // Initialize selectedIndex
         selectedIndex = 0;
 
-        // Add listeners to buttons
-        resumeButton.addListener(new ClickListener() {
+        // Add button listeners
+        dayButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                resumeGame();
+                setTimeOfDay("day");
             }
         });
 
-        timeOfDayButton.addListener(new ClickListener() {
+        duskButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(timeOfDayScreen);
+                setTimeOfDay("dusk");
             }
         });
 
-        debugButton.addListener(new ClickListener(){
+        nightButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y){
-                gameScreen.flipDebugRendering();
-                resumeGame();
+            public void clicked(InputEvent event, float x, float y) {
+                setTimeOfDay("night");
             }
         });
 
-        exitButton.addListener(new ClickListener() {
+        returnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                returnToGame();
             }
         });
+    }
+
+    /**
+     * Sets the time of day in the game
+     * @param timeOfDay The time of day: "day", "dusk", or "night"
+     */
+    private void setTimeOfDay(String timeOfDay) {
+        // Tell the game screen to change the time of day
+        if (gameScreen != null) {
+            gameScreen.setTimeOfDay(timeOfDay);
+            gameScreen.showInfoBox("Time changed to " + timeOfDay);
+        }
+
+        // Return to the game
+        returnToGame();
+    }
+
+    private void returnToGame() {
+        ((Game) Gdx.app.getApplicationListener()).setScreen(gameScreen);
     }
 
     @Override
     public void show() {
-        // Initialization code, if needed
+        // Reset the input processor when this screen is shown
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        // Clear the screen
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.update();
-
-        // Handle input
+        // Handle keyboard input
         handleInput();
 
-        // Render the Stage
+        // Update and draw the stage
         stage.act(delta);
         stage.draw();
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-            // Resume the game
-            resumeGame();
-        }
     }
 
     private void handleInput() {
@@ -131,38 +140,33 @@ public class PauseScreen implements Screen {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             buttons[selectedIndex].toggle();
             buttons[selectedIndex].getClickListener().clicked(null, 0, 0);
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            returnToGame();
         }
-    }
-
-    private void resumeGame() {
-        ((Game) Gdx.app.getApplicationListener()).setScreen(gameScreen);
     }
 
     @Override
     public void resize(int width, int height) {
-        // Update the viewport
         stage.getViewport().update(width, height, true);
     }
 
     @Override
     public void pause() {
-        // Handle the pause event
+        // Not used
     }
 
     @Override
     public void resume() {
-        // Handle the resume event
+        // Not used
     }
 
     @Override
     public void hide() {
-        // Handle when this screen is hidden
+        // Not used
     }
 
     @Override
     public void dispose() {
         stage.dispose();
-        skin.dispose();
-        timeOfDayScreen.dispose();
     }
 }

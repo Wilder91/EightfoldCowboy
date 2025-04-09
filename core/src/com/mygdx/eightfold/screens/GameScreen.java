@@ -62,7 +62,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private PointLight playerLight;
     private Boolean debugRendering;
     private FPSLogger fpsLogger = new FPSLogger();
-
+    private String timeOfDay;
     // UI Components
     private TextBox textBox;
     private DecisionTextBox decisionTextBox;
@@ -116,7 +116,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         rayHandler.setShadows(true);
 
         // Set up time of day
-        String timeOfDay = "day";
+        timeOfDay = "day";
         float[] ambientColor = timeOfDayHelper.returnTime(timeOfDay);
         rayHandler.setAmbientLight(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
         rayHandler.setBlur(true);
@@ -481,5 +481,17 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     public OrthographicCamera getCamera() {
         return camera;
+    }
+
+    public void setTimeOfDay(String timeOfDay) {
+        if (rayHandler != null) {
+            // Get the appropriate ambient color for the selected time
+            float[] ambientColor = timeOfDayHelper.returnTime(timeOfDay);
+
+            // Set the ambient light in the RayHandler
+            rayHandler.setAmbientLight(
+                    ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]
+            );
+        }
     }
 }

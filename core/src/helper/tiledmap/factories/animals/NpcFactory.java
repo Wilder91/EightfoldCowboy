@@ -46,7 +46,7 @@ public class NpcFactory {
         Body npcBody = screenInterface.getWorld().createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(bodyWidth / 2, bodyHeight / 2);
+        shape.setAsBox(bodyWidth / 3, bodyHeight / 3);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
