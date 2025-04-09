@@ -32,6 +32,7 @@ public class Pond extends InanimateEntity {
         this.gameAssets = gameAssets;
         pondAnimations = new Animation[4];
         initAnimations();
+        setDepth(y);
     }
 
     @Override
@@ -39,6 +40,7 @@ public class Pond extends InanimateEntity {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
         stateTime += delta;
+
     }
 
     private void initAnimations() {

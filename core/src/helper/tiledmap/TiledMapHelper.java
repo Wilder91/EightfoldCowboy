@@ -146,13 +146,13 @@ public class TiledMapHelper {
                             createRock(polygonMapObject, 0);
                             break;
                         case "medium_rock_one":
-                            createRock(polygonMapObject, 3);
+                            createRock(polygonMapObject, 1);
                             break;
                         case "medium_rock_two":
                             createRock(polygonMapObject, 2);
                             break;
                         case "large_rock":
-                            createRock(polygonMapObject, 1);
+                            createRock(polygonMapObject, 3);
                             break;
                         case "small_rock_two":
                             createRock(polygonMapObject, 4);

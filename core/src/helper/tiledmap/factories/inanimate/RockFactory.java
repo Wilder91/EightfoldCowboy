@@ -1,5 +1,6 @@
 package helper.tiledmap.factories.inanimate;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
@@ -25,6 +26,8 @@ public class RockFactory extends InanimateEntityFactory {
         // Implement if needed for general entity creation
     }
 
+
+
     public void createRock(PolygonMapObject polygonMapObject, int rockType) {
         int rockId = ++rockCounter;
         Polygon polygon = polygonMapObject.getPolygon();
@@ -41,29 +44,8 @@ public class RockFactory extends InanimateEntityFactory {
 
         // Create the physics body for the rock
         Body rockBody = screenInterface.getWorld().createBody(bodyDef);
-        TextureRegion topTexture = gameAssets.getRockTopTexture(rockType);
-        TextureRegion bottomTexture = gameAssets.getRockBottomTexture(rockType);
-        // Define the shape of the rock (using a polygon based on its vertices)
-//        PolygonShape shape = new PolygonShape();
-//        float[] vertices = polygon.getTransformedVertices();
-//        Vector2[] worldVertices = new Vector2[vertices.length / 2];
-//
-//        // Convert vertices to world coordinates
-//        for (int i = 0; i < vertices.length / 2; i++) {
-//            worldVertices[i] = new Vector2(vertices[i * 2] / PPM, vertices[i * 2 + 1] / PPM);
-//        }
-//
-//        shape.set(worldVertices);
-//
-//        // Create a fixture definition
-//        FixtureDef fixtureDef = new FixtureDef();
-//        fixtureDef.shape = shape;
-//        fixtureDef.density = 1.0f;
-//        fixtureDef.friction = 0.5f;
-//        fixtureDef.restitution = 0.3f; // Bounciness of the rock
-//
-//        rockBody.createFixture(fixtureDef);
-       // shape.dispose(); // Dispose of the shape after using it
+
+
 
         // Create the rock entity
         Rock rock = new Rock(
@@ -71,8 +53,6 @@ public class RockFactory extends InanimateEntityFactory {
                 screenInterface,
                 rockType,
                 rockId,
-                topTexture,
-                bottomTexture,
                 gameAssets,
                 gameContactListener
         );

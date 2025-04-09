@@ -7,6 +7,8 @@ import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import helper.ContactType;
 import objects.animals.bird.Bird;
+import objects.animals.bird.Chicken;
+import objects.animals.Squirrel;
 import objects.animals.object_helper.DoorManager;
 import objects.humans.NPC;
 import objects.humans.NPCManager;
@@ -32,7 +34,7 @@ public class GameContactListener implements ContactListener {
             BodyUserData userDataA = (BodyUserData) a.getUserData();
             BodyUserData userDataB = (BodyUserData) b.getUserData();
             if (userDataB.getType() == ContactType.PLAYER && userDataA.getType() == ContactType.BUG){
-                System.out.println("BUG CONTACT");
+                //System.out.println("BUG CONTACT");
             }
             if(userDataA.getType() ==ContactType.PLAYER && userDataB.getType() == ContactType.DOOR){
 
@@ -42,10 +44,10 @@ public class GameContactListener implements ContactListener {
                 door.playerContact();
             }
             if(userDataA.getType() ==ContactType.PLAYER && userDataB.getType() == ContactType.NPC){
-                System.out.println("user data: " + userDataB.getId());
+                //System.out.println("user data: " + userDataB.getId());
                 NPC npc = NPCManager.getNPCById(userDataB.getId());
                 //screenInterface.getNPCById(userDataB.getId());
-                System.out.println(npc);
+                //System.out.println(npc);
 
                 // System.out.println("Player began contact with door: " + door.getName());
                 npc.playerContact(npc);
@@ -74,11 +76,11 @@ public class GameContactListener implements ContactListener {
             if (userDataA.getType() == ContactType.BIRD && userDataB.getType() == ContactType.BIRD) {
                 Bird.playerContact(bodyB, userDataB.getId());
 
-            } else if (userDataA.getType() == ContactType.BIRD && userDataB.getType() == ContactType.BISON) {
-                Bird.playerContact(a.getBody(), userDataA.getId());
+            } else if (userDataA.getType() == ContactType.CHICKEN && userDataB.getType() == ContactType.CHICKEN) {
+                Chicken.chickenContact(a.getBody(), userDataA.getId());
                 bodyB.setLinearDamping(7f);
 
-            }else if (userDataA.getType() == ContactType.BISON && userDataB.getType() == ContactType.BIRD) {
+            }else if (userDataA.getType() == ContactType.BISON && userDataB.getType() == ContactType.BISON) {
                 bodyA.setLinearDamping(7f);
                 Bird.playerContact(b.getBody(), userDataB.getId());
             }

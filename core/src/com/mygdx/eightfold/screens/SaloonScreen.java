@@ -291,15 +291,7 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
-    @Override
-    public void addLowerRock(Rock rock) {
 
-    }
-
-    @Override
-    public void addUpperRock(Rock rock) {
-
-    }
 
 
     private void updateDoorScreenReferences(ScreenInterface newScreen) {

@@ -55,7 +55,7 @@ public class BuildingFactory {
         filter.maskBits = BUILDING.getMaskBits();
         buildingFixture.setFilterData(filter);
 
-        System.out.println("building id: " + buildingId);
+        //System.out.println("building id: " + buildingId);
 
         // Determine texture names based on building ID
         String buildingName = getBuildingNameFromId(buildingId);

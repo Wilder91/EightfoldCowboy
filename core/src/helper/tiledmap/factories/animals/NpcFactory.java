@@ -58,7 +58,7 @@ public class NpcFactory {
         shape.dispose();
 
         NPC npc = new NPC(rectangle.width, rectangle.height, npcBody, screenInterface, gameAssets, npcId, name);
-        System.out.println("NAME: " + npcId + name);
+        //System.out.println("NAME: " + npcId + name);
         screenInterface.addNPC(npc);
     }
 }

@@ -16,6 +16,7 @@ import helper.ContactType;
 import com.mygdx.eightfold.GameAssets;
 import helper.movement.*;
 
+import objects.GameEntity;
 import objects.inanimate.Door;
 
 import static helper.Constants.PPM;
@@ -41,6 +42,7 @@ public class Player extends GameEntity {
         super(width, height, body, screenInterface, gameAssets);
         this.x = x;
         this.y = y;
+        setDepth(y);
         this.width = width;
         this.height = height;
         this.speed = 2.5f;
@@ -66,8 +68,8 @@ public class Player extends GameEntity {
                 (short) 0);
 
 
-        System.out.println("playerLight x: " + x * PPM);
-        System.out.println("playerLight y: " + y * PPM);
+//        System.out.println("playerLight x: " + x * PPM);
+//        System.out.println("playerLight y: " + y * PPM);
         playerLight.setPosition(x + .1f, y);
 
     }
@@ -86,6 +88,7 @@ public class Player extends GameEntity {
 
         checkUserInput();
         updateAnimation(delta);
+        setDepth(y);
         //if (justSwitchedHelpers) {
            // idleHelper.resetStateTime(); // <— Add a method like this if needed
         //}

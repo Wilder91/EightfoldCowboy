@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
-import com.mygdx.eightfold.player.GameEntity;
+import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
 
 import static helper.Constants.FRAME_DURATION;

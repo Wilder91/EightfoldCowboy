@@ -91,7 +91,7 @@ public class SimpleIdleHelper {
             // Create an empty animation to avoid null pointer exceptions
             idleAnimation = new Animation<TextureRegion>(frameDuration, new Array<TextureRegion>(TextureRegion.class));
         } else {
-            System.out.println("Loaded " + frames.size + " frames for " + regionPrefix);
+            //System.out.println("Loaded " + frames.size + " frames for " + regionPrefix);
             idleAnimation = new Animation<TextureRegion>(frameDuration, frames, Animation.PlayMode.LOOP);
         }
     }

@@ -40,7 +40,7 @@ public class FirstLevelConversations extends Conversation {
      * Returns the lines the NPC should say for a given phase
      */
     public String[] getNPCLines(int phase) {
-        System.out.println("Getting NPC texts for phase: " + phase);
+        //System.out.println("Getting NPC texts for phase: " + phase);
         switch (npc.getId()) {
             case 0: // Jim
                 if (phase == 0) {
@@ -92,7 +92,7 @@ public class FirstLevelConversations extends Conversation {
      * Returns the player's responses for a given phase
      */
     public String[] getPlayerLines(int phase) {
-        System.out.println("Getting player texts for phase: " + phase);
+        //System.out.println("Getting player texts for phase: " + phase);
         switch (npc.getId()) {
             case 0: // Jim
                 if (phase == 0) {

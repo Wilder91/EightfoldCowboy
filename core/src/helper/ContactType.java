@@ -10,9 +10,10 @@ public enum ContactType {
     BUTTERFLY(0x0040, 0),
     DRAGONFLY(0x0080, 0xFFFF),
     NPC(0x0100, 0xFFFF),
-    JIM(0x0200, 0x0001), // Only collide with player
+    CHICKEN(0x0200, 0xFFFF), //
     LIGHT(0x0400, 0xFFFF | 0x0001), // Lights see everything
-    BUILDING(0x0800, 0);
+    BUILDING(0x0800, 0),
+    SQUIRREL(0x1000, 0xFFFF);
 
     private final short categoryBits;
     private final short maskBits;

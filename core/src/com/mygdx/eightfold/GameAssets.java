@@ -139,4 +139,5 @@ public class GameAssets {
                 throw new IllegalArgumentException("Invalid rock type: " + rockType);
         }
     }
+
 }

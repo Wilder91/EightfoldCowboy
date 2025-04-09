@@ -57,7 +57,7 @@ public class ChickenFactory {
                 boundingRectangle.height * 0.6f, // for better gameplay feel
                 isStatic,
                 screenInterface.getWorld(),
-                ContactType.BISON,  // Assuming you have an ANIMAL contact type
+                ContactType.CHICKEN,  // Assuming you have an ANIMAL contact type
                 chickenId
         );
 

@@ -5,11 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
-import com.mygdx.eightfold.player.GameEntity;
+import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.movement.HorizontalSpriteHelper;
 import helper.movement.SimpleIdleHelper;
-import helper.movement.SimpleSpriteRunningHelper;
 
 import static helper.Constants.PPM;
 
@@ -26,7 +25,7 @@ public class Squirrel extends GameEntity {
     private boolean isMoving = false;
     private float squirrelSpeed = 1.2f; // Faster than chicken
     private int moveDirection = 1; // 1 for right, -1 for left
-
+    private float depth;
     // Track original position and movement count
     private Vector2 originalPosition = new Vector2();
     private int moveCount = 0;
@@ -49,6 +48,8 @@ public class Squirrel extends GameEntity {
 
         // Store the original position
         originalPosition.set(body.getPosition().x, body.getPosition().y);
+        setDepth(body.getPosition().y);
+
     }
 
     @Override
@@ -132,9 +133,9 @@ public class Squirrel extends GameEntity {
 
         // Update facing direction
         if (velocity.x < -0.1f) {
-            isFacingRight = false;
-        } else if (velocity.x > 0.1f) {
             isFacingRight = true;
+        } else if (velocity.x > 0.1f) {
+            isFacingRight = false;
         }
 
         // Choose between walking and idle animations based on movement
@@ -160,6 +161,8 @@ public class Squirrel extends GameEntity {
             System.err.println("Error: Cannot render squirrel, sprite is null");
         }
     }
+
+
 
     /**
      * Sets the squirrel's movement speed

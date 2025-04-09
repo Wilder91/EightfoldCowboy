@@ -35,9 +35,7 @@ public interface ScreenInterface {
 
     void addDoor(Door door);
 
-    void addLowerRock(Rock rock);
 
-    void addUpperRock(Rock rock);
 
     void setPlayer(Player player);
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
-import com.mygdx.eightfold.player.GameEntity;
+import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.movement.SimpleIdleHelper;
 import helper.movement.SimpleSpriteRunningHelper;
@@ -50,6 +50,12 @@ public class Chicken extends GameEntity {
         originalPosition.set(body.getPosition().x, body.getPosition().y);
     }
 
+    public static void playerContact(Body body, int id) {
+    }
+
+    public static void chickenContact(Body body, int id) {
+    }
+
     @Override
     public void update(float delta) {
         stateTime += delta;
@@ -57,7 +63,7 @@ public class Chicken extends GameEntity {
         // Update position from the physics body
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
-
+        resetDepthToY();
         // Update chicken movement
         updateMovement(delta);
 

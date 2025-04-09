@@ -18,54 +18,33 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
-import com.mygdx.eightfold.player.GameEntity;
+import com.mygdx.eightfold.ecs.EntityManager;
+import com.mygdx.eightfold.player.Player;
 import conversations.DialogueLine;
 import helper.ContactType;
 import helper.tiledmap.TiledMapHelper;
 import helper.world.time.TimeOfDayHelper;
 import objects.animals.Squirrel;
 import objects.animals.bird.Bird;
-
 import objects.animals.bird.Chicken;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
 import objects.humans.NPC;
 import objects.inanimate.*;
-import com.mygdx.eightfold.player.Player;
 import text.infobox.InfoBox;
-
 import text.textbox.DecisionTextBox;
 import text.textbox.TextBox;
 import box2dLight.RayHandler;
 import box2dLight.PointLight;
-//import box2dLight.AmbientLight;
-
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import static helper.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter implements ScreenInterface {
-    private final ArrayList<Bird> birdList;
-    private final ArrayList<Building> buildingList;
-    private final ArrayList<Boulder> boulderList;
-    private final ArrayList<Tree> treeList;
-    private final ArrayList<Bush> bushList;
-    private final ArrayList<Rock> rockList;
-    private final ArrayList<Rock> rockTopList;
-    private final ArrayList<Pond> pondList;
-    private final ArrayList<Butterfly> butterflyList;
-    private final ArrayList<Dragonfly> dragonflyList;
-    private final ArrayList<Chicken> chickenList;
-    private final ArrayList<Squirrel> squirrelList;
-    private final ArrayList<NPC> NPCList;
+    // Core game components
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
     private final ScreenInterface screenInterface;
-    private final ArrayList<Door> doorList;
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
     private final TiledMapHelper tiledMapHelper;
@@ -75,6 +54,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final GameContactListener gameContactListener;
     private final TimeOfDayHelper timeOfDayHelper;
     private final GameAssets gameAssets;
+    private final EntityManager entityManager;
     private boolean saloonTime = false;
     private Game game;
     private Skin skin;
@@ -82,37 +62,17 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private PointLight playerLight;
     private Boolean debugRendering;
     private FPSLogger fpsLogger = new FPSLogger();
-    public OrthographicCamera getCamera() {
-        return camera;
-    }
 
-    // TextBox
+    // UI Components
     private TextBox textBox;
     private DecisionTextBox decisionTextBox;
     private InfoBox infoBox;
     private String origin;
 
     public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
-
-
         this.screenInterface = screenInterface;
         this.timeOfDayHelper = new TimeOfDayHelper();
-        this.buildingList = new ArrayList<>();
         this.camera = camera;
-        this.pondList = new ArrayList<>();
-
-        this.birdList = new ArrayList<>();
-        this.boulderList = new ArrayList<>();
-        this.treeList = new ArrayList<>();
-        this.doorList = new ArrayList<>();
-        this.bushList = new ArrayList<>();
-        this.rockList = new ArrayList<>();
-        this.chickenList = new ArrayList<>();
-        this.squirrelList = new ArrayList<>();
-        this.butterflyList = new ArrayList<>();
-        this.dragonflyList = new ArrayList<>();
-        this.rockTopList = new ArrayList<>();
-        this.NPCList = new ArrayList<>();
         this.origin = origin;
         this.batch = new SpriteBatch();
         this.game = game;
@@ -123,8 +83,13 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.world.setContactListener(this.gameContactListener);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.debugRendering = false;
+
+        // Initialize the EntityManager with the world
+        this.entityManager = new EntityManager(world);
+
         this.tiledMapHelper = new TiledMapHelper(this, gameAssets, gameContactListener);
         this.orthogonalTiledMapRenderer = tiledMapHelper.setupMap("maps/new_Maps/Eightfold.tmx");
+
         // Initialize TextBox
         Skin skin = new Skin(Gdx.files.internal("commodore64/skin/uiskin.json"));
         this.skin = skin;
@@ -137,46 +102,40 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.decisionTextBox = new DecisionTextBox(skin, "player/player-single.png") {
             @Override
             public void setFontColor(float r, float g, float b, float a) {
-
+                // Empty implementation
             }
         };
 
         this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
 
+        // Initialize lighting
         rayHandler = new RayHandler(world);
         RayHandler.useDiffuseLight(true);
-        rayHandler.setCulling(true);  // Ensure lights are not culled
-        rayHandler.setBlurNum(1);      // Low blur for better performance during testing
+        rayHandler.setCulling(true);
+        rayHandler.setBlurNum(1);
         rayHandler.setShadows(true);
-        //rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 1f);  // Very dark to make lights more visible
-        //new PointLight(rayHandler, 128, new Color(1, 0, 0, 1), 20f, 60f, 20f);
-        //new PointLight(rayHandler, 128, new Color(1, 1, 0.5f, 1), 10f, 50f, 10f);
-        String timeOfDay = "dusk";
-        float camX = camera.position.x * PPM; // Convert to Box2D coordinates
-        float camY = camera.position.y * PPM;        //rayHandler.setCombinedMatrix(camera.combined);
-        //em.out.println("Test light position: " + camX + ", " + camY);// darker environment // night
+
+        // Set up time of day
+        String timeOfDay = "day";
         float[] ambientColor = timeOfDayHelper.returnTime(timeOfDay);
-        rayHandler.setAmbientLight(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);// neutral light
-        // Optional: soften shadows, tweak performance
+        rayHandler.setAmbientLight(ambientColor[0], ambientColor[1], ambientColor[2], ambientColor[3]);
         rayHandler.setBlur(true);
         rayHandler.setShadows(true);
-        setPlayer(player);
-        //enablePlayerLight();
+
+        // Set up input processors
         Gdx.input.setInputProcessor(textBox.getStage());
         Gdx.input.setInputProcessor(infoBox.getStage());
+
+        // Adjust player location based on origin
         adjustLocation();
     }
 
     private void adjustLocation() {
-
-        if(origin == "saloon"){
-            Door door = doorList.get(0);
-            //System.out.println("fromSaloon true");
+        if(origin.equals("saloon") && !entityManager.getDoors().isEmpty()) {
+            Door door = entityManager.getDoors().get(0);
             player.getBody().setTransform(door.getBody().getPosition().x, door.getBody().getPosition().y - 2, 0);
         }
     }
-
-
 
     @Override
     public void setTextBox(String filepath) {
@@ -184,7 +143,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             this.textBox = new TextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), filepath) {
                 @Override
                 public void setFontColor(float r, float g, float b, float a) {
-
+                    // Empty implementation
                 }
             };
             Gdx.input.setInputProcessor(textBox.getStage());
@@ -193,28 +152,26 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             e.printStackTrace();
         }
     }
+
     public void showTextBox(String text) {
         textBox.showTextBox(text);
     }
 
-
-
     public void showDecisionTextBox(String text) {
-        // hideTextBox();
         decisionTextBox.showTextBox(text);
     }
 
     @Override
     public void showDecisionTextbox(DialogueLine dialogueLine) {
-
+        // Implementation needed
     }
 
-    public void setDecisionTextBox(String filepath){
+    public void setDecisionTextBox(String filepath) {
         try {
             this.decisionTextBox = new DecisionTextBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")), filepath) {
                 @Override
                 public void setFontColor(float r, float g, float b, float a) {
-
+                    // Empty implementation
                 }
             };
             Gdx.input.setInputProcessor(textBox.getStage());
@@ -224,16 +181,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         }
     }
 
-
-
-
     @Override
     public void showPlayerTextBox(String playerConversationText) {
-
+        // Implementation needed
     }
-
-
-
 
     public void hideTextBox() {
         textBox.hideTextBox();
@@ -245,15 +196,12 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     @Override
     public void setChoices(String... choices) {
-        //decisionTextBox.setChoices(choices);
+        // Implementation needed
     }
-
-
-
 
     @Override
     public void showTextBox(DialogueLine line) {
-
+        // Implementation needed
     }
 
     public void showInfoBox(String text) {
@@ -266,13 +214,12 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     public void setSaloonTime(boolean time) {
         music.stop();
-        //System.out.println("CLOSE!");
         this.saloonTime = time;
     }
 
     @Override
     public void setGameTime(boolean saloonTime) {
-
+        // Implementation needed
     }
 
     public Player getPlayer() {
@@ -285,11 +232,9 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     @Override
     public void transitionToScreen(ScreenInterface newScreen) {
-        removePlayerBody();
+        entityManager.removePlayerBody();
         ((Game) Gdx.app.getApplicationListener()).setScreen((ScreenAdapter) newScreen);
-
         updateDoorScreenReferences(newScreen);
-
     }
 
     @Override
@@ -303,8 +248,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     private void updateDoorScreenReferences(ScreenInterface newScreen) {
-        for (Door door : doorList) {
-            removePlayerBody();
+        for (Door door : entityManager.getDoors()) {
             door.setScreen(newScreen);
         }
     }
@@ -313,82 +257,19 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         world.step(1 / 60f, 6, 2);
         cameraUpdate();
 
-        //System.out.println("Camera position: " + camera.position.x + ", " + camera.position.y);
-
-
+        // Update player light position
         if (player != null && playerLight != null) {
             Vector2 pos = player.getBody().getPosition();
-//            System.out.println("playerLight x: " + pos.x * PPM);
-//            System.out.println("playerLight y: " + pos.y * PPM);
-            playerLight.setPosition(pos.x + .1f , pos.y);
-
+            playerLight.setPosition(pos.x + .1f, pos.y);
         }
 
         batch.setProjectionMatrix(camera.combined);
         orthogonalTiledMapRenderer.setView(camera);
 
-        for (Butterfly butterfly : butterflyList){
-            butterfly.update(delta);
-        }
+        // Update all entities using the EntityManager
+        entityManager.update(delta);
 
-        for (Dragonfly dragonfly : dragonflyList){
-            dragonfly.update(delta);
-        }
-        for (Squirrel squirrel : squirrelList) {
-            squirrel.update(delta);
-        }
-        for (Chicken chicken : chickenList) {
-            chicken.update(delta);
-        }
-
-        for(NPC npc : NPCList){
-            npc.update(delta);
-        }
-
-        for (Tree tree : treeList) {
-            tree.update(delta);
-        }
-
-        for(Building building : buildingList){
-            building.update(delta);
-        }
-
-
-
-        for(Bush bush: bushList){
-            bush.update(delta);
-        }
-
-
-
-
-        if (player != null) {
-            player.update(delta);
-        }
-
-
-
-
-
-
-
-
-
-
-        for (Bird bird : birdList) {
-            bird.update(delta);
-        }
-
-
-
-
-        for (Pond pond : pondList) {
-            pond.update(delta);
-        }
-
-
-
-
+        // Handle user input
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             enterPauseScreen();
         }
@@ -396,11 +277,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
         }
+
+        // Transition to Saloon if needed
         if (saloonTime) {
-            World newWorld = new World(new Vector2(0, 0), false); // Create a new World instance for the new screen
-            // Create a new GameContactListener instance
-            SaloonScreen saloonScreen = new SaloonScreen(camera, gameAssets,   this, newWorld, this, player, game);
-            // Use new instances
+            World newWorld = new World(new Vector2(0, 0), false);
+            SaloonScreen saloonScreen = new SaloonScreen(camera, gameAssets, this, newWorld, this, player, game);
             ((Game) Gdx.app.getApplicationListener()).setScreen(saloonScreen);
             updateDoorScreenReferences(saloonScreen);
         }
@@ -420,174 +301,98 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             position.y += (target.y - position.y) * 0.1f;
             camera.position.set(position);
             camera.update();
-
-            // 👇 Set player light position (if not attached to body)
-//            if (playerLight != null) {
-//                //System.out.println("player light exists");
-//                Vector2 lightPos = player.getBody().getPosition();
-//                System.out.println("lightpos = " + lightPos);
-//                playerLight.setPosition(lightPos);
-//            }
         }
     }
 
-
-
-
+    // Use the EntityManager for entity management
     @Override
     public void addDoor(Door door) {
-        if (doorList != null) {
-            doorList.add(door);
-        } else {
-            System.err.println("doorList is null. Cannot add door.");
-        }
+        entityManager.addDoor(door);
     }
 
     @Override
     public void addChicken(Chicken chicken) {
-        if (chickenList != null) {
-            chickenList.add(chicken);
-        } else {
-            System.err.println("doorList is null. Cannot add door.");
-        }
+        entityManager.addChicken(chicken);
     }
 
     @Override
     public void addSquirrel(Squirrel squirrel) {
-        if (squirrelList != null) {
-            squirrelList.add(squirrel);
-        } else {
-            System.err.println("squirrelList is null. Cannot add squirrel");
-        }
+        entityManager.addSquirrel(squirrel);
     }
 
     @Override
     public void addPond(Pond pond) {
-        if (pondList != null) {
-            pondList.add(pond);
-        } else {
-            System.err.println("pondList is null.");
-        }
-
+        entityManager.addPond(pond);
     }
 
     @Override
     public void addButterfly(Butterfly butterfly) {
-        if (butterflyList != null) {
-            butterflyList.add(butterfly);
-        } else {
-            System.err.println("butterflyList is null.");
-        }
+        entityManager.addButterfly(butterfly);
     }
-
-
 
     @Override
     public void addBug(Bug bug) {
-
+        entityManager.addBug(bug);
     }
 
     @Override
     public void addDragonfly(Dragonfly dragonfly) {
-        if (dragonflyList != null) {
-            dragonflyList.add(dragonfly);
-        } else {
-            System.err.println("butterflyList is null.");
-        }
+        entityManager.addDragonfly(dragonfly);
     }
 
     @Override
     public void addNPC(NPC npc) {
-        if (NPCList != null){
-            NPCList.add(npc);
-        }
-
+        entityManager.addNPC(npc);
     }
 
     @Override
     public void getNPCById(int id) {
-
+        entityManager.getNPCById(id);
     }
 
 
-    @Override
-    public void addLowerRock(Rock rock) {
 
-    }
-
-    public void playerArrives(){
-        Door door = doorList.get(0);
-        player.getBody().setTransform(door.getBody().getPosition().x, door.getBody().getPosition().y +200, 0);
-    }
-
-    @Override
-    public void addUpperRock(Rock rock) {
-
-    }
-
-    public void removePlayerBody() {
-        //System.out.println("player body before : " + player.getBody());
-        if (player != null && player.getBody() != null) {
-            world.destroyBody(player.getBody());
-            player.setBody(null);
-            //System.out.println("player body after: " + player.getBody());// Clear the reference to the old body
+    public void playerArrives() {
+        if (!entityManager.getDoors().isEmpty()) {
+            Door door = entityManager.getDoors().get(0);
+            player.getBody().setTransform(door.getBody().getPosition().x, door.getBody().getPosition().y + 200, 0);
         }
     }
 
+
+    public void removePlayerBody() {
+        entityManager.removePlayerBody();
+    }
 
     @Override
     public void addBird(Bird bird) {
-        if (birdList != null) {
-            birdList.add(bird);
-        } else {
-            System.err.println("birdList is null. Cannot add bird.");
-        }
+        entityManager.addBird(bird);
     }
 
     @Override
     public void addBoulder(Boulder boulder) {
-        if (boulderList != null) {
-            boulderList.add(boulder);
-        }
+        entityManager.addBoulder(boulder);
     }
-
-
-
-
 
     @Override
     public void addBuilding(Building building) {
-        if (buildingList != null) {
-            buildingList.add(building);
-        }
+        entityManager.addBuilding(building);
     }
 
     @Override
     public void addTree(Tree tree) {
-        if (treeList != null) {
-            treeList.add(tree);
-        }
+        entityManager.addTree(tree);
     }
-
-
 
     @Override
     public void addBush(Bush bush) {
-        if (bushList != null) {
-            bushList.add(bush);
-        }
-
+        entityManager.addBush(bush);
     }
 
     @Override
     public void addRock(Rock rock) {
-        rockList.add(rock);
-
+        entityManager.addRock(rock);
     }
-
-
-
-
 
     @Override
     public void render(float delta) {
@@ -603,74 +408,27 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         orthogonalTiledMapRenderer.setView(camera);
         orthogonalTiledMapRenderer.render();
 
-        // Create a list for all entities that need Y-sorting
-        List<GameEntity> sortedEntities = new ArrayList<>();
-
-        // Add all entities that should be sorted
-        if (player != null) sortedEntities.add(player);
-        sortedEntities.addAll(chickenList);
-        sortedEntities.addAll(squirrelList);
-        sortedEntities.addAll(birdList);
-        sortedEntities.addAll(butterflyList);
-        sortedEntities.addAll(dragonflyList);
-        sortedEntities.addAll(NPCList);
-        sortedEntities.addAll(bushList);
-        sortedEntities.addAll(treeList);
-        sortedEntities.addAll(buildingList);
-        // Add any other entities that should be Y-sorted
-
-        // Sort by Y position
-        Collections.sort(sortedEntities, GameEntity.Y_COMPARATOR);
-
         // Begin drawing with the SpriteBatch
         batch.begin();
 
-
-
-        for (Pond pond : pondList){
-            pond.render(batch);
-        }
-
-
-        // Render rocks bottom
-        for (Rock rock : rockList) {
-            rock.renderBottom(batch);
-        }
-
-
-
-        // Render all Y-sorted entities
-        for (GameEntity entity : sortedEntities) {
-            entity.render(batch);
-        }
-
-        // Render elements that are always on top
-        for (Rock rock : rockList) {
-            rock.renderTop(batch);
-        }
-
-
-
-        for (Door door : doorList) {
-            door.render(batch);
-        }
-
+        // Use the EntityManager to render all entities
+        entityManager.render(batch);
 
         batch.end();
 
-        // Rest of your render method (lights, UI, etc.)
+        // Render lighting
         rayHandler.setCombinedMatrix(camera.combined.cpy().scl(PPM));
         rayHandler.updateAndRender();
 
         // Render UI elements
         textBox.getStage().act(delta);
         textBox.getStage().draw();
+
+        // Debug rendering
         if(debugRendering) {
             box2DDebugRenderer.render(world, camera.combined.scl(PPM));
         }
     }
-
-
 
     @Override
     public void dispose() {
@@ -681,9 +439,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         textBox.getStage().dispose();
         textBox.getSkin().dispose();
         rayHandler.dispose();
+        entityManager.dispose();
     }
 
-    public void resetPlayer(Player player, Door door){
+    public void resetPlayer(Player player, Door door) {
         player.screenChange(world, door);
     }
 
@@ -693,28 +452,20 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
                 playerLight.remove(); // Remove old light if it exists
             }
 
-            // Get the current position
-            Vector2 pos = player.getBody().getPosition();
-
-
-            // Create a new light (note: light radius is in world units, not pixels)
+            // Create a new light
             playerLight = new PointLight(rayHandler, 128, new Color(.5f, .4f, .5f, 1f), .4f, 0, 0);
             playerLight.setSoftnessLength(1f);
             playerLight.setContactFilter(ContactType.LIGHT.getCategoryBits(),
                     ContactType.LIGHT.getMaskBits(),
                     (short) 0);
-
         }
     }
 
-
     public void setPlayer(Player player) {
         this.player = player;
+        entityManager.setPlayer(player);
         enablePlayerLight();
     }
-
-
-
 
     public World getWorld() {
         return world;
@@ -722,6 +473,13 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     public void flipDebugRendering() {
         debugRendering = !debugRendering;
+    }
 
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
     }
 }

@@ -26,6 +26,7 @@ public class Bush extends InanimateEntity {
     private String atlasPath;
     private TextureRegion bushTexture;
     private GameAssets gameAssets;
+    private float depth;
 
     public Bush(Body body, ScreenInterface screenInterface, int bushType, int id, GameAssets gameAssets, GameContactListener gameContactListener) {
         super(0, 0, body, screenInterface, id, gameAssets, gameContactListener);
@@ -34,6 +35,7 @@ public class Bush extends InanimateEntity {
         this.gameAssets = gameAssets;
         this.atlasPath = "atlases/eightfold/bushes.atlas";
         initTexture();
+        setDepth(y);
     }
 
     private void initTexture() {
@@ -113,8 +115,11 @@ public class Bush extends InanimateEntity {
     public void update(float delta) {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
+        resetDepthToY();
         stateTime += delta;
     }
+
+
 
     @Override
     public void render(SpriteBatch batch) {

@@ -1,11 +1,10 @@
 package objects.inanimate;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
-import com.mygdx.eightfold.player.GameEntity;
+import objects.GameEntity;
 
 public abstract class InanimateEntity extends GameEntity {
     private final int id;

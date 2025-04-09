@@ -35,7 +35,7 @@ public class Dragonfly extends Bug {
         Array<TextureRegion> frames = new Array<>();
 
         String animationPrefix = DRAGONFLY_NAMES.get(dragonflyType);
-        System.out.println("animation prefix: " + animationPrefix);
+       // System.out.println("animation prefix: " + animationPrefix);
 
         for (int i = 1; i <= 9; i++) {
             TextureRegion region = atlas.findRegion(animationPrefix, i);

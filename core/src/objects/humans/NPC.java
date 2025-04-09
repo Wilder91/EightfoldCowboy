@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
-import com.mygdx.eightfold.player.GameEntity;
+import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import conversations.ConversationManager;
 import helper.movement.SpriteIdleHelper;
@@ -47,7 +47,7 @@ public class NPC extends GameEntity {
         int[] frameCounts = getFrameCountsFromName(characterName);
         float stateTime = getStateTimeFromName(characterName);
 
-        System.out.println("character name: " + npcId);
+        //System.out.println("character name: " + npcId);
         NPCManager.addNPC(this);
         this.idleHelper = new SpriteIdleHelper(gameAssets, "NPC", characterName, frameCounts, stateTime);
     }
@@ -90,7 +90,7 @@ public class NPC extends GameEntity {
         stateTime += delta;
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
-
+        resetDepthToY();
         idleHelper.setDirection(lastDirection);
         idleHelper.setFacingRight(isFacingRight);
         idleHelper.update(delta);

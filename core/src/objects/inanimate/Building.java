@@ -6,8 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
-import com.mygdx.eightfold.GameContactListener;
-import com.mygdx.eightfold.player.GameEntity;
+import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
 
 import static helper.Constants.PPM;
@@ -30,15 +29,15 @@ public class Building extends GameEntity {
 
         // Load the sprite
         String path = "buildings/" + textureName + "s/" + textureName + "-1.png";
-        System.out.println("Trying to load texture from: " + path);
+        //System.out.println("Trying to load texture from: " + path);
         try {
             this.buildingSprite = new Sprite(gameAssets.getTexture(path));
             if (buildingSprite.getTexture() == null) {
                 System.err.println("Texture loaded but is null: " + path);
             } else {
-                System.out.println("Texture successfully loaded: " + path);
+                //System.out.println("Texture successfully loaded: " + path);
                 // Print texture dimensions for debugging
-                System.out.println("Texture dimensions: " + buildingSprite.getTexture().getWidth() + "x" + buildingSprite.getTexture().getHeight());
+               // System.out.println("Texture dimensions: " + buildingSprite.getTexture().getWidth() + "x" + buildingSprite.getTexture().getHeight());
             }
         } catch (Exception e) {
             System.err.println("Failed to load texture: " + path);
@@ -52,6 +51,8 @@ public class Building extends GameEntity {
         this.x = this.getBody().getPosition().x * PPM;
         this.y = this.getBody().getPosition().y * PPM;
         stateTime += delta;
+        //resetDepthToY();
+        setDepthOffset(-29f);
     }
 
     @Override

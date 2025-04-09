@@ -1,6 +1,6 @@
 package conversations;
 
-import com.mygdx.eightfold.player.GameEntity;
+import objects.GameEntity;
 import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import conversations.firstLevel.FirstLevelConversations;
