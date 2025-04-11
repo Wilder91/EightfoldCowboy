@@ -1,4 +1,4 @@
-package objects.animals.bird;
+package objects.animals.birds;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,7 +10,7 @@ import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.movement.SpriteMovementHelper;
 
-import objects.animals.object_helper.BirdManager;
+import objects.animals.animal_helpers.BirdManager;
 import objects.GameEntity;
 
 import java.util.Random;

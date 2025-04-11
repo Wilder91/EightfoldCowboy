@@ -1,28 +1,5 @@
 //package com.mygdx.eightfold.screens.updating;
 
-import box2dLight.PointLight;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.World;
-import com.mygdx.eightfold.player.Player;
-import com.mygdx.eightfold.screens.GameScreen;
-import com.mygdx.eightfold.screens.PauseScreen;
-import com.mygdx.eightfold.screens.SaloonScreen;
-import objects.animals.bird.Bird;
-
-import objects.animals.bugs.Butterfly;
-import objects.animals.bugs.Dragonfly;
-import objects.humans.NPC;
-import objects.inanimate.*;
-
-import java.util.ArrayList;
-
-import static helper.Constants.PPM;
-
 //public class GameScreenUpdater {
 //    private final World world;
 //    private final OrthographicCamera camera;

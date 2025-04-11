@@ -22,19 +22,21 @@ public class Rock extends InanimateEntity {
     public static final int CLIFF_ONE = 5;
     private static final int CLIFF_TWO = 6;
 
-    private final int rockType;
+
     private TextureRegion texture;
     private float stateTime;
+    private String textureName;
 
 
     private GameAssets gameAssets;
 
-    public Rock(Body body, ScreenInterface screenInterface, int rockType, int id,
+    public Rock(Body body, ScreenInterface screenInterface, int id, String textureName,
                 GameAssets gameAssets, GameContactListener gameContactListener) {
         super(0, 0, body, screenInterface, id, gameAssets, gameContactListener);
         this.stateTime = 0f;
-        this.rockType = rockType;
+
         this.texture = texture;
+        this.textureName = textureName;
 
         this.gameAssets = gameAssets;
         setDepth(y);
@@ -66,11 +68,11 @@ public class Rock extends InanimateEntity {
     }
     
     private void initTexture(){
-        String regionName = getRockRegionName(rockType);
+        String regionName = textureName;
         //System.out.println("rock regionname: " + regionName);
         String atlasPath = "atlases/eightfold/rocks.atlas";
         if (regionName.isEmpty()) {
-            System.err.println("Unknown rockType: " + rockType);
+            System.err.println("Unknown rockType: " + textureName);
             return;
         }
 
@@ -85,10 +87,10 @@ public class Rock extends InanimateEntity {
 
 
         // Find the region in the atlas
-        texture = atlas.findRegion(regionName);
+        texture = atlas.findRegion(textureName);
 
         if (texture == null) {
-            System.err.println("Rock texture region not found: " + regionName + " for rock type: " + rockType);
+            System.err.println("Rock texture region not found: " + regionName + " for rock type: " + textureName);
             return;
         } else {
             //System.out.println("Successfully loaded texture for: " + regionName + " (type: " + bushType + ")");
@@ -134,7 +136,7 @@ public class Rock extends InanimateEntity {
             float y = body.getPosition().y * PPM - height / 2;
             batch.draw(texture, x, y, width, height);
         } else {
-            System.err.println("Rock texture not loaded, cannot render. Rock type: " + getRockRegionName(rockType));
+            System.err.println("Rock texture not loaded, cannot render. Rock type: " + textureName);
         }
     }
 

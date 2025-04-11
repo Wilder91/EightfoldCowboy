@@ -1,0 +1,93 @@
+{
+"chickens": [
+	{
+		"posX": {
+			"class": "java.lang.Float",
+			"value": 13.551073
+		},
+		"posY": {
+			"class": "java.lang.Float",
+			"value": 2.2398086
+		},
+		"id": {
+			"class": "java.lang.Integer",
+			"value": 0
+		}
+	},
+	{
+		"posX": {
+			"class": "java.lang.Float",
+			"value": 13.945488
+		},
+		"posY": {
+			"class": "java.lang.Float",
+			"value": 6.163672
+		},
+		"id": {
+			"class": "java.lang.Integer",
+			"value": 0
+		}
+	}
+],
+"doors": [],
+"npcs": [
+	{
+		"posX": {
+			"class": "java.lang.Float",
+			"value": 12.666875
+		},
+		"posY": {
+			"class": "java.lang.Float",
+			"value": 12.311719
+		},
+		"id": {
+			"class": "java.lang.Integer",
+			"value": 1
+		}
+	},
+	{
+		"posX": {
+			"class": "java.lang.Float",
+			"value": 6.6132812
+		},
+		"posY": {
+			"class": "java.lang.Float",
+			"value": 13.915501
+		},
+		"id": {
+			"class": "java.lang.Integer",
+			"value": 0
+		}
+	}
+],
+"header": {
+	"class": "java.lang.String",
+	"value": "EIGHTFOLD_SAVE"
+},
+"version": {
+	"class": "java.lang.String",
+	"value": "1.0"
+},
+"timestamp": {
+	"class": "java.lang.Long",
+	"value": 1744334763933
+},
+"player": {
+	"posX": {
+		"class": "java.lang.Float",
+		"value": 13.202434
+	},
+	"posY": {
+		"class": "java.lang.Float",
+		"value": 6.3108883
+	},
+	"exists": {
+		"class": "java.lang.Boolean",
+		"value": true
+	}
+},
+"timeOfDay": {
+	"class": "java.lang.String",
+	"value": "day"
+}
+}

@@ -28,6 +28,11 @@ public class PauseScreen implements Screen {
     private TextButton[] buttons; // Array to hold buttons
     private TimeOfDayScreen timeOfDayScreen;
 
+    // Add save file name constants
+    private static final String DEFAULT_SAVE_FILE = "eightfold_save.json";
+    private static final String QUICK_SAVE_FILE = "eightfold_quicksave.json";
+    private TextButton quickSaveButton;
+
     public PauseScreen(OrthographicCamera camera, GameAssets gameAssets, GameScreen gameScreen) {
         this.camera = camera;
         this.gameAssets = gameAssets;
@@ -44,10 +49,23 @@ public class PauseScreen implements Screen {
         TextButton resumeButton = new TextButton("Resume", skin);
         TextButton timeOfDayButton = new TextButton("Time of Day", skin);
         TextButton debugButton = new TextButton("Debugger", skin);
+        TextButton saveButton = new TextButton("Save Game", skin);
+        TextButton loadButton = new TextButton("Load Game", skin);
+        quickSaveButton = new TextButton("Quick Save", skin);
+        TextButton quickLoadButton = new TextButton("Quick Load", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
-        // Store buttons in an array
-        buttons = new TextButton[]{resumeButton, timeOfDayButton, debugButton, exitButton};
+        // Store buttons in an array (update this to include all buttons)
+        buttons = new TextButton[]{
+                resumeButton,
+                timeOfDayButton,
+                debugButton,
+                saveButton,
+                loadButton,
+                quickSaveButton,
+                quickLoadButton,
+                exitButton
+        };
 
         // Set up layout
         Table table = new Table();
@@ -57,6 +75,10 @@ public class PauseScreen implements Screen {
         table.add(resumeButton).padBottom(20).row();
         table.add(timeOfDayButton).padBottom(20).row();
         table.add(debugButton).padBottom(20).row();
+        table.add(saveButton).padBottom(20).row();
+        table.add(loadButton).padBottom(20).row();
+        table.add(quickSaveButton).padBottom(20).row();
+        table.add(quickLoadButton).padBottom(20).row();
         table.add(exitButton).padBottom(20).row();
 
         // Add table to the stage
@@ -84,6 +106,38 @@ public class PauseScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 gameScreen.flipDebugRendering();
+                resumeGame();
+            }
+        });
+
+        saveButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameScreen.saveGame(DEFAULT_SAVE_FILE);
+                resumeGame();
+            }
+        });
+
+        loadButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameScreen.loadGame(DEFAULT_SAVE_FILE);
+                resumeGame();
+            }
+        });
+
+        quickSaveButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameScreen.saveGame(QUICK_SAVE_FILE);
+                resumeGame();
+            }
+        });
+
+        quickLoadButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                gameScreen.loadGame(QUICK_SAVE_FILE);
                 resumeGame();
             }
         });
@@ -118,6 +172,22 @@ public class PauseScreen implements Screen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             // Resume the game
             resumeGame();
+        }
+
+        // Add quick save shortcut
+        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+            gameScreen.saveGame(QUICK_SAVE_FILE);
+            // Show a quick feedback that save happened
+            quickSaveButton.setText("Quick Save - Done!");
+            // Reset the text after a short delay
+            Gdx.app.postRunnable(() -> {
+                try {
+                    Thread.sleep(1000);
+                    quickSaveButton.setText("Quick Save");
+                } catch (InterruptedException e) {
+                    Gdx.app.error("PauseScreen", "Sleep interrupted", e);
+                }
+            });
         }
     }
 

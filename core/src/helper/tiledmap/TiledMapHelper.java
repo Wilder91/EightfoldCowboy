@@ -1,8 +1,10 @@
 package helper.tiledmap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -56,6 +58,8 @@ public class TiledMapHelper {
 
         // Parse the objects in the new map
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
+
+        System.out.println(tiledMap.getLayers().get("objects").getObjects());
         parseWallObjects(tiledMap.getLayers().get("wall").getObjects());
 
         // Return the new map renderer
@@ -72,11 +76,25 @@ public class TiledMapHelper {
 
     private void parseMapObjects(MapObjects mapObjects) {
         for (MapObject mapObject : mapObjects) {
-            //System.out.println(mapObject.getProperties().get("type", String.class));
+
             if (mapObject instanceof PolygonMapObject) {
                 PolygonMapObject polygonMapObject = (PolygonMapObject) mapObject;
                 String polygonName = mapObject.getName();
+                String objectClass = (String) mapObject.getProperties().get("class");
+                System.out.println(objectClass);
                 if (polygonName != null) {
+                    if(objectClass != null) {
+                        switch (objectClass) {
+                            case "rocks":
+                                createRock(polygonMapObject, polygonName);
+                                break;
+                            case "trees":
+                                createTree(polygonMapObject, polygonName);
+
+                        }
+                    }
+
+
                     switch (polygonName) {
                         case "bird":
                             createBird(polygonMapObject);
@@ -89,42 +107,6 @@ public class TiledMapHelper {
                             break;
                         case "barn":
                             createBuilding(polygonMapObject, 1);
-                            break;
-                        case "large_oak":
-                            createTree(polygonMapObject, Tree.LARGE_OAK);
-                            break;
-                        case "medium_oak_one":
-                            createTree(polygonMapObject, Tree.MEDIUM_1);
-                            break;
-                        case "medium_oak_two":
-                            createTree(polygonMapObject, Tree.MEDIUM_2);
-                            break;
-                        case "small_oak":
-                            createTree(polygonMapObject, Tree.SMALL);
-                            break;
-                        case "juvenile":
-                            createTree(polygonMapObject, Tree.JUVENILE);
-                            break;
-                        case "aspen_1":
-                            createTree(polygonMapObject, Tree.ASPEN_ONE);
-                            break;
-                        case "aspen_2":
-                            createTree(polygonMapObject, Tree.ASPEN_TWO);
-                            break;
-                        case "aspen_3":
-                            createTree(polygonMapObject, Tree.ASPEN_THREE);
-                            break;
-                        case "aspen_baby":
-                            createTree(polygonMapObject, Tree.ASPEN_BABY);
-                            break;
-                        case "aspen_young":
-                            createTree(polygonMapObject, Tree.ASPEN_YOUNG);
-                            break;
-                        case "aspen_stump":
-                            createTree(polygonMapObject, Tree.ASPEN_STUMP);
-                            break;
-                        case "seedling":
-                            createTree(polygonMapObject, Tree.SEEDLING);
                             break;
                         case "bush_one":
                             //System.out.println("bush!");
@@ -142,30 +124,21 @@ public class TiledMapHelper {
                         case "bush_five":
                             createBush(polygonMapObject, 4);
                             break;
-                        case "small_rock_one":
-                            createRock(polygonMapObject, 0);
-                            break;
-                        case "medium_rock_one":
-                            createRock(polygonMapObject, 1);
-                            break;
-                        case "medium_rock_two":
-                            createRock(polygonMapObject, 2);
-                            break;
-                        case "large_rock":
-                            createRock(polygonMapObject, 3);
-                            break;
-                        case "small_rock_two":
-                            createRock(polygonMapObject, 4);
-                            break;
+//                        case "large_rock":
+//                            createRock(polygonMapObject, 3);
+//                            break;
+//                        case "small_rock_two":
+//                            createRock(polygonMapObject, 4);
+//                            break;
                         case "pond":
                             createPond(polygonMapObject, 0);
                             break;
-                        case "cliff_one":
-                            createRock(polygonMapObject, 5);
-                            break;
-                        case "cliff_two":
-                            createRock(polygonMapObject, 6);
-                            break;
+//                        case "cliff_one":
+//                            createRock(polygonMapObject, 5);
+//                            break;
+//                        case "cliff_two":t
+//                            createRock(polygonMapObject, 6);
+//                            break;
                         case "small_white_butterfly":
                             createBug(polygonMapObject, 0);
                             break;
@@ -349,10 +322,16 @@ public class TiledMapHelper {
 
     }
 
+    private void createRock(PolygonMapObject polygonMapObject, String textureName) {
+        RockFactory rockFactory = new RockFactory(screenInterface, gameAssets, gameContactListener);
+        rockFactory.createRock(polygonMapObject, textureName);
+    }
 
-    private void createTree(PolygonMapObject polygonMapObject, int treeType) {
+
+    private void createTree(PolygonMapObject polygonMapObject, String textureName) {
+        System.out.println("create tree");
         TreeFactory treeFactory = new TreeFactory(screenInterface, gameAssets);
-        treeFactory.createTree(polygonMapObject, treeType);
+        treeFactory.createTree(polygonMapObject, textureName);
     }
 
     private void createPond(PolygonMapObject polygonMapObject, int pondType) {
@@ -365,11 +344,7 @@ public class TiledMapHelper {
         BushFactory bushFactory = new BushFactory(screenInterface, gameAssets, gameContactListener);
         bushFactory.createBush(polygonMapObject, bushType);
     }
-    private void createRock(PolygonMapObject polygonMapObject, int rockType) {
-        //System.out.println("create rock");
-        RockFactory rockFactory = new RockFactory(screenInterface, gameAssets, gameContactListener);
-        rockFactory.createRock(polygonMapObject, rockType);
-    }
+
 
 
 

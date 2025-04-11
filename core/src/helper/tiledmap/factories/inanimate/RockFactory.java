@@ -28,7 +28,8 @@ public class RockFactory extends InanimateEntityFactory {
 
 
 
-    public void createRock(PolygonMapObject polygonMapObject, int rockType) {
+    public void createRock(PolygonMapObject polygonMapObject,  String textureName) {
+        System.out.println("FUCK");
         int rockId = ++rockCounter;
         Polygon polygon = polygonMapObject.getPolygon();
         Rectangle boundingRectangle = polygon.getBoundingRectangle();
@@ -44,15 +45,15 @@ public class RockFactory extends InanimateEntityFactory {
 
         // Create the physics body for the rock
         Body rockBody = screenInterface.getWorld().createBody(bodyDef);
-
+        System.out.println("Rock Texture : " + textureName);
 
 
         // Create the rock entity
         Rock rock = new Rock(
                 rockBody,
                 screenInterface,
-                rockType,
                 rockId,
+                textureName,
                 gameAssets,
                 gameContactListener
         );

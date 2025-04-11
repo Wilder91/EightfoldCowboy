@@ -41,7 +41,7 @@ keepInputFileExtensions=false
 ---
 
 name=trees
-filename=
+filename=trees.atlas
 output=../../../atlases/eightfold
 
 alias=true
@@ -57,8 +57,8 @@ maxHeight=2048
 maxWidth=2048
 minHeight=16
 minWidth=16
-paddingX=2
-paddingY=2
+paddingX=0
+paddingY=0
 pot=true
 mof=false
 rotation=false
@@ -370,7 +370,91 @@ prettyPrint=false
 legacyOutput=false
 
 scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
-inputFiles=[{path:../../../rocks/Large_Rock.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_1.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_2.png,type:Input,regionName:null},{path:../../../rocks/Small_Rock_1_Bottom.png,type:Input,regionName:null},{path:../../../rocks/Small_Rock_1_Top.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_2_Bottom.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_2_Top.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_1_Bottom.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_1_Top.png,type:Input,regionName:null},{path:../../../rocks/Large_Rock_Top.png,type:Input,regionName:null},{path:../../../rocks/Large_Rock_Bottom.png,type:Input,regionName:null},{path:../../../rocks/Small_Rock_2_Bottom.png,type:Input,regionName:null},{path:../../../rocks/Small_Rock_2_Top.png,type:Input,regionName:null},{path:../../../rocks/Cliff_1_Bottom.png,type:Input,regionName:null},{path:../../../rocks/Cliff_1_Top.png,type:Input,regionName:null},{path:../../../rocks/Cliff_2_Bottom.png,type:Input,regionName:null},{path:../../../rocks/Cliff_2_Top.png,type:Input,regionName:null}]
+inputFiles=[{path:../../../rocks/Large_Rock.png,type:Input,regionName:null},{path:../../../../../../Downloads/PNG Assets/Small Rocks/Small_Rock.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_Two.png,type:Input,regionName:null},{path:../../../rocks/Medium_Rock_One.png,type:Input,regionName:null},{path:../../../../../../Downloads/PNG Assets/Cliff Faces,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false}]
+keepInputFileExtensions=false
+
+
+---
+
+name=rivers
+filename=water_tiles.atlas
+output=../../../atlases/eightfold
+
+alias=true
+alphaThreshold=0
+debug=false
+duplicatePadding=false
+edgePadding=true
+fast=false
+filterMag=Nearest
+filterMin=Nearest
+ignoreBlankImages=true
+maxHeight=2048
+maxWidth=2048
+minHeight=16
+minWidth=16
+paddingX=0
+paddingY=0
+pot=true
+mof=false
+rotation=false
+stripWhitespaceX=true
+stripWhitespaceY=true
+wrapX=ClampToEdge
+wrapY=ClampToEdge
+premultiplyAlpha=false
+grid=false
+square=false
+bleed=true
+limitMemory=true
+useIndexes=true
+prettyPrint=false
+legacyOutput=false
+
+scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
+inputFiles=[{path:../../../../../../Downloads/PNG Assets 2/River : Water Tiles (64 x 64),type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false}]
+keepInputFileExtensions=false
+
+
+---
+
+name=wild_animal-movement
+filename=wild-animal.atlas
+output=../../../atlases/eightfold
+
+alias=true
+alphaThreshold=0
+debug=false
+duplicatePadding=false
+edgePadding=true
+fast=false
+filterMag=Nearest
+filterMin=Nearest
+ignoreBlankImages=true
+maxHeight=2048
+maxWidth=2048
+minHeight=16
+minWidth=16
+paddingX=2
+paddingY=2
+pot=true
+mof=false
+rotation=false
+stripWhitespaceX=false
+stripWhitespaceY=false
+wrapX=ClampToEdge
+wrapY=ClampToEdge
+premultiplyAlpha=false
+grid=false
+square=false
+bleed=true
+limitMemory=true
+useIndexes=true
+prettyPrint=false
+legacyOutput=false
+
+scaleFactors=[{suffix:"",factor:1,resampling:bicubic}]
+inputFiles=[{path:../../../../../../Downloads/PNG Assets/Squirrel/Squirrel Treeing Side,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:../../../../../../Downloads/PNG Assets/Squirrel/Squirrel Running Side,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false},{path:../../../../../../Downloads/PNG Assets/Squirrel/Squirrel Idle Side,type:Input,dirFilePrefix:null,recursive:false,flattenPaths:false}]
 keepInputFileExtensions=false
 
 

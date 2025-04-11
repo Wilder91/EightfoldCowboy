@@ -2,14 +2,12 @@ package com.mygdx.eightfold;
 
 
 import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import helper.ContactType;
-import objects.animals.bird.Bird;
-import objects.animals.bird.Chicken;
-import objects.animals.Squirrel;
-import objects.animals.object_helper.DoorManager;
+import objects.animals.birds.Bird;
+import objects.animals.farm_animals.Chicken;
+import objects.inanimate.inanimate_helpers.DoorManager;
 import objects.humans.NPC;
 import objects.humans.NPCManager;
 import objects.inanimate.Door;

@@ -1,7 +1,7 @@
 package helper;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import objects.animals.bird.Bird;
+import objects.animals.birds.Bird;
 
 
 

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="309">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="662">
  <tileset firstgid="1" source="large_rock.tsx"/>
  <tileset firstgid="5" source="../../grass/Grass Tiles.tsx"/>
  <tileset firstgid="14" source="pond.tsx"/>
- <tileset firstgid="32" source="shop.tsx"/>
- <tileset firstgid="68" source="aspen_1.tsx"/>
+ <tileset firstgid="32" source="aspen_1.tsx"/>
  <layer id="1" name="Tile Layer 1" width="30" height="20">
   <data encoding="csv">
 0,0,0,10,0,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,0,0,
@@ -18,12 +17,12 @@
 0,0,0,0,0,0,0,0,8,0,0,0,9,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,
 0,11,0,0,0,5,0,0,0,0,0,0,0,0,0,7,0,0,0,0,11,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,
-7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,0,0,0,0,0,0,0,0,
+0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,11,0,0,
+0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
@@ -42,9 +41,6 @@
   </object>
   <object id="40" name="Martha" x="388.34" y="229.025" width="34" height="34"/>
   <object id="41" name="Jim" x="194.625" y="177.704" width="34" height="34"/>
-  <object id="46" name="large_rock" x="192.111" y="320.69">
-   <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
-  </object>
   <object id="51" name="barn" x="418.082" y="31.6115">
    <polygon points="0,0 222.159,0 221.221,192.53 -1.87475,191.528"/>
   </object>
@@ -72,25 +68,28 @@
   <object id="80" x="601.508" y="186.476">
    <polygon points="0,0 26.2933,-12.5675 27.4122,12.0438 -2.23773,13.0911"/>
   </object>
-  <object id="81" x="634.246" y="168.206">
+  <object id="81" x="625.6" y="175.891">
    <polygon points="0,0 7.78856,-12.3656 -35.0485,-57.019 -53.2218,-35.7228"/>
   </object>
-  <object id="89" name="aspen_2" x="677.441" y="359.044">
-   <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
-  </object>
-  <object id="90" name="aspen_3" x="474.209" y="327.107">
-   <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
-  </object>
-  <object id="91" name="aspen_baby" x="439.304" y="295.269">
+  <object id="89" name="aspen-2" type="trees" x="677.441" y="359.044">
    <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
   </object>
   <object id="92" name="aspen_stump" x="413.582" y="314.904">
+   <properties>
+    <property name="class" value="trees"/>
+   </properties>
    <polygon points="0,0 0,-27.9023 24.1977,-27.4857 23.8311,0"/>
   </object>
-  <object id="93" name="aspen_young" x="324.457" y="496.227">
+  <object id="93" name="aspen_young" type="trees" x="410.022" y="483.392">
+   <properties>
+    <property name="class" value="trees"/>
+   </properties>
    <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
   </object>
-  <object id="94" name="aspen_1" x="319.319" y="351.334">
+  <object id="94" name="aspen-1" type="trees" x="114.818" y="265.769">
+   <properties>
+    <property name="class" value="trees"/>
+   </properties>
    <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
   </object>
   <object id="95" name="bush_one" x="674.925" y="144.369">
@@ -109,27 +108,39 @@
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
   <object id="100" name="chicken" x="400.82" y="387.441">
-   <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
-  </object>
-  <object id="111" name="chicken" x="397.389" y="430.866">
+   <properties>
+    <property name="class" value="farm_animals"/>
+   </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
   <object id="130" name="squirrel" x="448.025" y="362.571">
+   <properties>
+    <property name="class" value="wild_animals"/>
+   </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="295" name="medium_rock_one" x="66.2151" y="363.413">
+  <object id="297" name="small_rock-1" type="rocks" x="240.063" y="342.067">
+   <properties>
+    <property name="class" value="rocks"/>
+   </properties>
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
-  <object id="296" name="medium_rock_two" x="242.014" y="418.228">
+  <object id="657" name="chicken" x="404.723" y="442.372">
+   <properties>
+    <property name="class" value="farm_animals"/>
+   </properties>
+   <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
+  </object>
+  <object id="659" name="small_rock-2" type="rocks" x="154.873" y="271.242">
+   <properties>
+    <property name="class" value="rocks"/>
+   </properties>
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
-  <object id="297" name="small_rock_one" x="141.007" y="464.557">
-   <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
-  </object>
-  <object id="298" name="cliff_one" x="18.6191" y="155.935">
-   <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
-  </object>
-  <object id="299" name="cliff_two" x="3.10318" y="269.201">
+  <object id="661" name="cliff_face-4" type="rocks" x="254.129" y="254.984">
+   <properties>
+    <property name="class" value="rocks"/>
+   </properties>
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
  </objectgroup>
@@ -143,8 +154,8 @@
   <object id="66" name="door" x="243.36" y="167.282">
    <polygon points="0,0 9.34288,3.03834 7.56329,31.1429 -4.00409,28.8642"/>
   </object>
-  <object id="82" x="598.13" y="122.908">
-   <polygon points="0,0 0,-5.63005 -159.606,-4.78555 -159.606,2.53352"/>
+  <object id="82" x="591.042" y="122.908">
+   <polygon points="0,0 0,-5.63005 -152.518,-4.78555 -152.518,2.53352"/>
   </object>
   <object id="85" x="624.359" y="163.074">
    <polygon points="0,0 3.99133,-1.14038 6.27209,13.1144 -6.84229,17.1057 -7.41248,2.28076"/>
@@ -190,9 +201,6 @@
   </object>
   <object id="126" x="621.001" y="372.878">
    <polygon points="0,0 22.3203,-0.376281 20.781,10.5359 1.53933,9.40703"/>
-  </object>
-  <object id="127" x="199.094" y="367.484">
-   <polygon points="0,0 74.0934,-1.34864 74.0934,12.1378 -1.80716,13.4864"/>
   </object>
   <object id="128" x="524.435" y="383.767">
    <polygon points="0,0 -8.86162,11.1338 1.59055,14.9966 9.54329,3.40832"/>

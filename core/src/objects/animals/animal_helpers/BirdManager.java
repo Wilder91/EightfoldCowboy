@@ -1,6 +1,6 @@
-package objects.animals.object_helper;
+package objects.animals.animal_helpers;
 
-import objects.animals.bird.Bird;
+import objects.animals.birds.Bird;
 
 import java.util.HashMap;
 import java.util.Map;

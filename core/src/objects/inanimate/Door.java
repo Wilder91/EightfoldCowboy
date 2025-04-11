@@ -1,6 +1,5 @@
 package objects.inanimate;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,7 +12,7 @@ import com.mygdx.eightfold.screens.GameScreen;
 import com.mygdx.eightfold.screens.SaloonScreen;
 import com.mygdx.eightfold.screens.ScreenInterface;
 
-import objects.animals.object_helper.DoorManager;
+import objects.inanimate.inanimate_helpers.DoorManager;
 import static helper.Constants.PPM;
 
 public class Door extends InanimateEntity  {

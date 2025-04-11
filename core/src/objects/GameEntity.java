@@ -35,6 +35,7 @@ public abstract class GameEntity {
             (entity1, entity2) -> Float.compare(entity2.depth, entity1.depth);
 
 
+
     public float getDepth() {
         return depth;
     }

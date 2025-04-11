@@ -1,4 +1,4 @@
-package objects.animals.object_helper;
+package objects.inanimate.inanimate_helpers;
 
 import objects.inanimate.Door;
 import java.util.HashMap;

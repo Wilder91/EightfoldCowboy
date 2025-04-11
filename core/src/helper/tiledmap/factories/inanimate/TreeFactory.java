@@ -22,30 +22,33 @@ public class TreeFactory {
     private GameContactListener gameContactListener;
     TextureRegion topTexture = null;
     TextureRegion bottomTexture = null;
+    private String textureName;
     private String atlasLink = "atlases/eightfold/trees.atlas";
 
     public TreeFactory(ScreenInterface screenInterface, GameAssets gameAssets){
         this.gameAssets = gameAssets;
         this.screenInterface = screenInterface;
+
         this.gameContactListener = gameContactListener;
     }
 
-    public void createTree(PolygonMapObject polygonMapObject, int treeType) {
+    public void createTree(PolygonMapObject polygonMapObject, String textureName) {
         int treeId = ++treeCounter;
 
         // Define the base name based on tree type
-        String treeName = getTreeBaseName(treeType);
+        String treeName = textureName;
 
         if (treeName.isEmpty()) {
-            System.err.println("Unknown treeType: " + treeType);
+            System.err.println("Unknown treeType: " + textureName);
             return;
         }
 
         // Use the tree name to construct the region name - no more Top/Bottom suffixes
-        TextureRegion treeTexture = gameAssets.getAtlas(atlasLink).findRegion(treeName);
+        System.out.println("TEXTURE NAME: " + textureName);
+        TextureRegion treeTexture = gameAssets.getAtlas(atlasLink).findRegion(textureName);
 
         if (treeTexture == null) {
-            System.err.println("Missing texture for treeType: " + treeType);
+            System.err.println("Missing texture for treeType: " + textureName);
             return;
         }
 
@@ -85,7 +88,6 @@ public class TreeFactory {
         Tree tree = new Tree(
                 treeBody,
                 screenInterface,
-                treeType,
                 treeId,
                 treeTexture,
                 gameAssets,
@@ -95,26 +97,6 @@ public class TreeFactory {
         screenInterface.addTree(tree);
     }
 
-    /**
-     * Returns the base name for a tree type to be used in texture region lookups
-     */
-    private String getTreeBaseName(int treeType) {
-        switch (treeType) {
-            case Tree.ASPEN_ONE:
-                return "Aspen_Tree-1";
-            case Tree.ASPEN_TWO:
-                return "Aspen_Tree-2";
-            case Tree.ASPEN_THREE:
-                return "Aspen_Tree-3";
-            case Tree.ASPEN_BABY:
-                return "Aspen_Tree_Baby";
-            case Tree.ASPEN_YOUNG:
-                return "Aspen_Tree_Young";
-            case Tree.ASPEN_STUMP:
-                return "Aspen_Tree_Stump";
-            // Add other tree types here...
-            default:
-                return "";
-        }
-    }
+
+
 }

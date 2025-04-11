@@ -20,13 +20,14 @@ import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.ecs.EntityManager;
 import com.mygdx.eightfold.player.Player;
+import com.mygdx.eightfold.save.SaveManager;
 import conversations.DialogueLine;
 import helper.ContactType;
 import helper.tiledmap.TiledMapHelper;
 import helper.world.time.TimeOfDayHelper;
 import objects.animals.Squirrel;
-import objects.animals.bird.Bird;
-import objects.animals.bird.Chicken;
+import objects.animals.birds.Bird;
+import objects.animals.farm_animals.Chicken;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
@@ -46,6 +47,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final SpriteBatch batch;
     private final ScreenInterface screenInterface;
     private World world;
+
     private Box2DDebugRenderer box2DDebugRenderer;
     private final TiledMapHelper tiledMapHelper;
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;
@@ -55,6 +57,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final TimeOfDayHelper timeOfDayHelper;
     private final GameAssets gameAssets;
     private final EntityManager entityManager;
+    private SaveManager saveManager;
+    private String currentTimeOfDay = "day";
     private boolean saloonTime = false;
     private Game game;
     private Skin skin;
@@ -70,6 +74,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private String origin;
 
     public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
+
         this.screenInterface = screenInterface;
         this.timeOfDayHelper = new TimeOfDayHelper();
         this.camera = camera;
@@ -77,6 +82,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.batch = new SpriteBatch();
         this.game = game;
         this.music = gameAssets.getMusic("lost & found.mp3");
+
         this.world = new World(new Vector2(0, 0), false);
         this.gameAssets = gameAssets;
         this.gameContactListener = new GameContactListener(this);
@@ -107,6 +113,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         };
 
         this.infoBox = new InfoBox(new Skin(Gdx.files.internal("commodore64/skin/uiskin.json")));
+        this.saveManager = new SaveManager(this);
 
         // Initialize lighting
         rayHandler = new RayHandler(world);
@@ -486,6 +493,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     public void setTimeOfDay(String timeOfDay) {
         if (rayHandler != null) {
             // Get the appropriate ambient color for the selected time
+            this.currentTimeOfDay = timeOfDay;
             float[] ambientColor = timeOfDayHelper.returnTime(timeOfDay);
 
             // Set the ambient light in the RayHandler
@@ -494,4 +502,23 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
             );
         }
     }
+
+    public String getCurrentTimeOfDay() {
+        return currentTimeOfDay;
+    }
+
+    public void saveGame(String fileName) {
+        saveManager.saveGame(fileName);
+        // Optional: show a notification or feedback to the player
+        Gdx.app.log("GameScreen", "Game saved to " + fileName);
+    }
+
+    public void loadGame(String fileName) {
+        saveManager.loadGame(fileName);
+        // Optional: show a notification or feedback to the player
+        Gdx.app.log("GameScreen", "Game loaded from " + fileName);
+    }
+
+
+
 }

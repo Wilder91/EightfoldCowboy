@@ -46,6 +46,7 @@ public class Bug extends GameEntity {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
         stateTime += delta;
+
     }
 
     @Override

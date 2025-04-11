@@ -155,7 +155,7 @@ public class Squirrel extends GameEntity {
             sprite.flip(true, false);
         }
         if (sprite != null) {
-            sprite.setPosition(x - width / 2, y - height / 2);
+            sprite.setPosition(x - width / 3, y - height / 4);
             sprite.draw(batch);
         } else {
             System.err.println("Error: Cannot render squirrel, sprite is null");

@@ -5,8 +5,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import objects.GameEntity;
 import com.mygdx.eightfold.player.Player;
 import objects.animals.Squirrel;
-import objects.animals.bird.Bird;
-import objects.animals.bird.Chicken;
+import objects.animals.birds.Bird;
+import objects.animals.farm_animals.Chicken;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
@@ -48,6 +48,7 @@ public class EntityManager {
 
     // Map for NPC lookup by ID
     private final Map<Integer, NPC> npcMap = new HashMap<>();
+    private final Map<Integer, Chicken> chickenMap = new HashMap<>();
 
     // Reference to player
     private Player player;
@@ -300,6 +301,7 @@ public class EntityManager {
 
     public void addChicken(Chicken chicken) {
         chickens.add(chicken);
+        chickenMap.put(chicken.getId(), chicken);
     }
 
     public void addSquirrel(Squirrel squirrel) {
@@ -347,5 +349,9 @@ public class EntityManager {
 
     public void setWorld(World world) {
         this.world = world;
+    }
+
+    public Chicken getChickenById(int id) {
+        return chickenMap.get(id);
     }
 }

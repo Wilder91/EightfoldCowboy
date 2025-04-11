@@ -7,6 +7,7 @@
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
         "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx": {
             "dynamicWrapping": true,
@@ -26,12 +27,37 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
-        "Eightfold.tmx": {
-            "scale": 0.9074,
-            "selectedLayer": 1,
+        "Eightfold-iso.tmx": {
+            "scale": 0.6,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 553.7800308573948,
-                "y": 369.73771214458895
+                "x": 400.83333333333337,
+                "y": 400.8333333333333
+            }
+        },
+        "Eightfold.tmx": {
+            "expandedObjectLayers": [
+                3,
+                4,
+                2
+            ],
+            "scale": 1.97,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 553.0456852791878,
+                "y": 390.8629441624365
+            }
+        },
+        "Eightfold_Iso.tmx": {
+            "expandedObjectLayers": [
+                2,
+                4
+            ],
+            "scale": 0.8238,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 853.9694100509832,
+                "y": 240.34959941733433
             }
         },
         "Grass Tiles.tsx": {
@@ -48,6 +74,10 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "WATER.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "aspen.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
@@ -58,8 +88,15 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "aspen_iso?.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "aspen_stump.tsx": {
-            "dynamicWrapping": false
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "barn.tsx": {
             "scaleInDock": 1,
@@ -71,16 +108,57 @@
             "scaleInEditor": 1
         },
         "pond.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 1.0025,
+            "scaleInEditor": 1
+        },
+        "river 2.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "river copy.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "river export.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "river.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "river_stuff.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "rivers.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "shop.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "water.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "water_tiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         }
     },
-    "last.imagePath": "/Users/michaelwilder/Downloads/PNG Assets/Trees/Aspens",
+    "last.exportedFilePath": "/Users/michaelwilder/Desktop/Eightfold/assets/maps/New_Maps",
+    "last.externalTilesetPath": "/Users/michaelwilder/Desktop/Eightfold/assets/maps/New_Maps",
+    "last.imagePath": "/Users/michaelwilder/Desktop/Eightfold/assets/atlases/eightfold",
+    "lastUsedTilesetExportFilter": "Tiled tileset files (*.tsx *.xml)",
     "map.lastUsedFormat": "tmx",
     "openFiles": [
         "Eightfold.tmx",
@@ -92,27 +170,30 @@
         "pond.tsx",
         "aspen.tsx",
         "barn.tsx",
-        "aspen_1.tsx"
+        "aspen_1.tsx",
+        "aspen_stump.tsx",
+        "river.tsx"
     ],
     "project": "Eightfold.tiled-project",
     "recentFiles": [
+        "river export.tsx",
+        "WATER.tsx",
+        "river_stuff.tsx",
+        "water_tiles.tsx",
         "Eightfold.tmx",
-        "Eightfold_Iso.tmx",
         "Rocks.tsx",
         "large_rock.tsx",
-        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles.tsx",
-        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx",
-        "shop.tsx",
-        "pond.tsx",
         "aspen.tsx",
-        "barn.tsx",
-        "aspen_1.tsx",
-        "aspen_stump.tsx"
+        "pond.tsx",
+        "shop.tsx",
+        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx",
+        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles.tsx"
     ],
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
-        "height": 9,
-        "width": 9
+        "height": 32,
+        "width": 32
     },
-    "tileset.type": 0
+    "tileset.type": 1
 }

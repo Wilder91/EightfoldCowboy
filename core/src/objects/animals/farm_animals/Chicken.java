@@ -1,4 +1,4 @@
-package objects.animals.bird;
+package objects.animals.farm_animals;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -162,7 +162,7 @@ public class Chicken extends GameEntity {
             sprite.flip(true,false);
         }
         if (sprite != null) {
-            sprite.setPosition(x - width / 2, y - height / 2);
+            sprite.setPosition(x - width / 3, y - height / 2);
 
             sprite.draw(batch);
         } else {
@@ -202,6 +202,8 @@ public class Chicken extends GameEntity {
         return moveCount;
     }
 
+
+
     /**
      * Checks if the chicken is currently returning to origin
      * @return True if returning to origin, false otherwise
@@ -209,4 +211,5 @@ public class Chicken extends GameEntity {
     public boolean isReturningToOrigin() {
         return returningToOrigin;
     }
+
 }

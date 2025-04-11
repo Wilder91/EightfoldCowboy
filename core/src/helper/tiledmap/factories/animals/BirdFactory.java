@@ -9,7 +9,7 @@ import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
 import com.mygdx.eightfold.GameAssets;
-import objects.animals.bird.Bird;
+import objects.animals.birds.Bird;
 
 public class BirdFactory {
     private GameScreen gameScreen;
