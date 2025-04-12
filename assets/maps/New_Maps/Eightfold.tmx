@@ -71,7 +71,10 @@
   <object id="81" x="625.6" y="175.891">
    <polygon points="0,0 7.78856,-12.3656 -35.0485,-57.019 -53.2218,-35.7228"/>
   </object>
-  <object id="89" name="aspen-2" type="trees" x="677.441" y="359.044">
+  <object id="89" name="aspen-2" type="trees" x="64.1339" y="269.017">
+   <properties>
+    <property name="class" value="trees"/>
+   </properties>
    <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
   </object>
   <object id="94" name="aspen-1" type="trees" x="114.818" y="265.769">
@@ -80,19 +83,34 @@
    </properties>
    <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
   </object>
-  <object id="95" name="bush_one" x="674.925" y="144.369">
+  <object id="95" name="bush-1" x="674.925" y="144.369">
+   <properties>
+    <property name="class" value="bushes"/>
+   </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="96" name="bush_two" x="731.761" y="165.307">
+  <object id="96" name="bush-2" x="731.761" y="165.307">
+   <properties>
+    <property name="class" value="bushes"/>
+   </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="97" name="bush_three" x="760.414" y="234.737">
+  <object id="97" name="bush-3" x="760.414" y="234.737">
+   <properties>
+    <property name="class" value="bushes"/>
+   </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="98" name="bush_four" x="803.394" y="133.348">
+  <object id="98" name="bush-4" type="bushes" x="803.394" y="133.348">
+   <properties>
+    <property name="class" value="bushes"/>
+   </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="99" name="bush_five" x="768.129" y="349.35">
+  <object id="99" name="bush-5" x="768.129" y="349.35">
+   <properties>
+    <property name="class" value="bushes"/>
+   </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
   <object id="100" name="chicken" x="400.82" y="387.441">

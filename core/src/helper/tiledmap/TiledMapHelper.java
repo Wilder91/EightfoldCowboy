@@ -97,6 +97,14 @@ public class TiledMapHelper {
                                 createTree(polygonMapObject, polygonName);
                                 beenCreated = true;
                                 break;
+                            case "farm_animals":
+                                createFarmAnimal(polygonMapObject, polygonName);
+                                beenCreated = true;
+                                break;
+                            case "bushes":
+                                createBush(polygonMapObject, polygonName);
+                                beenCreated = true;
+                                break;
                         }
                     }
                     if (!beenCreated){
@@ -113,22 +121,7 @@ public class TiledMapHelper {
                         case "barn":
                             createBuilding(polygonMapObject, 1);
                             break;
-                        case "bush_one":
-                            //System.out.println("bush!");
-                            createBush(polygonMapObject, 0);
-                            break;
-                        case "bush_two":
-                            createBush(polygonMapObject, 1);
-                            break;
-                        case "bush_three":
-                            createBush(polygonMapObject, 2);
-                            break;
-                        case "bush_four":
-                            createBush(polygonMapObject, 3);
-                            break;
-                        case "bush_five":
-                            createBush(polygonMapObject, 4);
-                            break;
+
 //                        case "large_rock":
 //                            createRock(polygonMapObject, 3);
 //                            break;
@@ -149,9 +142,6 @@ public class TiledMapHelper {
                             break;
                         case "dragonfly":
                             createBug(polygonMapObject, 1);
-                            break;
-                        case "chicken":
-                            createChicken(polygonMapObject);
                             break;
                         case "squirrel":
                             createSquirrel(polygonMapObject);
@@ -307,9 +297,18 @@ public class TiledMapHelper {
 
     }
 
-    private void createChicken(PolygonMapObject polygonMapObject) {
+    private void createFarmAnimal(PolygonMapObject polygonMapObject, String polygonName){
+        switch (polygonName){
+            case "chicken":
+                ChickenFactory chickenFactory = new ChickenFactory(screenInterface, gameAssets, false);
+                chickenFactory.createChicken(polygonMapObject, polygonName);
+                break;
+        }
+    }
+
+    private void createChicken(PolygonMapObject polygonMapObject, String objectName) {
         ChickenFactory chickenFactory = new ChickenFactory(screenInterface, gameAssets, false);
-        chickenFactory.createChicken(polygonMapObject);
+        chickenFactory.createChicken(polygonMapObject, objectName);
 
     }
 
@@ -343,10 +342,10 @@ public class TiledMapHelper {
         pondFactory.createPond(polygonMapObject, 0);
     }
 
-    private void createBush(PolygonMapObject polygonMapObject, int bushType) {
+    private void createBush(PolygonMapObject polygonMapObject, String bushName) {
         //System.out.println("create bush");
         BushFactory bushFactory = new BushFactory(screenInterface, gameAssets, gameContactListener);
-        bushFactory.createBush(polygonMapObject, bushType);
+        bushFactory.createBush(polygonMapObject, bushName);
     }
 
 

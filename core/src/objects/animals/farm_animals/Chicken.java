@@ -31,7 +31,7 @@ public class Chicken extends GameEntity {
     private int moveCount = 0;
     private boolean returningToOrigin = false;
 
-    public Chicken(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
+    public Chicken(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, String chickenName) {
         super(width, height, body, screenInterface, gameAssets);
         int[] frameCounts = {4, 4, 4};  // [up, down, horizontal]
         int idleFrameCount = 25;

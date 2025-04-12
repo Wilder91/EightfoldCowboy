@@ -28,7 +28,7 @@ public class BushFactory extends InanimateEntityFactory {
     }
 
 
-    public void createBush(PolygonMapObject polygonMapObject, int bushType) {
+    public void createBush(PolygonMapObject polygonMapObject, String bushName) {
         int bushId = ++bushCounter;
         Polygon polygon = polygonMapObject.getPolygon();
         Rectangle boundingRectangle = polygon.getBoundingRectangle();
@@ -52,7 +52,7 @@ public class BushFactory extends InanimateEntityFactory {
         Bush bush = new Bush(
                 bushBody,
                 screenInterface,
-                bushType,
+                bushName,
                 bushId,
                 gameAssets,
                 gameContactListener

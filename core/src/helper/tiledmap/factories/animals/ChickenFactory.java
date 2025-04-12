@@ -46,7 +46,7 @@ public class ChickenFactory {
 
 
 
-    public void createChicken(PolygonMapObject polygonMapObject) {
+    public void createChicken(PolygonMapObject polygonMapObject, String chickenName) {
         int chickenId = ++chickenCounter;
 
         Polygon polygon = polygonMapObject.getPolygon();
@@ -73,7 +73,8 @@ public class ChickenFactory {
                 boundingRectangle.height,
                 body,
                 screenInterface,
-                gameAssets
+                gameAssets,
+                chickenName
         );
 
         // If the Chicken class handles its own rendering offset, make sure it has the correct values
