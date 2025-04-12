@@ -74,18 +74,6 @@
   <object id="89" name="aspen-2" type="trees" x="677.441" y="359.044">
    <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
   </object>
-  <object id="92" name="aspen_stump" x="413.582" y="314.904">
-   <properties>
-    <property name="class" value="trees"/>
-   </properties>
-   <polygon points="0,0 0,-27.9023 24.1977,-27.4857 23.8311,0"/>
-  </object>
-  <object id="93" name="aspen_young" type="trees" x="410.022" y="483.392">
-   <properties>
-    <property name="class" value="trees"/>
-   </properties>
-   <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
-  </object>
   <object id="94" name="aspen-1" type="trees" x="114.818" y="265.769">
    <properties>
     <property name="class" value="trees"/>
@@ -207,9 +195,6 @@
   </object>
   <object id="129" x="572.554" y="450.922">
    <polygon points="0,0 10.7137,-9.45329 3.4662,-19.5368 -8.50796,-10.3986"/>
-  </object>
-  <object id="294" x="417.79" y="291.15">
-   <polygon points="0,0 12.4216,0.649213 11.5015,9.08898 0.46006,8.87258"/>
   </object>
   <object id="300" x="470.882" y="439.196">
    <polygon points="0,0 -19.3634,-12.6155 -19.6567,-5.5743 -8.21476,1.17354"/>

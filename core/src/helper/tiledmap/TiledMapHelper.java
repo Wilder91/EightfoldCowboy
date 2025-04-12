@@ -41,6 +41,7 @@ public class TiledMapHelper {
     private GameAssets gameAssets;
     private GameContactListener gameContactListener;
     private ScreenInterface screenInterface;
+    private boolean beenCreated;
 
     public TiledMapHelper(ScreenInterface screenInterface, GameAssets gameAssets, GameContactListener gameContactListener) {
         this.shapeRenderer = new ShapeRenderer();
@@ -75,26 +76,30 @@ public class TiledMapHelper {
     }
 
     private void parseMapObjects(MapObjects mapObjects) {
+
         for (MapObject mapObject : mapObjects) {
+            this.beenCreated = false;
 
             if (mapObject instanceof PolygonMapObject) {
                 PolygonMapObject polygonMapObject = (PolygonMapObject) mapObject;
                 String polygonName = mapObject.getName();
                 String objectClass = (String) mapObject.getProperties().get("class");
                 System.out.println(objectClass);
+
                 if (polygonName != null) {
                     if(objectClass != null) {
                         switch (objectClass) {
                             case "rocks":
                                 createRock(polygonMapObject, polygonName);
+                                beenCreated = true;
                                 break;
                             case "trees":
                                 createTree(polygonMapObject, polygonName);
-
+                                beenCreated = true;
+                                break;
                         }
                     }
-
-
+                    if (!beenCreated){
                     switch (polygonName) {
                         case "bird":
                             createBird(polygonMapObject);
@@ -155,9 +160,8 @@ public class TiledMapHelper {
                             createStaticBody(polygonMapObject);
                             break;
                     }
-                } else {
-                    createStaticBody(polygonMapObject);
                 }
+                    }
             }
 
             if (mapObject instanceof RectangleMapObject) {
