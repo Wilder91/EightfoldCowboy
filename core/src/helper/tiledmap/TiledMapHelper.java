@@ -113,12 +113,6 @@ public class TiledMapHelper {
                     }
                     if (!beenCreated){
                     switch (polygonName) {
-                        case "bird":
-                            createBird(polygonMapObject);
-                            break;
-                        case "boulder":
-                            createBoulder(polygonMapObject);
-                            break;
                         case "shop":
                             createBuilding(polygonMapObject, 0);
                             break;
@@ -144,10 +138,6 @@ public class TiledMapHelper {
                 String rectangleName = mapObject.getName();
 
                 if (rectangleName != null && rectangleName.equals("player")) {
-//                    System.out.println("PLAYER");
-//                    System.out.println("Raw Tiled coords: x=" + rectangle.x + ", y=" + rectangle.y);
-//                    System.out.println("Width: " + rectangle.width + ", Height: " + rectangle.height);
-//                    System.out.println("PPM = " + PPM);
                     float centerX = (rectangle.x + rectangle.width / 2f) ;
                     float centerY = (rectangle.y + rectangle.height / 2f);
                     float bodyWidth = rectangle.width / PPM;
@@ -166,11 +156,6 @@ public class TiledMapHelper {
                             ContactType.PLAYER,
                             playerId
                     );
-//                    System.out.println("Body pos (meters): " + body.getPosition());
-//                    System.out.println("Expected center (meters): " + centerX + ", " + centerY);
-//                    System.out.println("Player pos in pixels: " + centerY + ", " + centerY);
-//
-//                    System.out.println("Tiled map position: " + rectangle.x + ", " + rectangle.y);
 
                     screenInterface.setPlayer(new Player(
                             centerX * PPM,
@@ -246,31 +231,7 @@ public class TiledMapHelper {
                 }
             }
 
-//            if (mapObject instanceof RectangleMapObject) {
-//                Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-//                String rectangleName = mapObject.getName();
-//
-//                if (rectangleName != null && rectangleName.equals("player")) {
-//                    int playerId = 1;
-//                    Body body = BodyHelperService.createBody(
-//                            rectangle.x + rectangle.width / 2,
-//                            rectangle.y + rectangle.height / 2,
-//                            rectangle.width,
-//                            rectangle.height,
-//                            false,
-//                            screenInterface.getWorld(),
-//                            ContactType.PLAYER,
-//                            playerId
-//                    );
-//                    screenInterface.setPlayer(new Player(rectangle.width, rectangle.height, body, screenInterface, gameAssets));
-////                }
-//            }
         }
-    }
-
-    private void createBird(PolygonMapObject polygonMapObject) {
-        BirdFactory birdFactory = new BirdFactory(screenInterface, gameAssets);
-        birdFactory.createBird(polygonMapObject);
     }
 
     private void createDoor(PolygonMapObject polygonMapObject, String polygonName) {
@@ -278,9 +239,6 @@ public class TiledMapHelper {
         doorFactory.createDoor(polygonMapObject, polygonName); // Call createDoor method from DoorFactory
     }
 
-    private void createButterfly(PolygonMapObject polygonMapObject, int butterflyType) {
-
-    }
 
     private void createFarmAnimal(PolygonMapObject polygonMapObject, String polygonName){
         switch (polygonName){
@@ -289,12 +247,6 @@ public class TiledMapHelper {
                 chickenFactory.createChicken(polygonMapObject, polygonName);
                 break;
         }
-    }
-
-    private void createChicken(PolygonMapObject polygonMapObject, String objectName) {
-        ChickenFactory chickenFactory = new ChickenFactory(screenInterface, gameAssets, false);
-        chickenFactory.createChicken(polygonMapObject, objectName);
-
     }
 
     private void createSquirrel(PolygonMapObject polygonMapObject) {
@@ -306,7 +258,6 @@ public class TiledMapHelper {
     private void createBug(PolygonMapObject polygonMapObject, String bugName ) {
         BugFactory bugFactory = new BugFactory(screenInterface, gameAssets);
         bugFactory.createBug(polygonMapObject, bugName);
-        //System.out.println("bug id: " + bugType);
 
     }
 
