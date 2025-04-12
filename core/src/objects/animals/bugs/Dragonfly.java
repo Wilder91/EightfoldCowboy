@@ -18,31 +18,28 @@ public class Dragonfly extends Bug {
     private int bugType;
     private Animation<TextureRegion> animation;
     private float stateTime;
+    private String dragonflyName;
 
-    private static final Map<Integer, String> DRAGONFLY_NAMES = Map.of(
-            1, "Dragonfly",
-            11, "Dragonfly_Green",
-            12, "Dragonfly_Red"
-    );
 
-    public Dragonfly(float width, float height, float x, float y, Body body, int dragonflyId, int dragonflyType, ScreenInterface screenInterface, GameAssets gameAssets) {
+
+    public Dragonfly(float width, float height, float x, float y, Body body, int dragonflyId, String dragonflyName, ScreenInterface screenInterface, GameAssets gameAssets) {
         super(width, height, x, y, body, screenInterface, gameAssets);
         this.id = dragonflyId;
-        this.bugType = dragonflyType;
+        this.dragonflyName = dragonflyName;
         this.stateTime = 0f;
 
         TextureAtlas atlas = gameAssets.getAtlas("atlases/eightfold/bugs.atlas");
         Array<TextureRegion> frames = new Array<>();
 
-        String animationPrefix = DRAGONFLY_NAMES.get(dragonflyType);
+
        // System.out.println("animation prefix: " + animationPrefix);
 
         for (int i = 1; i <= 9; i++) {
-            TextureRegion region = atlas.findRegion(animationPrefix, i);
+            TextureRegion region = atlas.findRegion(dragonflyName, i);
             if (region != null) {
                 frames.add(region);
             } else {
-                System.err.println("Missing frame: " + animationPrefix + " " + i);
+                System.err.println("Missing frame: " + dragonflyName + " " + i);
             }
         }
 

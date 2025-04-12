@@ -13,7 +13,7 @@ import static helper.Constants.PPM;
 
 public class Butterfly extends Bug {
     private int id;
-    private int butterflyType;
+    private String butterflyName;
     private Animation<TextureRegion> animation;
     private float stateTime;
 
@@ -24,24 +24,24 @@ public class Butterfly extends Bug {
             "Butterfly_Orange"
     };
 
-    public Butterfly(float width, float height, float x, float y, Body body, int butterflyId, int butterflyType, ScreenInterface screenInterface, GameAssets gameAssets) {
+    public Butterfly(float width, float height, float x, float y, Body body, String butterflyName, ScreenInterface screenInterface, GameAssets gameAssets) {
         super(width, height, x, y, body, screenInterface, gameAssets);
-        this.id = butterflyId;
-        this.butterflyType = butterflyType;
+
+        this.butterflyName = butterflyName;
         this.stateTime = 0f;
 
         // Load animation from shared bugs atlas
         TextureAtlas atlas = gameAssets.getAtlas("atlases/eightfold/bugs.atlas");
         Array<TextureRegion> frames = new Array<>();
 
-        String animationPrefix = BUTTERFLY_NAMES[butterflyType];
+
 
         for (int i = 1; i <= 4; i++) {
-            TextureRegion region = atlas.findRegion(animationPrefix, i);
+            TextureRegion region = atlas.findRegion(butterflyName, i);
             if (region != null) {
                 frames.add(region);
             } else {
-                System.err.println("Missing frame: " + animationPrefix + " " + i);
+                System.err.println("Missing frame: " + butterflyName + " " + i);
             }
         }
 

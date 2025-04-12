@@ -28,23 +28,21 @@ public class BugFactory {
         this.gameAssets = gameAssets;
     }
 
-    public void createBug(PolygonMapObject polygonMapObject, int bugType) {
-        switch (bugType) {
-            case SMALL_WHITE_BUTTERFLY:
-                createButterfly(polygonMapObject);
+    public void createBug(PolygonMapObject polygonMapObject, String bugName) {
+        switch (bugName){
+            case "dragonfly":
+                createDragonfly(polygonMapObject, bugName);
                 break;
-            case DRAGONFLY:
-                createDragonfly(polygonMapObject);
+            case "small_white_butterfly":
+                createButterfly(polygonMapObject, bugName);
                 break;
-            default:
-                System.err.println("Unknown bug type: " + bugType);
         }
     }
 
-    private void createButterfly(PolygonMapObject polygonMapObject) {
+    private void createButterfly(PolygonMapObject polygonMapObject, String bugName) {
         int bugId = ++bugCounter;
         Body bugBody = createBodyFromPolygon(polygonMapObject, bugId, "butterfly");
-        TextureRegion texture = gameAssets.getAtlas("atlases/eightfold/bugs.atlas").findRegion("Butterfly_Small_White" );
+        TextureRegion texture = gameAssets.getAtlas("atlases/eightfold/bugs.atlas").findRegion(bugName);
         if (texture == null) {
             System.err.println("Pond texture not found for type: " + bugId);
             return;
@@ -59,8 +57,8 @@ public class BugFactory {
                 bounds.x + bounds.width / 2,
                 bounds.y + bounds.height / 2,
                 bugBody,
-                bugId,
-                SMALL_WHITE_BUTTERFLY,
+                bugName,
+
                 screenInterface,
                 gameAssets
         );
@@ -68,12 +66,12 @@ public class BugFactory {
         screenInterface.addButterfly(butterfly);
     }
 
-    private void createDragonfly(PolygonMapObject polygonMapObject) {
+    private void createDragonfly(PolygonMapObject polygonMapObject, String bugName) {
         int bugId = ++bugCounter;
         Body bugBody = createBodyFromPolygon(polygonMapObject, bugId, "dragonfly");
 
         Rectangle bounds = polygonMapObject.getPolygon().getBoundingRectangle();
-        TextureRegion texture = gameAssets.getAtlas("atlases/eightfold/bugs.atlas").findRegion("Dragonfly" );
+        TextureRegion texture = gameAssets.getAtlas("atlases/eightfold/bugs.atlas").findRegion(bugName);
         if (texture == null) {
             System.err.println("Pond texture not found for type: " + bugId);
             return;
@@ -88,7 +86,7 @@ public class BugFactory {
                 bounds.y + bounds.height / 2,
                 bugBody,
                 bugId,
-                DRAGONFLY,
+                bugName,
                 screenInterface,
                 gameAssets
         );

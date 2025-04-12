@@ -105,6 +105,10 @@ public class TiledMapHelper {
                                 createBush(polygonMapObject, polygonName);
                                 beenCreated = true;
                                 break;
+                            case "bugs":
+                                createBug(polygonMapObject, polygonName);
+                                beenCreated = true;
+                                break;
                         }
                     }
                     if (!beenCreated){
@@ -121,27 +125,8 @@ public class TiledMapHelper {
                         case "barn":
                             createBuilding(polygonMapObject, 1);
                             break;
-
-//                        case "large_rock":
-//                            createRock(polygonMapObject, 3);
-//                            break;
-//                        case "small_rock_two":
-//                            createRock(polygonMapObject, 4);
-//                            break;
                         case "pond":
                             createPond(polygonMapObject, 0);
-                            break;
-//                        case "cliff_one":
-//                            createRock(polygonMapObject, 5);
-//                            break;
-//                        case "cliff_two":t
-//                            createRock(polygonMapObject, 6);
-//                            break;
-                        case "small_white_butterfly":
-                            createBug(polygonMapObject, 0);
-                            break;
-                        case "dragonfly":
-                            createBug(polygonMapObject, 1);
                             break;
                         case "squirrel":
                             createSquirrel(polygonMapObject);
@@ -318,9 +303,9 @@ public class TiledMapHelper {
 
     }
 
-    private void createBug(PolygonMapObject polygonMapObject, int bugType ) {
+    private void createBug(PolygonMapObject polygonMapObject, String bugName ) {
         BugFactory bugFactory = new BugFactory(screenInterface, gameAssets);
-        bugFactory.createBug(polygonMapObject, bugType);
+        bugFactory.createBug(polygonMapObject, bugName);
         //System.out.println("bug id: " + bugType);
 
     }
