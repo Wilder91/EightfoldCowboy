@@ -24,6 +24,7 @@ public class MeleeCombatHelper {
     private GameAssets gameAssets;
     private String animalType;
     private String animalName;
+    private String weaponType;
     private boolean isFacingRight;
     private boolean isAttacking;
     private float attackCooldown;
@@ -34,8 +35,9 @@ public class MeleeCombatHelper {
     private float currentAttackTimer;
     private Fixture attackSensor;
     private World world;
+    private String lastDirection = "";
 
-    public MeleeCombatHelper(GameAssets gameAssets, String animalType, String animalName, int[] attackFrameCounts, float attackDamage, World world) {
+    public MeleeCombatHelper(GameAssets gameAssets, String animalType, String animalName, String weaponType, int[] attackFrameCounts, float attackDamage, World world) {
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.animalName = animalName;
@@ -48,7 +50,7 @@ public class MeleeCombatHelper {
         this.currentAttackTimer = 0f;
         this.hitbox = new Rectangle();
         this.world = world;
-
+        this.weaponType = weaponType;
         loadAttackAnimations();
 
         this.currentAttackAnimation = attackAnimations.get("attackHorizontal");
@@ -63,11 +65,11 @@ public class MeleeCombatHelper {
         String atlasPath = "atlases/eightfold/" + animalType + "-movement.atlas";
 
         // Populate the animations map with all available attack animations
-        attackAnimations.put("attackUp", createAnimation(animalName + "_Up_Melee", attackFrameCounts[0], atlasPath));
-        attackAnimations.put("attackDown", createAnimation(animalName + "_Down_Melee", attackFrameCounts[1], atlasPath));
-        attackAnimations.put("attackHorizontal", createAnimation(animalName + "_Horizontal_Melee", attackFrameCounts[2], atlasPath));
-        attackAnimations.put("attackDiagonalUp", createAnimation(animalName + "_DiagUP_Melee", attackFrameCounts[3], atlasPath));
-        attackAnimations.put("attackDiagonalDown", createAnimation(animalName + "_DiagDOWN_Melee", attackFrameCounts[4], atlasPath));
+        attackAnimations.put("attackUp", createAnimation(animalName + "_Up_" + weaponType,  attackFrameCounts[0], atlasPath));
+        attackAnimations.put("attackDown", createAnimation(animalName + "_Down_" + weaponType, attackFrameCounts[1], atlasPath));
+        attackAnimations.put("attackHorizontal", createAnimation(animalName + "_Horizontal_" + weaponType, attackFrameCounts[2], atlasPath));
+        attackAnimations.put("attackDiagonalUp", createAnimation(animalName + "_DiagUP_" + weaponType, attackFrameCounts[3], atlasPath));
+        attackAnimations.put("attackDiagonalDown", createAnimation(animalName + "_DiagDOWN_" + weaponType, attackFrameCounts[4], atlasPath));
     }
 
     private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount, String atlasPath) {
@@ -95,9 +97,9 @@ public class MeleeCombatHelper {
         return new Animation<>(ATTACK_FRAME_DURATION, frames, Animation.PlayMode.NORMAL);
     }
 
-    public void update(float delta, Vector2 position, Vector2 facingDirection, boolean isFacingRight) {
+    public void update(float delta, Vector2 position, Vector2 facingDirection, boolean isFacingRight, String lastDirection) {
         this.isFacingRight = isFacingRight;
-
+        this.lastDirection = lastDirection;
         // Update attack cooldown
         if (attackCooldown > 0) {
             attackCooldown -= delta;
@@ -171,29 +173,45 @@ public class MeleeCombatHelper {
     }
 
     private void positionAttackSprite(Vector2 position, Vector2 facingDirection) {
+        // Get the current frame's dimensions
+        float frameWidth = attackSprite.getWidth();
+        float frameHeight = attackSprite.getHeight();
+
+        // Calculate the center point of the character
+        float characterCenterX = position.x;
+        float characterCenterY = position.y;
+
+        // Calculate offsets based on direction
         float offsetX = 0;
         float offsetY = 0;
 
-        // Determine offset based on attack direction
-        if (facingDirection.x > 0) {
-            offsetX = attackSprite.getWidth() * 0.5f;
-        } else if (facingDirection.x < 0) {
-            offsetX = -attackSprite.getWidth() * 0.5f;
+        // Adjust based on direction
+        if (lastDirection.equals("idleUp") || lastDirection.equals("idleDown")) {
+            // For vertical attacks, center horizontally
+            offsetX = 0;
+            // For up attacks, shift slightly up; for down attacks, shift slightly down
+            offsetY = lastDirection.equals("idleUp") ? frameHeight * 0.2f : -frameHeight * 0.2f;
+        } else if (lastDirection.equals("idleSide")) {
+            // For horizontal attacks, shift in facing direction
+            offsetX = isFacingRight ? frameWidth * 0.25f : -frameWidth * 0.25f;
+            offsetY = 0;
+        } else if (lastDirection.equals("idleDiagonalUp")) {
+            // For diagonal up attacks
+            offsetX = isFacingRight ? frameWidth * 0.2f : -frameWidth * 0.2f;
+            offsetY = frameHeight * 0.15f;
+        } else if (lastDirection.equals("idleDiagonalDown")) {
+            // For diagonal down attacks
+            offsetX = isFacingRight ? frameWidth * 0.2f : -frameWidth * 0.2f;
+            offsetY = -frameHeight * 0.15f;
         }
 
-        if (facingDirection.y > 0) {
-            offsetY = attackSprite.getHeight() * 0.3f;
-        } else if (facingDirection.y < 0) {
-            offsetY = -attackSprite.getHeight() * 0.3f;
-        }
-
-        // Set attack sprite position
+        // Set the position, accounting for sprite origin at center
         attackSprite.setPosition(
-                position.x - attackSprite.getWidth() / 2 + offsetX,
-                position.y - attackSprite.getHeight() / 2 + offsetY
+                characterCenterX - frameWidth/2 + offsetX,
+                characterCenterY - frameHeight/2 + offsetY
         );
 
-        // Flip the sprite if needed
+        // Handle flipping for left-facing attacks
         if (attackSprite.isFlipX() != !isFacingRight) {
             attackSprite.flip(true, false);
         }

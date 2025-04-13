@@ -38,6 +38,7 @@ public class Player extends GameEntity {
     private boolean justSwitchedHelpers;
     private PointLight playerLight;
     private RayHandler rayHandler;
+    private String weaponType;
 
 
     public Player(float x, float y, float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
@@ -59,10 +60,11 @@ public class Player extends GameEntity {
         int[] runningFrameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
         int[] idleFrameCounts = {18, 1, 8, 18, 4};
         int[] meleeFrameCounts = {17, 17, 17, 17, 17};
+        this.weaponType = "Sword";
         this.runningHelper = new SpriteRunningHelper(gameAssets, "Character", "Character", runningFrameCounts, false);
         //this.walkingHelper = new SpriteWalkingHelper(gameAssets, "Character", walkingFrameCounts, false);
         this.idleHelper = new SpriteIdleHelper(gameAssets, "Character", "Character", idleFrameCounts, 0f);
-        this.meleeHelper = new MeleeCombatHelper(gameAssets, "Character", "Character", meleeFrameCounts, 10f, screenInterface.getWorld());
+        this.meleeHelper = new MeleeCombatHelper(gameAssets, "Character", "Character", weaponType, meleeFrameCounts, 10f, screenInterface.getWorld());
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
         playerLight = new PointLight(rayHandler, 128, new Color(.5f, .4f, .5f, .8f), .4f, 0, 0);
@@ -92,7 +94,7 @@ public class Player extends GameEntity {
         // Update melee combat helper
         Vector2 position = new Vector2(x, y);
         Vector2 facingDirection = getFacingDirection();
-        meleeHelper.update(delta, position, facingDirection, isFacingRight);
+        meleeHelper.update(delta, position, facingDirection, isFacingRight, lastDirection);
 
         setDepth(y);
         //if (justSwitchedHelpers) {
