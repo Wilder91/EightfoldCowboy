@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
+import helper.BodyUserData;
 import helper.ContactType;
 
 import java.util.HashMap;
@@ -198,10 +199,10 @@ public class MeleeCombatHelper {
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = ContactType.ATTACK.getCategoryBits();
-        fixtureDef.filter.maskBits = ContactType.ATTACK.getCategoryBits();  // Make sure this is ENEMY not ATTACK
+        fixtureDef.filter.maskBits = ContactType.ENEMY.getCategoryBits();  // Make sure this is ENEMY not ATTACK
 
         attackSensor = sensorBody.createFixture(fixtureDef);
-        attackSensor.setUserData("playerAttack");
+        attackSensor.setUserData(new BodyUserData(1, ContactType.ATTACK, sensorBody));
 
         shape.dispose();
     }

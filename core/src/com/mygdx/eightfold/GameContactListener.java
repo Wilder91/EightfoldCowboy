@@ -29,6 +29,7 @@ public class GameContactListener implements ContactListener {
         // Check if one of the fixtures has userData of type BodyUserData
 
         if (a.getUserData() instanceof BodyUserData && b.getUserData() instanceof BodyUserData) {
+            System.out.println("CONTACT");
             BodyUserData userDataA = (BodyUserData) a.getUserData();
             BodyUserData userDataB = (BodyUserData) b.getUserData();
             if (userDataB.getType() == ContactType.PLAYER && userDataA.getType() == ContactType.BUG){
@@ -66,6 +67,11 @@ public class GameContactListener implements ContactListener {
                 Door door = DoorManager.getDoorById(userDataA.getId());
                 door.playerContact();
 
+            } else if (userDataA.getType() == ContactType.ATTACK && userDataB.getType() == ContactType.ENEMY) {
+                System.out.println("THATS A HIT");
+
+            } else if (userDataA.getType() == ContactType.ENEMY && userDataB.getType() == ContactType.ATTACK) {
+                System.out.println("THATS A HIT");
             }
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BIRD){
                 Bird.playerContact(bodyB, userDataB.getId());

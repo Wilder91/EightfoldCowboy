@@ -13,6 +13,7 @@ import com.mygdx.eightfold.GameAssets;
 import objects.inanimate.Tree;
 
 import static helper.Constants.PPM;
+import static helper.ContactType.ENEMY;
 import static helper.ContactType.TREE;
 
 public class TreeFactory {
@@ -76,11 +77,22 @@ public class TreeFactory {
         shape.set(worldVertices);
         shape.setAsBox(boundingRectangle.width / 4/  PPM, boundingRectangle.height /4 / PPM);
         Fixture treeFixture = treeBody.createFixture(shape, 0.0f);
-        treeFixture.setUserData(new BodyUserData(treeId, TREE, treeBody));
+//        if(textureName.equals("aspen_stump")){
+//            treeFixture.setUserData(new BodyUserData(treeId, ENEMY, treeBody));
+//        } else {
+            treeFixture.setUserData(new BodyUserData(treeId, TREE, treeBody));
+ //       }
 
+
+// Then set up the filter
         Filter filter = new Filter();
-        filter.categoryBits = TREE.getCategoryBits();
-        filter.maskBits = TREE.getMaskBits();
+//        if(textureName.equals("aspen_stump")){  // Use .equals() for string comparison
+//            filter.categoryBits = ENEMY.getCategoryBits();
+//            filter.maskBits = ENEMY.getMaskBits();
+//        } else {
+            filter.categoryBits = TREE.getCategoryBits();
+            filter.maskBits = TREE.getMaskBits();
+        //}
         treeFixture.setFilterData(filter);
 
         shape.dispose();
