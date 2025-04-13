@@ -437,9 +437,9 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         textBox.getStage().draw();
 
         // Debug rendering
-        if(debugRendering) {
+        //if(debugRendering) {
             box2DDebugRenderer.render(world, camera.combined.scl(PPM));
-        }
+        //}
     }
 
     @Override

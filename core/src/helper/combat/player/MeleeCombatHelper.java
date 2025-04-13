@@ -125,28 +125,27 @@ public class MeleeCombatHelper {
             // Check if attack animation is complete
             if (currentAttackTimer >= attackDuration || currentAttackAnimation.isAnimationFinished(attackStateTime)) {
                 endAttack();
+                removeAttackSensor();
             }
         }
     }
 
-    // Create and destroy the attack sensor when needed
     private void createAttackSensor(Vector2 position, Vector2 direction) {
         // Remove any existing sensor
-        if (attackSensor != null && attackSensor.getBody() != null) {
-            attackSensor.getBody().destroyFixture(attackSensor);
-        }
+        removeAttackSensor();
 
         // Create a temporary body for the attack
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(position.x / PPM, position.y / PPM);
+        bodyDef.bullet = true; // Use CCD for fast-moving objects
 
         Body sensorBody = world.createBody(bodyDef);
 
         // Create a sensor shape based on attack direction
         PolygonShape shape = new PolygonShape();
-        float width = 0.5f; // Adjust based on your weapon size
-        float height = 0.3f;
+        float width = 0.3f; // Adjust based on your weapon size
+        float height = 0.2f;
         float offsetX = direction.x * 0.5f;
         float offsetY = direction.y * 0.5f;
 
@@ -155,12 +154,11 @@ public class MeleeCombatHelper {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = ContactType.ATTACK.getCategoryBits();
+        fixtureDef.filter.maskBits = ContactType.ATTACK.getCategoryBits();
 
-       // fixtureDef.filter.categoryBits = ContactType.ATTACK.getCategoryBits();
-        //fixtureDef.filter.maskBits = ContactType.ENEMY.getCategoryBits();
-
-        //attackSensor = sensorBody.createFixture(fixtureDef);
-        attackSensor.setUserData("playerAttack"); // Or any identifier you want
+        attackSensor = sensorBody.createFixture(fixtureDef);
+        attackSensor.setUserData("playerAttack");
 
         shape.dispose();
     }
@@ -188,45 +186,36 @@ public class MeleeCombatHelper {
         // Different offset handling for side-facing attacks
         if (lastDirection.equals("idleSide")) {
             if (isFacingRight) {
-                // Right-facing horizontal attack
-                offsetX = frameWidth * 0.25f;  // Shift right by 25% of frame width
-                offsetY = 0;
+                // Right-facing horizontal attack - apply minimal offset or none
+                offsetX = frameWidth * 0.05f;  // Reduced from 0.16f to 0.05f
             } else {
-                // Left-facing horizontal attack needs a different offset
-                offsetX = -frameWidth * 0.25f;  // Shift left by 25% of frame width
-                offsetY = 0;
+                // Left-facing horizontal attack - apply minimal offset or none
+                offsetX = -frameWidth * 0.05f;  // Add symmetric offset
             }
         } else if (lastDirection.equals("idleUp")) {
-            offsetX = 0;
-            offsetY = frameHeight * 0.15f;
+            // No horizontal offset needed for up attack
+            offsetY = frameHeight * 0.05f;  // Small vertical offset if needed
         } else if (lastDirection.equals("idleDown")) {
-            offsetX = 0;
-            offsetY = -frameHeight * 0.15f;
+            // No horizontal offset needed for down attack
+            offsetY = -frameHeight * 0.05f;  // Small vertical offset if needed
         } else if (lastDirection.equals("idleDiagonalUp")) {
-            // Handle diagonal up based on facing direction
-            if (isFacingRight) {
-                offsetX = frameWidth * 0.2f;
-            } else {
-                offsetX = -frameWidth * 0.2f;
-            }
-            offsetY = frameHeight * 0.1f;
+            // Handle diagonal up with minimal offsets
+            offsetX = isFacingRight ? frameWidth * 0.05f : -frameWidth * 0.05f;
+            offsetY = frameHeight * 0.05f;
         } else if (lastDirection.equals("idleDiagonalDown")) {
-            // Handle diagonal down based on facing direction
-            if (isFacingRight) {
-                offsetX = frameWidth * 0.2f;
-            } else {
-                offsetX = -frameWidth * 0.2f;
-            }
-            offsetY = -frameHeight * 0.1f;
+            // Handle diagonal down with minimal offsets
+            offsetX = isFacingRight ? frameWidth * 0.05f : -frameWidth * 0.05f;
+            offsetY = -frameHeight * 0.05f;
         }
 
-        // Set the position with calculated offsets
+        // IMPORTANT: When setting the position, make sure the CENTER of the attack sprite
+        // aligns with the body position, accounting for any offsets
         attackSprite.setPosition(
                 characterCenterX - frameWidth/2 + offsetX,
                 characterCenterY - frameHeight/2 + offsetY
         );
 
-        // Handle sprite flipping
+        // Handle sprite flipping based on facing direction
         if (!isFacingRight) {
             if (!attackSprite.isFlipX()) {
                 attackSprite.flip(true, false);
@@ -240,7 +229,7 @@ public class MeleeCombatHelper {
 
     private void updateHitbox() {
         // Create a hitbox slightly smaller than the sprite
-        float hitboxScale = 0.8f; // 80% of the sprite size
+        float hitboxScale = .8f; // 80% of the sprite size
 
         hitbox.set(
                 attackSprite.getX() + attackSprite.getWidth() * (1 - hitboxScale) / 2,
@@ -267,8 +256,9 @@ public class MeleeCombatHelper {
         return false;
     }
 
-    // Overloaded method that takes a direction string to match player's lastDirection
-    public boolean startAttack(String direction) {
+
+    // Update the startAttack method to create the sensor
+    public boolean startAttack(String direction, Vector2 playerPosition) {
         if (attackCooldown <= 0 && !isAttacking) {
             isAttacking = true;
             attackStateTime = 0f;
@@ -290,12 +280,43 @@ public class MeleeCombatHelper {
                 currentAttackAnimation = attackAnimations.get("attackHorizontal");
             }
 
+            // Create attack sensor with proper direction
+            Vector2 attackDirection = getDirectionVector(direction);
+            createAttackSensor(playerPosition, attackDirection);
+
             // Reset cooldown
             attackCooldown = 0.5f;
 
             return true;
         }
         return false;
+    }
+    // Helper method to convert direction string to vector
+    private Vector2 getDirectionVector(String direction) {
+        Vector2 dirVector = new Vector2(0, 0);
+
+        switch(direction) {
+            case "idleUp":
+                dirVector.set(0, 1);
+                break;
+            case "idleDown":
+                dirVector.set(0, -1);
+                break;
+            case "idleSide":
+                dirVector.set(isFacingRight ? 1 : -1, 0);
+                break;
+            case "idleDiagonalUp":
+                dirVector.set(isFacingRight ? 0.7f : -0.7f, 0.7f);
+                break;
+            case "idleDiagonalDown":
+                dirVector.set(isFacingRight ? 0.7f : -0.7f, -0.7f);
+                break;
+            default:
+                dirVector.set(isFacingRight ? 1 : -1, 0);
+                break;
+        }
+
+        return dirVector.nor();
     }
 
     private void setAttackAnimation(float vx, float vy) {
@@ -315,6 +336,7 @@ public class MeleeCombatHelper {
             currentAttackAnimation = attackAnimations.get("attackHorizontal");
         }
     }
+
 
     private void endAttack() {
         isAttacking = false;
@@ -358,4 +380,6 @@ public class MeleeCombatHelper {
     public void setCooldownTime(float cooldownTime) {
         this.attackCooldown = cooldownTime;
     }
+
+
 }

@@ -104,7 +104,7 @@ public class Player extends GameEntity {
 
     public void createBody(World world, Door door) {
         this.body = BodyHelperService.createBody(
-                x, y, width * 4, height, false, world, ContactType.PLAYER, 1);
+                x , y, width * 4, height, false, world, ContactType.PLAYER, 1);
     }
 
     public void resizeBody(float newWidth, float newHeight) {
@@ -143,15 +143,29 @@ public class Player extends GameEntity {
 
     @Override
     public void render(SpriteBatch batch) {
+        float centerX = x;  // The physics body center X
+        float centerY = y;  // The physics body center Y
+
         if (meleeHelper.isAttacking()) {
-            // Only render the attack sprite when attacking
+            // The meleeHelper already handles positioning internally
             speed = 0f;
             meleeHelper.getAttackSprite().draw(batch);
         } else {
-            // Render the regular character sprite when not attacking
+            // Position the sprite so its center aligns with the body center
             speed = originalSpeed;
-            sprite.setPosition(x - width / 2, y - height / 2);
+
+            // Adjust the sprite position to center it on the body
+            sprite.setPosition(
+                    centerX - sprite.getWidth() / 2,
+                    centerY - sprite.getHeight() / 2
+            );
             sprite.draw(batch);
+
+            // For debugging: draw a small rectangle at the body center
+            // shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            // shapeRenderer.setColor(Color.RED);
+            // shapeRenderer.rect(centerX - 2, centerY - 2, 4, 4);
+            // shapeRenderer.end();
         }
     }
 
@@ -176,7 +190,8 @@ public class Player extends GameEntity {
 
         // Check for attack input (spacebar)
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            meleeHelper.startAttack(lastDirection);
+            Vector2 playerPosition = new Vector2(x, y);
+            meleeHelper.startAttack(lastDirection, playerPosition);
         }
 
         // Combine input direction and normalize to avoid diagonal speed boost

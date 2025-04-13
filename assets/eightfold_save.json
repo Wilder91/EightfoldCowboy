@@ -3,11 +3,11 @@
 	{
 		"posX": {
 			"class": "java.lang.Float",
-			"value": 13.388508
+			"value": 12.918071
 		},
 		"posY": {
 			"class": "java.lang.Float",
-			"value": 7.1579313
+			"value": 6.9596496
 		},
 		"id": {
 			"class": "java.lang.Integer",
@@ -17,11 +17,11 @@
 	{
 		"posX": {
 			"class": "java.lang.Float",
-			"value": 13.635994
+			"value": 13.348047
 		},
 		"posY": {
 			"class": "java.lang.Float",
-			"value": 5.944837
+			"value": 6.5742226
 		},
 		"id": {
 			"class": "java.lang.Integer",
@@ -70,16 +70,16 @@
 },
 "timestamp": {
 	"class": "java.lang.Long",
-	"value": 1744333018410
+	"value": 1744575694477
 },
 "player": {
 	"posX": {
 		"class": "java.lang.Float",
-		"value": 25.124899
+		"value": 14.135123
 	},
 	"posY": {
 		"class": "java.lang.Float",
-		"value": 15.619685
+		"value": 11.159021
 	},
 	"exists": {
 		"class": "java.lang.Boolean",

@@ -84,12 +84,13 @@ public class SpriteIdleHelper {
         sprite.setRegion(region);
         sprite.setSize(region.getRegionWidth(), region.getRegionHeight());
         sprite.setOriginCenter();
-        sprite.setFlip(isFacingRight, false); // <- Ensure flip is applied each frame
-    }
 
+        // Apply flipping based on direction
+        sprite.setFlip(!isFacingRight, false); // Flip when NOT facing right
+    }
     public void setFacingRight(boolean right) {
-        isFacingRight = !right;
-         // Flip X if facing left
+        isFacingRight = right;
+
     }
 
 

@@ -14,7 +14,8 @@ public enum ContactType {
     LIGHT(0x0400, 0xFFFF | 0x0001), // Lights see everything
     BUILDING(0x0800, 0),
     SQUIRREL(0x1000, 0xFFFF),
-    FENCE(0x2000, 0);
+    FENCE(0x2000, 0),
+    ATTACK(0x2400, 0);
     private final short categoryBits;
     private final short maskBits;
 
