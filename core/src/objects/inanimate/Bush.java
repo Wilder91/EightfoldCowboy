@@ -29,7 +29,7 @@ public class Bush extends InanimateEntity {
         this.gameAssets = gameAssets;
         this.atlasPath = "atlases/eightfold/bushes.atlas";
         initTexture();
-        setDepth(y);
+        //setDepth(y);
     }
 
     private void initTexture() {

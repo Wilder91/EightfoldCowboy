@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="700">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="707">
  <tileset firstgid="1" source="large_rock.tsx"/>
  <tileset firstgid="5" source="../../grass/Grass Tiles.tsx"/>
  <tileset firstgid="14" source="pond.tsx"/>
@@ -33,13 +33,13 @@
   <object id="37" name="pond" x="448.436" y="351.086">
    <polygon points="0,0 210.739,0 210.739,109.059 0,109.059"/>
   </object>
-  <object id="38" name="dragonfly" x="561.134" y="399.555">
+  <object id="38" name="dragonfly" type="bugs" x="561.134" y="399.555">
    <properties>
     <property name="class" value="bugs"/>
    </properties>
    <polygon points="0,0 16.1963,0 16.1963,6.38037 0,5.88957"/>
   </object>
-  <object id="39" name="small_white_butterfly" x="513.196" y="331.829">
+  <object id="39" name="small_white_butterfly" type="bugs" x="500.299" y="297.974">
    <properties>
     <property name="class" value="bugs"/>
    </properties>
@@ -65,19 +65,19 @@
    </properties>
    <polygon points="0,0 0,-129.682 63.873,-127.746 62.9053,0"/>
   </object>
-  <object id="95" name="bush-1" x="674.925" y="144.369">
+  <object id="95" name="bush-1" type="bushes" x="674.925" y="144.369">
    <properties>
     <property name="class" value="bushes"/>
    </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="96" name="bush-2" x="731.761" y="165.307">
+  <object id="96" name="bush-2" type="bushes" x="731.761" y="165.307">
    <properties>
     <property name="class" value="bushes"/>
    </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="97" name="bush-3" x="760.414" y="234.737">
+  <object id="97" name="bush-3" type="bushes" x="760.414" y="234.737">
    <properties>
     <property name="class" value="bushes"/>
    </properties>
@@ -89,7 +89,7 @@
    </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="99" name="bush-5" x="768.129" y="349.35">
+  <object id="99" name="bush-5" type="bushes" x="768.129" y="349.35">
    <properties>
     <property name="class" value="bushes"/>
    </properties>
@@ -326,6 +326,27 @@
   </object>
   <object id="74" x="462.424" y="157.943">
    <polygon points="0,0 42.1941,14.825 45.045,1.14038 -0.57019,-20.5269"/>
+  </object>
+  <object id="700" x="421.839" y="353.055">
+   <polygon points="0,0 22.0323,-11.2849 23.1071,-4.83637 1.07475,4.299"/>
+  </object>
+  <object id="701" x="443.871" y="342.845">
+   <polygon points="0,0 22.0323,-11.2849 23.1071,-4.83637 1.07475,4.299"/>
+  </object>
+  <object id="702" x="464.829" y="332.097">
+   <polygon points="0,0 22.0323,-11.2849 23.1071,-4.83637 1.07475,4.299"/>
+  </object>
+  <object id="703" x="509.58" y="310.614">
+   <polygon points="0,0 22.0323,-9.87346 23.1071,-4.23147 1.07475,3.76131"/>
+  </object>
+  <object id="704" x="531.418" y="301.368">
+   <polygon points="0,0 22.0323,-11.5672 23.1071,-4.95735 1.07475,4.40654"/>
+  </object>
+  <object id="705" x="545.39" y="295.175">
+   <polygon points="0,0 22.0323,-11.2849 23.1071,-4.83637 1.07475,4.299"/>
+  </object>
+  <object id="706" x="478.362" y="325.155">
+   <polygon points="0,0 22.0323,-11.2849 23.1071,-4.83637 1.07475,4.299"/>
   </object>
  </objectgroup>
  <objectgroup id="4" name="squirrel_walls">

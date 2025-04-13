@@ -71,6 +71,7 @@ public class Player extends GameEntity {
 //        System.out.println("playerLight x: " + x * PPM);
 //        System.out.println("playerLight y: " + y * PPM);
         playerLight.setPosition(x + .1f, y);
+        //resizeBody(width, height);
 
     }
 
@@ -97,7 +98,26 @@ public class Player extends GameEntity {
 
     public void createBody(World world, Door door) {
         this.body = BodyHelperService.createBody(
-                x, y, width, height, false, world, ContactType.PLAYER, 1);
+                x, y, width * 4, height, false, world, ContactType.PLAYER, 1);
+    }
+
+    public void resizeBody(float newWidth, float newHeight) {
+        World world = body.getWorld();
+        Vector2 position = body.getPosition();
+        float angle = body.getAngle();
+
+        // Destroy old body
+        world.destroyBody(body);
+
+        // Create new body with new dimensions
+        this.body = BodyHelperService.createBody(
+                position.x, position.y,
+                newWidth / PPM, newHeight / PPM,
+                false, world, ContactType.PLAYER, 1);
+
+        // Update visual dimensions
+        this.width = newWidth;
+        this.height = newHeight;
     }
 
     public void screenChange(World world, Door door) {

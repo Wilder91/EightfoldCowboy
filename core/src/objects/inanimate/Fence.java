@@ -38,6 +38,13 @@ public class Fence extends InanimateEntity {
 
         // Calculate the bounds based on the body's fixtures
         calculateBounds();
+
+        // Set initial position and depth
+        this.x = body.getPosition().x * PPM;
+        this.y = body.getPosition().y * PPM;
+
+        // Important: Set the initial depth based on y-position
+        setDepth(this.y);
     }
 
     private void calculateBounds() {
@@ -77,6 +84,7 @@ public class Fence extends InanimateEntity {
                 bounds.width + "x" + bounds.height);
     }
 
+    @Override
     public void render(SpriteBatch batch) {
         if (texture != null && bounds != null) {
             // Draw the texture to match the exact bounds of the body
@@ -89,8 +97,21 @@ public class Fence extends InanimateEntity {
         }
     }
 
+    @Override
     public void update(float delta) {
-        // Static object, no update needed for basic fence
+        // Update position (even though it's static, update for consistency)
+        x = body.getPosition().x * PPM;
+        y = body.getPosition().y * PPM;
+
+        // Critical: Update the depth based on the Y position
+        resetDepthToY();
+    }
+
+    // Make sure this method exists and works properly
+    @Override
+    public void resetDepthToY() {
+        // The y-position determines render depth
+        setDepth(y - 8);
     }
 
     public Body getBody() {
