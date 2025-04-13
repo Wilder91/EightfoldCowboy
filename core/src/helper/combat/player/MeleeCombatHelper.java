@@ -142,20 +142,63 @@ public class MeleeCombatHelper {
 
         Body sensorBody = world.createBody(bodyDef);
 
-        // Create a sensor shape based on attack direction
-        PolygonShape shape = new PolygonShape();
-        float width = 0.3f; // Adjust based on your weapon size
+        // Default dimensions
+        float width = 0.3f;
         float height = 0.2f;
-        float offsetX = direction.x * 0.5f;
-        float offsetY = direction.y * 0.5f;
+        float offsetX = 0f;
+        float offsetY = 0f;
+        float angle = 0f;
 
-        shape.setAsBox(width, height, new Vector2(offsetX, offsetY), 0);
+        // Adjust dimensions and offset based on direction
+        if (lastDirection.equals("idleUp")) {
+            // For upward attacks, make the hitbox taller than wide
+            width = 0.5f;      // Narrower width
+            height = 0.25f;     // Taller height
+            offsetY = 0.3f;    // Position above player
+            offsetX = 0f;      // Centered horizontally
+        } else if (lastDirection.equals("idleDown")) {
+            // For downward attacks, make the hitbox taller than wide
+            width = 0.5f;      // Narrower width
+            height = 0.3f;     // Taller height
+            offsetY = -0.2f;   // Position below player
+            offsetX = 0f;      // Centered horizontally
+        } else if (lastDirection.equals("idleSide")) {
+            // For side attacks, make the hitbox wider than tall
+            width = 0.35f;      // Wider width
+            height = 0.35f;     // Shorter height
+            offsetX = isFacingRight ? 0.3f : -0.3f;  // Position to the side based on facing
+            offsetY = 0f;      // Centered vertically
+        } else if (lastDirection.equals("idleDiagonalUp")) {
+            // For diagonal up attacks
+            width = 0.3f;
+            height = 0.5f;
+            offsetX = isFacingRight ? 0.3f : -0.3f;
+            offsetY = 0.3f;
+            angle = isFacingRight ? 45 * (float)Math.PI/180 : -45 * (float)Math.PI/180;  // 45 degree angle
+        } else if (lastDirection.equals("idleDiagonalDown")) {
+            // For diagonal down attacks
+            width = 0.3f;
+            height = 0.5f;
+            offsetX = isFacingRight ? 0.3f : -0.3f;
+            offsetY = -0.3f;
+            angle = isFacingRight ? -45 * (float)Math.PI/180 : 45 * (float)Math.PI/180;  // -45 degree angle
+        } else {
+            // Default to horizontal attack
+            width = 0.4f;
+            height = 0.2f;
+            offsetX = isFacingRight ? 0.5f : -0.5f;
+            offsetY = 0f;
+        }
+
+        // Create the sensor shape
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(width, height, new Vector2(offsetX, offsetY), angle);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = ContactType.ATTACK.getCategoryBits();
-        fixtureDef.filter.maskBits = ContactType.ATTACK.getCategoryBits();
+        fixtureDef.filter.maskBits = ContactType.ATTACK.getCategoryBits();  // Make sure this is ENEMY not ATTACK
 
         attackSensor = sensorBody.createFixture(fixtureDef);
         attackSensor.setUserData("playerAttack");
