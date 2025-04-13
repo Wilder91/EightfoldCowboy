@@ -14,6 +14,7 @@ import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
 import com.mygdx.eightfold.GameAssets;
+import helper.combat.MeleeCombatHelper;
 import helper.movement.*;
 
 import objects.GameEntity;
@@ -30,6 +31,7 @@ public class Player extends GameEntity {
     private ScreenInterface screenInterface;
     private Vector2 initialPosition;
     private SpriteRunningHelper runningHelper;
+    private MeleeCombatHelper meleeHelper;
     //private SpriteWalkingHelper walkingHelper;
     private SpriteIdleHelper idleHelper;
     private String lastDirection = "idleDown";
@@ -56,9 +58,11 @@ public class Player extends GameEntity {
         //this.initialPosition = new Vector2(300, 100);
         int[] runningFrameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
         int[] idleFrameCounts = {18, 1, 8, 18, 4};
+        int[] meleeFrameCounts = {17, 17, 17, 17, 17};
         this.runningHelper = new SpriteRunningHelper(gameAssets, "Character", "Character", runningFrameCounts, false);
         //this.walkingHelper = new SpriteWalkingHelper(gameAssets, "Character", walkingFrameCounts, false);
         this.idleHelper = new SpriteIdleHelper(gameAssets, "Character", "Character", idleFrameCounts, 0f);
+        this.meleeHelper = new MeleeCombatHelper(gameAssets, "Character", "Character", meleeFrameCounts, 10f);
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
         playerLight = new PointLight(rayHandler, 128, new Color(.5f, .4f, .5f, .8f), .4f, 0, 0);
@@ -75,25 +79,25 @@ public class Player extends GameEntity {
 
     }
 
-
-
-
-
-
-
     @Override
     public void update(float delta) {
+
         stateTime += delta; // Update the state time
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
 
         checkUserInput();
         updateAnimation(delta);
+
+        // Update melee combat helper
+        Vector2 position = new Vector2(x, y);
+        Vector2 facingDirection = getFacingDirection();
+        meleeHelper.update(delta, position, facingDirection, isFacingRight);
+
         setDepth(y);
         //if (justSwitchedHelpers) {
-           // idleHelper.resetStateTime(); // <— Add a method like this if needed
+        // idleHelper.resetStateTime(); // <— Add a method like this if needed
         //}
-
     }
 
     public void createBody(World world, Door door) {
@@ -137,13 +141,17 @@ public class Player extends GameEntity {
 
     @Override
     public void render(SpriteBatch batch) {
-        sprite.setPosition(x - width / 2, y - height / 2);
-        sprite.draw(batch);
-
+        if (meleeHelper.isAttacking()) {
+            // Only render the attack sprite when attacking
+            speed = 0f;
+            meleeHelper.getAttackSprite().draw(batch);
+        } else {
+            // Render the regular character sprite when not attacking
+            speed = originalSpeed;
+            sprite.setPosition(x - width / 2, y - height / 2);
+            sprite.draw(batch);
+        }
     }
-
-
-
 
     private void checkUserInput() {
         float velX = 0;
@@ -164,6 +172,12 @@ public class Player extends GameEntity {
             velY = -1;
         }
 
+        // Check for attack input (spacebar)
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+
+            meleeHelper.startAttack(lastDirection);
+        }
+
         // Combine input direction and normalize to avoid diagonal speed boost
         Vector2 direction = new Vector2(velX, velY);
         if (direction.len() > 0) {
@@ -178,6 +192,9 @@ public class Player extends GameEntity {
     }
 
     private void updateAnimation(float delta) {
+        if (meleeHelper.isAttacking()) {
+            return;
+        }
         Vector2 velocity = body.getLinearVelocity();
         Vector2 absVelocity = new Vector2(Math.abs(velocity.x), Math.abs(velocity.y));
         idleHelper.getFacingDirection(velocity, absVelocity);
@@ -197,7 +214,7 @@ public class Player extends GameEntity {
             lastDirection = "idleSide";
         }
 
-// Update facing direction
+        // Update facing direction
         if (velocity.x < -0.1f) {
             isFacingRight = false;
         } else if (velocity.x > 0.1f) {
@@ -215,7 +232,6 @@ public class Player extends GameEntity {
             sprite = idleHelper.getSprite();
         }
 
-
         //System.out.println("Player Velocity: " + absVelocity);
 
         // Flip the sprite if needed
@@ -228,14 +244,39 @@ public class Player extends GameEntity {
         }
     }
 
+    // Helper method to get the facing direction as a Vector2
+    private Vector2 getFacingDirection() {
+        Vector2 direction = new Vector2(0, 0);
+
+        switch(lastDirection) {
+            case "idleUp":
+                direction.set(0, 1);
+                break;
+            case "idleDown":
+                direction.set(0, -1);
+                break;
+            case "idleSide":
+                direction.set(isFacingRight ? 1 : -1, 0);
+                break;
+            case "idleDiagonalUp":
+                direction.set(isFacingRight ? 1 : -1, 1);
+                break;
+            case "idleDiagonalDown":
+                direction.set(isFacingRight ? 1 : -1, -1);
+                break;
+            default:
+                direction.set(isFacingRight ? 1 : -1, 0);
+                break;
+        }
+
+        return direction.nor();
+    }
+
     public void setBody(Body body) {
         this.body = body;
-
     }
 
     public int getId() {
         return 1;
     }
-
-
 }
