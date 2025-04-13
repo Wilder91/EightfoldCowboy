@@ -50,7 +50,7 @@ public class SpriteRunningHelper {
     }
 
     public void loadAnimations() {
-        String atlasPath = "atlases/eightfold/" + animalType + "-running.atlas";
+        String atlasPath = "atlases/eightfold/" + animalType + "-movement.atlas";
         // Populate the animations map with all available running animations
         animations.put("runningUp", createAnimation(animalName + "_Up_Run", frameCounts[0], atlasPath));
         animations.put("runningDown", createAnimation(animalName + "_Down_Run", frameCounts[1], atlasPath));

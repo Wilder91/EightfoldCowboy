@@ -6,15 +6,15 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
+import helper.ContactType;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
-import static helper.Constants.ATTACK_FRAME_DURATION;
-import static helper.Constants.FRAME_DURATION;
+import static helper.Constants.*;
 
 public class MeleeCombatHelper {
     private Map<String, Animation<TextureRegion>> attackAnimations;
@@ -32,8 +32,10 @@ public class MeleeCombatHelper {
     private int[] attackFrameCounts;
     private float attackDuration;
     private float currentAttackTimer;
+    private Fixture attackSensor;
+    private World world;
 
-    public MeleeCombatHelper(GameAssets gameAssets, String animalType, String animalName, int[] attackFrameCounts, float attackDamage) {
+    public MeleeCombatHelper(GameAssets gameAssets, String animalType, String animalName, int[] attackFrameCounts, float attackDamage, World world) {
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.animalName = animalName;
@@ -45,6 +47,7 @@ public class MeleeCombatHelper {
         this.attackDamage = attackDamage;
         this.currentAttackTimer = 0f;
         this.hitbox = new Rectangle();
+        this.world = world;
 
         loadAttackAnimations();
 
@@ -121,6 +124,49 @@ public class MeleeCombatHelper {
             if (currentAttackTimer >= attackDuration || currentAttackAnimation.isAnimationFinished(attackStateTime)) {
                 endAttack();
             }
+        }
+    }
+
+    // Create and destroy the attack sensor when needed
+    private void createAttackSensor(Vector2 position, Vector2 direction) {
+        // Remove any existing sensor
+        if (attackSensor != null && attackSensor.getBody() != null) {
+            attackSensor.getBody().destroyFixture(attackSensor);
+        }
+
+        // Create a temporary body for the attack
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(position.x / PPM, position.y / PPM);
+
+        Body sensorBody = world.createBody(bodyDef);
+
+        // Create a sensor shape based on attack direction
+        PolygonShape shape = new PolygonShape();
+        float width = 0.5f; // Adjust based on your weapon size
+        float height = 0.3f;
+        float offsetX = direction.x * 0.5f;
+        float offsetY = direction.y * 0.5f;
+
+        shape.setAsBox(width, height, new Vector2(offsetX, offsetY), 0);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.isSensor = true;
+
+       // fixtureDef.filter.categoryBits = ContactType.ATTACK.getCategoryBits();
+        //fixtureDef.filter.maskBits = ContactType.ENEMY.getCategoryBits();
+
+        //attackSensor = sensorBody.createFixture(fixtureDef);
+        attackSensor.setUserData("playerAttack"); // Or any identifier you want
+
+        shape.dispose();
+    }
+
+    private void removeAttackSensor() {
+        if (attackSensor != null && attackSensor.getBody() != null) {
+            world.destroyBody(attackSensor.getBody());
+            attackSensor = null;
         }
     }
 

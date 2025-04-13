@@ -62,7 +62,7 @@ public class Player extends GameEntity {
         this.runningHelper = new SpriteRunningHelper(gameAssets, "Character", "Character", runningFrameCounts, false);
         //this.walkingHelper = new SpriteWalkingHelper(gameAssets, "Character", walkingFrameCounts, false);
         this.idleHelper = new SpriteIdleHelper(gameAssets, "Character", "Character", idleFrameCounts, 0f);
-        this.meleeHelper = new MeleeCombatHelper(gameAssets, "Character", "Character", meleeFrameCounts, 10f);
+        this.meleeHelper = new MeleeCombatHelper(gameAssets, "Character", "Character", meleeFrameCounts, 10f, screenInterface.getWorld());
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
         playerLight = new PointLight(rayHandler, 128, new Color(.5f, .4f, .5f, .8f), .4f, 0, 0);
@@ -174,7 +174,6 @@ public class Player extends GameEntity {
 
         // Check for attack input (spacebar)
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-
             meleeHelper.startAttack(lastDirection);
         }
 
