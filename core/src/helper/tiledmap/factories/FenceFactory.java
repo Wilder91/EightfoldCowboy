@@ -51,15 +51,7 @@ public class FenceFactory {
             return;
         }
 
-        // Get texture dimensions - IMPORTANT: Use the actual texture size
-        float textureWidth = texture.getRegionWidth();
-        float textureHeight = texture.getRegionHeight();
 
-        // Debug info
-        System.out.println("Creating fence:");
-        System.out.println("  - Polygon bounds: " + bounds.x + ", " + bounds.y + ", " + bounds.width + "x" + bounds.height);
-        System.out.println("  - Center position: " + centerX + ", " + centerY);
-        System.out.println("  - Texture size: " + textureWidth + "x" + textureHeight);
 
         // Create the fence object with texture and body
         Fence fence = new Fence(// Center Y

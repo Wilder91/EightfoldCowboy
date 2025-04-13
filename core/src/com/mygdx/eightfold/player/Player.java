@@ -60,11 +60,11 @@ public class Player extends GameEntity {
         int[] runningFrameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
         int[] idleFrameCounts = {18, 1, 8, 18, 4};
         int[] meleeFrameCounts = {17, 17, 17, 17, 17};
-        this.weaponType = "Sword";
-        this.runningHelper = new SpriteRunningHelper(gameAssets, "Character", "Character", runningFrameCounts, false);
+        this.weaponType = "sword";
+        this.runningHelper = new SpriteRunningHelper(gameAssets, "character", "character", runningFrameCounts, false);
         //this.walkingHelper = new SpriteWalkingHelper(gameAssets, "Character", walkingFrameCounts, false);
-        this.idleHelper = new SpriteIdleHelper(gameAssets, "Character", "Character", idleFrameCounts, 0f);
-        this.meleeHelper = new MeleeCombatHelper(gameAssets, "Character", "Character", weaponType, meleeFrameCounts, 10f, screenInterface.getWorld());
+        this.idleHelper = new SpriteIdleHelper(gameAssets, "character", "character", idleFrameCounts, 0f);
+        this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", weaponType, meleeFrameCounts, 10f, screenInterface.getWorld());
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
         playerLight = new PointLight(rayHandler, 128, new Color(.5f, .4f, .5f, .8f), .4f, 0, 0);

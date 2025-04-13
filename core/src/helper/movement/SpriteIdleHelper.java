@@ -1,5 +1,6 @@
 package helper.movement;
 
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -43,26 +44,36 @@ public class SpriteIdleHelper {
     private void loadAnimations() {
        // System.out.println("character TYPE: " + characterType);
         String atlasPath = "atlases/eightfold/" + characterType + "-movement.atlas";
-        animations.put("idleDown", createAnimation(characterName + "_Idle_Down", frameCounts[0], atlasPath, .3f));
-        animations.put("idleUp", createAnimation(characterName + "_Idle_Up", frameCounts[1], atlasPath, .1f));
-        animations.put("idleDiagonalUp", createAnimation(characterName + "_Idle_DiagUP", frameCounts[2], atlasPath, .1f));
-        animations.put("idleDiagonalDown", createAnimation(characterName + "_Idle_DiagDOWN", frameCounts[3], atlasPath, .3f));
-        animations.put("idleSide", createAnimation(characterName + "_Idle_Horizontal", frameCounts[4], atlasPath, .8f));
+        animations.put("idleDown", createAnimation(characterName + "_down_idle", frameCounts[0], atlasPath, .3f));
+        animations.put("idleUp", createAnimation(characterName + "_up_idle", frameCounts[1], atlasPath, .1f));
+        //animations.put("idleDiagonalUp", createAnimation(characterName + "_diagUP_idle", frameCounts[2], atlasPath, .1f));
+        //animations.put("idleDiagonalDown", createAnimation(characterName + "_diagDOWN_idle", frameCounts[3], atlasPath, .3f));
+        animations.put("idleSide", createAnimation(characterName + "_horizontal_idle", frameCounts[4], atlasPath, .8f));
     }
 
     private Animation<TextureRegion> createAnimation(String regionPrefix, int frameCount, String atlasPath, float frameDuration) {
         Array<TextureRegion> frames = new Array<>();
         TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
-        //System.out.println("Loaded " + frames.size + " frames for " + regionPrefix);
+
+        if (atlas == null) {
+            System.err.println("ERROR: Atlas not found: " + atlasPath);
+            return new Animation<>(frameDuration, frames, Animation.PlayMode.LOOP);
+        }
+
+        System.out.println("Loading idle animation: " + regionPrefix + " with " + frameCount + " frames");
 
         for (int i = 1; i <= frameCount; i++) {
             TextureRegion region = atlas.findRegion(regionPrefix, i);
             if (region != null) {
                 frames.add(region);
             } else {
-                System.err.println("Missing frame: " + regionPrefix + " " + i + ", character type: " + atlas);
+                System.err.println("Missing frame: " + regionPrefix + "_" + i);
             }
         }
+
+        //System.out.println("Loaded " + frames.size + " frames for " + regionPrefix);
+
+
 
         return new Animation<>(frameDuration, frames, Animation.PlayMode.LOOP);
     }

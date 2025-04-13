@@ -80,8 +80,8 @@ public class Fence extends InanimateEntity {
 
         // Create bounds rectangle
         this.bounds = new Rectangle(minX, minY, maxX - minX, maxY - minY);
-        System.out.println("Fence bounds calculated: " + bounds.x + ", " + bounds.y + ", " +
-                bounds.width + "x" + bounds.height);
+        //System.out.println("Fence bounds calculated: " + bounds.x + ", " + bounds.y + ", " +
+                //bounds.width + "x" + bounds.height);
     }
 
     @Override

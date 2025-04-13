@@ -64,9 +64,9 @@ public class NPC extends GameEntity {
 
     private int[] getFrameCountsFromName(String characterName) {
         switch (characterName) {
-            case "Jim":
+            case "jim":
                 return new int[]{23, 0, 0, 0, 0};
-            case "Martha":
+            case "martha":
                 return new int[]{24, 0, 0, 0, 0};
             default:
                 return new int[]{0,0,0,0,0};
@@ -76,9 +76,9 @@ public class NPC extends GameEntity {
     private String getCharacterNameFromName(String characterName) {
         switch (characterName) {
             case "Jim":
-                return "Jim";
+                return "jim";
             case "Martha":
-                return "Martha";
+                return "martha";
             default:
                 return "NPC";
         }

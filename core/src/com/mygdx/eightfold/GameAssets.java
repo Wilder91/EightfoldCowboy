@@ -22,7 +22,7 @@ public class GameAssets {
         assetManager.load("atlases/eightfold/bison-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/character-running.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Character-running.atlas", TextureAtlas.class);
-        assetManager.load("atlases/eightfold/Character-movement.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/character-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Character-idle.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Jim-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Martha-movement.atlas", TextureAtlas.class);

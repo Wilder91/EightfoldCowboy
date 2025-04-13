@@ -65,11 +65,11 @@ public class MeleeCombatHelper {
         String atlasPath = "atlases/eightfold/" + animalType + "-movement.atlas";
 
         // Populate the animations map with all available attack animations
-        attackAnimations.put("attackUp", createAnimation(animalName + "_Up_" + weaponType,  attackFrameCounts[0], atlasPath));
-        attackAnimations.put("attackDown", createAnimation(animalName + "_Down_" + weaponType, attackFrameCounts[1], atlasPath));
-        attackAnimations.put("attackHorizontal", createAnimation(animalName + "_Horizontal_" + weaponType, attackFrameCounts[2], atlasPath));
-        attackAnimations.put("attackDiagonalUp", createAnimation(animalName + "_DiagUP_" + weaponType, attackFrameCounts[3], atlasPath));
-        attackAnimations.put("attackDiagonalDown", createAnimation(animalName + "_DiagDOWN_" + weaponType, attackFrameCounts[4], atlasPath));
+        attackAnimations.put("attackUp", createAnimation(animalName + "_up_" + weaponType,  attackFrameCounts[0], atlasPath));
+        attackAnimations.put("attackDown", createAnimation(animalName + "_down_" + weaponType, attackFrameCounts[1], atlasPath));
+        attackAnimations.put("attackHorizontal", createAnimation(animalName + "_horizontal_" + weaponType, attackFrameCounts[2], atlasPath));
+        attackAnimations.put("attackDiagonalUp", createAnimation(animalName + "_diagUP_" + weaponType, attackFrameCounts[3], atlasPath));
+        attackAnimations.put("attackDiagonalDown", createAnimation(animalName + "_diagDOWN_" + weaponType, attackFrameCounts[4], atlasPath));
     }
 
     private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount, String atlasPath) {
@@ -177,43 +177,64 @@ public class MeleeCombatHelper {
         float frameWidth = attackSprite.getWidth();
         float frameHeight = attackSprite.getHeight();
 
-        // Calculate the center point of the character
+        // Calculate the character center
         float characterCenterX = position.x;
         float characterCenterY = position.y;
 
-        // Calculate offsets based on direction
+        // Initialize offsets
         float offsetX = 0;
         float offsetY = 0;
 
-        // Adjust based on direction
-        if (lastDirection.equals("idleUp") || lastDirection.equals("idleDown")) {
-            // For vertical attacks, center horizontally
+        // Different offset handling for side-facing attacks
+        if (lastDirection.equals("idleSide")) {
+            if (isFacingRight) {
+                // Right-facing horizontal attack
+                offsetX = frameWidth * 0.25f;  // Shift right by 25% of frame width
+                offsetY = 0;
+            } else {
+                // Left-facing horizontal attack needs a different offset
+                offsetX = -frameWidth * 0.25f;  // Shift left by 25% of frame width
+                offsetY = 0;
+            }
+        } else if (lastDirection.equals("idleUp")) {
             offsetX = 0;
-            // For up attacks, shift slightly up; for down attacks, shift slightly down
-            offsetY = lastDirection.equals("idleUp") ? frameHeight * 0.2f : -frameHeight * 0.2f;
-        } else if (lastDirection.equals("idleSide")) {
-            // For horizontal attacks, shift in facing direction
-            offsetX = isFacingRight ? frameWidth * 0.25f : -frameWidth * 0.25f;
-            offsetY = 0;
-        } else if (lastDirection.equals("idleDiagonalUp")) {
-            // For diagonal up attacks
-            offsetX = isFacingRight ? frameWidth * 0.2f : -frameWidth * 0.2f;
             offsetY = frameHeight * 0.15f;
-        } else if (lastDirection.equals("idleDiagonalDown")) {
-            // For diagonal down attacks
-            offsetX = isFacingRight ? frameWidth * 0.2f : -frameWidth * 0.2f;
+        } else if (lastDirection.equals("idleDown")) {
+            offsetX = 0;
             offsetY = -frameHeight * 0.15f;
+        } else if (lastDirection.equals("idleDiagonalUp")) {
+            // Handle diagonal up based on facing direction
+            if (isFacingRight) {
+                offsetX = frameWidth * 0.2f;
+            } else {
+                offsetX = -frameWidth * 0.2f;
+            }
+            offsetY = frameHeight * 0.1f;
+        } else if (lastDirection.equals("idleDiagonalDown")) {
+            // Handle diagonal down based on facing direction
+            if (isFacingRight) {
+                offsetX = frameWidth * 0.2f;
+            } else {
+                offsetX = -frameWidth * 0.2f;
+            }
+            offsetY = -frameHeight * 0.1f;
         }
 
-        // Set the position, accounting for sprite origin at center
+        // Set the position with calculated offsets
         attackSprite.setPosition(
                 characterCenterX - frameWidth/2 + offsetX,
                 characterCenterY - frameHeight/2 + offsetY
         );
 
-        // Handle flipping for left-facing attacks
-        if (attackSprite.isFlipX() != !isFacingRight) {
-            attackSprite.flip(true, false);
+        // Handle sprite flipping
+        if (!isFacingRight) {
+            if (!attackSprite.isFlipX()) {
+                attackSprite.flip(true, false);
+            }
+        } else {
+            if (attackSprite.isFlipX()) {
+                attackSprite.flip(true, false);
+            }
         }
     }
 
