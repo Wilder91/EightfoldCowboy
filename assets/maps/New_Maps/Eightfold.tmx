@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="662">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="700">
  <tileset firstgid="1" source="large_rock.tsx"/>
  <tileset firstgid="5" source="../../grass/Grass Tiles.tsx"/>
  <tileset firstgid="14" source="pond.tsx"/>
@@ -130,6 +130,98 @@
     <property name="class" value="rocks"/>
    </properties>
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
+  </object>
+  <object id="662" name="aspen_stump" type="trees" x="386.1" y="312.874">
+   <properties>
+    <property name="class" value="trees"/>
+   </properties>
+   <polygon points="0,0 0,-36.4854 27.9257,-35.9407 27.5026,0"/>
+  </object>
+  <object id="663" name="aspen_young" type="trees" x="342.165" y="258.288">
+   <properties>
+    <property name="class" value="trees"/>
+   </properties>
+   <polygon points="0,0 0,-36.4854 27.9257,-35.9407 27.5026,0"/>
+  </object>
+  <object id="664" name="aspen_baby" type="trees" x="447.344" y="276.927">
+   <properties>
+    <property name="class" value="trees"/>
+   </properties>
+   <polygon points="0,0 0,-36.4854 27.9257,-35.9407 27.5026,0"/>
+  </object>
+  <object id="665" name="small_rock-3" type="rocks" x="133.366" y="356.45">
+   <properties>
+    <property name="class" value="rocks"/>
+   </properties>
+   <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
+  </object>
+  <object id="668" name="cliff_face-1" type="rocks" x="221.398" y="414.348">
+   <properties>
+    <property name="class" value="rocks"/>
+   </properties>
+   <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
+  </object>
+  <object id="669" name="cliff_face-3" type="rocks" x="34.632" y="432.9">
+   <properties>
+    <property name="class" value="rocks"/>
+   </properties>
+   <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
+  </object>
+  <object id="670" name="cliff_face-2" type="rocks" x="141.002" y="483.612">
+   <properties>
+    <property name="class" value="rocks"/>
+   </properties>
+   <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
+  </object>
+  <object id="675" x="428.909" y="332.669" height="0.3273"/>
+  <object id="678" name="wood_fence-1" x="416.239" y="323.16">
+   <properties>
+    <property name="class" value="fences"/>
+   </properties>
+   <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
+  </object>
+  <object id="683" name="wood_fence-1" x="432.586" y="315.439">
+   <properties>
+    <property name="class" value="fences"/>
+   </properties>
+   <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
+  </object>
+  <object id="687" name="wood_fence-1" x="450.094" y="307.576">
+   <properties>
+    <property name="class" value="fences"/>
+   </properties>
+   <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
+  </object>
+  <object id="688" name="wood_fence-1" x="466.441" y="299.855">
+   <properties>
+    <property name="class" value="fences"/>
+   </properties>
+   <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
+  </object>
+  <object id="689" x="482.562" y="322.798" height="0.3273"/>
+  <object id="691" name="wood_fence-1" x="500.748" y="284.073">
+   <properties>
+    <property name="class" value="fences"/>
+   </properties>
+   <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
+  </object>
+  <object id="692" name="wood_fence-1" x="518.256" y="276.21">
+   <properties>
+    <property name="class" value="fences"/>
+   </properties>
+   <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
+  </object>
+  <object id="693" name="wood_fence-1" x="534.603" y="268.489">
+   <properties>
+    <property name="class" value="fences"/>
+   </properties>
+   <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
+  </object>
+  <object id="699" name="wood_fence-1" x="394.97" y="324.037" rotation="45">
+   <properties>
+    <property name="class" value="fences"/>
+   </properties>
+   <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
  </objectgroup>
  <objectgroup id="3" name="wall">

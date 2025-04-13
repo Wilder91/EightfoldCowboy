@@ -143,6 +143,11 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
+    @Override
+    public void addFence(Fence fence) {
+
+    }
+
 
     @Override
     public OrthographicCamera getCamera() {

@@ -22,6 +22,7 @@ import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
+import helper.tiledmap.factories.FenceFactory;
 import helper.tiledmap.factories.animals.ChickenFactory;
 import helper.tiledmap.factories.animals.SquirrelFactory;
 import helper.tiledmap.factories.animals.bugs.BugFactory;
@@ -60,7 +61,7 @@ public class TiledMapHelper {
         // Parse the objects in the new map
         parseMapObjects(tiledMap.getLayers().get("objects").getObjects());
 
-        System.out.println(tiledMap.getLayers().get("objects").getObjects());
+
         parseWallObjects(tiledMap.getLayers().get("wall").getObjects());
 
         // Return the new map renderer
@@ -84,7 +85,7 @@ public class TiledMapHelper {
                 PolygonMapObject polygonMapObject = (PolygonMapObject) mapObject;
                 String polygonName = mapObject.getName();
                 String objectClass = (String) mapObject.getProperties().get("class");
-                System.out.println(objectClass);
+
 
                 if (polygonName != null) {
                     if(objectClass != null) {
@@ -107,6 +108,10 @@ public class TiledMapHelper {
                                 break;
                             case "bugs":
                                 createBug(polygonMapObject, polygonName);
+                                beenCreated = true;
+                                break;
+                            case "fences":
+                                createFence(polygonMapObject, polygonName);
                                 beenCreated = true;
                                 break;
                         }
@@ -173,7 +178,7 @@ public class TiledMapHelper {
                    // System.out.println("there's jIm!");
                     RectangleMapObject rectObj = (RectangleMapObject) mapObject;
                     NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener, 0);
-                    System.out.println(rectangleName);
+
                     npcFactory.createNPC(rectObj, rectangleName);
                 }
                 if (rectangleName != null && rectangleName.equals("Martha")) {
@@ -203,7 +208,7 @@ public class TiledMapHelper {
                         if (polygonName != null) {
                             switch (polygonName) {
                                 case "enter_saloon":
-                                    System.out.println("enter saloon!");
+
                                     createDoor(polygonMapObject, polygonName);
                                     break;
                                 case "leave_saloon":
@@ -268,14 +273,20 @@ public class TiledMapHelper {
 
 
     private void createTree(PolygonMapObject polygonMapObject, String textureName) {
-        System.out.println("create tree");
+
         TreeFactory treeFactory = new TreeFactory(screenInterface, gameAssets);
         treeFactory.createTree(polygonMapObject, textureName);
     }
 
+    private void createFence(PolygonMapObject polygonMapObject, String fenceName) {
+        System.out.println(polygonMapObject.getPolygon().getRotation());
+        FenceFactory fenceFactory = new FenceFactory(screenInterface, gameAssets, gameContactListener);
+        fenceFactory.createFence(polygonMapObject, fenceName);
+    }
+
     private void createPond(PolygonMapObject polygonMapObject, int pondType) {
         PondFactory pondFactory = new PondFactory(screenInterface, gameAssets, gameContactListener);
-        pondFactory.createPond(polygonMapObject, 0);
+        pondFactory.createPond(polygonMapObject, pondType);
     }
 
     private void createBush(PolygonMapObject polygonMapObject, String bushName) {

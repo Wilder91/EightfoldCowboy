@@ -11,13 +11,7 @@ import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
 import objects.humans.NPC;
-import objects.inanimate.Boulder;
-import objects.inanimate.Building;
-import objects.inanimate.Bush;
-import objects.inanimate.Door;
-import objects.inanimate.Pond;
-import objects.inanimate.Rock;
-import objects.inanimate.Tree;
+import objects.inanimate.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,6 +39,7 @@ public class EntityManager {
     private final List<NPC> npcs = new ArrayList<>();
     private final List<Door> doors = new ArrayList<>();
     private final List<Bug> bugs = new ArrayList<>();
+    private final List<Fence> fences = new ArrayList<>();
 
     // Map for NPC lookup by ID
     private final Map<Integer, NPC> npcMap = new HashMap<>();
@@ -71,6 +66,10 @@ public class EntityManager {
         // Update all entities
         for (Butterfly butterfly : butterflies) {
             butterfly.update(delta);
+        }
+
+        for (Fence fence : fences) {
+            fence.update(delta);
         }
 
         for (Dragonfly dragonfly : dragonflies) {
@@ -152,6 +151,7 @@ public class EntityManager {
         sortedEntities.addAll(boulders);
         sortedEntities.addAll(bugs);
         sortedEntities.addAll(rocks);
+        sortedEntities.addAll(fences);
 
         // Sort by Y position
         Collections.sort(sortedEntities, GameEntity.Y_COMPARATOR);
@@ -264,6 +264,10 @@ public class EntityManager {
     // Add methods for each entity type
     public void addBird(Bird bird) {
         birds.add(bird);
+    }
+
+    public void addFence(Fence fence){
+        fences.add(fence);
     }
 
     public void addBuilding(Building building) {

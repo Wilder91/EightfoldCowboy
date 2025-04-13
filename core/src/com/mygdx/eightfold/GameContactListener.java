@@ -37,7 +37,7 @@ public class GameContactListener implements ContactListener {
             if(userDataA.getType() ==ContactType.PLAYER && userDataB.getType() == ContactType.DOOR){
 
                 Door door = DoorManager.getDoorById(userDataB.getId());
-                System.out.println("Door: " + door);
+                //System.out.println("Door: " + door);
                // System.out.println("Player began contact with door: " + door.getName());
                 door.playerContact();
             }

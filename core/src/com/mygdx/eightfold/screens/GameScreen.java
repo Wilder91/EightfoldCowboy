@@ -328,6 +328,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     @Override
+    public void addFence(Fence fence) {
+        entityManager.addFence(fence);
+    }
+
+    @Override
     public void addPond(Pond pond) {
         entityManager.addPond(pond);
     }

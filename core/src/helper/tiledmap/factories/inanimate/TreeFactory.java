@@ -44,7 +44,7 @@ public class TreeFactory {
         }
 
         // Use the tree name to construct the region name - no more Top/Bottom suffixes
-        System.out.println("TEXTURE NAME: " + textureName);
+        //System.out.println("TEXTURE NAME: " + textureName);
         TextureRegion treeTexture = gameAssets.getAtlas(atlasLink).findRegion(textureName);
 
         if (treeTexture == null) {

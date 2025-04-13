@@ -32,6 +32,7 @@ public class GameAssets {
         assetManager.load("atlases/eightfold/bushes.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/farm_animal.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/wild-animal.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/fences.atlas", TextureAtlas.class);
         assetManager.load("Character_Horizontal_Run/Character_Horizontal_Run_3.png", Texture.class);
         assetManager.load("buildings/Barns/Barn-1.png", Texture.class);
         assetManager.load("buildings/Shops/Shop-1.png", Texture.class);

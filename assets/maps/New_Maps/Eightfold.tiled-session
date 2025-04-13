@@ -102,6 +102,9 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "fences.tsx": {
+            "dynamicWrapping": false
+        },
         "large_rock.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
@@ -195,5 +198,5 @@
         "height": 32,
         "width": 32
     },
-    "tileset.type": 1
+    "tileset.type": 0
 }

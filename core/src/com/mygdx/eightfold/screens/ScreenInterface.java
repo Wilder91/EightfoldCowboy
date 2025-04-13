@@ -98,4 +98,6 @@ public interface ScreenInterface {
     void setChoices(String... choices);
 
     void addSquirrel(Squirrel squirrel);
+
+    void addFence(Fence fence);
 }
