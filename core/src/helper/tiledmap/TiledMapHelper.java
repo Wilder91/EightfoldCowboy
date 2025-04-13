@@ -84,12 +84,10 @@ public class TiledMapHelper {
             if (mapObject instanceof PolygonMapObject) {
                 PolygonMapObject polygonMapObject = (PolygonMapObject) mapObject;
                 String polygonName = mapObject.getName();
-                String objectClass = (String) mapObject.getProperties().get("class");
-
-
+                String objectType = (String) mapObject.getProperties().get("type");
                 if (polygonName != null) {
-                    if(objectClass != null) {
-                        switch (objectClass) {
+                    if(objectType != null) {
+                        switch (objectType) {
                             case "rocks":
                                 createRock(polygonMapObject, polygonName);
                                 beenCreated = true;
@@ -280,6 +278,7 @@ public class TiledMapHelper {
 
     private void createFence(PolygonMapObject polygonMapObject, String fenceName) {
         System.out.println(polygonMapObject.getPolygon().getRotation());
+
         FenceFactory fenceFactory = new FenceFactory(screenInterface, gameAssets, gameContactListener);
         fenceFactory.createFence(polygonMapObject, fenceName);
     }

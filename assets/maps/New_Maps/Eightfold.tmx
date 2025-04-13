@@ -95,7 +95,7 @@
    </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="100" name="chicken" x="400.82" y="387.441">
+  <object id="100" name="chicken" type="farm_animals" x="400.82" y="387.441">
    <properties>
     <property name="class" value="farm_animals"/>
    </properties>
@@ -107,13 +107,13 @@
    </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="297" name="small_rock-1" type="rocks" x="240.063" y="342.067">
+  <object id="297" name="small_rock-1" type="rocks" x="120.766" y="338.843">
    <properties>
     <property name="class" value="rocks"/>
    </properties>
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
-  <object id="657" name="chicken" x="404.723" y="442.372">
+  <object id="657" name="chicken" type="farm_animals" x="404.723" y="442.372">
    <properties>
     <property name="class" value="farm_animals"/>
    </properties>
@@ -149,7 +149,7 @@
    </properties>
    <polygon points="0,0 0,-36.4854 27.9257,-35.9407 27.5026,0"/>
   </object>
-  <object id="665" name="small_rock-3" type="rocks" x="133.366" y="356.45">
+  <object id="665" name="small_rock-3" type="rocks" x="59.208" y="281.218">
    <properties>
     <property name="class" value="rocks"/>
    </properties>
@@ -174,50 +174,44 @@
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
   <object id="675" x="428.909" y="332.669" height="0.3273"/>
-  <object id="678" name="wood_fence-1" x="416.239" y="323.16">
+  <object id="678" name="wood_fence-1" type="fences" x="416.239" y="323.16">
    <properties>
     <property name="class" value="fences"/>
    </properties>
    <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
-  <object id="683" name="wood_fence-1" x="432.586" y="315.439">
+  <object id="683" name="wood_fence-1" type="fences" x="432.586" y="315.439">
    <properties>
     <property name="class" value="fences"/>
    </properties>
    <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
-  <object id="687" name="wood_fence-1" x="450.094" y="307.576">
+  <object id="687" name="wood_fence-1" type="fences" x="450.094" y="307.576">
    <properties>
     <property name="class" value="fences"/>
    </properties>
    <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
-  <object id="688" name="wood_fence-1" x="466.441" y="299.855">
+  <object id="688" name="wood_fence-1" type="fences" x="466.441" y="299.855">
    <properties>
     <property name="class" value="fences"/>
    </properties>
    <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
   <object id="689" x="482.562" y="322.798" height="0.3273"/>
-  <object id="691" name="wood_fence-1" x="500.748" y="284.073">
+  <object id="691" name="wood_fence-1" type="fences" x="500.748" y="284.073">
    <properties>
     <property name="class" value="fences"/>
    </properties>
    <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
-  <object id="692" name="wood_fence-1" x="518.256" y="276.21">
+  <object id="692" name="wood_fence-1" type="fences" x="518.256" y="276.21">
    <properties>
     <property name="class" value="fences"/>
    </properties>
    <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
-  <object id="693" name="wood_fence-1" x="534.603" y="268.489">
-   <properties>
-    <property name="class" value="fences"/>
-   </properties>
-   <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
-  </object>
-  <object id="699" name="wood_fence-1" x="394.97" y="324.037" rotation="45">
+  <object id="693" name="wood_fence-1" type="fences" x="534.603" y="268.489">
    <properties>
     <property name="class" value="fences"/>
    </properties>
