@@ -99,7 +99,7 @@ public class Fence extends InanimateEntity {
 
     @Override
     public void update(float delta) {
-        // Update position (even though it's static, update for consistency)
+        // Update position
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
 
