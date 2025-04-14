@@ -173,17 +173,14 @@ public class TiledMapHelper {
 
                 }
                 if (rectangleName != null && rectangleName.equals("Jim")) {
-                   // System.out.println("there's jIm!");
                     RectangleMapObject rectObj = (RectangleMapObject) mapObject;
                     NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener, 0);
 
                     npcFactory.createNPC(rectObj, rectangleName);
                 }
                 if (rectangleName != null && rectangleName.equals("Martha")) {
-                    //System.out.println("there it is!");
                     RectangleMapObject rectObj = (RectangleMapObject) mapObject;
                     NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener, 1);
-                   // System.out.println(npcFactory);
                     npcFactory.createNPC(rectObj, rectangleName);
                 }
             }
@@ -197,6 +194,7 @@ public class TiledMapHelper {
     private void parseWallObjects(MapObjects mapObjects) {
         for (MapObject mapObject : mapObjects) {
             if (mapObject instanceof PolygonMapObject) {
+
                 PolygonMapObject polygonMapObject = (PolygonMapObject) mapObject;
                 String polygonName = polygonMapObject.getName();
                 String polygonClass = mapObject.getProperties().get("type", String.class);
@@ -206,7 +204,6 @@ public class TiledMapHelper {
                         if (polygonName != null) {
                             switch (polygonName) {
                                 case "enter_saloon":
-
                                     createDoor(polygonMapObject, polygonName);
                                     break;
                                 case "leave_saloon":
@@ -271,14 +268,11 @@ public class TiledMapHelper {
 
 
     private void createTree(PolygonMapObject polygonMapObject, String textureName) {
-
         TreeFactory treeFactory = new TreeFactory(screenInterface, gameAssets);
         treeFactory.createTree(polygonMapObject, textureName);
     }
 
     private void createFence(PolygonMapObject polygonMapObject, String fenceName) {
-        System.out.println(polygonMapObject.getPolygon().getRotation());
-
         FenceFactory fenceFactory = new FenceFactory(screenInterface, gameAssets, gameContactListener);
         fenceFactory.createFence(polygonMapObject, fenceName);
     }

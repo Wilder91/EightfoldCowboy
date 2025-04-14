@@ -20,9 +20,6 @@ public class BugFactory {
     private final GameAssets gameAssets;
     private static int bugCounter = 0;
 
-    public static final int SMALL_WHITE_BUTTERFLY = 0;
-    public static final int DRAGONFLY = 1;
-
     public BugFactory(ScreenInterface screenInterface, GameAssets gameAssets) {
         this.screenInterface = screenInterface;
         this.gameAssets = gameAssets;
@@ -62,7 +59,7 @@ public class BugFactory {
                 screenInterface,
                 gameAssets
         );
-        //System.out.println("Butterfly created! Type: " );
+
         screenInterface.addButterfly(butterfly);
     }
 
@@ -78,7 +75,6 @@ public class BugFactory {
         }
         float textureWidth = texture.getRegionWidth();
         float textureHeight = texture.getRegionHeight();
-        System.out.println(textureWidth);
         Dragonfly dragonfly = new Dragonfly(
                 textureWidth,
                 textureHeight,

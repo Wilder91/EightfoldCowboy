@@ -118,8 +118,6 @@ public class GameAssets {
 
     // Private helper method for mapping rock types
     private String getRockRegionName(int rockType, boolean isTop) {
-        //System.out.println(rockType);
-        //System.out.println(isTop);
         String suffix = isTop ? "_Top" : "_Bottom";
         switch (rockType) {
             case 0:

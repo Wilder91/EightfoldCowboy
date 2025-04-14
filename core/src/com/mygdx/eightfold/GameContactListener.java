@@ -21,15 +21,16 @@ public class GameContactListener implements ContactListener {
     public GameContactListener(ScreenInterface screenInterface) {
         this.screenInterface = screenInterface;
     }
-
+    int contactCounter = 0;
     @Override
     public void beginContact(Contact contact) {
         Fixture a = contact.getFixtureA();
         Fixture b = contact.getFixtureB();
+
         Body bodyA = a.getBody();
         Body bodyB = b.getBody();
         // Check if one of the fixtures has userData of type BodyUserData
-        System.out.println("CONTACT");
+        //System.out.println("CONTACT");
         if (a.getUserData() instanceof BodyUserData && b.getUserData() instanceof BodyUserData) {
             BodyUserData userDataA = (BodyUserData) a.getUserData();
             BodyUserData userDataB = (BodyUserData) b.getUserData();
@@ -72,10 +73,10 @@ public class GameContactListener implements ContactListener {
                 System.out.println("THATS A HIT");
 
             } else if (userDataA.getType() == ContactType.ENEMY && userDataB.getType() == ContactType.ATTACK) {
-                System.out.println("THATS B HIT");
-
+                contactCounter += 1;
+                System.out.println(contactCounter);
+                //System.out.println(userDataA);
                 Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
-
                 sound.play(.05f);
             }
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BIRD){
