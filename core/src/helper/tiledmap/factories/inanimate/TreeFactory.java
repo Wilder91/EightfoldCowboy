@@ -59,8 +59,8 @@ public class TreeFactory {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(
-                (boundingRectangle.x + boundingRectangle.width / 2) / PPM,
-                (boundingRectangle.y + boundingRectangle.height / 2 ) / PPM
+                (boundingRectangle.x + treeTexture.getRegionWidth() / 2) / PPM,
+                (boundingRectangle.y + treeTexture.getRegionHeight() / 2 ) / PPM
         );
 
         Body treeBody = screenInterface.getWorld().createBody(bodyDef);
@@ -75,7 +75,7 @@ public class TreeFactory {
         }
 
         shape.set(worldVertices);
-        shape.setAsBox(boundingRectangle.width / 4/  PPM, boundingRectangle.height /4 / PPM);
+        shape.setAsBox(boundingRectangle.width / 4/  PPM, boundingRectangle.height / 2 / PPM);
         Fixture treeFixture = treeBody.createFixture(shape, 0.0f);
 //        if(textureName.equals("aspen_stump")){
 //            treeFixture.setUserData(new BodyUserData(treeId, ENEMY, treeBody));

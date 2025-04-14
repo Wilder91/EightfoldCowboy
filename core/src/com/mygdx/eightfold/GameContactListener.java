@@ -1,7 +1,9 @@
 package com.mygdx.eightfold;
 
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.eightfold.ecs.EntityManager;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import helper.ContactType;
@@ -27,9 +29,8 @@ public class GameContactListener implements ContactListener {
         Body bodyA = a.getBody();
         Body bodyB = b.getBody();
         // Check if one of the fixtures has userData of type BodyUserData
-
+        System.out.println("CONTACT");
         if (a.getUserData() instanceof BodyUserData && b.getUserData() instanceof BodyUserData) {
-            System.out.println("CONTACT");
             BodyUserData userDataA = (BodyUserData) a.getUserData();
             BodyUserData userDataB = (BodyUserData) b.getUserData();
             if (userDataB.getType() == ContactType.PLAYER && userDataA.getType() == ContactType.BUG){
@@ -71,7 +72,11 @@ public class GameContactListener implements ContactListener {
                 System.out.println("THATS A HIT");
 
             } else if (userDataA.getType() == ContactType.ENEMY && userDataB.getType() == ContactType.ATTACK) {
-                System.out.println("THATS A HIT");
+                System.out.println("THATS B HIT");
+
+                Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
+
+                sound.play(.05f);
             }
             if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BIRD){
                 Bird.playerContact(bodyB, userDataB.getId());

@@ -3,12 +3,20 @@ package helper.tiledmap.factories.animals;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
+import helper.BodyUserData;
 import helper.ContactType;
 import com.mygdx.eightfold.GameAssets;
 import objects.animals.farm_animals.Chicken;
+
+import static helper.Constants.PPM;
+import static helper.ContactType.*;
 
 public class ChickenFactory {
     private ScreenInterface screenInterface;
@@ -63,7 +71,7 @@ public class ChickenFactory {
                 bodyHeight,
                 isStatic,
                 screenInterface.getWorld(),
-                ContactType.CHICKEN,
+                ContactType.ENEMY,
                 chickenId
         );
 
@@ -76,10 +84,35 @@ public class ChickenFactory {
                 gameAssets,
                 chickenName
         );
+        PolygonShape shape = new PolygonShape();
+        float[] vertices = polygon.getVertices();
+        Vector2[] worldVertices = new Vector2[vertices.length / 2];
+
+        for (int i = 0; i < vertices.length / 2; i++) {
+            Vector2 current = new Vector2(vertices[i * 2] / PPM, vertices[i * 2 + 1] / PPM);
+            worldVertices[i] = current;
+        }
+
+        shape.set(worldVertices);
+        shape.setAsBox(boundingRectangle.width / 8/  PPM, boundingRectangle.height / 6 / PPM);
 
         // If the Chicken class handles its own rendering offset, make sure it has the correct values
         // You might need to add this method to your Chicken class
+        Fixture chickenFixture = body.createFixture(shape, 0.0f);
+//        if(textureName.equals("aspen_stump")){
+//            treeFixture.setUserData(new BodyUserData(treeId, ENEMY, treeBody));
+//        } else {
+        chickenFixture.setUserData(new BodyUserData(chickenId, ENEMY, body));
 
+        Filter filter = new Filter();
+//        if(textureName.equals("aspen_stump")){  // Use .equals() for string comparison
+//            filter.categoryBits = ENEMY.getCategoryBits();
+//            filter.maskBits = ENEMY.getMaskBits();
+//        } else {
+        filter.categoryBits = ENEMY.getCategoryBits();
+        filter.maskBits = ENEMY.getMaskBits();
+        //}
+        chickenFixture.setFilterData(filter);
 
         // Rest of your code remains the same
         chicken.setChickenSpeed(customSpeed);

@@ -148,6 +148,11 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
+    @Override
+    public GameAssets getGameAssets() {
+        return this.gameAssets;
+    }
+
 
     @Override
     public OrthographicCamera getCamera() {

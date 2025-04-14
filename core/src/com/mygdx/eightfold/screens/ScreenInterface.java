@@ -2,6 +2,7 @@ package com.mygdx.eightfold.screens;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.Player;
 import conversations.DialogueLine;
 import objects.animals.Squirrel;
@@ -100,4 +101,6 @@ public interface ScreenInterface {
     void addSquirrel(Squirrel squirrel);
 
     void addFence(Fence fence);
+
+    GameAssets getGameAssets();
 }

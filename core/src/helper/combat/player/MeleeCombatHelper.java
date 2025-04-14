@@ -165,9 +165,9 @@ public class MeleeCombatHelper {
             offsetX = 0f;      // Centered horizontally
         } else if (lastDirection.equals("idleSide")) {
             // For side attacks, make the hitbox wider than tall
-            width = 0.35f;      // Wider width
+            width = 0.25f;      // Wider width
             height = 0.35f;     // Shorter height
-            offsetX = isFacingRight ? 0.3f : -0.3f;  // Position to the side based on facing
+            offsetX = isFacingRight ? 0.52f : -0.52f;  // Position to the side based on facing
             offsetY = 0f;      // Centered vertically
         } else if (lastDirection.equals("idleDiagonalUp")) {
             // For diagonal up attacks

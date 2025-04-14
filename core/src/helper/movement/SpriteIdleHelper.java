@@ -1,7 +1,5 @@
 package helper.movement;
 
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -13,7 +11,7 @@ import com.mygdx.eightfold.GameAssets;
 import java.util.HashMap;
 import java.util.Map;
 
-import static helper.Constants.FRAME_DURATION;
+
 
 public class SpriteIdleHelper {
     private Map<String, Animation<TextureRegion>> animations;
@@ -60,7 +58,7 @@ public class SpriteIdleHelper {
             return new Animation<>(frameDuration, frames, Animation.PlayMode.LOOP);
         }
 
-        System.out.println("Loading idle animation: " + regionPrefix + " with " + frameCount + " frames");
+        //System.out.println("Loading idle animation: " + regionPrefix + " with " + frameCount + " frames");
 
         for (int i = 1; i <= frameCount; i++) {
             TextureRegion region = atlas.findRegion(regionPrefix, i);

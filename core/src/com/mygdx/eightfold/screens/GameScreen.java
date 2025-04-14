@@ -88,7 +88,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.gameContactListener = new GameContactListener(this);
         this.world.setContactListener(this.gameContactListener);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-        this.debugRendering = false;
+        this.debugRendering = true;
 
         // Initialize the EntityManager with the world
         this.entityManager = new EntityManager(world);
@@ -333,6 +333,11 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     }
 
     @Override
+    public GameAssets getGameAssets() {
+        return this.gameAssets;
+    }
+
+    @Override
     public void addPond(Pond pond) {
         entityManager.addPond(pond);
     }
@@ -437,9 +442,9 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         textBox.getStage().draw();
 
         // Debug rendering
-        //if(debugRendering) {
+        if(debugRendering) {
             box2DDebugRenderer.render(world, camera.combined.scl(PPM));
-        //}
+        }
     }
 
     @Override
