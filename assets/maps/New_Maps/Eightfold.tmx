@@ -155,19 +155,19 @@
    </properties>
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
-  <object id="668" name="cliff_face-1" type="rocks" x="221.398" y="414.348">
+  <object id="668" name="cliff_face-1" type="rocks" x="281.656" y="402.59">
    <properties>
     <property name="sub_class" value="cliffs"/>
    </properties>
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
-  <object id="669" name="cliff_face-3" type="rocks" x="34.632" y="432.9">
+  <object id="669" name="cliff_face-3" type="rocks" x="31.6926" y="485.81">
    <properties>
     <property name="sub_class" value="cliffs"/>
    </properties>
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
-  <object id="670" name="cliff_face-2" type="rocks" x="141.002" y="483.612">
+  <object id="670" name="cliff_face-2" type="rocks" x="213.018" y="542.401">
    <properties>
     <property name="sub_class" value="cliffs"/>
    </properties>

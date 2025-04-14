@@ -49,13 +49,13 @@ public class Rock extends InanimateEntity {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
         stateTime += delta;
-        setDepthOffset(-height/5f);
+        setDepthOffset(-height/9f);
     }
 
     private void updateBodyShape() {
         // Update the body shape to match the texture size
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 6 / PPM, height / 10 / PPM);
+        shape.setAsBox(width / 3 / PPM, height / 8 / PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;

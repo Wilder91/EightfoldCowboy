@@ -57,7 +57,7 @@ public class SquirrelFactory {
                 boundingRectangle.height * 0.2f, // and better gameplay feel
                 isStatic,
                 screenInterface.getWorld(),
-                ContactType.SQUIRREL,  // Assuming you have an ANIMAL contact type
+                ContactType.SQUIRREL,
                 squirrelId
         );
 
