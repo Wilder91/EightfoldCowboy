@@ -28,7 +28,7 @@ public class SquirrelFactory {
         this.screenInterface = screenInterface;
         this.gameAssets = gameAssets;
         this.isStatic = isStatic;
-        this.customSpeed = 1.2f; // Default speed - making squirrels faster than chickens
+        this.customSpeed = 2.2f; // Default speed - making squirrels faster than chickens
     }
 
     /**
@@ -51,10 +51,10 @@ public class SquirrelFactory {
 
         // Create the squirrel's physics body
         Body body = BodyHelperService.createBody(
-                boundingRectangle.x + boundingRectangle.width / 2,
-                boundingRectangle.y + boundingRectangle.height / 2,
-                boundingRectangle.width * 0.5f,  // Make hitbox smaller than chicken for faster movement
-                boundingRectangle.height * 0.5f, // and better gameplay feel
+                boundingRectangle.x + boundingRectangle.width,
+                boundingRectangle.y + boundingRectangle.height,
+                boundingRectangle.width * 0.2f,  // Make hitbox smaller than chicken for faster movement
+                boundingRectangle.height * 0.2f, // and better gameplay feel
                 isStatic,
                 screenInterface.getWorld(),
                 ContactType.SQUIRREL,  // Assuming you have an ANIMAL contact type

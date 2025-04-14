@@ -151,11 +151,13 @@ public class Squirrel extends GameEntity {
 
     @Override
     public void render(SpriteBatch batch) {
-        if (isFacingRight){
-            sprite.flip(true, false);
-        }
         if (sprite != null) {
-            sprite.setPosition(x - width / 3, y - height / 4);
+            // Position the sprite using the offset that worked previously
+            sprite.setPosition(x - width / 5, y - height / 4);
+
+            // Use setFlip instead of flip to avoid toggling issues
+            sprite.setFlip(isFacingRight, false);
+
             sprite.draw(batch);
         } else {
             System.err.println("Error: Cannot render squirrel, sprite is null");
