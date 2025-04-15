@@ -18,7 +18,7 @@ import com.mygdx.eightfold.GameAssets;
 import conversations.DialogueLine;
 import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
-import objects.animals.Squirrel;
+import objects.animals.squirrel.Squirrel;
 import objects.animals.birds.Bird;
 import objects.animals.farm_animals.Chicken;
 import objects.animals.bugs.Bug;

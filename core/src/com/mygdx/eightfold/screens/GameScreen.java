@@ -25,7 +25,7 @@ import conversations.DialogueLine;
 import helper.ContactType;
 import helper.tiledmap.TiledMapHelper;
 import helper.world.time.TimeOfDayHelper;
-import objects.animals.Squirrel;
+import objects.animals.squirrel.Squirrel;
 import objects.animals.birds.Bird;
 import objects.animals.farm_animals.Chicken;
 import objects.animals.bugs.Bug;

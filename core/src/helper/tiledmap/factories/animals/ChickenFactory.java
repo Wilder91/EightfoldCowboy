@@ -36,7 +36,7 @@ public class ChickenFactory {
         this.screenInterface = screenInterface;
         this.gameAssets = gameAssets;
         this.isStatic = isStatic;
-        this.customSpeed = 0.8f; // Default speed
+      // Default speed
     }
 
     /**
@@ -109,11 +109,6 @@ public class ChickenFactory {
         chickenFixture.setFilterData(filter);
 
         // Rest of your code remains the same
-        chicken.setChickenSpeed(customSpeed);
-        float randomMovementDuration = .5f + (float)(Math.random() * 1f);
-        float randomRestDuration = 1.0f + (float)(Math.random() * 2.0f);
-        chicken.setMovementDuration(randomMovementDuration);
-        chicken.setRestDuration(randomRestDuration);
         screenInterface.addChicken(chicken);
     }
 }

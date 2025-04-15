@@ -7,9 +7,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
-import helper.movement.Facing;
 import com.mygdx.eightfold.GameAssets;
-import objects.animals.Squirrel;
+import objects.animals.squirrel.Squirrel;
 
 public class SquirrelFactory {
     private ScreenInterface screenInterface;
@@ -71,13 +70,10 @@ public class SquirrelFactory {
         );
 
         // Set custom properties
-        squirrel.setSquirrelSpeed(customSpeed);
+        //squirrel.setSquirrelSpeed(customSpeed);
 
         // Squirrels move more quickly and erratically than chickens
-        float randomMovementDuration = 0.3f + (float)(Math.random() * 0.7f); // 0.3 to 1.0 seconds
-        float randomRestDuration = 0.5f + (float)(Math.random() * 1.5f); // 0.5 to 2.0 seconds
-        squirrel.setMovementDuration(randomMovementDuration);
-        squirrel.setRestDuration(randomRestDuration);
+
 
         // Add the squirrel to the screen
         screenInterface.addSquirrel(squirrel);

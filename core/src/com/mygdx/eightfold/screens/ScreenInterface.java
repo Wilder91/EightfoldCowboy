@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.Player;
 import conversations.DialogueLine;
-import objects.animals.Squirrel;
+import objects.animals.squirrel.Squirrel;
 import objects.animals.birds.Bird;
 
 import objects.animals.farm_animals.Chicken;

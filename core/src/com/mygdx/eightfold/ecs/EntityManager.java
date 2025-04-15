@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import objects.GameEntity;
 import com.mygdx.eightfold.player.Player;
-import objects.animals.Squirrel;
+import objects.animals.squirrel.Squirrel;
 import objects.animals.birds.Bird;
 import objects.animals.farm_animals.Chicken;
 import objects.animals.bugs.Bug;
