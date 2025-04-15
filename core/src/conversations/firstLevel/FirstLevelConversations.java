@@ -54,9 +54,12 @@ public class FirstLevelConversations extends Conversation {
                     };
                 } else if (phase == 2) {
                     return new String[]{
-                            "It gets awful lonely out here",
-                            "Just me and Martha",
-                            "A man starts to wonder what" + System.lineSeparator() + "it's all for"
+                            "Careful out there, the Saints of the Thicket have been" + System.lineSeparator() + "active in this area"
+                    };
+
+                }else if (phase ==3) {
+                    return new String[]{
+                            "Buzz off"
                     };
                 }
                 break;

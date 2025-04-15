@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
@@ -20,9 +22,18 @@ import helper.movement.*;
 import objects.GameEntity;
 import objects.inanimate.Door;
 
+import javax.swing.plaf.nimbus.State;
+
 import static helper.Constants.PPM;
 
 public class Player extends GameEntity {
+    public enum State {
+        IDLE,
+        RUNNING,
+        ATTACKING
+
+    }
+
     private final float originalSpeed;
     private GameAssets gameAssets;
     private Sprite sprite;
@@ -40,19 +51,29 @@ public class Player extends GameEntity {
     private RayHandler rayHandler;
     private String weaponType;
 
+    private CircleShape sensorShape;
+    private FixtureDef sensorFixtureDef;
+    private boolean isSensorSmall = false;
+    private float largeSensorRadius = 3.0f;
+    private float smallSensorRadius = 0.5f;
+    private State currentState;
+
 
     public Player(float x, float y, float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
+
         super(width, height, body, screenInterface, gameAssets);
         this.x = x;
         this.y = y;
         setDepth(y);
         this.width = width;
         this.height = height;
+        this.currentState = State.IDLE;
         this.speed = 2.5f;
         this.originalSpeed = speed;
         this.isFacingRight = true;
         this.body = body;
         this.gameAssets = gameAssets;
+        //this.sensorRadius = 3.0f;
         this.justSwitchedHelpers = false;
         this.rayHandler = new RayHandler(screenInterface.getWorld());
         //System.out.println("x: " + Gdx.graphics.getWidth() / 2);
@@ -67,6 +88,7 @@ public class Player extends GameEntity {
         this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", weaponType, meleeFrameCounts, 10f, screenInterface.getWorld());
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
+
         playerLight = new PointLight(rayHandler, 128, new Color(.5f, .4f, .5f, .8f), .4f, 0, 0);
         playerLight.setSoftnessLength(1f);
         playerLight.setContactFilter(ContactType.LIGHT.getCategoryBits(),
@@ -77,7 +99,23 @@ public class Player extends GameEntity {
 //        System.out.println("playerLight x: " + x * PPM);
 //        System.out.println("playerLight y: " + y * PPM);
         playerLight.setPosition(x + .1f, y);
-        //resizeBody(width, height);
+        FixtureDef sensorFixtureDef = new FixtureDef();
+        //sensorFixtureDef = new FixtureDef();
+        sensorFixtureDef.isSensor = true;
+        sensorShape = new CircleShape();
+        // detection radius
+        sensorShape.setPosition(new Vector2(0.0f, 0)); // position relative to body center
+        sensorFixtureDef.shape = sensorShape;
+        //sensorFixtureDef.userData = "playerSensor";
+
+
+        // sensorFixtureDef.userData = "enemyDetector";
+
+// Add the fixture to your body
+        body.createFixture(sensorFixtureDef);
+
+// Don't forget to dispose the shape when done
+        sensorShape.dispose();
 
     }
 
@@ -87,9 +125,22 @@ public class Player extends GameEntity {
         stateTime += delta; // Update the state time
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
-
         checkUserInput();
-        updateAnimation(delta);
+        updateSensor();
+       // updateAnimation(delta);
+        switch (currentState) {
+            case IDLE:
+                updateIdleState(delta);
+                break;
+            case RUNNING:
+                updateRunningState(delta);
+                break;
+            case ATTACKING:
+                updateAttackingState(delta);
+                break;
+            // Add cases for additional states
+        }
+
 
         // Update melee combat helper
         Vector2 position = new Vector2(x, y);
@@ -104,34 +155,93 @@ public class Player extends GameEntity {
 
     public void createBody(World world, Door door) {
         this.body = BodyHelperService.createBody(
-                x , y, width * 4, height, false, world, ContactType.PLAYER, 1);
+                x, y, width, height, false, world, ContactType.PLAYER, 1);
     }
 
-    public void resizeBody(float newWidth, float newHeight) {
-        World world = body.getWorld();
-        Vector2 position = body.getPosition();
-        float angle = body.getAngle();
+    private void updateIdleState(float delta) {
+        Vector2 velocity = body.getLinearVelocity();
+        // Check for state transitions
+        if (Math.abs(velocity.x) > 0.1f || Math.abs(velocity.y) > 0.1f) {
+            changeState(State.RUNNING);
+            return;
+        }
 
-        // Destroy old body
-        world.destroyBody(body);
-
-        // Create new body with new dimensions
-        this.body = BodyHelperService.createBody(
-                position.x, position.y,
-                newWidth / PPM, newHeight / PPM,
-                false, world, ContactType.PLAYER, 1);
-
-        // Update visual dimensions
-        this.width = newWidth;
-        this.height = newHeight;
+        // Update idle animation
+        idleHelper.setDirection(lastDirection);
+        idleHelper.setFacingRight(isFacingRight);
+        idleHelper.update(delta);
+        sprite = idleHelper.getSprite();
     }
+
+    private void updateRunningState(float delta) {
+        Vector2 velocity = body.getLinearVelocity();
+
+        // Check for state transitions
+        if (Math.abs(velocity.x) <= 0.1f && Math.abs(velocity.y) <= 0.1f) {
+            changeState(State.IDLE);
+            return;
+        }
+
+        // Update direction variables
+        updateDirectionVariables(velocity);
+
+        // Update running animation
+        runningHelper.updateAnimation(velocity, delta);
+        sprite = runningHelper.getSprite();
+
+        // Handle sprite flipping
+        if (velocity.x < 0) {
+            sprite.setFlip(true, false);
+        } else if (velocity.x > 0) {
+            sprite.setFlip(false, false);
+        }
+    }
+
+    // Helper method to update direction variables
+    private void updateDirectionVariables(Vector2 velocity) {
+        // Update isFacingRight
+        if (velocity.x < -0.1f) {
+            isFacingRight = false;
+        } else if (velocity.x > 0.1f) {
+            isFacingRight = true;
+        }
+
+        // Update lastDirection
+        if (velocity.y > 0.1f) {
+            if (Math.abs(velocity.x) > 0.1f) {
+                lastDirection = "idleDiagonalUp";
+            } else {
+                lastDirection = "idleUp";
+            }
+        } else if (velocity.y < -0.1f) {
+            if (Math.abs(velocity.x) > 0.1f) {
+                lastDirection = "idleDiagonalDown";
+            } else {
+                lastDirection = "idleDown";
+            }
+        } else if (Math.abs(velocity.x) > 0.1f) {
+            lastDirection = "idleSide";
+        }
+    }
+    private void updateAttackingState(float delta) {
+        // Handle attack logic
+        Vector2 position = new Vector2(x, y);
+        Vector2 facingDirection = getFacingDirection();
+        meleeHelper.update(delta, position, facingDirection, isFacingRight, lastDirection);
+
+        // Check if attack animation is complete
+        if (!meleeHelper.isAttacking()) {
+            changeState(State.IDLE);
+        }
+    }
+
 
     public void screenChange(World world, Door door) {
         this.body = BodyHelperService.createBody(
                 door.getBody().getPosition().x, door.getBody().getPosition().y, width, height, false, world, ContactType.PLAYER, 1);
     }
 
-    public void setSpeed(Float speed){
+    public void setSpeed(Float speed) {
         this.speed = speed;
     }
 
@@ -139,6 +249,11 @@ public class Player extends GameEntity {
         if (body != null) {
             body.setTransform(x / PPM, y / PPM, body.getAngle()); // Set initial position
         }
+    }
+
+    public void changeState(State newState) {
+        // Optional: Handle exit/enter logic
+        this.currentState = newState;
     }
 
     @Override
@@ -173,6 +288,7 @@ public class Player extends GameEntity {
         float velX = 0;
         float velY = 0;
 
+        // Movement input
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             velX = 1;
             if (!isFacingRight) isFacingRight = true;
@@ -188,23 +304,65 @@ public class Player extends GameEntity {
             velY = -1;
         }
 
-        // Check for attack input (spacebar)
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        // Attack input
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && currentState != State.ATTACKING) {
+            changeState(State.ATTACKING);
             Vector2 playerPosition = new Vector2(x, y);
             meleeHelper.startAttack(lastDirection, playerPosition);
+            return; // Skip movement processing if attacking
         }
 
-        // Combine input direction and normalize to avoid diagonal speed boost
+        // Combine input direction and normalize
         Vector2 direction = new Vector2(velX, velY);
         if (direction.len() > 0) {
             direction.nor();
         }
 
-        // Optional sprint logic
-        float currentSpeed = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ? speed * 1.5f : speed;
+        // Only allow movement if not attacking
+        if (currentState != State.ATTACKING) {
+            float currentSpeed = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ? speed * 1.5f : speed;
+            body.setLinearVelocity(direction.x * currentSpeed, direction.y * currentSpeed);
+        } else {
+            body.setLinearVelocity(0, 0); // Stop movement while attacking
+        }
 
-        // Apply movement
-        body.setLinearVelocity(direction.x * currentSpeed, direction.y * currentSpeed);
+    }
+
+    private void updateSensor() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
+            // Toggle between large and small sensor
+
+            //isSensorSmall = !isSensorSmall;
+
+            // Remove the old sensor fixture
+            for (com.badlogic.gdx.physics.box2d.Fixture fixture : body.getFixtureList()) {
+                if ("playerSensor".equals(fixture.getUserData())) {
+                    body.destroyFixture(fixture);
+                    break;
+                }
+            }
+
+            // Create a new sensor with the updated radius
+            float newRadius = isSensorSmall ? smallSensorRadius : largeSensorRadius;
+
+            // Update and create new sensor
+            sensorShape = new CircleShape();
+            sensorShape.setRadius(newRadius);
+            sensorShape.setPosition(new Vector2(0.0f, 0));
+
+            sensorFixtureDef = new FixtureDef();
+            sensorFixtureDef.isSensor = true;
+            sensorFixtureDef.shape = sensorShape;
+            //sensorFixtureDef.userData = "playerSensor";
+
+            // Add the new fixture
+            body.createFixture(sensorFixtureDef);
+
+            // Now we can dispose the shape
+            sensorShape.dispose();
+
+            System.out.println("Sensor radius changed to: " + newRadius);
+        }
     }
 
     private void updateAnimation(float delta) {
@@ -264,7 +422,7 @@ public class Player extends GameEntity {
     private Vector2 getFacingDirection() {
         Vector2 direction = new Vector2(0, 0);
 
-        switch(lastDirection) {
+        switch (lastDirection) {
             case "idleUp":
                 direction.set(0, 1);
                 break;

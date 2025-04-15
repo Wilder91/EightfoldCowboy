@@ -57,6 +57,7 @@ public class Rock extends InanimateEntity {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / 3 / PPM, height / 8 / PPM);
 
+
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1.0f;

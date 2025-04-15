@@ -107,7 +107,7 @@
    </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="297" name="small_rock-1" type="rocks" x="120.766" y="338.843">
+  <object id="297" name="small_rock-1" type="rocks" x="549.925" y="550.483">
    <properties>
     <property name="class" value="rocks"/>
    </properties>
@@ -155,7 +155,7 @@
    </properties>
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
-  <object id="668" name="cliff_face-1" type="rocks" x="281.656" y="402.59">
+  <object id="668" name="cliff_face-1" type="rocks" x="183.185" y="374.665">
    <properties>
     <property name="sub_class" value="cliffs"/>
    </properties>
@@ -330,8 +330,8 @@
   <object id="702" x="464.829" y="332.097">
    <polygon points="0,0 22.0323,-11.2849 23.1071,-4.83637 1.07475,4.299"/>
   </object>
-  <object id="703" x="509.58" y="310.614">
-   <polygon points="0,0 22.0323,-9.87346 23.1071,-4.23147 1.07475,3.76131"/>
+  <object id="703" x="513.278" y="308.874">
+   <polygon points="0,0 18.5067,-8.13303 19.4095,-3.48557 0.902768,3.09829"/>
   </object>
   <object id="704" x="531.418" y="301.368">
    <polygon points="0,0 22.0323,-11.5672 23.1071,-4.95735 1.07475,4.40654"/>

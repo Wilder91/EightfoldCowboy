@@ -143,8 +143,8 @@ public class TiledMapHelper {
                 if (rectangleName != null && rectangleName.equals("player")) {
                     float centerX = (rectangle.x + rectangle.width / 2f) ;
                     float centerY = (rectangle.y + rectangle.height / 2f);
-                    float bodyWidth = rectangle.width / PPM;
-                    float bodyHeight = rectangle.height / PPM;
+                    float bodyWidth = rectangle.width /3.5f  ;
+                    float bodyHeight = rectangle.height / 2;
                     int playerId = 1;
 
 

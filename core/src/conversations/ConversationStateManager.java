@@ -23,7 +23,7 @@ public class ConversationStateManager {
      */
     private ConversationStateManager() {
         // Initialize the maximum phases for each NPC type
-        maxNpcPhases.put(0, 3); // Jim has 3 phases (0, 1, 2)
+        maxNpcPhases.put(0, 4); // Jim has 3 phases (0, 1, 2)
         maxNpcPhases.put(1, 2); // Martha has 2 phases (0, 1)
         maxNpcPhases.put(3, 1); // Miner has 1 phase
         maxNpcPhases.put(4, 1); // Cowboy has 1 phase
