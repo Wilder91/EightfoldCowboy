@@ -35,9 +35,8 @@ public class Squirrel extends GameEntity {
 
     public Squirrel(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
         super(width, height, body, screenInterface, gameAssets);
-        int[] frameCounts = {0, 0, 4};  // [up, down, horizontal]
         int idleFrameCount = 20;
-        this.squirrelWalkingHelper = new HorizontalSpriteHelper(gameAssets, "wild-animal", "Squirrel", 4, false);
+        this.squirrelWalkingHelper = new HorizontalSpriteHelper(gameAssets, "wild-animal", "Squirrel", 4, true);
         this.squirrelIdleHelper = new SimpleIdleHelper(gameAssets, "wild-animal", "Squirrel", idleFrameCount, 0.3f);
         this.squirrelRenderer = new EntityRenderer(this);
         // Initialize sprite
@@ -57,7 +56,6 @@ public class Squirrel extends GameEntity {
     @Override
     public void update(float delta) {
         stateTime += delta;
-
         // Update position from the physics body
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;

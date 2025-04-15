@@ -99,7 +99,7 @@ public class GameContactListener implements ContactListener {
         else if (b.getUserData() == "playerSensor" ) {
             BodyUserData userDataA = (BodyUserData) a.getUserData();
             if (userDataA != null) {
-                System.out.println("sensed" + userDataA);
+                //System.out.println("sensed" + userDataA);
             }
         }
     }
@@ -136,7 +136,7 @@ public class GameContactListener implements ContactListener {
         }else if (b.getUserData() == "playerSensor" ) {
             BodyUserData userDataA = (BodyUserData) a.getUserData();
             if (userDataA != null) {
-                System.out.println("sense over");
+                //System.out.println("sense over");
             }
         }
     }
