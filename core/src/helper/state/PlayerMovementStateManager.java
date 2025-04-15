@@ -3,9 +3,8 @@ package helper.state;
 
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.eightfold.player.Player;
-import helper.state.EntityStateManager;
 
-public class PlayerStateManager extends EntityStateManager<Player, Player.State> {
+public class PlayerMovementStateManager extends EntityStateManager<Player, Player.State> {
 
     private final StateHandler<Player, Player.State> idleStateHandler = new StateHandler<Player, Player.State>() {
         @Override
@@ -36,18 +35,15 @@ public class PlayerStateManager extends EntityStateManager<Player, Player.State>
                 changeState(player, Player.State.IDLE);
                 return;
             }
-
             // Update direction variables
             updateDirectionVariables(player, velocity);
-
             // Update running animation
             player.getRunningHelper().updateAnimation(velocity, delta);
             player.setSprite(player.getRunningHelper().getSprite());
-
             // Handle sprite flipping
-            if (velocity.x < 0) {
+            if (!player.isFacingRight()) {
                 player.getSprite().setFlip(true, false);
-            } else if (velocity.x > 0) {
+            } else if (player.isFacingRight()) {
                 player.getSprite().setFlip(false, false);
             }
         }

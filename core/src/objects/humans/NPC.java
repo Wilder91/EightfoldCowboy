@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
+import helper.EntityRenderer;
 import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import conversations.ConversationManager;
@@ -27,6 +28,7 @@ public class NPC extends GameEntity {
     private String name;
     private String characterName;
     private ConversationManager conversationManager;
+    private EntityRenderer npcRenderer;
     private int conversationPhase;
 
 
@@ -46,10 +48,11 @@ public class NPC extends GameEntity {
 
         int[] frameCounts = getFrameCountsFromName(characterName);
         float stateTime = getStateTimeFromName(characterName);
-
+        screenInterface.addNPC(this);
         //System.out.println("character name: " + npcId);
         NPCManager.addNPC(this);
         this.idleHelper = new SpriteIdleHelper(gameAssets, "NPC", characterName, frameCounts, stateTime);
+        this.npcRenderer = new EntityRenderer(this);
     }
 
     private int getStateTimeFromName(String characterName) {
@@ -91,10 +94,18 @@ public class NPC extends GameEntity {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
         resetDepthToY();
+
+        // Update idle helper
         idleHelper.setDirection(lastDirection);
         idleHelper.setFacingRight(isFacingRight);
         idleHelper.update(delta);
         sprite = idleHelper.getSprite();
+        System.out.println("NPC sprite null? " + (sprite == null) +
+                " sprite size: " + (sprite != null ? sprite.getWidth() + "x" + sprite.getHeight() : "N/A"));
+
+        // Set the updated sprite on the renderer
+        npcRenderer.setMainSprite(sprite);
+        npcRenderer.update(delta);
 
 
     }
@@ -106,6 +117,7 @@ public class NPC extends GameEntity {
     @Override
     public void render(SpriteBatch batch) {
         // In NPC.render():
+
         if (inConversation) {
             // Check for key press only once
             if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.E)) {
@@ -121,8 +133,9 @@ public class NPC extends GameEntity {
             }
         }
 
-        sprite.draw(batch);
-        sprite.setPosition(x - width / 2, y - height / 2);
+
+        npcRenderer.render(batch);
+
     }
 
     public int getId() {

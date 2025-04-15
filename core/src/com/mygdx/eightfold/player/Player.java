@@ -6,24 +6,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
-import helper.BodyUserData;
 import helper.ContactType;
 import com.mygdx.eightfold.GameAssets;
 import helper.combat.MeleeCombatHelper;
 import helper.movement.*;
 
-import helper.state.PlayerStateManager;
+import helper.state.PlayerMovementStateManager;
 import objects.GameEntity;
 import objects.inanimate.Door;
-
-import javax.swing.plaf.nimbus.State;
 
 import static helper.Constants.PPM;
 
@@ -62,9 +58,10 @@ public class Player extends GameEntity {
     private float largeSensorRadius = 3.0f;
     private float smallSensorRadius = 1.5f;
     private State currentState;
-    private PlayerInputHandler playerInputHandler;
+    private PlayerInputHelper playerInputHandler;
+    private PlayerRenderer playerRenderer;
 
-    private PlayerStateManager stateManager;
+    private PlayerMovementStateManager stateManager;
 
 
 
@@ -76,7 +73,7 @@ public class Player extends GameEntity {
         setDepth(y);
         this.width = width;
         this.height = height;
-        this.stateManager = new PlayerStateManager();
+        this.stateManager = new PlayerMovementStateManager();
         this.currentState = State.IDLE;
         this.speed = 2.5f;
         this.originalSpeed = speed;
@@ -89,10 +86,11 @@ public class Player extends GameEntity {
         int[] idleFrameCounts = {18, 1, 8, 18, 4};
         int[] meleeFrameCounts = {17, 17, 17, 17, 17};
         this.weaponType = "sword";
+
         this.runningHelper = new SpriteRunningHelper(gameAssets, "character", "character", runningFrameCounts, false);
         this.idleHelper = new SpriteIdleHelper(gameAssets, "character", "character", idleFrameCounts, 0f);
         this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", weaponType, meleeFrameCounts, 10f, screenInterface.getWorld());
-        this.playerInputHandler = new PlayerInputHandler(this);
+        this.playerInputHandler = new PlayerInputHelper(this);
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
         this.swordSound = gameAssets.getSound("sounds/whoosh.mp3");
@@ -101,8 +99,8 @@ public class Player extends GameEntity {
         playerLight.setContactFilter(ContactType.LIGHT.getCategoryBits(),
                 ContactType.LIGHT.getMaskBits(),
                 (short) 0);
-
         playerLight.setPosition(x + .1f, y);
+        this.playerRenderer = new PlayerRenderer(this, meleeHelper);
         this.sensorFixtureDef = new FixtureDef();
         sensorFixtureDef.isSensor = true;
         sensorShape = new CircleShape();
@@ -231,9 +229,6 @@ public class Player extends GameEntity {
                 x, y, width, height, false, world, ContactType.PLAYER, 1);
     }
 
-
-
-
     public void screenChange(World world, Door door) {
         this.body = BodyHelperService.createBody(
                 door.getBody().getPosition().x, door.getBody().getPosition().y, width, height, false, world, ContactType.PLAYER, 1);
@@ -250,36 +245,32 @@ public class Player extends GameEntity {
 
     @Override
     public void render(SpriteBatch batch) {
-        float centerX = x;  // The physics body center X
-        float centerY = y;  // The physics body center Y
-
-        if (meleeHelper.isAttacking()) {
-            // The meleeHelper already handles positioning internally
-            speed = 0f;
-            meleeHelper.getAttackSprite().draw(batch);
-        } else {
-            // Position the sprite so its center aligns with the body center
-            speed = originalSpeed;
-            // Adjust the sprite position to center it on the body
-            sprite.setPosition(
-                    centerX - sprite.getWidth() / 2,
-                    centerY - sprite.getHeight() / 2
-            );
-            sprite.draw(batch);
-
-
-        }
+//        float centerX = x;  // The physics body center X
+//        float centerY = y;  // The physics body center Y
+//
+//        if (meleeHelper.isAttacking()) {
+//            // The meleeHelper already handles positioning internally
+//            speed = 0f;
+//            meleeHelper.getAttackSprite().draw(batch);
+//        } else {
+//            // Position the sprite so its center aligns with the body center
+//            speed = originalSpeed;
+//            // Adjust the sprite position to center it on the body
+//            sprite.setPosition(
+//                    centerX - sprite.getWidth() / 2,
+//                    centerY - sprite.getHeight() / 2
+//            );
+//            sprite.draw(batch);
+//        }
+        playerRenderer.render(batch);
     }
 
 
     private void updateSensor() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
             // Toggle between large and small sensor
-
-
         }
     }
-
     // Helper method to get the facing direction as a Vector2
     private Vector2 getFacingDirection() {
         Vector2 direction = new Vector2(0, 0);

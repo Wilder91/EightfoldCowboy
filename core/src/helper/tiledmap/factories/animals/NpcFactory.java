@@ -35,9 +35,9 @@ public class NpcFactory {
     public void createNPC(RectangleMapObject rectangleMapObject, String name) {
 
         Rectangle rectangle = rectangleMapObject.getRectangle();
-        float centerX = (rectangle.x + rectangle.width / 2) / PPM;
+        float centerX = (rectangle.x + rectangle.width / 2) / PPM ;
         float centerY = (rectangle.y + rectangle.height / 2) / PPM;
-        float bodyWidth = rectangle.width / PPM;
+        float bodyWidth = rectangle.width / PPM / 2;
         float bodyHeight = rectangle.height / PPM;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;

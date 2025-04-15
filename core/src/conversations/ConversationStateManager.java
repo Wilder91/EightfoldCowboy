@@ -29,6 +29,8 @@ public class ConversationStateManager {
         maxNpcPhases.put(4, 1); // Cowboy has 1 phase
     }
 
+
+
     /**
      * Get the singleton instance
      */

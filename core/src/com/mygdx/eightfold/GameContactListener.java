@@ -70,7 +70,7 @@ public class GameContactListener implements ContactListener {
                 door.playerContact();
 
             } else if (userDataA.getType() == ContactType.ATTACK && userDataB.getType() == ContactType.ENEMY) {
-                System.out.println("THATS A HIT");
+                //System.out.println("THATS A HIT");
 
             } else if (userDataA.getType() == ContactType.ENEMY && userDataB.getType() == ContactType.ATTACK) {
                 contactCounter += 1;
@@ -93,6 +93,13 @@ public class GameContactListener implements ContactListener {
             }else if (userDataA.getType() == ContactType.BISON && userDataB.getType() == ContactType.BISON) {
                 bodyA.setLinearDamping(7f);
                 Bird.playerContact(b.getBody(), userDataB.getId());
+            }
+
+        }
+        else if (b.getUserData() == "playerSensor" ) {
+            BodyUserData userDataA = (BodyUserData) a.getUserData();
+            if (userDataA != null) {
+                System.out.println("sensed" + userDataA);
             }
         }
     }
@@ -120,12 +127,17 @@ public class GameContactListener implements ContactListener {
                System.out.println("Player ended contact with door: " + door.getName());
                 door.playerLeave();
             } else if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.CHICKEN) {
-                 System.out.println("chi");
+                 //System.out.println("chi");
 
 
             }
 
 
+        }else if (b.getUserData() == "playerSensor" ) {
+            BodyUserData userDataA = (BodyUserData) a.getUserData();
+            if (userDataA != null) {
+                System.out.println("sense over");
+            }
         }
     }
 
