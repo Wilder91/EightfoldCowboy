@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
+import helper.EntityRenderer;
 import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.movement.SimpleIdleHelper;
@@ -15,6 +16,7 @@ import static helper.Constants.PPM;
 public class Chicken extends GameEntity {
     private SimpleSpriteRunningHelper chickenWalkingHelper;
     private SimpleIdleHelper chickenIdleHelper;
+    private EntityRenderer chickenRenderer;
     private Sprite sprite;
     private float stateTime;
     private boolean isFacingRight = true;
@@ -37,7 +39,7 @@ public class Chicken extends GameEntity {
         int idleFrameCount = 25;
         this.chickenWalkingHelper = new SimpleSpriteRunningHelper(gameAssets, "farm_animal", "Chicken", frameCounts, false);
         this.chickenIdleHelper = new SimpleIdleHelper(gameAssets, "farm_animal", "Chicken", idleFrameCount, 0.4f);
-
+        this.chickenRenderer = new EntityRenderer(this);
         // Initialize sprite
         this.sprite = chickenIdleHelper.getSprite();
         if (this.sprite == null) {
@@ -64,11 +66,18 @@ public class Chicken extends GameEntity {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
         resetDepthToY();
-        // Update chicken movement
+
+        // First update the movement
         updateMovement(delta);
 
-        // Update animation
+        // Then update animation - this sets the current sprite
         updateAnimation(delta);
+
+        // Finally set the updated sprite on the renderer
+        chickenRenderer.setMainSprite(sprite);
+
+        // Let the renderer do any additional updates it needs
+        chickenRenderer.update(delta);
     }
 
     private void updateMovement(float delta) {
@@ -140,9 +149,9 @@ public class Chicken extends GameEntity {
 
         // Update facing direction
         if (velocity.x < -0.1f) {
-            isFacingRight = false;
-        } else if (velocity.x > 0.1f) {
             isFacingRight = true;
+        } else if (velocity.x > 0.1f) {
+            isFacingRight = false;
         }
 
         // Choose between walking and idle animations based on movement
@@ -154,20 +163,24 @@ public class Chicken extends GameEntity {
             chickenIdleHelper.update(delta);
             sprite = chickenIdleHelper.getSprite();
         }
+
+        // Apply flip AFTER getting the new sprite
+        sprite.setFlip(!isFacingRight, false);
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        if (isFacingRight){
-            sprite.flip(true,false);
-        }
-        if (sprite != null) {
-            sprite.setPosition(x - width / 3, y - height / 2);
-
-            sprite.draw(batch);
-        } else {
-            System.err.println("Error: Cannot render chicken, sprite is null");
-        }
+//        if (isFacingRight){
+//            sprite.flip(true,false);
+//        }
+//        if (sprite != null) {
+//            sprite.setPosition(x - width / 3, y - height / 2);
+//
+//            sprite.draw(batch);
+//        } else {
+//            System.err.println("Error: Cannot render chicken, sprite is null");
+//        }
+        chickenRenderer.render(batch);
     }
 
     /**

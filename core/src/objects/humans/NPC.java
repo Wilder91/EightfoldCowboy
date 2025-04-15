@@ -100,8 +100,6 @@ public class NPC extends GameEntity {
         idleHelper.setFacingRight(isFacingRight);
         idleHelper.update(delta);
         sprite = idleHelper.getSprite();
-        System.out.println("NPC sprite null? " + (sprite == null) +
-                " sprite size: " + (sprite != null ? sprite.getWidth() + "x" + sprite.getHeight() : "N/A"));
 
         // Set the updated sprite on the renderer
         npcRenderer.setMainSprite(sprite);

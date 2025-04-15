@@ -23,22 +23,17 @@ public class EntityRenderer {
     }
 
     public void render(SpriteBatch batch) {
-
         if (mainSprite == null) {
-             System.out.println("WARNING: mainSprite is null for entity at " + entity.getX() + ", " + entity.getY());
+            System.out.println("WARNING: mainSprite is null for entity at " + entity.getX() + ", " + entity.getY());
             return; // Skip rendering if no sprite is set
         }
-
-        float centerX = entity.getBody().getPosition().x;
-        float centerY = entity.getBody().getPosition().y;
-
-        //System.out.println("NPC at position: " + centerY + ", " + centerY);
-        mainSprite.draw(batch);
-        // Position the sprite so its center aligns with the entity center
+        // First position the sprite
         mainSprite.setPosition(
                 entity.getX() - mainSprite.getWidth() / 2,
                 entity.getY() - mainSprite.getHeight() / 2
         );
 
+        // Then draw it at the new position
+        mainSprite.draw(batch);
     }
 }

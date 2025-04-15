@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
+import helper.EntityRenderer;
 import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.movement.HorizontalSpriteHelper;
@@ -15,6 +16,7 @@ import static helper.Constants.PPM;
 public class Squirrel extends GameEntity {
     private HorizontalSpriteHelper squirrelWalkingHelper;
     private SimpleIdleHelper squirrelIdleHelper;
+    private EntityRenderer squirrelRenderer;
     private Sprite sprite;
     private float stateTime;
     private boolean isFacingRight = true;
@@ -37,7 +39,7 @@ public class Squirrel extends GameEntity {
         int idleFrameCount = 20;
         this.squirrelWalkingHelper = new HorizontalSpriteHelper(gameAssets, "wild-animal", "Squirrel", 4, false);
         this.squirrelIdleHelper = new SimpleIdleHelper(gameAssets, "wild-animal", "Squirrel", idleFrameCount, 0.3f);
-
+        this.squirrelRenderer = new EntityRenderer(this);
         // Initialize sprite
         this.sprite = squirrelIdleHelper.getSprite();
         if (this.sprite == null) {
@@ -65,6 +67,8 @@ public class Squirrel extends GameEntity {
 
         // Update animation
         updateAnimation(delta);
+        squirrelRenderer.setMainSprite(sprite);
+        squirrelRenderer.update(delta);
     }
 
     private void updateMovement(float delta) {
@@ -147,21 +151,12 @@ public class Squirrel extends GameEntity {
             squirrelIdleHelper.update(delta);
             sprite = squirrelIdleHelper.getSprite();
         }
+        sprite.setFlip(isFacingRight, false);
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        if (sprite != null) {
-            // Position the sprite using the offset that worked previously
-            sprite.setPosition(x - width / 5, y - height / 4);
-
-            // Use setFlip instead of flip to avoid toggling issues
-            sprite.setFlip(isFacingRight, false);
-
-            sprite.draw(batch);
-        } else {
-            System.err.println("Error: Cannot render squirrel, sprite is null");
-        }
+        squirrelRenderer.render(batch);
     }
 
 
