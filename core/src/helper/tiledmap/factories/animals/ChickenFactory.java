@@ -71,7 +71,7 @@ public class ChickenFactory {
                 bodyHeight,
                 isStatic,
                 screenInterface.getWorld(),
-                ContactType.ENEMY,
+                ContactType.CHICKEN,
                 chickenId
         );
 
@@ -99,19 +99,13 @@ public class ChickenFactory {
         // If the Chicken class handles its own rendering offset, make sure it has the correct values
         // You might need to add this method to your Chicken class
         Fixture chickenFixture = body.createFixture(shape, 0.0f);
-//        if(textureName.equals("aspen_stump")){
-//            treeFixture.setUserData(new BodyUserData(treeId, ENEMY, treeBody));
-//        } else {
-        chickenFixture.setUserData(new BodyUserData(chickenId, ENEMY, body));
+
+        chickenFixture.setUserData(new BodyUserData(chickenId, CHICKEN, body));
 
         Filter filter = new Filter();
-//        if(textureName.equals("aspen_stump")){  // Use .equals() for string comparison
-//            filter.categoryBits = ENEMY.getCategoryBits();
-//            filter.maskBits = ENEMY.getMaskBits();
-//        } else {
-        filter.categoryBits = ENEMY.getCategoryBits();
-        filter.maskBits = ENEMY.getMaskBits();
-        //}
+
+        filter.categoryBits = CHICKEN.getCategoryBits();
+        filter.maskBits = CHICKEN.getMaskBits();
         chickenFixture.setFilterData(filter);
 
         // Rest of your code remains the same

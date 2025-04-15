@@ -24,13 +24,13 @@ public class GameContactListener implements ContactListener {
     int contactCounter = 0;
     @Override
     public void beginContact(Contact contact) {
+
         Fixture a = contact.getFixtureA();
         Fixture b = contact.getFixtureB();
 
         Body bodyA = a.getBody();
         Body bodyB = b.getBody();
         // Check if one of the fixtures has userData of type BodyUserData
-        //System.out.println("CONTACT");
         if (a.getUserData() instanceof BodyUserData && b.getUserData() instanceof BodyUserData) {
             BodyUserData userDataA = (BodyUserData) a.getUserData();
             BodyUserData userDataB = (BodyUserData) b.getUserData();
@@ -94,8 +94,6 @@ public class GameContactListener implements ContactListener {
                 bodyA.setLinearDamping(7f);
                 Bird.playerContact(b.getBody(), userDataB.getId());
             }
-
-
         }
     }
 
@@ -121,6 +119,10 @@ public class GameContactListener implements ContactListener {
                 Door door = DoorManager.getDoorById(userDataA.getId());
                System.out.println("Player ended contact with door: " + door.getName());
                 door.playerLeave();
+            } else if (userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.CHICKEN) {
+                 System.out.println("chi");
+
+
             }
 
 

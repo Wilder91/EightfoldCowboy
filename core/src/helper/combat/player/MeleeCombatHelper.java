@@ -151,32 +151,32 @@ public class MeleeCombatHelper {
         float angle = 0f;
 
         // Adjust dimensions and offset based on direction
-        if (lastDirection.equals("idleUp")) {
+        if (lastDirection.equalsIgnoreCase("idleUp")) {
             // For upward attacks, make the hitbox taller than wide
             width = 0.5f;      // Narrower width
             height = 0.25f;     // Taller height
             offsetY = 0.3f;    // Position above player
             offsetX = 0f;      // Centered horizontally
-        } else if (lastDirection.equals("idleDown")) {
+        } else if (lastDirection.equalsIgnoreCase("idleDown")) {
             // For downward attacks, make the hitbox taller than wide
             width = 0.5f;      // Narrower width
             height = 0.3f;     // Taller height
             offsetY = -0.2f;   // Position below player
             offsetX = 0f;      // Centered horizontally
-        } else if (lastDirection.equals("idleSide")) {
+        } else if (lastDirection.equalsIgnoreCase("idleSide")) {
             // For side attacks, make the hitbox wider than tall
             width = 0.25f;      // Wider width
             height = 0.35f;     // Shorter height
             offsetX = isFacingRight ? 0.52f : -0.52f;  // Position to the side based on facing
             offsetY = 0f;      // Centered vertically
-        } else if (lastDirection.equals("idleDiagonalUp")) {
+        } else if (lastDirection.equalsIgnoreCase("idleDiagonalUp")) {
             // For diagonal up attacks
             width = 0.3f;
             height = 0.5f;
             offsetX = isFacingRight ? 0.3f : -0.3f;
             offsetY = 0.3f;
             angle = isFacingRight ? 45 * (float)Math.PI/180 : -45 * (float)Math.PI/180;  // 45 degree angle
-        } else if (lastDirection.equals("idleDiagonalDown")) {
+        } else if (lastDirection.equalsIgnoreCase("idleDiagonalDown")) {
             // For diagonal down attacks
             width = 0.3f;
             height = 0.5f;
@@ -307,7 +307,6 @@ public class MeleeCombatHelper {
             isAttacking = true;
             attackStateTime = 0f;
             currentAttackTimer = 0f;
-
             // Set the correct attack animation based on direction string
             if (direction.equals("idleUp")) {
                 currentAttackAnimation = attackAnimations.get("attackUp");

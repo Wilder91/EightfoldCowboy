@@ -16,7 +16,6 @@ public class PlayerStateManager extends EntityStateManager<Player, Player.State>
                 changeState(player, Player.State.RUNNING);
                 return;
             }
-
             // Update idle animation
             player.getIdleHelper().setDirection(player.getLastDirection());
             player.getIdleHelper().setFacingRight(player.isFacingRight());

@@ -40,6 +40,7 @@ public class GameAssets {
         assetManager.load("lost & found.mp3", Music.class);
         assetManager.load("sounds/bison-sound.mp3", Sound.class);
         assetManager.load("sounds/whoosh-DrMinky.wav", Sound.class);
+        assetManager.load("sounds/whoosh.mp3", Sound.class);
         assetManager.load("animals/birds/bird.png", Texture.class);
         assetManager.load("player/player-single.png", Texture.class);
         assetManager.load("animals/bison/bison-single.png", Texture.class);
