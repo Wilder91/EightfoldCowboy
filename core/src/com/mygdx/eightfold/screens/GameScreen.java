@@ -416,7 +416,8 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         // Update the game state
         update(delta);
         camera.update();
-
+        music.setVolume(.09f);
+        //music.play();
         // Clear the screen
         Gdx.gl.glClearColor(168f / 255f, 178f / 255f, 113f / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

@@ -4,7 +4,9 @@ import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -19,6 +21,7 @@ import com.mygdx.eightfold.GameAssets;
 import helper.combat.MeleeCombatHelper;
 import helper.movement.*;
 
+import helper.state.PlayerStateManager;
 import objects.GameEntity;
 import objects.inanimate.Door;
 
@@ -50,13 +53,16 @@ public class Player extends GameEntity {
     private PointLight playerLight;
     private RayHandler rayHandler;
     private String weaponType;
-
+    private Sound swordSound;
     private CircleShape sensorShape;
     private FixtureDef sensorFixtureDef;
     private boolean isSensorSmall = false;
     private float largeSensorRadius = 3.0f;
     private float smallSensorRadius = 0.5f;
     private State currentState;
+
+    private PlayerStateManager stateManager;
+
 
 
     public Player(float x, float y, float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
@@ -67,6 +73,7 @@ public class Player extends GameEntity {
         setDepth(y);
         this.width = width;
         this.height = height;
+        this.stateManager = new PlayerStateManager();
         this.currentState = State.IDLE;
         this.speed = 2.5f;
         this.originalSpeed = speed;
@@ -88,7 +95,7 @@ public class Player extends GameEntity {
         this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", weaponType, meleeFrameCounts, 10f, screenInterface.getWorld());
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
-
+        this.swordSound = gameAssets.getSound("sounds/whoosh-DrMinky.wav");
         playerLight = new PointLight(rayHandler, 128, new Color(.5f, .4f, .5f, .8f), .4f, 0, 0);
         playerLight.setSoftnessLength(1f);
         playerLight.setContactFilter(ContactType.LIGHT.getCategoryBits(),
@@ -119,28 +126,62 @@ public class Player extends GameEntity {
 
     }
 
+    public SpriteIdleHelper getIdleHelper() {
+        return idleHelper;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public String getLastDirection() {
+        return lastDirection;
+    }
+
+    public boolean isFacingRight() {
+        return isFacingRight;
+    }
+
+    public SpriteRunningHelper getRunningHelper() {
+        return runningHelper;
+    }
+
+    public Sprite getSprite() {
+        return  sprite;
+    }
+
+    public State getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(State state) {
+        this.currentState = state;
+    }
+
+    public MeleeCombatHelper getMeleeHelper() {
+        return meleeHelper;
+    }
+    public void setFacingRight(boolean b) {
+        isFacingRight = b;
+    }
+
+    public void setLastDirection(String newDirection) {
+        lastDirection = newDirection;
+    }
+
+
+
     @Override
     public void update(float delta) {
-
-        stateTime += delta; // Update the state time
+        stateTime += delta;
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
+
         checkUserInput();
         updateSensor();
-       // updateAnimation(delta);
-        switch (currentState) {
-            case IDLE:
-                updateIdleState(delta);
-                break;
-            case RUNNING:
-                updateRunningState(delta);
-                break;
-            case ATTACKING:
-                updateAttackingState(delta);
-                break;
-            // Add cases for additional states
-        }
 
+        // Let the state manager handle states instead of your switch statement
+        stateManager.updateState(this, delta);
 
         // Update melee combat helper
         Vector2 position = new Vector2(x, y);
@@ -148,9 +189,6 @@ public class Player extends GameEntity {
         meleeHelper.update(delta, position, facingDirection, isFacingRight, lastDirection);
 
         setDepth(y);
-        //if (justSwitchedHelpers) {
-        // idleHelper.resetStateTime(); // <— Add a method like this if needed
-        //}
     }
 
     public void createBody(World world, Door door) {
@@ -158,44 +196,9 @@ public class Player extends GameEntity {
                 x, y, width, height, false, world, ContactType.PLAYER, 1);
     }
 
-    private void updateIdleState(float delta) {
-        Vector2 velocity = body.getLinearVelocity();
-        // Check for state transitions
-        if (Math.abs(velocity.x) > 0.1f || Math.abs(velocity.y) > 0.1f) {
-            changeState(State.RUNNING);
-            return;
-        }
 
-        // Update idle animation
-        idleHelper.setDirection(lastDirection);
-        idleHelper.setFacingRight(isFacingRight);
-        idleHelper.update(delta);
-        sprite = idleHelper.getSprite();
-    }
 
-    private void updateRunningState(float delta) {
-        Vector2 velocity = body.getLinearVelocity();
 
-        // Check for state transitions
-        if (Math.abs(velocity.x) <= 0.1f && Math.abs(velocity.y) <= 0.1f) {
-            changeState(State.IDLE);
-            return;
-        }
-
-        // Update direction variables
-        updateDirectionVariables(velocity);
-
-        // Update running animation
-        runningHelper.updateAnimation(velocity, delta);
-        sprite = runningHelper.getSprite();
-
-        // Handle sprite flipping
-        if (velocity.x < 0) {
-            sprite.setFlip(true, false);
-        } else if (velocity.x > 0) {
-            sprite.setFlip(false, false);
-        }
-    }
 
     // Helper method to update direction variables
     private void updateDirectionVariables(Vector2 velocity) {
@@ -223,17 +226,7 @@ public class Player extends GameEntity {
             lastDirection = "idleSide";
         }
     }
-    private void updateAttackingState(float delta) {
-        // Handle attack logic
-        Vector2 position = new Vector2(x, y);
-        Vector2 facingDirection = getFacingDirection();
-        meleeHelper.update(delta, position, facingDirection, isFacingRight, lastDirection);
 
-        // Check if attack animation is complete
-        if (!meleeHelper.isAttacking()) {
-            changeState(State.IDLE);
-        }
-    }
 
 
     public void screenChange(World world, Door door) {
@@ -306,10 +299,11 @@ public class Player extends GameEntity {
 
         // Attack input
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && currentState != State.ATTACKING) {
-            changeState(State.ATTACKING);
-            Vector2 playerPosition = new Vector2(x, y);
-            meleeHelper.startAttack(lastDirection, playerPosition);
-            return; // Skip movement processing if attacking
+            //swordSound.play(.5f);
+
+            stateManager.changeState(this, State.ATTACKING);
+            return;
+
         }
 
         // Combine input direction and normalize

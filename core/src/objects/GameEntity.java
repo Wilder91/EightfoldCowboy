@@ -3,6 +3,7 @@ package objects;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
+import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.screens.ScreenInterface;
 
 import java.util.Comparator;
@@ -139,5 +140,13 @@ public abstract class GameEntity {
      */
     public float getHeight() {
         return height;
+    }
+
+    public Player.State getCurrentState() {
+        return this.getCurrentState();
+    }
+
+    public void setCurrentState(Player.State newState) {
+
     }
 }

@@ -1,6 +1,6 @@
 package helper.state;
 
-public class EnemyStateManager extends EntityStateManager {
+public class AnimalStateManager extends EntityStateManager{
     @Override
     protected Enum getCurrentState(Object entity) {
         return null;

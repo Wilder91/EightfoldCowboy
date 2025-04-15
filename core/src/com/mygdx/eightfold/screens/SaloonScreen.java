@@ -330,7 +330,7 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
             door.render(batch);
         }
         music.setVolume(.1f);
-        //music.play();
+        music.play();
 
         batch.end();
 
