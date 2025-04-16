@@ -1,10 +1,9 @@
 package helper.tiledmap;
 
-import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -26,12 +25,11 @@ import helper.tiledmap.factories.FenceFactory;
 import helper.tiledmap.factories.animals.ChickenFactory;
 import helper.tiledmap.factories.animals.SquirrelFactory;
 import helper.tiledmap.factories.animals.bugs.BugFactory;
-import helper.tiledmap.factories.animals.BirdFactory;
 import helper.tiledmap.factories.inanimate.*;
 import helper.tiledmap.factories.animals.NpcFactory;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.Player;
-import objects.inanimate.Tree;
+
 
 import static helper.Constants.PPM;
 
@@ -144,7 +142,7 @@ public class TiledMapHelper {
                     float centerX = (rectangle.x + rectangle.width / 2f) ;
                     float centerY = (rectangle.y + rectangle.height / 2f);
                     float bodyWidth = rectangle.width /3.5f  ;
-                    float bodyHeight = rectangle.height / 2;
+                    float bodyHeight = rectangle.height / 1.4f;
                     int playerId = 1;
 
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
+import objects.StationaryObjectAnimator;
 
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public class Dragonfly extends Bug {
     private Animation<TextureRegion> animation;
     private float stateTime;
     private String dragonflyName;
-
+    private StationaryObjectAnimator animator;
 
 
     public Dragonfly(float width, float height, float x, float y, Body body, int dragonflyId, String dragonflyName, ScreenInterface screenInterface, GameAssets gameAssets) {
@@ -27,23 +28,8 @@ public class Dragonfly extends Bug {
         this.id = dragonflyId;
         this.dragonflyName = dragonflyName;
         this.stateTime = 0f;
+        this.animator = new StationaryObjectAnimator(this, "bugs", dragonflyName, gameAssets);
 
-        TextureAtlas atlas = gameAssets.getAtlas("atlases/eightfold/bugs.atlas");
-        Array<TextureRegion> frames = new Array<>();
-
-
-       // System.out.println("animation prefix: " + animationPrefix);
-
-        for (int i = 1; i <= 9; i++) {
-            TextureRegion region = atlas.findRegion(dragonflyName, i);
-            if (region != null) {
-                frames.add(region);
-            } else {
-                System.err.println("Missing frame: " + dragonflyName + " " + i);
-            }
-        }
-
-        animation = new Animation<>(.2f, frames, Animation.PlayMode.LOOP);
     }
 
     @Override
@@ -51,12 +37,12 @@ public class Dragonfly extends Bug {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
         stateTime += delta;
+        animator.update(delta);
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        TextureRegion currentFrame = animation.getKeyFrame(stateTime, true);
-        batch.draw(currentFrame, x - width / 2, y - height / 2, width, height);
+        animator.render(batch);
     }
 
     public int getId() {

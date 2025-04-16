@@ -22,24 +22,12 @@ public class Bug extends GameEntity {
     public Bug(float width, float height, float x, float y, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
         super(width, height, body, screenInterface, gameAssets);
         this.stateTime = 0f;
+
+
     }
 
 
-    protected void loadAnimation(GameAssets gameAssets, String atlasPath, String animationPrefix, int frameCount) {
-        TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
-        Array<TextureRegion> frames = new Array<>();
 
-        for (int i = 1; i <= frameCount; i++) {
-            TextureRegion region = atlas.findRegion(animationPrefix, i);
-            if (region != null) {
-                frames.add(region);
-            } else {
-                System.err.println("Missing frame: " + animationPrefix + " " + i);
-            }
-        }
-
-        this.animation = new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
-    }
 
     @Override
     public void update(float delta) {

@@ -21,9 +21,6 @@ public class Chicken extends GameEntity {
     private ChickenAnimator chickenAnimator;
     private Sprite sprite;
     private float stateTime;
-    private boolean isFacingRight = true;
-    private float movementDuration = 1.2f; // Duration of movement in one direction
-    // Track original position and movement count
     private Vector2 originalPosition = new Vector2();
 
     public Chicken(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, String chickenName) {
