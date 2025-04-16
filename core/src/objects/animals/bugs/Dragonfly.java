@@ -19,7 +19,7 @@ public class Dragonfly extends Bug {
 
 
     public Dragonfly(float width, float height, float x, float y, Body body, int dragonflyId, String dragonflyName, ScreenInterface screenInterface, GameAssets gameAssets) {
-        super(width, height, x, y, body, screenInterface, gameAssets);
+        super(width, height, x, y, body, dragonflyName, screenInterface, gameAssets);
         this.id = dragonflyId;
         this.dragonflyName = dragonflyName;
         this.stateTime = 0f;

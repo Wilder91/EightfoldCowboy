@@ -47,7 +47,7 @@ public class Rock extends InanimateEntity {
 
     private void calculateAndSetDepthOffset() {
         // Calculate depth offset for proper layering
-        float depthOffset = -height / 4;
+        float depthOffset = -height / 6;
         setDepthOffset(depthOffset);
     }
 

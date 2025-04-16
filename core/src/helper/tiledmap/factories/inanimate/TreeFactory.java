@@ -13,7 +13,6 @@ import com.mygdx.eightfold.GameAssets;
 import objects.inanimate.Tree;
 
 import static helper.Constants.PPM;
-import static helper.ContactType.ENEMY;
 import static helper.ContactType.TREE;
 
 public class TreeFactory extends InanimateEntityFactory{
@@ -44,7 +43,7 @@ public class TreeFactory extends InanimateEntityFactory{
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(
-                (boundingRectangle.x + boundingRectangle.getWidth() / 2) / PPM,
+                (boundingRectangle.x + boundingRectangle.getWidth() / 2) / PPM ,
                 (boundingRectangle.y + boundingRectangle.getHeight() / 2 ) / PPM
         );
 

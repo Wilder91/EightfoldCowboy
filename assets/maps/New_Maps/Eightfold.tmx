@@ -131,17 +131,17 @@
    </properties>
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
   </object>
-  <object id="662" name="aspen_stump" type="trees" x="386.1" y="312.874">
+  <object id="662" name="aspen_stump" type="trees" x="391.046" y="303.972">
    <properties>
     <property name="class" value="trees"/>
    </properties>
-   <polygon points="0,0 0,-36.4854 27.9257,-35.9407 27.5026,0"/>
+   <polygon points="0,0 0,-13.7356 11.6052,-13.5305 11.4294,0"/>
   </object>
-  <object id="663" name="aspen_young" type="trees" x="342.165" y="258.288">
+  <object id="663" name="aspen_young" type="trees" x="345.627" y="258.288">
    <properties>
     <property name="class" value="trees"/>
    </properties>
-   <polygon points="0,0 0,-36.4854 27.9257,-35.9407 27.5026,0"/>
+   <polygon points="0,0 0,-88.9087 24.4638,-87.5814 24.0931,0"/>
   </object>
   <object id="664" name="aspen_baby" type="trees" x="447.344" y="276.927">
    <properties>

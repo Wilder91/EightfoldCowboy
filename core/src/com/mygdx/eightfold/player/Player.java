@@ -25,8 +25,6 @@ import static helper.Constants.PPM;
 
 public class Player extends GameEntity {
 
-
-
     public enum State {
         IDLE,
         RUNNING,
@@ -39,8 +37,6 @@ public class Player extends GameEntity {
     private Sprite sprite;
     private boolean isFacingRight;
     private float stateTime;
-    private ScreenInterface screenInterface;
-    private Vector2 initialPosition;
     private SpriteRunningHelper runningHelper;
     private MeleeCombatHelper meleeHelper;
     //private SpriteWalkingHelper walkingHelper;
@@ -60,7 +56,6 @@ public class Player extends GameEntity {
     private State currentState;
     private PlayerInputHelper playerInputHandler;
     private PlayerRenderer playerRenderer;
-
     private PlayerMovementStateManager stateManager;
 
 
@@ -245,23 +240,6 @@ public class Player extends GameEntity {
 
     @Override
     public void render(SpriteBatch batch) {
-//        float centerX = x;  // The physics body center X
-//        float centerY = y;  // The physics body center Y
-//
-//        if (meleeHelper.isAttacking()) {
-//            // The meleeHelper already handles positioning internally
-//            speed = 0f;
-//            meleeHelper.getAttackSprite().draw(batch);
-//        } else {
-//            // Position the sprite so its center aligns with the body center
-//            speed = originalSpeed;
-//            // Adjust the sprite position to center it on the body
-//            sprite.setPosition(
-//                    centerX - sprite.getWidth() / 2,
-//                    centerY - sprite.getHeight() / 2
-//            );
-//            sprite.draw(batch);
-//        }
         playerRenderer.render(batch);
     }
 

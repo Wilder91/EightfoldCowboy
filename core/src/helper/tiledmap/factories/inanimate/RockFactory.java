@@ -73,8 +73,8 @@ public class RockFactory extends InanimateEntityFactory {
         }
 
         shape.setAsBox(
-                (textureWidth * scaleFactor) / 2 / PPM,
-                (textureHeight * scaleFactor) / 2 / PPM
+                (textureWidth * scaleFactor) / .9f / PPM,
+                (textureHeight * scaleFactor) / 4 / PPM
         );
 
         Fixture rockFixture = rockBody.createFixture(shape, 0.0f);

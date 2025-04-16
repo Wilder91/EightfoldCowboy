@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
 import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
+import objects.StationaryObjectAnimator;
 
 import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
@@ -17,33 +18,52 @@ public class Bug extends GameEntity {
     protected int id;
     protected int type;
     protected Animation<TextureRegion> animation;
+    private StationaryObjectAnimator animator;
     protected float stateTime;
+    private String bugName;
+    private GameAssets gameAssets;
 
-    public Bug(float width, float height, float x, float y, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
+    public Bug(float width, float height, float x, float y, Body body, String bugName, ScreenInterface screenInterface, GameAssets gameAssets) {
         super(width, height, body, screenInterface, gameAssets);
         this.stateTime = 0f;
+        this.bugName = bugName;
+        this.gameAssets = gameAssets;
 
-
+        // Use the StationaryObjectAnimator instead of creating our own animation
+        this.animator = new StationaryObjectAnimator(this, "bugs", bugName, gameAssets);
     }
-
-
-
 
     @Override
     public void update(float delta) {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
-        stateTime += delta;
 
+        // Update the animator
+        animator.update(delta);
+    }
+
+    public GameAssets getGameAssets() {
+        return this.gameAssets;
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        TextureRegion currentFrame = animation.getKeyFrame(stateTime, true);
-        batch.draw(currentFrame, x - width / 2, y - height / 2, width, height);
+        animator.render(batch);
+    }
+
+    public void playerContact(){
+        // Your contact handling code here
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setBody(Body body) {
         this.body = body;
     }
+
+
+
+
 }
