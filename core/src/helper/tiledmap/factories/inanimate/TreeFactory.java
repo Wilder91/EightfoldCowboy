@@ -21,9 +21,6 @@ public class TreeFactory {
     private static int treeCounter = 0;
     private GameAssets gameAssets;
     private GameContactListener gameContactListener;
-    TextureRegion topTexture = null;
-    TextureRegion bottomTexture = null;
-    private String textureName;
     private String atlasLink = "atlases/eightfold/trees.atlas";
 
     public TreeFactory(ScreenInterface screenInterface, GameAssets gameAssets){
@@ -101,7 +98,8 @@ public class TreeFactory {
                 treeBody,
                 screenInterface,
                 treeId,
-                treeTexture,
+                "trees",  // Pass the atlas path instead of the texture
+                textureName, // Pass the texture name
                 gameAssets,
                 gameContactListener
         );

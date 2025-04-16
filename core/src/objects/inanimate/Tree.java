@@ -10,35 +10,32 @@ import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.debugging.DepthVisualizer;
+import objects.StationaryObjectAnimator;
 
 import static helper.Constants.PPM;
 
 public class Tree extends InanimateEntity {
-
-
-    private final TextureRegion treeTexture;
-
-    private final GameAssets gameAssets;
-
-    private static final int DOT_SIZE = 6; // Size of the indicator dots
+    private final String textureName;
+    private StationaryObjectAnimator animator;
 
     public Tree(Body body, ScreenInterface screenInterface, int id,
-                TextureRegion treeTexture, GameAssets gameAssets,
+                String atlasName, String textureName, GameAssets gameAssets,
                 GameContactListener gameContactListener) {
         super(0, 0, body, screenInterface, id, gameAssets, gameContactListener);
+        this.textureName = textureName;
 
-        this.treeTexture = treeTexture;
-        this.gameAssets = gameAssets;
+        // Create the animator - simple like the bug version
+        this.animator = new StationaryObjectAnimator(this, atlasName, textureName, gameAssets);
 
-        // Use texture size for width/height
-        this.width = treeTexture.getRegionWidth();
-        this.height = treeTexture.getRegionHeight();
+        // Update width/height from the loaded texture
+        TextureRegion frame = animator.getCurrentFrame();
+        if (frame != null) {
+            this.width = frame.getRegionWidth();
+            this.height = frame.getRegionHeight();
+        }
         setDepth(body.getPosition().y);
         setDepthOffset(-1000f);
-        DepthVisualizer.toggleVisualization();
     }
-
-
 
     private void calculateAndSetDepthOffset() {
         // We want to move 2/3 of the way from center to bottom
@@ -51,26 +48,12 @@ public class Tree extends InanimateEntity {
     public void update(float delta) {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
-        resetDepthToY();
         calculateAndSetDepthOffset();
+        animator.update(delta);
     }
-
-
 
     @Override
     public void render(SpriteBatch batch) {
-        if (treeTexture != null) {
-            // Draw the tree
-            float drawX = x - width / 2;
-            float drawY = y - height / 2;
-            batch.draw(treeTexture, drawX, drawY, width, height);
-
-
-        } else {
-            System.err.println("Tree texture is null!");
-        }
+        animator.render(batch);
     }
-
-
-
 }
