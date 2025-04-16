@@ -8,8 +8,6 @@ import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import objects.StationaryObjectAnimator;
 
-import java.util.Map;
-
 import static helper.Constants.PPM;
 
 public class Dragonfly extends Bug {

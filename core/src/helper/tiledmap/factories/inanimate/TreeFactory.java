@@ -16,14 +16,15 @@ import static helper.Constants.PPM;
 import static helper.ContactType.ENEMY;
 import static helper.ContactType.TREE;
 
-public class TreeFactory {
+public class TreeFactory extends InanimateEntityFactory{
     private ScreenInterface screenInterface;
     private static int treeCounter = 0;
     private GameAssets gameAssets;
     private GameContactListener gameContactListener;
     private String atlasLink = "atlases/eightfold/trees.atlas";
 
-    public TreeFactory(ScreenInterface screenInterface, GameAssets gameAssets){
+    public TreeFactory(ScreenInterface screenInterface, GameAssets gameAssets, GameContactListener gameContactListener){
+        super(screenInterface, gameAssets, gameContactListener);
         this.gameAssets = gameAssets;
         this.screenInterface = screenInterface;
 
@@ -36,19 +37,6 @@ public class TreeFactory {
         // Define the base name based on tree type
         String treeName = textureName;
 
-        if (treeName.isEmpty()) {
-            System.err.println("Unknown treeType: " + textureName);
-            return;
-        }
-
-        // Use the tree name to construct the region name - no more Top/Bottom suffixes
-        //System.out.println("TEXTURE NAME: " + textureName);
-        TextureRegion treeTexture = gameAssets.getAtlas(atlasLink).findRegion(textureName);
-
-        if (treeTexture == null) {
-            System.err.println("Missing texture for treeType: " + textureName);
-            return;
-        }
 
         Polygon polygon = polygonMapObject.getPolygon();
         Rectangle boundingRectangle = polygon.getBoundingRectangle();
@@ -56,8 +44,8 @@ public class TreeFactory {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(
-                (boundingRectangle.x + treeTexture.getRegionWidth() / 2) / PPM,
-                (boundingRectangle.y + treeTexture.getRegionHeight() / 2 ) / PPM
+                (boundingRectangle.x + boundingRectangle.getWidth() / 2) / PPM,
+                (boundingRectangle.y + boundingRectangle.getHeight() / 2 ) / PPM
         );
 
         Body treeBody = screenInterface.getWorld().createBody(bodyDef);
@@ -108,5 +96,8 @@ public class TreeFactory {
     }
 
 
+    @Override
+    public void createEntity(PolygonMapObject polygonMapObject, String polygonName) {
 
+    }
 }

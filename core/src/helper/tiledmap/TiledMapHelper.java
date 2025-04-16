@@ -260,13 +260,13 @@ public class TiledMapHelper {
     }
 
     private void createRock(PolygonMapObject polygonMapObject, String textureName) {
-        RockFactory rockFactory = new RockFactory(screenInterface, gameAssets, gameContactListener);
+        RockFactory rockFactory = new RockFactory(screenInterface, gameAssets, "rocks", textureName, gameContactListener);
         rockFactory.createRock(polygonMapObject, textureName);
     }
 
 
     private void createTree(PolygonMapObject polygonMapObject, String textureName) {
-        TreeFactory treeFactory = new TreeFactory(screenInterface, gameAssets);
+        TreeFactory treeFactory = new TreeFactory(screenInterface, gameAssets, gameContactListener);
         treeFactory.createTree(polygonMapObject, textureName);
     }
 

@@ -16,7 +16,8 @@ public enum ContactType {
     SQUIRREL(0x1000, 0xFFFF & ~0x0200),
     FENCE(0x2000, 0),
     ATTACK(0x4000, 0),
-    ENEMY(0x8000, 0x4000);
+    ENEMY(0x8000, 0x4000),
+    ROCK(0x9000, 0xFFFF);
     private final short categoryBits;
     private final short maskBits;
 

@@ -71,12 +71,21 @@ public class StationaryObjectAnimator extends EntityAnimator {
     public void render(SpriteBatch batch) {
         TextureRegion currentFrame = getCurrentFrame();
         if (currentFrame != null) {
+
             float x = entity.getX();
             float y = entity.getY();
             float width = entity.getWidth();
             float height = entity.getHeight();
-
+            //System.out.println("location: " + x + "," + y);
             batch.draw(currentFrame, x - width / 2, y - height / 2, width, height);
         }
+    }
+
+    public float getTextureWidth() {
+        return getCurrentFrame().getRegionWidth();
+    }
+
+    public float getTextureHeight() {
+        return getCurrentFrame().getRegionHeight();
     }
 }
