@@ -90,7 +90,6 @@ public class TreeFactory extends InanimateEntityFactory{
                 gameAssets,
                 gameContactListener
         );
-
         screenInterface.addTree(tree);
     }
 

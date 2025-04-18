@@ -10,6 +10,7 @@ import objects.animals.farm_animals.Chicken;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
+import objects.humans.Enemy;
 import objects.humans.NPC;
 import objects.inanimate.*;
 
@@ -40,6 +41,8 @@ public class EntityManager {
     private final List<Door> doors = new ArrayList<>();
     private final List<Bug> bugs = new ArrayList<>();
     private final List<Fence> fences = new ArrayList<>();
+    private final List<Enemy> enemies = new ArrayList<>();
+    private final List<GameEntity> entities = new ArrayList<>();
 
     // Map for NPC lookup by ID
     private final Map<Integer, NPC> npcMap = new HashMap<>();
@@ -120,6 +123,10 @@ public class EntityManager {
         for (Rock rock: rocks){
             rock.update(delta);
         }
+
+        for (GameEntity entity : entities){
+            entity.update(delta);
+        }
     }
 
     /**
@@ -152,6 +159,8 @@ public class EntityManager {
         sortedEntities.addAll(bugs);
         sortedEntities.addAll(rocks);
         sortedEntities.addAll(fences);
+        sortedEntities.addAll(enemies);
+        sortedEntities.addAll(entities);
 
         // Sort by Y position
         Collections.sort(sortedEntities, GameEntity.Y_COMPARATOR);
@@ -325,6 +334,10 @@ public class EntityManager {
         bugs.add(bug);
     }
 
+    public void addEnemy(Enemy enemy) {
+        enemies.add(enemy);
+    }
+
     // Player methods
     public Player getPlayer() {
         return player;
@@ -357,5 +370,9 @@ public class EntityManager {
 
     public Chicken getChickenById(int id) {
         return chickenMap.get(id);
+    }
+
+    public void addEntity(GameEntity gameEntity) {
+        entities.add(gameEntity);
     }
 }

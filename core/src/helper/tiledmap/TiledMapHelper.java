@@ -21,6 +21,7 @@ import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
+import helper.tiledmap.factories.EntityFactory;
 import helper.tiledmap.factories.FenceFactory;
 import helper.tiledmap.factories.animals.ChickenFactory;
 import helper.tiledmap.factories.animals.SquirrelFactory;
@@ -29,6 +30,7 @@ import helper.tiledmap.factories.inanimate.*;
 import helper.tiledmap.factories.animals.NpcFactory;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.Player;
+import objects.GameEntity;
 
 
 import static helper.Constants.PPM;
@@ -137,6 +139,7 @@ public class TiledMapHelper {
             if (mapObject instanceof RectangleMapObject) {
                 Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
                 String rectangleName = mapObject.getName();
+                String rectangleType = (String) mapObject.getProperties().get("type");
 
                 if (rectangleName != null && rectangleName.equals("player")) {
                     float centerX = (rectangle.x + rectangle.width / 2f) ;
@@ -144,9 +147,6 @@ public class TiledMapHelper {
                     float bodyWidth = rectangle.width /3.5f  ;
                     float bodyHeight = rectangle.height / 1.4f;
                     int playerId = 1;
-
-
-
                     Body body = BodyHelperService.createBody(
                             centerX,
                             centerY,
@@ -180,6 +180,14 @@ public class TiledMapHelper {
                     RectangleMapObject rectObj = (RectangleMapObject) mapObject;
                     NpcFactory npcFactory = new NpcFactory(screenInterface, gameAssets, gameContactListener, 1);
                     npcFactory.createNPC(rectObj, rectangleName);
+                }
+                if (rectangleType != null) {
+                    RectangleMapObject rectObj = (RectangleMapObject) mapObject;
+                    switch(rectangleType){
+                        case "enemies":
+                            createEnemy(rectObj, rectangleType, rectangleName);
+
+                    }
                 }
             }
 
@@ -250,6 +258,12 @@ public class TiledMapHelper {
     private void createSquirrel(PolygonMapObject polygonMapObject) {
         SquirrelFactory squirrelFactory = new SquirrelFactory(screenInterface, gameAssets, false);
         squirrelFactory.createSquirrel(polygonMapObject);
+
+    }
+    private void createEnemy(RectangleMapObject rectangleMapObject, String enemyType, String enemyName) {
+
+        EntityFactory entityFactory = new EntityFactory(screenInterface, gameAssets,gameContactListener);
+        entityFactory.createEntity(rectangleMapObject, enemyType, enemyName);
 
     }
 

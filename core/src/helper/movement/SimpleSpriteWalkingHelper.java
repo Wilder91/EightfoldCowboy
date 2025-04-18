@@ -14,7 +14,7 @@ import java.util.Map;
 
 import static helper.Constants.FRAME_DURATION;
 
-public class SpriteRunningHelper {
+public class SimpleSpriteWalkingHelper {
     private Map<String, Animation<TextureRegion>> animations;
     private Animation<TextureRegion> currentAnimation;
     private TextureRegion restingFrame;
@@ -26,8 +26,9 @@ public class SpriteRunningHelper {
     private boolean isFacingRight = true; // Track the facing direction
     private int[] frameCounts;
     private boolean startFlipped;
+    private float frameDuration;
 
-    public SpriteRunningHelper(GameAssets gameAssets, String animalType, String animalName, int[] frameCounts, boolean startFlipped) {
+    public SimpleSpriteWalkingHelper(GameAssets gameAssets, String animalType, String animalName, int[] frameCounts, boolean startFlipped, float frameDuration) {
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.animalName = animalName;
@@ -35,12 +36,12 @@ public class SpriteRunningHelper {
         this.animations = new HashMap<>();
         this.frameCounts = frameCounts;
         this.startFlipped = startFlipped;
-
+        this.frameDuration = frameDuration;
         loadAnimations();
 
         this.currentAnimation = animations.get("runningHorizontal");
-        setRestingFrame("Sprites/Character/Idle/Idle Down (300)/Character_Idle_Down_1.png");
-        this.sprite = new Sprite(restingFrame);
+
+        this.sprite = new Sprite(this.currentAnimation.getKeyFrame(stateTime));
         this.sprite.setOriginCenter();
 
         if (startFlipped) {
@@ -50,13 +51,11 @@ public class SpriteRunningHelper {
     }
 
     public void loadAnimations() {
-        String atlasPath = "atlases/eightfold/" + animalType + "-movement.atlas";
-        // Populate the animations map with all available running animations
-        animations.put("runningUp", createAnimation(animalName + "_up_run", frameCounts[0], atlasPath));
-        animations.put("runningDown", createAnimation(animalName + "_down_run", frameCounts[1], atlasPath));
-        animations.put("runningHorizontal", createAnimation(animalName + "_horizontal_run", frameCounts[2], atlasPath));
-        animations.put("runningDiagonalUp", createAnimation(animalName + "_diagUP_run", frameCounts[3], atlasPath));
-        animations.put("runningDiagonalDown", createAnimation(animalName + "_diagDOWN_run", frameCounts[4], atlasPath));
+        String atlasPath = "atlases/eightfold/" + animalType + ".atlas";
+        // Only populate with up, down and horizontal animations
+        animations.put("runningUp", createAnimation(animalName + "_up_walk", frameCounts[0], atlasPath));
+        animations.put("runningDown", createAnimation(animalName + "_down_walk", frameCounts[1], atlasPath));
+        animations.put("runningHorizontal", createAnimation(animalName + "_horizontal_walk", frameCounts[2], atlasPath));
     }
 
     private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount, String atlasPath) {
@@ -66,19 +65,18 @@ public class SpriteRunningHelper {
             TextureRegion region = atlas.findRegion(regionNamePrefix, i);
             if (region != null) {
                 frames.add(region);
-                //System.out.println("Added frame: " + regionNamePrefix + "_" + i); // Debug print
             } else {
-                //System.out.println("Region " + regionNamePrefix + "_" + i + " not found!"); // Debug print
+                System.err.println("Region " + regionNamePrefix + "_" + i + " not found!");
             }
         }
-        //System.out.println("Total frames for " + regionNamePrefix + ": " + frames.size); // Debug print
-        return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
+        return new Animation<>(this.frameDuration, frames, Animation.PlayMode.LOOP);
     }
 
     public void updateAnimation(Vector2 linearVelocity, float delta) {
         float vx = linearVelocity.x;
         float vy = linearVelocity.y;
         boolean isMoving = Math.abs(vx) > 0.1f || Math.abs(vy) > 0.1f;
+
         if (isMoving) {
             setRunningAnimation(vx, vy);
             stateTime += delta;
@@ -93,8 +91,6 @@ public class SpriteRunningHelper {
                 sprite.setRegion(frame);
             }
         }
-
-
 
         sprite.setSize(sprite.getRegionWidth(), sprite.getRegionHeight());
         sprite.setOriginCenter();
@@ -113,32 +109,18 @@ public class SpriteRunningHelper {
     }
 
     private void setRunningAnimation(float vx, float vy) {
-        if (vy > 0.1f) {
-            if (vx > 0) {
-
-                currentAnimation = animations.get("runningDiagonalUp");
-                flipSprite(true);
-            } else if (vx < 0) {
-                currentAnimation = animations.get("runningDiagonalUp");
-                flipSprite(false);
-            } else {
+        // Determine the primary direction of movement
+        if (Math.abs(vy) > Math.abs(vx)) {
+            // Vertical movement is stronger
+            if (vy > 0) {
                 currentAnimation = animations.get("runningUp");
-            }
-        } else if (vy < -0.1f) {
-            if (vx > 0) {
-
-                currentAnimation = animations.get("runningDiagonalDown");
-            } else if (vx < 0) {
-                currentAnimation = animations.get("runningDiagonalDown");
             } else {
                 currentAnimation = animations.get("runningDown");
             }
-        } else if (vx > 0.1f) {
+        } else {
+            // Horizontal movement is stronger or equal
             currentAnimation = animations.get("runningHorizontal");
-            flipSprite(true);
-        } else if (vx < -0.1f) {
-            currentAnimation = animations.get("runningHorizontal");
-            flipSprite(false);
+            flipSprite(vx > 0);
         }
     }
 
@@ -164,5 +146,17 @@ public class SpriteRunningHelper {
 
     public float getStateTime() {
         return stateTime;
+    }
+
+    // Set a specific animation directly
+    public void setAnimation(String animationKey) {
+        if (animations.containsKey(animationKey)) {
+            currentAnimation = animations.get(animationKey);
+        }
+    }
+
+    // Reset the state time (useful when changing animations)
+    public void resetStateTime() {
+        stateTime = 0f;
     }
 }

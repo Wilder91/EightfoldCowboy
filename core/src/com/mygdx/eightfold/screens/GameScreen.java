@@ -25,12 +25,14 @@ import conversations.DialogueLine;
 import helper.ContactType;
 import helper.tiledmap.TiledMapHelper;
 import helper.world.time.TimeOfDayHelper;
+import objects.GameEntity;
 import objects.animals.squirrel.Squirrel;
 import objects.animals.birds.Bird;
 import objects.animals.farm_animals.Chicken;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
+import objects.humans.Enemy;
 import objects.humans.NPC;
 import objects.inanimate.*;
 import text.infobox.InfoBox;
@@ -336,6 +338,17 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     public GameAssets getGameAssets() {
         return this.gameAssets;
     }
+
+    @Override
+    public void addEnemy(Enemy enemy) {
+        entityManager.addEnemy(enemy);
+    }
+
+    @Override
+    public void addEntity(GameEntity gameEntity) {
+        entityManager.addEntity(gameEntity);
+    }
+
 
     @Override
     public void addPond(Pond pond) {

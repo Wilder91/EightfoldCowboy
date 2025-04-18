@@ -4,15 +4,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import helper.EntityAnimator;
 import helper.movement.SimpleIdleHelper;
-import helper.movement.SimpleSpriteRunningHelper;
+import helper.movement.SimpleSpriteWalkingHelper;
 
 public class ChickenAnimator extends EntityAnimator {
-    private SimpleSpriteRunningHelper chickenWalkingHelper;
-    private SimpleIdleHelper chickenIdleHelper;
-    public ChickenAnimator(Chicken chicken, SimpleSpriteRunningHelper chickenWalkingHelper, SimpleIdleHelper chickenIdleHelper) {
+    private SimpleSpriteWalkingHelper walkingHelper;
+    private SimpleIdleHelper idleHelper;
+    public ChickenAnimator(Chicken chicken, SimpleSpriteWalkingHelper chickenWalkingHelper, SimpleIdleHelper chickenIdleHelper) {
         super(chicken);
-        this.chickenWalkingHelper = chickenWalkingHelper;
-        this.chickenIdleHelper = chickenIdleHelper;
+        this.walkingHelper = chickenWalkingHelper;
+        this.idleHelper = chickenIdleHelper;
     }
     public Sprite updateAnimation(float delta) {
         Vector2 velocity = entity.getBody().getLinearVelocity();
@@ -27,12 +27,12 @@ public class ChickenAnimator extends EntityAnimator {
 
         // Choose between walking and idle animations based on movement
         if (absVelocity.x > 0.01 || absVelocity.y > 0.01) {
-            chickenWalkingHelper.updateAnimation(velocity, delta);
-            sprite = chickenWalkingHelper.getSprite();
+            walkingHelper.updateAnimation(velocity, delta);
+            sprite = walkingHelper.getSprite();
         } else {
-            chickenIdleHelper.setFacingRight(isFacingRight);
-            chickenIdleHelper.update(delta);
-            sprite = chickenIdleHelper.getSprite();
+            idleHelper.setFacingRight(isFacingRight);
+            idleHelper.update(delta);
+            sprite = idleHelper.getSprite();
         }
 
         // Apply flip AFTER getting the new sprite

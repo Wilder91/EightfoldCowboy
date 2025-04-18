@@ -18,12 +18,14 @@ import com.mygdx.eightfold.GameAssets;
 import conversations.DialogueLine;
 import helper.tiledmap.TiledMapHelper;
 import com.mygdx.eightfold.player.Player;
+import objects.GameEntity;
 import objects.animals.squirrel.Squirrel;
 import objects.animals.birds.Bird;
 import objects.animals.farm_animals.Chicken;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
+import objects.humans.Enemy;
 import objects.humans.NPC;
 import objects.inanimate.*;
 import text.infobox.InfoBox;
@@ -118,6 +120,7 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
+
     @Override
     public void addNPC(NPC npc) {
 
@@ -151,6 +154,16 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     @Override
     public GameAssets getGameAssets() {
         return this.gameAssets;
+    }
+
+    @Override
+    public void addEnemy(Enemy enemy) {
+
+    }
+
+    @Override
+    public void addEntity(GameEntity gameEntity) {
+
     }
 
 

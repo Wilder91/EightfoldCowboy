@@ -29,7 +29,7 @@ public class BugFactory {
         Body bugBody = createBodyFromPolygon(polygonMapObject, bugId, bugName);
         TextureRegion texture = gameAssets.getAtlas("atlases/eightfold/bugs.atlas").findRegion(bugName);
         if (texture == null) {
-            System.err.println("Pond texture not found for type: " + bugId);
+            System.err.println("Bug texture not found for type: " + bugId);
             return;
         }
         float textureWidth = texture.getRegionWidth();

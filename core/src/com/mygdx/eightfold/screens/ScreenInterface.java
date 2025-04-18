@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.Player;
 import conversations.DialogueLine;
+import objects.GameEntity;
 import objects.animals.squirrel.Squirrel;
 import objects.animals.birds.Bird;
 
@@ -12,6 +13,8 @@ import objects.animals.farm_animals.Chicken;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
+import objects.enemies.ThicketSaint;
+import objects.humans.Enemy;
 import objects.humans.NPC;
 import objects.inanimate.*;
 
@@ -103,4 +106,8 @@ public interface ScreenInterface {
     void addFence(Fence fence);
 
     GameAssets getGameAssets();
+
+    void addEnemy(Enemy enemy);
+
+    void addEntity(GameEntity gameEntity);
 }

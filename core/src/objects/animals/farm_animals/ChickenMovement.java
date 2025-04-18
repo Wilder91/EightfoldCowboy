@@ -8,10 +8,10 @@ public class ChickenMovement extends EntityMovement {
     private float movementTimer = 0;
     private float movementDuration = 1.2f; // Duration of movement in one direction
     private float restTimer = (float) (Math.random() * 3f); // Random initial rest time between 0 and 3
-    private float restDuration = 1.5f; // Duration of rest between movements
+    private float restDuration = 1.1f; // Duration of rest between movements
     private boolean isMoving = false;
     private Vector2 currentDirection = new Vector2(0, 0);
-    private float chickenSpeed = 0.8f;
+    private float chickenSpeed = 1.2f;
     private Vector2 originalPosition = new Vector2();
     private int moveCount = 0;
     private boolean returningToOrigin = false;

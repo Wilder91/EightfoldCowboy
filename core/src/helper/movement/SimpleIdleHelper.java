@@ -54,7 +54,7 @@ public class SimpleIdleHelper {
      */
     private void loadAnimation() {
         String atlasPath = "atlases/eightfold/" + animalType + ".atlas";
-        String regionPrefix = animalName + "_Idle_Down";
+        String regionPrefix = animalName + "_down_idle";
 
         // Get the atlas
         TextureAtlas atlas = gameAssets.getAtlas(atlasPath);

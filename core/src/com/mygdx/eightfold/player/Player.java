@@ -37,7 +37,7 @@ public class Player extends GameEntity {
     private Sprite sprite;
     private boolean isFacingRight;
     private float stateTime;
-    private SpriteRunningHelper runningHelper;
+    private SpriteWalkingHelper runningHelper;
     private MeleeCombatHelper meleeHelper;
     //private SpriteWalkingHelper walkingHelper;
     private SpriteIdleHelper idleHelper;
@@ -54,8 +54,8 @@ public class Player extends GameEntity {
     private float largeSensorRadius = 3.0f;
     private float smallSensorRadius = 1.5f;
     private State currentState;
-    private PlayerInputHelper playerInputHandler;
-    private PlayerRenderer playerRenderer;
+    private PlayerInputHelper inputHandler;
+    private PlayerRenderer renderer;
     private PlayerMovementStateManager stateManager;
 
 
@@ -81,11 +81,10 @@ public class Player extends GameEntity {
         int[] idleFrameCounts = {18, 1, 8, 18, 4};
         int[] meleeFrameCounts = {17, 17, 17, 17, 17};
         this.weaponType = "sword";
-
-        this.runningHelper = new SpriteRunningHelper(gameAssets, "character", "character", runningFrameCounts, false);
+        this.runningHelper = new SpriteWalkingHelper(gameAssets, "character", "character", runningFrameCounts, false);
         this.idleHelper = new SpriteIdleHelper(gameAssets, "character", "character", idleFrameCounts, 0f);
         this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", weaponType, meleeFrameCounts, 10f, screenInterface.getWorld());
-        this.playerInputHandler = new PlayerInputHelper(this);
+        this.inputHandler = new PlayerInputHelper(this);
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
         this.swordSound = gameAssets.getSound("sounds/whoosh.mp3");
@@ -95,7 +94,7 @@ public class Player extends GameEntity {
                 ContactType.LIGHT.getMaskBits(),
                 (short) 0);
         playerLight.setPosition(x + .1f, y);
-        this.playerRenderer = new PlayerRenderer(this, meleeHelper);
+        this.renderer = new PlayerRenderer(this, meleeHelper);
         this.sensorFixtureDef = new FixtureDef();
         sensorFixtureDef.isSensor = true;
         sensorShape = new CircleShape();
@@ -127,7 +126,7 @@ public class Player extends GameEntity {
         return isFacingRight;
     }
 
-    public SpriteRunningHelper getRunningHelper() {
+    public SpriteWalkingHelper getRunningHelper() {
         return runningHelper;
     }
 
@@ -205,7 +204,7 @@ public class Player extends GameEntity {
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
 
-        playerInputHandler.processInput();
+        inputHandler.processInput();
         updateSensor();
 
         // Let the state manager handle states instead of your switch statement
@@ -240,7 +239,7 @@ public class Player extends GameEntity {
 
     @Override
     public void render(SpriteBatch batch) {
-        playerRenderer.render(batch);
+        renderer.render(batch);
     }
 
 

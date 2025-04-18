@@ -5,20 +5,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
+import helper.EntityAnimator;
 import helper.EntityRenderer;
 import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.movement.SimpleIdleHelper;
-import helper.movement.SimpleSpriteRunningHelper;
+import helper.movement.SimpleSpriteWalkingHelper;
 
+import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
 
 public class Chicken extends GameEntity {
-    private SimpleSpriteRunningHelper chickenWalkingHelper;
+    private SimpleSpriteWalkingHelper chickenWalkingHelper;
     private SimpleIdleHelper chickenIdleHelper;
     private EntityRenderer chickenRenderer;
     private ChickenMovement chickenMovement;
-    private ChickenAnimator chickenAnimator;
+    private EntityAnimator animator;
     private Sprite sprite;
     private float stateTime;
     private Vector2 originalPosition = new Vector2();
@@ -27,11 +29,11 @@ public class Chicken extends GameEntity {
         super(width, height, body, screenInterface, gameAssets);
         int[] frameCounts = {4, 4, 4};  // [up, down, horizontal]
         int idleFrameCount = 25;
-        this.chickenWalkingHelper = new SimpleSpriteRunningHelper(gameAssets, "farm_animal", "Chicken", frameCounts, false);
+        this.chickenWalkingHelper = new SimpleSpriteWalkingHelper(gameAssets, "farm_animal", "Chicken", frameCounts, false, FRAME_DURATION);
         this.chickenIdleHelper = new SimpleIdleHelper(gameAssets, "farm_animal", "Chicken", idleFrameCount, 0.4f);
         this.chickenRenderer = new EntityRenderer(this);
         this.chickenMovement = new ChickenMovement(this);
-        this.chickenAnimator = new ChickenAnimator(this, chickenWalkingHelper, chickenIdleHelper);
+        this.animator = new ChickenAnimator(this, chickenWalkingHelper, chickenIdleHelper);
         // Initialize sprite
         this.sprite = chickenIdleHelper.getSprite();
         if (this.sprite == null) {
@@ -63,7 +65,7 @@ public class Chicken extends GameEntity {
 
         // Then update animation - this sets the current sprite
 
-        sprite = chickenAnimator.updateAnimation(delta);
+        sprite = animator.updateAnimation(delta);
         // Finally set the updated sprite on the renderer
         chickenRenderer.setMainSprite(sprite);
 

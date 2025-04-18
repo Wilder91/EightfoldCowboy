@@ -27,6 +27,8 @@ public class GameAssets {
         assetManager.load("atlases/eightfold/Jim-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/Martha-movement.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/NPC-movement.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/enemies-movement.atlas", TextureAtlas.class);
+        assetManager.load("atlases/eightfold/enemies.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/pond.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/bugs.atlas", TextureAtlas.class);
         assetManager.load("atlases/eightfold/bushes.atlas", TextureAtlas.class);

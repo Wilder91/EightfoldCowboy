@@ -35,7 +35,7 @@ public class Rock extends InanimateEntity {
         if (animator.getCurrentFrame() != null) {
             this.width = animator.getCurrentFrame().getRegionWidth();
             this.height = animator.getCurrentFrame().getRegionHeight();
-            System.out.println("Rock dimensions: " + width + "x" + height);
+
         } else {
             System.err.println("Failed to get texture for rock: " + textureName);
         }

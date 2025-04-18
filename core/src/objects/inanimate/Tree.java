@@ -26,6 +26,7 @@ public class Tree extends InanimateEntity {
             this.width = frame.getRegionWidth();
             this.height = frame.getRegionHeight();
         }
+
         setDepth(body.getPosition().y);
         setDepthOffset(-1000f);
     }
