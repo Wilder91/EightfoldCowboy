@@ -59,7 +59,7 @@ public class MeleeCombatHelper {
         this.attackSprite.setOriginCenter();
 
         // Calculate attack duration based on animation frames * frame duration
-        this.attackDuration = attackFrameCounts[2] * FRAME_DURATION;
+        this.attackDuration = 2f;
     }
 
     public void loadAttackAnimations() {
@@ -283,27 +283,11 @@ public class MeleeCombatHelper {
         );
     }
 
-    public boolean startAttack(Vector2 facingDirection) {
-        if (attackCooldown <= 0 && !isAttacking) {
-            isAttacking = true;
-            attackStateTime = 0f;
-            currentAttackTimer = 0f;
-
-            // Set the correct attack animation based on direction
-            setAttackAnimation(facingDirection.x, facingDirection.y);
-
-            // Reset cooldown
-            attackCooldown = 0.5f;
-
-            return true;
-        }
-        return false;
-    }
 
 
     // Update the startAttack method to create the sensor
     public boolean startAttack(String direction, Vector2 playerPosition) {
-        if (attackCooldown <= 0 && !isAttacking) {
+        if (!isAttacking) {
             isAttacking = true;
             attackStateTime = 0f;
             currentAttackTimer = 0f;
@@ -403,7 +387,7 @@ public class MeleeCombatHelper {
         return isAttacking;
     }
 
-    public Sprite getAttackSprite() {
+    public Sprite getSprite() {
         return attackSprite;
     }
 
@@ -422,6 +406,11 @@ public class MeleeCombatHelper {
 
     public void setCooldownTime(float cooldownTime) {
         this.attackCooldown = cooldownTime;
+    }
+
+
+    public void setFacingRight(boolean isFacingRight) {
+        this.isFacingRight = isFacingRight;
     }
 
 

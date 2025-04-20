@@ -29,7 +29,7 @@ public class Chicken extends GameEntity {
         super(width, height, body, screenInterface, gameAssets);
         int[] frameCounts = {4, 4, 4};  // [up, down, horizontal]
         int idleFrameCount = 25;
-        this.chickenWalkingHelper = new SimpleSpriteWalkingHelper(gameAssets, "farm_animal", "Chicken", frameCounts, false, FRAME_DURATION);
+        this.chickenWalkingHelper = new SimpleSpriteWalkingHelper(gameAssets, "farm_animal", "Chicken", frameCounts, false, 1f);
         this.chickenIdleHelper = new SimpleIdleHelper(gameAssets, "farm_animal", "Chicken", idleFrameCount, 0.4f);
         this.chickenRenderer = new EntityRenderer(this);
         this.chickenMovement = new ChickenMovement(this);

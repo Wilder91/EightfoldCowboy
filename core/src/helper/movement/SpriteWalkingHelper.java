@@ -115,7 +115,7 @@ public class SpriteWalkingHelper {
     private void setRunningAnimation(float vx, float vy) {
         if (vy > 0.1f) {
             if (vx > 0) {
-                System.out.println("YO");
+                //System.out.println("YO");
                 currentAnimation = animations.get("runningDiagonalUp");
                 flipSprite(true);
             } else if (vx < 0) {

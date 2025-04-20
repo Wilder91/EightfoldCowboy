@@ -7,8 +7,10 @@ import com.mygdx.eightfold.ecs.EntityManager;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import helper.ContactType;
+import objects.GameEntity;
 import objects.animals.birds.Bird;
 import objects.animals.farm_animals.Chicken;
+import objects.enemies.ThicketSaint;
 import objects.inanimate.inanimate_helpers.DoorManager;
 import objects.humans.NPC;
 import objects.humans.NPCManager;
@@ -70,12 +72,12 @@ public class GameContactListener implements ContactListener {
                 door.playerContact();
 
             } else if (userDataA.getType() == ContactType.ATTACK && userDataB.getType() == ContactType.ENEMY) {
-                //System.out.println("THATS A HIT");
+                System.out.println("THATS A HIT");
 
             } else if (userDataA.getType() == ContactType.ENEMY && userDataB.getType() == ContactType.ATTACK) {
                 contactCounter += 1;
                 System.out.println(contactCounter);
-                //System.out.println(userDataA);
+                System.out.println(userDataA);
                 Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
                 sound.play(.05f);
             }
@@ -96,12 +98,20 @@ public class GameContactListener implements ContactListener {
             }
 
         }
-        else if (b.getUserData() == "playerSensor" ) {
-            BodyUserData userDataA = (BodyUserData) a.getUserData();
-            if (userDataA != null) {
-                //System.out.println("sensed" + userDataA);
+        if (a.getUserData() != null && "saintSensor".equals(a.getUserData())) {
+            // Player sensor began contact with something
+            if (b.getUserData() instanceof BodyUserData) {
+
             }
         }
+        else if (b.getUserData() != null && b.getUserData() instanceof ThicketSaint) {
+            // Player sensor began contact with something
+            if (a.getUserData() instanceof BodyUserData) {
+                BodyUserData userData = (BodyUserData) a.getUserData();
+                handleSensorContact(userData, b.getUserData());
+            }
+        }
+
     }
 
 
@@ -150,6 +160,22 @@ public class GameContactListener implements ContactListener {
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
         // Implement as needed
+    }
+
+    private void handleSensorContact(BodyUserData userData, Object otherEntity) {
+        if (userData.getType() == ContactType.PLAYER && otherEntity instanceof ThicketSaint) {
+            ThicketSaint thicketSaint = (ThicketSaint) otherEntity;
+            //System.out.println(thicketSaint);
+            thicketSaint.setState(ThicketSaint.State.ATTACKING);
+        }
+        else if (userData.getType() == ContactType.NPC) {
+            NPC npc = NPCManager.getNPCById(userData.getId());
+            if (npc != null) {
+                System.out.println("Player sensor detected NPC: " + userData.getId());
+                // Maybe show a hint that player can interact with this NPC
+            }
+        }
+        // Add other entity types as needed
     }
 
 

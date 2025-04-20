@@ -51,7 +51,6 @@ public class EntityFactory {
         fixtureDef.density = .5f;     // Lower density makes it heavier
         fixtureDef.friction = 0.5f;     // Higher friction prevents sliding
         fixtureDef.restitution = 0.0f;  // No bounce
-
         // Use the enemyCounter to assign unique IDs
         int currentId = enemyCounter++;
 

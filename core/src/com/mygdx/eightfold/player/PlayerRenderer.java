@@ -25,7 +25,7 @@ public class PlayerRenderer {
 
         if (meleeHelper != null && meleeHelper.isAttacking()) {
             // Render attack animation
-            Sprite attackSprite = meleeHelper.getAttackSprite();
+            Sprite attackSprite = meleeHelper.getSprite();
             if (attackSprite != null) {
                 attackSprite.draw(batch);
             }
