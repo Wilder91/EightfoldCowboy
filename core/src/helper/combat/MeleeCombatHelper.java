@@ -1,5 +1,6 @@
 package helper.combat;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
+import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import helper.ContactType;
 
@@ -37,8 +39,12 @@ public class MeleeCombatHelper {
     private Fixture attackSensor;
     private World world;
     private String lastDirection = "";
-
-    public MeleeCombatHelper(GameAssets gameAssets, String animalType, String animalName, String weaponType, int[] attackFrameCounts, float attackDamage, World world) {
+    private ContactType contactType;
+    private ScreenInterface screenInterface;
+    private int worldStepCounter = 0;
+    public MeleeCombatHelper(GameAssets gameAssets, String animalType, String animalName,
+                             String weaponType, int[] attackFrameCounts, float attackDamage,
+                             World world, float frameDuration, ContactType contactType, ScreenInterface screenInterface) {  // Added frameDuration parameter
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.animalName = animalName;
@@ -52,34 +58,44 @@ public class MeleeCombatHelper {
         this.hitbox = new Rectangle();
         this.world = world;
         this.weaponType = weaponType;
-        loadAttackAnimations();
+        this.contactType = contactType;
+        this.screenInterface = screenInterface;
+        // Pass frameDuration to the loadAttackAnimations method
+        loadAttackAnimations(frameDuration);
 
         this.currentAttackAnimation = attackAnimations.get("attackHorizontal");
         this.attackSprite = new Sprite();
         this.attackSprite.setOriginCenter();
 
         // Calculate attack duration based on animation frames * frame duration
-        this.attackDuration = 2f;
+        // For example, if you want the attack to last for the length of the animation:
+        this.attackDuration = attackFrameCounts[2] * frameDuration;
     }
 
-    public void loadAttackAnimations() {
+    public void loadAttackAnimations(float frameDuration) {
         String atlasPath = "atlases/eightfold/" + animalType + "-movement.atlas";
-
         // Populate the animations map with all available attack animations
-        attackAnimations.put("attackUp", createAnimation(animalName + "_up_" + weaponType,  attackFrameCounts[0], atlasPath));
-        attackAnimations.put("attackDown", createAnimation(animalName + "_down_" + weaponType, attackFrameCounts[1], atlasPath));
-        attackAnimations.put("attackHorizontal", createAnimation(animalName + "_horizontal_" + weaponType, attackFrameCounts[2], atlasPath));
-        attackAnimations.put("attackDiagonalUp", createAnimation(animalName + "_diagUP_" + weaponType, attackFrameCounts[3], atlasPath));
-        attackAnimations.put("attackDiagonalDown", createAnimation(animalName + "_diagDOWN_" + weaponType, attackFrameCounts[4], atlasPath));
+        attackAnimations.put("attackUp", createAnimation(animalName + "_up_" + weaponType,
+                attackFrameCounts[0], atlasPath, frameDuration));
+        attackAnimations.put("attackDown", createAnimation(animalName + "_down_" + weaponType,
+                attackFrameCounts[1], atlasPath, frameDuration));
+        attackAnimations.put("attackHorizontal", createAnimation(animalName + "_horizontal_" + weaponType,
+                attackFrameCounts[2], atlasPath, frameDuration));
+        attackAnimations.put("attackDiagonalUp", createAnimation(animalName + "_diagUP_" + weaponType,
+                attackFrameCounts[3], atlasPath, frameDuration));
+        attackAnimations.put("attackDiagonalDown", createAnimation(animalName + "_diagDOWN_" + weaponType,
+                attackFrameCounts[4], atlasPath, frameDuration));
     }
 
-    private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount, String atlasPath) {
+
+    private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount,
+                                                     String atlasPath, float frameDuration) {
         Array<TextureRegion> frames = new Array<>();
         TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
 
         if (atlas == null) {
             System.err.println("ERROR: Attack atlas not found: " + atlasPath);
-            return new Animation<>(ATTACK_FRAME_DURATION, frames);
+            return new Animation<>(frameDuration, frames);
         }
 
         for (int i = 1; i <= frameCount; i++) {
@@ -95,7 +111,11 @@ public class MeleeCombatHelper {
             System.err.println("WARNING: No frames found for animation: " + regionNamePrefix);
         }
 
-        return new Animation<>(ATTACK_FRAME_DURATION, frames, Animation.PlayMode.NORMAL);
+        return new Animation<>(frameDuration, frames, Animation.PlayMode.NORMAL);
+    }
+
+    public void setAttackDuration(float duration) {
+        this.attackDuration = duration;
     }
 
     public void update(float delta, Vector2 position, Vector2 facingDirection, boolean isFacingRight, String lastDirection) {
@@ -107,7 +127,65 @@ public class MeleeCombatHelper {
         }
 
         // Update attack state
+        if (isAttacking && attackSensor != null && attackSensor.getBody() != null) {
+            // Get the attack sensor bounds
+
+            PolygonShape sensorShape = (PolygonShape) attackSensor.getShape();
+            Vector2 center = new Vector2();
+            float[] vertices = new float[8]; // For a box, 4 vertices x 2 coords each
+
+            // Get the size of the attack sensor
+            sensorShape.getVertex(0, center); // Get one corner
+
+            // Calculate approximate AABB manually based on the sensor body position
+            Vector2 sensorPos = attackSensor.getBody().getPosition();
+            float sensorWidth = 0.5f; // Approximate - adjust based on your actual sizes
+            float sensorHeight = 0.5f;
+
+            System.out.println("Attack sensor position: " + sensorPos.x + ", " + sensorPos.y);
+
+            // Create a simple AABB query
+            final Array<Fixture> foundFixtures = new Array<>();
+            world.QueryAABB(
+                    new QueryCallback() {
+                        @Override
+                        public boolean reportFixture(Fixture fixture) {
+                            if (fixture.getUserData() instanceof BodyUserData) {
+                                BodyUserData userData = (BodyUserData) fixture.getUserData();
+                                if (userData.getType() == ContactType.ENEMY) {
+                                    foundFixtures.add(fixture);
+                                    System.out.println("Found enemy in query: " + userData.getId());
+                                    return true;
+                                }
+                            }
+                            return true; // Keep looking for more fixtures
+                        }
+                    },
+                    sensorPos.x - sensorWidth,
+                    sensorPos.y - sensorHeight,
+                    sensorPos.x + sensorWidth,
+                    sensorPos.y + sensorHeight
+            );
+            if (foundFixtures.size > 0) {
+                for (Fixture enemyFixture : foundFixtures) {
+                    BodyUserData userData = (BodyUserData)enemyFixture.getUserData();
+                    System.out.println("Directly applying damage to " + enemyFixture.getType() + ": " + userData.getId());
+
+                    // Apply damage logic here
+                    // ...
+
+                    // Play hit sound
+                    Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
+                    sound.play(0.05f);
+                }
+            }
+
+            System.out.println("Number of enemy fixtures found: " + foundFixtures.size);
+        }
         if (isAttacking) {
+
+            worldStepCounter++;
+            System.out.println("Attack sensor exists for " + worldStepCounter + " world steps");
             attackStateTime += delta;
             currentAttackTimer += delta;
 
@@ -124,7 +202,8 @@ public class MeleeCombatHelper {
             updateHitbox();
 
             // Check if attack animation is complete
-            if (currentAttackTimer >= attackDuration || currentAttackAnimation.isAnimationFinished(attackStateTime)) {
+            if (currentAttackTimer >= attackDuration * 1.5f ||
+                    (currentAttackAnimation.isAnimationFinished(attackStateTime) && currentAttackTimer >= 0.3f)) {
                 endAttack();
                 removeAttackSensor();
             }
@@ -137,11 +216,11 @@ public class MeleeCombatHelper {
 
         // Create a temporary body for the attack
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
         bodyDef.position.set(position.x / PPM, position.y / PPM);
         bodyDef.bullet = true; // Use CCD for fast-moving objects
 
-        Body sensorBody = world.createBody(bodyDef);
+        Body sensorBody = screenInterface.getWorld().createBody(bodyDef);
 
         // Default dimensions
         float width = 0.3f;
@@ -198,11 +277,12 @@ public class MeleeCombatHelper {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = ContactType.ATTACK.getCategoryBits();
-        fixtureDef.filter.maskBits = ContactType.ENEMY.getCategoryBits();  // Make sure this is ENEMY not ATTACK
-
+        fixtureDef.filter.categoryBits = contactType.getCategoryBits();
+        fixtureDef.filter.maskBits = contactType.getMaskBits();
+        sensorBody.setActive(true);
         attackSensor = sensorBody.createFixture(fixtureDef);
-        attackSensor.setUserData(new BodyUserData(1, ContactType.ATTACK, sensorBody));
+        attackSensor.setUserData(new BodyUserData(1, contactType, sensorBody));
+        System.out.println("attack userdata: " + attackSensor.getUserData());
 
         shape.dispose();
     }
@@ -311,6 +391,7 @@ public class MeleeCombatHelper {
             Vector2 attackDirection = getDirectionVector(direction);
             createAttackSensor(playerPosition, attackDirection);
 
+
             // Reset cooldown
             attackCooldown = 0.5f;
 
@@ -366,6 +447,7 @@ public class MeleeCombatHelper {
 
 
     private void endAttack() {
+        worldStepCounter = 0;
         isAttacking = false;
         attackStateTime = 0f;
         currentAttackTimer = 0f;

@@ -167,6 +167,8 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     }
 
 
+
+
     @Override
     public OrthographicCamera getCamera() {
         return camera;

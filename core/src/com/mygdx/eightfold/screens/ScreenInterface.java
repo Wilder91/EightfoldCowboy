@@ -1,6 +1,8 @@
 package com.mygdx.eightfold.screens;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.player.Player;
@@ -110,4 +112,6 @@ public interface ScreenInterface {
     void addEnemy(Enemy enemy);
 
     void addEntity(GameEntity gameEntity);
+
+
 }

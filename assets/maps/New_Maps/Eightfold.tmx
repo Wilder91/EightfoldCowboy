@@ -29,7 +29,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="31" name="player" x="489.379" y="361.916" width="34" height="34"/>
+  <object id="31" name="player" x="777.728" y="517.446" width="34" height="34"/>
   <object id="37" name="pond" x="448.436" y="351.086">
    <polygon points="0,0 210.739,0 210.739,109.059 0,109.059"/>
   </object>
@@ -217,12 +217,12 @@
    </properties>
    <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
-  <object id="707" name="saint_small" type="enemies" x="357.438" y="333.225" width="34" height="34">
+  <object id="707" name="saint_small" type="enemies" x="789.991" y="477.333" width="34" height="34">
    <properties>
     <property name="class" value="enemies"/>
    </properties>
   </object>
-  <object id="708" name="saint_small" type="enemies" x="304.688" y="337.549" width="34" height="34">
+  <object id="708" name="saint_small" type="enemies" x="737.241" y="481.657" width="34" height="34">
    <properties>
     <property name="class" value="enemies"/>
    </properties>

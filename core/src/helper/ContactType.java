@@ -1,7 +1,7 @@
 package helper;
 
 public enum ContactType {
-    PLAYER(0x0001, 0x0002 | 0x0004 | 0x0010 | 0x0400), // Can collide with everything
+    PLAYER(0x0001, 0x0002 | 0x0004 | 0x0010 | 0x0400 | 0x10000), // Can collide with everything
     BISON(0x0002, 0xFFFF),
     BIRD(0x0004, 0xFFFF),
     TREE(0x0008, 0x0002 | 0x0004),
@@ -15,8 +15,9 @@ public enum ContactType {
     BUILDING(0x0800, 0),
     SQUIRREL(0x1000, 0xFFFF & ~0x0200),
     FENCE(0x2000, 0),
-    ATTACK(0x4000, 0),
-    ENEMY(0x8000, 0x4000),
+    ATTACK(0x4000, 0x8000),
+    ENEMY(0x8000, 0x4000 | 0x1),
+    ENEMYATTACK(0x10000, 0x0001 | 0x4000),
     ROCK(0x9000, 0xFFFF);
     private final short categoryBits;
     private final short maskBits;

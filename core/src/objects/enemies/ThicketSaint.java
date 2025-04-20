@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
+import helper.ContactType;
 import helper.EntityRenderer;
 import helper.EntityMovement;
 import helper.combat.MeleeCombatHelper;
@@ -44,11 +45,11 @@ public class ThicketSaint extends GameEntity {
     private FixtureDef sensorFixtureDef;
     private Fixture sensorFixture;
     private boolean isSensorSmall = false;
-    private float largeSensorRadius = 3.0f;
+    private float largeSensorRadius = 1.0f;
     private float smallSensorRadius = 1.5f;
     private State currentState = State.IDLE;
     private EnemyStateManager stateManager;
-    private float attackDuration = 0.5f; // Set this to match your attack animation length
+    private float attackDuration = 5f; // Set this to match your attack animation length
     private float attackTimer = 0;
     private boolean isAttacking = false;
 
@@ -76,7 +77,7 @@ public class ThicketSaint extends GameEntity {
         };
 
         this.idleHelper = new SimpleIdleHelper(gameAssets, "enemies-movement", this.entityName, 4, 1.5f);
-        this.meleeCombatHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", combatFrameCounts, 5, screenInterface.getWorld());
+        this.meleeCombatHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", combatFrameCounts, 5, screenInterface.getWorld(), .09f, ContactType.ENEMY, screenInterface);
         this.movement = new EntityMovement(this);
 
         // Initialize renderer directly without animator
@@ -99,7 +100,9 @@ public class ThicketSaint extends GameEntity {
 
     private void setupSensor(float radius) {
         this.sensorFixtureDef = new FixtureDef();
+
         sensorFixtureDef.isSensor = true;
+
         sensorShape = new CircleShape();
         sensorShape.setRadius(radius);
         sensorShape.setPosition(new Vector2(0.0f, 0)); // position relative to body center
@@ -275,8 +278,6 @@ public class ThicketSaint extends GameEntity {
                     break;
 
                 case ATTACKING:
-                    // Debug output to help track the issue
-                    System.out.println("ATTACK STATE - Last Direction: " + lastDirection);
 
                     meleeCombatHelper.setFacingRight(isFacingRight);
 
@@ -301,7 +302,7 @@ public class ThicketSaint extends GameEntity {
                     Sprite attackSprite = meleeCombatHelper.getSprite();
                     if (attackSprite != null && attackSprite.getTexture() != null) {
                         // Debug for sprite info
-                        System.out.println("Attack sprite texture: " + attackSprite.getTexture());
+                        //System.out.println("Attack sprite texture: " + attackSprite.getTexture());
                         sprite = attackSprite;
                     } else {
                         System.err.println("Attack sprite or texture is null");
