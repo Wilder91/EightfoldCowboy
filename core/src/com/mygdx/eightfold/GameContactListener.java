@@ -29,7 +29,7 @@ public class GameContactListener implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
 
-        System.out.println("begin contact");
+        //System.out.println("begin contact");
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
@@ -45,7 +45,7 @@ public class GameContactListener implements ContactListener {
         BodyUserData userDataA = (BodyUserData) fixtureA.getUserData();
         BodyUserData userDataB = (BodyUserData) fixtureB.getUserData();
 
-        System.out.println("Contact between: " + userDataA.getType() + " and " + userDataB.getType());
+        //System.out.println("Contact between: " + userDataA.getType() + " and " + userDataB.getType());
 
         // Handle each contact type with independent checks
         handleAttackContacts(userDataA, userDataB);
@@ -78,7 +78,7 @@ public class GameContactListener implements ContactListener {
                 fixtureA.getUserData() instanceof BodyUserData) {
 
             // Handle player sensor end contact
-            System.out.println("Player sensor ended contact");
+
         }
     }
 
@@ -240,7 +240,7 @@ public class GameContactListener implements ContactListener {
      */
     private void handleSpecialSensorCases(Fixture fixtureA, Fixture fixtureB) {
         // Handle ThicketSaint sensor contact
-        System.out.println("SPecial");
+
         if (fixtureA.getUserData() != null && "saintSensor".equals(fixtureA.getUserData())) {
             if (fixtureB.getUserData() instanceof BodyUserData) {
                 handleSensorContact((BodyUserData) fixtureB.getUserData(), fixtureA.getUserData());

@@ -57,6 +57,7 @@ public class Player extends GameEntity {
     private PlayerInputHelper inputHandler;
     private PlayerRenderer renderer;
     private PlayerMovementStateManager stateManager;
+    private ScreenInterface screenInterface;
 
 
 
@@ -69,6 +70,7 @@ public class Player extends GameEntity {
         this.width = width;
         this.height = height;
         this.stateManager = new PlayerMovementStateManager();
+        this.screenInterface = screenInterface;
         this.currentState = State.IDLE;
         this.speed = 2.5f;
         this.originalSpeed = speed;
@@ -250,7 +252,9 @@ public class Player extends GameEntity {
     }
 
     public void takeDamage(){
-        System.out.println("player hurt");
+        Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
+        sound.play(0.05f);
+        System.out.println("five damage!");
     }
     // Helper method to get the facing direction as a Vector2
     private Vector2 getFacingDirection() {

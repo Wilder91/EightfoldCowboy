@@ -19,7 +19,9 @@ import objects.enemies.ThicketSaint;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static helper.Constants.*;
 
@@ -47,6 +49,8 @@ public class MeleeCombatHelper {
     private ContactType enemyContactType;
     private ScreenInterface screenInterface;
     private int worldStepCounter = 0;
+    private Set<Integer> hitEntitiesForCurrentAttack = new HashSet<>();
+
     public MeleeCombatHelper(GameAssets gameAssets, String animalType, String animalName,
                              String weaponType, int[] attackFrameCounts, float attackDamage,
                              World world, float frameDuration, ContactType contactType, ContactType enemyContactType, ScreenInterface screenInterface) {  // Added frameDuration parameter
@@ -134,7 +138,6 @@ public class MeleeCombatHelper {
         // Update attack state
         if (isAttacking && attackSensor != null && attackSensor.getBody() != null) {
             // Get the attack sensor bounds
-
             PolygonShape sensorShape = (PolygonShape) attackSensor.getShape();
             Vector2 center = new Vector2();
             float[] vertices = new float[8]; // For a box, 4 vertices x 2 coords each
@@ -175,8 +178,20 @@ public class MeleeCombatHelper {
             if (foundFixtures.size > 0) {
                 for (Fixture woundedFixture : foundFixtures) {
                     BodyUserData userData = (BodyUserData)woundedFixture.getUserData();
-                    System.out.println("Directly applying damage to " + ((BodyUserData) woundedFixture.getUserData()).getType() + ": " + userData.getId());
-                    //ThicketSaint thicketSaint = ThicketSaintManager.getThicketSaint(((BodyUserData) woundedFixture.getUserData()).getId());
+
+                    // Check if this entity ID has already been hit in this attack
+                    if (hitEntitiesForCurrentAttack.contains(userData.getId())) {
+                        // Skip this entity, it's already been hit
+                        //System.out.println("Entity " + userData.getId() + " already hit, skipping");
+                        continue;
+                    }
+
+                    //System.out.println("Directly applying damage to " + userData.getType() + ": " + userData.getId());
+
+                    // Add this entity ID to the set of hit entities
+                    hitEntitiesForCurrentAttack.add(userData.getId());
+
+                    // Apply damage based on entity type
                     if(userData.getEntity() instanceof ThicketSaint){
                         ThicketSaint enemy = (ThicketSaint) userData.getEntity();
                         enemy.takeDamage();
@@ -185,15 +200,12 @@ public class MeleeCombatHelper {
                         player.takeDamage();
                     }
 
-
-
                     // Play hit sound
-                    Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
-                    sound.play(0.05f);
+
                 }
             }
 
-            System.out.println("Number of enemy fixtures found: " + foundFixtures.size);
+
         }
         if (isAttacking) {
 
@@ -295,7 +307,6 @@ public class MeleeCombatHelper {
         sensorBody.setActive(true);
         attackSensor = sensorBody.createFixture(fixtureDef);
         attackSensor.setUserData(new BodyUserData(1, contactType, sensorBody, animalName));
-        System.out.println("attack userdata: " + attackSensor.getUserData());
 
         shape.dispose();
     }
@@ -380,6 +391,9 @@ public class MeleeCombatHelper {
 
     // Update the startAttack method to create the sensor
     public boolean startAttack(String direction, Vector2 playerPosition) {
+
+        hitEntitiesForCurrentAttack.clear();
+
         if (!isAttacking) {
             isAttacking = true;
             attackStateTime = 0f;

@@ -1,5 +1,6 @@
 package objects.enemies;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -183,9 +184,12 @@ public class ThicketSaint extends GameEntity {
     public MeleeCombatHelper getCombatHelper(){
         return meleeCombatHelper;
     }
-
+    @Override
     public void takeDamage(){
-        System.out.println("OH NO");
+
+        Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
+        sound.play(0.05f);
+        System.out.println("Five Damage to " + entityName + id);
     }
 
     /**
@@ -290,12 +294,9 @@ public class ThicketSaint extends GameEntity {
                     if (!meleeCombatHelper.isAttacking()) {
                         Vector2 position = new Vector2(body.getPosition().x * PPM, body.getPosition().y * PPM);
 
-                        // Debug which animations are available
-                        System.out.println("Starting attack with direction: " + lastDirection);
-                        System.out.println("Current position: " + position);
 
                         boolean attackStarted = meleeCombatHelper.startAttack(lastDirection, position);
-                        System.out.println("Attack started: " + attackStarted);
+
                     }
 
                     // Update the melee combat helper

@@ -72,7 +72,7 @@ public class EntityFactory {
                         );
                         this.entity = thicketSaint;
                         screenInterface.addEntity(thicketSaint);
-                        System.out.println("Created ThicketSaint with ID: " + currentId);
+
 
                         ThicketSaintManager.addEnemy(thicketSaint);
                         break;
