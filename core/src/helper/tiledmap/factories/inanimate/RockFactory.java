@@ -96,7 +96,8 @@ public class RockFactory extends InanimateEntityFactory {
                 "rocks",
                 textureName,
                 gameAssets,
-                gameContactListener
+                gameContactListener,
+                100f
         );
 
         screenInterface.addRock(rock);

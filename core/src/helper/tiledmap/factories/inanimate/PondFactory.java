@@ -71,7 +71,8 @@ public class PondFactory extends InanimateEntityFactory {
                 pondType,
                 pondId,
                 gameAssets,
-                gameContactListener
+                gameContactListener,
+                100f
         );
 
         screenInterface.addPond(pond);

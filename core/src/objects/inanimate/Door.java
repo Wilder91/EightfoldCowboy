@@ -27,8 +27,8 @@ public class Door extends InanimateEntity  {
     private String name;
     private SaloonScreen saloonScreen;
 
-    public Door(float width, float height, Body body, ScreenInterface screen, int doorId, GameAssets gameAssets, GameContactListener gameContactListener, String doorName) {
-        super(width, height, body, screen, doorId, gameAssets, gameContactListener);
+    public Door(float width, float height, Body body, ScreenInterface screen, int doorId, GameAssets gameAssets, GameContactListener gameContactListener, String doorName, float hp) {
+        super(width, height, body, screen, doorId, gameAssets, gameContactListener, hp);
         this.doorId = doorId;
         this.gameAssets = gameAssets;
         this.screen = screen;

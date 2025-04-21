@@ -82,7 +82,8 @@ public class ChickenFactory {
                 body,
                 screenInterface,
                 gameAssets,
-                chickenName
+                chickenName,
+                100f
         );
         PolygonShape shape = new PolygonShape();
         float[] vertices = polygon.getVertices();

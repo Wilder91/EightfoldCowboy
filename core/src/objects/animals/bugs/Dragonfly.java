@@ -18,8 +18,8 @@ public class Dragonfly extends Bug {
     private StationaryObjectAnimator animator;
 
 
-    public Dragonfly(float width, float height, float x, float y, Body body, int dragonflyId, String dragonflyName, ScreenInterface screenInterface, GameAssets gameAssets) {
-        super(width, height, x, y, body, dragonflyName, screenInterface, gameAssets);
+    public Dragonfly(float width, float height, float x, float y, Body body, int dragonflyId, String dragonflyName, ScreenInterface screenInterface, GameAssets gameAssets, float hp) {
+        super(width, height, x, y, body, dragonflyName, screenInterface, gameAssets, hp);
         this.id = dragonflyId;
         this.dragonflyName = dragonflyName;
         this.stateTime = 0f;

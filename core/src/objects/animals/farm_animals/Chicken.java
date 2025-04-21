@@ -25,8 +25,8 @@ public class Chicken extends GameEntity {
     private float stateTime;
     private Vector2 originalPosition = new Vector2();
 
-    public Chicken(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, String chickenName) {
-        super(width, height, body, screenInterface, gameAssets);
+    public Chicken(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, String chickenName, float hp) {
+        super(width, height, body, screenInterface, gameAssets, hp);
         int[] frameCounts = {4, 4, 4};  // [up, down, horizontal]
         int idleFrameCount = 25;
         this.chickenWalkingHelper = new SimpleSpriteWalkingHelper(gameAssets, "farm_animal", "Chicken", frameCounts, false, 1f);

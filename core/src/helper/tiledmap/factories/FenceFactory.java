@@ -60,7 +60,8 @@ public class FenceFactory {
                 fenceName,
                 screenInterface,
                 gameAssets,
-                gameContactListener
+                gameContactListener,
+                100
         );
 
         // Add the fence to the screen

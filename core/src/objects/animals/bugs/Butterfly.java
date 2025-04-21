@@ -14,8 +14,8 @@ public class Butterfly extends Bug {
     private StationaryObjectAnimator animator;
     private GameAssets gameAssets;
 
-    public Butterfly(float width, float height, float x, float y, Body body, String butterflyName, ScreenInterface screenInterface, GameAssets gameAssets) {
-        super(width, height, x, y, body, butterflyName, screenInterface, gameAssets);
+    public Butterfly(float width, float height, float x, float y, Body body, String butterflyName, ScreenInterface screenInterface, GameAssets gameAssets, float hp) {
+        super(width, height, x, y, body, butterflyName, screenInterface, gameAssets, hp);
         this.butterflyName = butterflyName;
         this.gameAssets = gameAssets;
 

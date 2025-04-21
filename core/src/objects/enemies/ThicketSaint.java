@@ -53,17 +53,17 @@ public class ThicketSaint extends GameEntity {
     private float attackDuration = 5f; // Set this to match your attack animation length
     private float attackTimer = 0;
     private boolean isAttacking = false;
-
+    private float hp;
     public ThicketSaint(float width, float height, Body body, ScreenInterface screenInterface,
-                        GameAssets gameAssets, String entityType, String entityName) {
-        super(width, height, body, screenInterface, gameAssets);
+                        GameAssets gameAssets, String entityType, String entityName, float hp) {
+        super(width, height, body, screenInterface, gameAssets, hp);
         this.stateManager = new EnemyStateManager();
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
         this.entityName = "saint_small"; // Hard-code this to match the atlas
         this.entityType = entityType;
         this.screenInterface = screenInterface;
-
+        this.hp = hp;
         // Initialize the helpers with correct parameters
         int[] idleFrameCounts = {4};
         int[] walkingFrameCounts = {8, 8, 8};
@@ -189,7 +189,9 @@ public class ThicketSaint extends GameEntity {
 
         Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
         sound.play(0.05f);
-        System.out.println("Five Damage to " + entityName + id);
+        this.hp -= 5;
+        System.out.println("thicketsaint hp: " + hp);
+
     }
 
     /**

@@ -23,9 +23,10 @@ public class Squirrel extends GameEntity {
     private float stateTime;
     // Track original position and movement count
     private Vector2 originalPosition = new Vector2();
+    private float hp;
 
-    public Squirrel(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
-        super(width, height, body, screenInterface, gameAssets);
+    public Squirrel(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, float hp) {
+        super(width, height, body, screenInterface, gameAssets, hp);
         int idleFrameCount = 20;
         this.squirrelWalkingHelper = new HorizontalSpriteHelper(gameAssets, "wild-animal", "Squirrel", 4, true);
         this.squirrelIdleHelper = new SimpleIdleHelper(gameAssets, "wild-animal", "Squirrel", idleFrameCount, 0.3f);
@@ -33,6 +34,7 @@ public class Squirrel extends GameEntity {
         this.squirrelAnimator = new SquirrelAnimator(this, squirrelWalkingHelper, squirrelIdleHelper);
         this.squirrelMovement = new SquirrelMovement(this);
         this.sprite = squirrelIdleHelper.getSprite();
+        this.hp = hp;
         if (this.sprite == null) {
             this.sprite = new Sprite();
             System.err.println("Warning: Could not initialize squirrel sprite from idle helper");

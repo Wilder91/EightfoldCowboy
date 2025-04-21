@@ -25,8 +25,8 @@ public class Pond extends InanimateEntity {
     private GameAssets gameAssets;
 
     @SuppressWarnings("unchecked")
-    public Pond(float width, float height, Body body, ScreenInterface screenInterface, int pondType, int id, GameAssets gameAssets, GameContactListener gameContactListener) {
-        super(width, height, body, screenInterface, id, gameAssets, gameContactListener);
+    public Pond(float width, float height, Body body, ScreenInterface screenInterface, int pondType, int id, GameAssets gameAssets, GameContactListener gameContactListener, float hp) {
+        super(width, height, body, screenInterface, id, gameAssets, gameContactListener, hp);
         this.stateTime = 0f;
         this.pondType = pondType;
         this.gameAssets = gameAssets;

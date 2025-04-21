@@ -88,7 +88,8 @@ public class TreeFactory extends InanimateEntityFactory{
                 "trees",  // Pass the atlas path instead of the texture
                 textureName, // Pass the texture name
                 gameAssets,
-                gameContactListener
+                gameContactListener,
+                100f
         );
         screenInterface.addTree(tree);
     }

@@ -66,7 +66,8 @@ public class SquirrelFactory {
                 boundingRectangle.height,
                 body,
                 screenInterface,
-                gameAssets
+                gameAssets,
+                100f
         );
 
         // Set custom properties

@@ -74,7 +74,9 @@ public class BuildingFactory {
                 screenInterface,
                 buildingId,
                 gameAssets,
+                100f,
                 textureName
+
         );
 
         screenInterface.addBuilding(building);

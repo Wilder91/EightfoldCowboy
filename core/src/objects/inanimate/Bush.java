@@ -21,13 +21,15 @@ public class Bush extends InanimateEntity {
     private GameAssets gameAssets;
     private float depth;
     private String bushName;
+    private float hp;
 
-    public Bush(Body body, ScreenInterface screenInterface, String bushName, int id, GameAssets gameAssets, GameContactListener gameContactListener) {
-        super(0, 0, body, screenInterface, id, gameAssets, gameContactListener);
+    public Bush(Body body, ScreenInterface screenInterface, String bushName, int id, GameAssets gameAssets, GameContactListener gameContactListener, float hp) {
+        super(0, 0, body, screenInterface, id, gameAssets, gameContactListener, hp);
         this.stateTime = 0f;
         this.bushName = bushName;
         this.gameAssets = gameAssets;
         this.atlasPath = "atlases/eightfold/bushes.atlas";
+        this.hp = hp;
         initTexture();
         //setDepth(y);
     }

@@ -30,8 +30,8 @@ public class Bird extends GameEntity  {
     private GameAssets gameAssets;
     private ScreenInterface screenInterface;
 
-    public Bird(float width, float height, float x, float y, Body body, boolean isFacingRight, ScreenInterface screenInterface, int birdId, GameAssets gameAssets) {
-        super(0, 0, body, screenInterface, gameAssets);
+    public Bird(float width, float height, float x, float y, Body body, boolean isFacingRight, ScreenInterface screenInterface, int birdId, GameAssets gameAssets, float hp) {
+        super(0, 0, body, screenInterface, gameAssets, hp);
         float spriteX = x - width / 2;
         float spriteY = y - height / 2;
         this.speed = 15f;

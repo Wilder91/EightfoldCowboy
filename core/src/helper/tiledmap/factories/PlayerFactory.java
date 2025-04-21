@@ -53,7 +53,8 @@ public class PlayerFactory {
                 rectangle.height,
                 body,  // Pass the already created body
                 screenInterface,
-                gameAssets
+                gameAssets,
+                100f
         );
 
         // Now update the fixture user data with the player reference

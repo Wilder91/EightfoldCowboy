@@ -58,12 +58,13 @@ public class Player extends GameEntity {
     private PlayerRenderer renderer;
     private PlayerMovementStateManager stateManager;
     private ScreenInterface screenInterface;
+    private float hp;
 
 
 
-    public Player(float x, float y, float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
+    public Player(float x, float y, float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, Float hp) {
 
-        super(width, height, body, screenInterface, gameAssets);
+        super(width, height, body, screenInterface, gameAssets, hp);
         this.x = x;
         this.y = y;
         setDepth(y);
@@ -77,6 +78,7 @@ public class Player extends GameEntity {
         this.isFacingRight = true;
         this.body = body;
         this.gameAssets = gameAssets;
+        this.hp = hp;
         this.justSwitchedHelpers = false;
         this.rayHandler = new RayHandler(screenInterface.getWorld());
         int[] runningFrameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
@@ -254,7 +256,8 @@ public class Player extends GameEntity {
     public void takeDamage(){
         Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
         sound.play(0.05f);
-        System.out.println("five damage!");
+        this.hp -= 5;
+        System.out.println("player hp: " + hp);
     }
     // Helper method to get the facing direction as a Vector2
     private Vector2 getFacingDirection() {

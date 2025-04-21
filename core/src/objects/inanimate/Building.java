@@ -19,9 +19,9 @@ public class Building extends GameEntity {
     private Sprite buildingSprite; // Add a sprite field specific to Building
 
     public Building(float width, float height, float x, float y, Body body, boolean isCollidable,
-                    ScreenInterface screenInterface, int buildingId, GameAssets gameAssets,
+                    ScreenInterface screenInterface, int buildingId, GameAssets gameAssets, float hp,
                     String textureName) {
-        super(width, height, body, screenInterface, gameAssets);
+        super(width, height, body, screenInterface, gameAssets, hp);
 
         this.isCollidable = isCollidable;
         this.buildingId = buildingId;

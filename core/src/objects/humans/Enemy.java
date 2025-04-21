@@ -15,8 +15,10 @@ public class Enemy extends GameEntity {
     private SpriteIdleHelper idleHelper;
     private EntityAnimator animator;
     private EntityRenderer renderer;
-    public Enemy(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, String enemyType, String enemyName) {
-        super(width, height, body, screenInterface, gameAssets);
+    private float hp;
+    public Enemy(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, String enemyType, String enemyName, float hp) {
+        super(width, height, body, screenInterface, gameAssets, hp);
+
 
     }
 

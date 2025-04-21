@@ -23,8 +23,8 @@ public class Bug extends GameEntity {
     private String bugName;
     private GameAssets gameAssets;
 
-    public Bug(float width, float height, float x, float y, Body body, String bugName, ScreenInterface screenInterface, GameAssets gameAssets) {
-        super(width, height, body, screenInterface, gameAssets);
+    public Bug(float width, float height, float x, float y, Body body, String bugName, ScreenInterface screenInterface, GameAssets gameAssets, float hp) {
+        super(width, height, body, screenInterface, gameAssets, hp);
         this.stateTime = 0f;
         this.bugName = bugName;
         this.gameAssets = gameAssets;

@@ -55,7 +55,8 @@ public class BushFactory extends InanimateEntityFactory {
                 bushName,
                 bushId,
                 gameAssets,
-                gameContactListener
+                gameContactListener,
+                100f
 
         );
 

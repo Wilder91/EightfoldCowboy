@@ -17,8 +17,8 @@ public class Tree extends InanimateEntity {
 
     public Tree(Body body, ScreenInterface screenInterface, int id,
                 String atlasName, String textureName, GameAssets gameAssets,
-                GameContactListener gameContactListener) {
-        super(0, 0, body, screenInterface, id, gameAssets, gameContactListener);
+                GameContactListener gameContactListener, float hp) {
+        super(0, 0, body, screenInterface, id, gameAssets, gameContactListener, hp);
         this.textureName = textureName;
         this.animator = new StationaryObjectAnimator(this, atlasName, textureName, gameAssets);
         TextureRegion frame = animator.getCurrentFrame();

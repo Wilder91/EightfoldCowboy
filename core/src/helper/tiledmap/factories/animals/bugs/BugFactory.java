@@ -46,7 +46,8 @@ public class BugFactory {
                 bugName,
 
                 screenInterface,
-                gameAssets
+                gameAssets,
+                100f
         );
 
         screenInterface.addBug(bug);

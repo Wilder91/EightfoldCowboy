@@ -30,15 +30,17 @@ public class NPC extends GameEntity {
     private ConversationManager conversationManager;
     private EntityRenderer npcRenderer;
     private int conversationPhase;
+    private float hp;
 
 
-    public NPC(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, int npcId, String name) {
-        super(width, height, body, screenInterface, gameAssets);
+    public NPC(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, int npcId, String name, float hp) {
+        super(width, height, body, screenInterface, gameAssets, hp);
 
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
         this.id = npcId;
         this.name = name;
+        this.hp = hp;
         this.screenInterface = screenInterface;
         this.conversationManager = new ConversationManager(1, this, screenInterface.getPlayer(), screenInterface);
         this.characterName = getCharacterNameFromName(name);

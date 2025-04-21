@@ -20,14 +20,16 @@ public class Rock extends InanimateEntity {
     private StationaryObjectAnimator animator;
     private static final int DOT_SIZE = 6; // Size of the indicator dots
     private float stateTime;
+    private float hp;
 
     public Rock(Body body, ScreenInterface screenInterface, int id,
                 String atlasName, String textureName, GameAssets gameAssets,
-                GameContactListener gameContactListener) {
-        super(0, 0, body, screenInterface, id, gameAssets, gameContactListener);
+                GameContactListener gameContactListener, float hp) {
+        super(0, 0, body, screenInterface, id, gameAssets, gameContactListener, hp);
         this.stateTime = 0;
         this.atlasName = atlasName;
         this.textureName = textureName;
+        this.hp = hp;
         this.gameAssets = gameAssets;
 
         // Create the animator using StationaryObjectAnimator

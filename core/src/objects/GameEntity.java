@@ -17,8 +17,9 @@ public abstract class GameEntity {
     private float depth;
     // Flag to indicate if depth should automatically update with y position
     private boolean autoUpdateDepth = true;
+    private float hp;
 
-    public GameEntity(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets) {
+    public GameEntity(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, float hp) {
         this.x = body.getPosition().x;
         this.y = body.getPosition().y;
         this.depth = y; // Initialize depth to match y position
@@ -29,6 +30,7 @@ public abstract class GameEntity {
         this.velX = 0;
         this.velY = 0;
         this.speed = 0;
+        this.hp = hp;
     }
 
     // Comparator for Y-based depth sorting

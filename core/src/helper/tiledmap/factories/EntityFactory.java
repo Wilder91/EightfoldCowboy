@@ -68,7 +68,8 @@ public class EntityFactory {
                                 screenInterface,
                                 gameAssets,
                                 entityType,
-                                entityName
+                                entityName,
+                                100f
                         );
                         this.entity = thicketSaint;
                         screenInterface.addEntity(thicketSaint);

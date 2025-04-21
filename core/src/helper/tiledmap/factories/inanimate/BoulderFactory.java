@@ -55,7 +55,8 @@ public class BoulderFactory {
                 screenInterface,
                 boulderId,
                 gameAssets,
-                gameContactListener
+                gameContactListener,
+                100f
         );
         screenInterface.addBoulder(boulder);
     }

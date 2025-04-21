@@ -65,7 +65,8 @@ public class DoorFactory {
                 doorId,
                 gameAssets,
                 gameContactListener,
-                polygonName
+                polygonName,
+                100f
 
         );
 

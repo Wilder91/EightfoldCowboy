@@ -11,9 +11,9 @@ public abstract class InanimateEntity extends GameEntity {
     private final GameContactListener gameContactListener;
 
     public InanimateEntity(float width, float height, Body body, ScreenInterface screen, int id,
-                           GameAssets gameAssets, GameContactListener gameContactListener) {
+                           GameAssets gameAssets, GameContactListener gameContactListener, float hp) {
         // Call the parent constructor with the common parameters
-        super(width, height, body, screen, gameAssets);
+        super(width, height, body, screen, gameAssets, hp);
 
         // Set inanimate-specific fields
         this.id = id;

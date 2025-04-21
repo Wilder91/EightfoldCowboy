@@ -46,7 +46,8 @@ public class BirdFactory {
                 true,
                 screenInterface,
                 birdId,
-                gameAssets
+                gameAssets,
+                100f
         );
 
         screenInterface.addBird(bird);

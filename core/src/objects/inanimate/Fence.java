@@ -22,8 +22,8 @@ public class Fence extends InanimateEntity {
     private Rectangle bounds;
 
     public Fence(Body body, int fenceId, String fenceName,
-                 ScreenInterface screen, GameAssets gameAssets, GameContactListener gameContactListener) {
-        super(0, 0, body, screen, fenceId, gameAssets, gameContactListener);
+                 ScreenInterface screen, GameAssets gameAssets, GameContactListener gameContactListener, float hp) {
+        super(0, 0, body, screen, fenceId, gameAssets, gameContactListener, hp);
         this.body = body;
         this.fenceId = fenceId;
         this.fenceName = fenceName;
