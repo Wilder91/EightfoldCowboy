@@ -45,9 +45,11 @@ public class BuildingFactory {
                 boundingRectangle.width / 4 / PPM,
                 boundingRectangle.height / 4 / PPM
         );
+        String buildingName = getBuildingNameFromId(buildingId);
+        String textureName  = buildingName;
 
         Fixture buildingFixture = buildingBody.createFixture(shape, 0.0f);
-        buildingFixture.setUserData(new BodyUserData(buildingId, BUILDING, buildingBody));
+        buildingFixture.setUserData(new BodyUserData(buildingId, BUILDING, buildingBody, buildingName));
         shape.dispose();
 
         Filter filter = new Filter();
@@ -58,8 +60,7 @@ public class BuildingFactory {
         //System.out.println("building id: " + buildingId);
 
         // Determine texture names based on building ID
-        String buildingName = getBuildingNameFromId(buildingId);
-        String textureName  = buildingName;
+
 
 
         // Create building with top and bottom textures

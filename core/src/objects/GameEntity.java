@@ -149,4 +149,8 @@ public abstract class GameEntity {
     public void setCurrentState(Player.State newState) {
 
     }
+
+    public void takeDamage() {
+
+    }
 }

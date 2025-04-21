@@ -2,11 +2,16 @@ package helper;
 
 import com.badlogic.gdx.physics.box2d.*;
 import static helper.Constants.PPM;
-import static helper.ContactType.TREE;
 
 public class BodyHelperService {
 
+    // Original method
     public static Body createBody(float x, float y, float width, float height, boolean isStatic, World world, ContactType type, int id) {
+        return createBody(x, y, width, height, isStatic, world, type, id, null);
+    }
+
+    // New overloaded method with entity reference
+    public static Body createBody(float x, float y, float width, float height, boolean isStatic, World world, ContactType type, int id, Object entityRef) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = isStatic ? BodyDef.BodyType.StaticBody : BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x / PPM, y / PPM);
@@ -22,18 +27,17 @@ public class BodyHelperService {
         fixtureDef.friction = 0;
 
         Fixture fixture = body.createFixture(fixtureDef);
-        fixture.setUserData(new BodyUserData(id, type, body));
-        // Set user data for the fixture
-        //System.out.println("Fixture User Data: " + fixture.getUserData());
+
+        // Set user data with entity reference if provided
+        if (entityRef != null) {
+            fixture.setUserData(new BodyUserData(id, type, body, entityRef));
+        } else {
+            fixture.setUserData(new BodyUserData(id, type, body, "body"));
+        }
+
         shape.dispose();
 
-        body.setUserData( type + "," + id + ", " + body );
-//        System.out.println("Body User Data: " + body.getUserData());
-//        System.out.println("Fixture User Data: " + fixture.getUserData());
-        //System.out.println("BODY HELPER BODY: " + type + " " + body);
+        body.setUserData(type + "," + id + ", " + body);
         return body;
     }
-
-
-
 }

@@ -53,7 +53,7 @@ public class NpcFactory {
         fixtureDef.density = 1f;
         fixtureDef.friction = 0.5f;
 
-        npcBody.createFixture(fixtureDef).setUserData(new BodyUserData(npcId, NPC, npcBody));
+        npcBody.createFixture(fixtureDef).setUserData(new BodyUserData(npcId, NPC, npcBody, name));
 
         shape.dispose();
 

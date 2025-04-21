@@ -18,6 +18,7 @@ public class BugFactory {
     private final ScreenInterface screenInterface;
     private final GameAssets gameAssets;
     private static int bugCounter = 0;
+    private String bugName;
 
     public BugFactory(ScreenInterface screenInterface, GameAssets gameAssets) {
         this.screenInterface = screenInterface;
@@ -34,7 +35,7 @@ public class BugFactory {
         }
         float textureWidth = texture.getRegionWidth();
         float textureHeight = texture.getRegionHeight();
-
+        this.bugName = bugName;
         Rectangle bounds = polygonMapObject.getPolygon().getBoundingRectangle();
         Bug bug = new Bug(
                 textureWidth,
@@ -79,7 +80,7 @@ public class BugFactory {
         shape.setAsBox(bounds.width / 2 / PPM, bounds.height / 2 / PPM);
         Fixture fixture = body.createFixture(shape, 0.0f);
 
-        fixture.setUserData(new BodyUserData(bugId, ContactType.BUTTERFLY, body));
+        fixture.setUserData(new BodyUserData(bugId, ContactType.BUTTERFLY, body, bugName));
 
         Filter filter = new Filter();
         filter.categoryBits = ContactType.BUG.getCategoryBits();

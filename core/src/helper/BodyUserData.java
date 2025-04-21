@@ -10,14 +10,24 @@ public class BodyUserData {
     private ContactType type;
 
     private Body body;
+    private String name;
     private Bird bird;
+    private Object entity;
 
 
 
-    public BodyUserData(int id, ContactType type, Body body) {
+    public BodyUserData(int id, ContactType type, Body body, String name) {
         this.id = id;
         this.type = type;
         this.body = body;
+        this.name = name;
+    }
+
+    public BodyUserData(int id, ContactType type, Body body, Object entity) {
+        this.id = id;
+        this.type = type;
+        this.body = body;
+        this.entity = entity;
     }
 
     public int getId() {
@@ -32,6 +42,15 @@ public class BodyUserData {
 
     public Body getBody() {
         return body;
+    }
+
+    public Object getEntity() {
+        return entity;
+    }
+
+    public void setEntity(Object entity){
+        this.entity = entity;
+
     }
 
     @Override

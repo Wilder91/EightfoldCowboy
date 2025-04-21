@@ -92,7 +92,7 @@ public class FenceFactory {
         shape.set(worldVertices);
         Fixture fixture = body.createFixture(shape, 0.0f);
 
-        fixture.setUserData(new BodyUserData(fenceId, ContactType.FENCE, body));
+        fixture.setUserData(new BodyUserData(fenceId, ContactType.FENCE, body, "fence"));
 
         Filter filter = new Filter();
         filter.categoryBits = ContactType.FENCE.getCategoryBits();

@@ -100,7 +100,7 @@ public class ChickenFactory {
         // You might need to add this method to your Chicken class
         Fixture chickenFixture = body.createFixture(shape, 0.0f);
 
-        chickenFixture.setUserData(new BodyUserData(chickenId, CHICKEN, body));
+        chickenFixture.setUserData(new BodyUserData(chickenId, CHICKEN, body, chickenName));
 
         Filter filter = new Filter();
 

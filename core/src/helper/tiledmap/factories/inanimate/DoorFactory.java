@@ -49,7 +49,7 @@ public class DoorFactory {
         );
 
         Fixture doorFixture = doorBody.createFixture(shape, 0.0f);
-        doorFixture.setUserData(new BodyUserData(doorId, DOOR, doorBody));
+        doorFixture.setUserData(new BodyUserData(doorId, DOOR, doorBody, polygonName));
         shape.dispose();
 
         Filter filter = new Filter();

@@ -10,10 +10,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
+import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import helper.ContactType;
+import helper.EntityManagers.ThicketSaintManager;
+import objects.enemies.ThicketSaint;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,11 +44,12 @@ public class MeleeCombatHelper {
     private World world;
     private String lastDirection = "";
     private ContactType contactType;
+    private ContactType enemyContactType;
     private ScreenInterface screenInterface;
     private int worldStepCounter = 0;
     public MeleeCombatHelper(GameAssets gameAssets, String animalType, String animalName,
                              String weaponType, int[] attackFrameCounts, float attackDamage,
-                             World world, float frameDuration, ContactType contactType, ScreenInterface screenInterface) {  // Added frameDuration parameter
+                             World world, float frameDuration, ContactType contactType, ContactType enemyContactType, ScreenInterface screenInterface) {  // Added frameDuration parameter
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.animalName = animalName;
@@ -59,6 +64,7 @@ public class MeleeCombatHelper {
         this.world = world;
         this.weaponType = weaponType;
         this.contactType = contactType;
+        this.enemyContactType = enemyContactType;
         this.screenInterface = screenInterface;
         // Pass frameDuration to the loadAttackAnimations method
         loadAttackAnimations(frameDuration);
@@ -125,7 +131,6 @@ public class MeleeCombatHelper {
         if (attackCooldown > 0) {
             attackCooldown -= delta;
         }
-
         // Update attack state
         if (isAttacking && attackSensor != null && attackSensor.getBody() != null) {
             // Get the attack sensor bounds
@@ -142,7 +147,7 @@ public class MeleeCombatHelper {
             float sensorWidth = 0.5f; // Approximate - adjust based on your actual sizes
             float sensorHeight = 0.5f;
 
-            System.out.println("Attack sensor position: " + sensorPos.x + ", " + sensorPos.y);
+            //System.out.println("Attack sensor position: " + sensorPos.x + ", " + sensorPos.y);
 
             // Create a simple AABB query
             final Array<Fixture> foundFixtures = new Array<>();
@@ -152,9 +157,9 @@ public class MeleeCombatHelper {
                         public boolean reportFixture(Fixture fixture) {
                             if (fixture.getUserData() instanceof BodyUserData) {
                                 BodyUserData userData = (BodyUserData) fixture.getUserData();
-                                if (userData.getType() == ContactType.ENEMY) {
+                                if (userData.getType() == enemyContactType) {
                                     foundFixtures.add(fixture);
-                                    System.out.println("Found enemy in query: " + userData.getId());
+                                    //System.out.println("Found enemy in query: " + userData.getId());
                                     return true;
                                 }
                             }
@@ -166,13 +171,21 @@ public class MeleeCombatHelper {
                     sensorPos.x + sensorWidth,
                     sensorPos.y + sensorHeight
             );
-            if (foundFixtures.size > 0) {
-                for (Fixture enemyFixture : foundFixtures) {
-                    BodyUserData userData = (BodyUserData)enemyFixture.getUserData();
-                    System.out.println("Directly applying damage to " + enemyFixture.getType() + ": " + userData.getId());
 
-                    // Apply damage logic here
-                    // ...
+            if (foundFixtures.size > 0) {
+                for (Fixture woundedFixture : foundFixtures) {
+                    BodyUserData userData = (BodyUserData)woundedFixture.getUserData();
+                    System.out.println("Directly applying damage to " + ((BodyUserData) woundedFixture.getUserData()).getType() + ": " + userData.getId());
+                    //ThicketSaint thicketSaint = ThicketSaintManager.getThicketSaint(((BodyUserData) woundedFixture.getUserData()).getId());
+                    if(userData.getEntity() instanceof ThicketSaint){
+                        ThicketSaint enemy = (ThicketSaint) userData.getEntity();
+                        enemy.takeDamage();
+                    } else if (userData.getEntity() instanceof Player){
+                        Player player = (Player) userData.getEntity();
+                        player.takeDamage();
+                    }
+
+
 
                     // Play hit sound
                     Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
@@ -185,7 +198,7 @@ public class MeleeCombatHelper {
         if (isAttacking) {
 
             worldStepCounter++;
-            System.out.println("Attack sensor exists for " + worldStepCounter + " world steps");
+            //System.out.println("Attack sensor exists for " + worldStepCounter + " world steps");
             attackStateTime += delta;
             currentAttackTimer += delta;
 
@@ -281,7 +294,7 @@ public class MeleeCombatHelper {
         fixtureDef.filter.maskBits = contactType.getMaskBits();
         sensorBody.setActive(true);
         attackSensor = sensorBody.createFixture(fixtureDef);
-        attackSensor.setUserData(new BodyUserData(1, contactType, sensorBody));
+        attackSensor.setUserData(new BodyUserData(1, contactType, sensorBody, animalName));
         System.out.println("attack userdata: " + attackSensor.getUserData());
 
         shape.dispose();
@@ -393,7 +406,7 @@ public class MeleeCombatHelper {
 
 
             // Reset cooldown
-            attackCooldown = 0.5f;
+            attackCooldown = 1f;
 
             return true;
         }

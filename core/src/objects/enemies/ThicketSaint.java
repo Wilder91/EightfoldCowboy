@@ -45,8 +45,8 @@ public class ThicketSaint extends GameEntity {
     private FixtureDef sensorFixtureDef;
     private Fixture sensorFixture;
     private boolean isSensorSmall = false;
-    private float largeSensorRadius = 1.0f;
-    private float smallSensorRadius = 1.5f;
+    private float largeSensorRadius = .5f;
+    private float smallSensorRadius = .5f;
     private State currentState = State.IDLE;
     private EnemyStateManager stateManager;
     private float attackDuration = 5f; // Set this to match your attack animation length
@@ -77,7 +77,8 @@ public class ThicketSaint extends GameEntity {
         };
 
         this.idleHelper = new SimpleIdleHelper(gameAssets, "enemies-movement", this.entityName, 4, 1.5f);
-        this.meleeCombatHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", combatFrameCounts, 5, screenInterface.getWorld(), .09f, ContactType.ENEMY, screenInterface);
+        this.meleeCombatHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", combatFrameCounts, 5, screenInterface.getWorld(),
+                .09f, ContactType.ENEMY, ContactType.PLAYER, screenInterface);
         this.movement = new EntityMovement(this);
 
         // Initialize renderer directly without animator
@@ -181,6 +182,10 @@ public class ThicketSaint extends GameEntity {
 
     public MeleeCombatHelper getCombatHelper(){
         return meleeCombatHelper;
+    }
+
+    public void takeDamage(){
+        System.out.println("OH NO");
     }
 
     /**

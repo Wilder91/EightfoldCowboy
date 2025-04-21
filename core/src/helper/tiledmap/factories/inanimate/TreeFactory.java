@@ -64,7 +64,7 @@ public class TreeFactory extends InanimateEntityFactory{
 //        if(textureName.equals("aspen_stump")){
 //            treeFixture.setUserData(new BodyUserData(treeId, ENEMY, treeBody));
 //        } else {
-            treeFixture.setUserData(new BodyUserData(treeId, TREE, treeBody));
+            treeFixture.setUserData(new BodyUserData(treeId, TREE, treeBody, treeName));
  //       }
 
 

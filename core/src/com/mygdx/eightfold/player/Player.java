@@ -83,7 +83,7 @@ public class Player extends GameEntity {
         this.weaponType = "sword";
         this.runningHelper = new SpriteWalkingHelper(gameAssets, "character", "character", runningFrameCounts, false);
         this.idleHelper = new SpriteIdleHelper(gameAssets, "character", "character", idleFrameCounts, 0f);
-        this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", weaponType, meleeFrameCounts, 10f, screenInterface.getWorld(), .02f, ContactType.ATTACK, screenInterface);
+        this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", weaponType, meleeFrameCounts, 10f, screenInterface.getWorld(), .02f, ContactType.ATTACK, ContactType.ENEMY, screenInterface);
         this.inputHandler = new PlayerInputHelper(this);
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
@@ -247,6 +247,10 @@ public class Player extends GameEntity {
         if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
             // Toggle between large and small sensor
         }
+    }
+
+    public void takeDamage(){
+        System.out.println("player hurt");
     }
     // Helper method to get the facing direction as a Vector2
     private Vector2 getFacingDirection() {

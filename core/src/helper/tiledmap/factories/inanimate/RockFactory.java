@@ -78,7 +78,7 @@ public class RockFactory extends InanimateEntityFactory {
         );
 
         Fixture rockFixture = rockBody.createFixture(shape, 0.0f);
-        rockFixture.setUserData(new BodyUserData(rockId, ROCK, rockBody));
+        rockFixture.setUserData(new BodyUserData(rockId, ROCK, rockBody, textureName));
 
         // Set up collision filtering
         Filter filter = new Filter();

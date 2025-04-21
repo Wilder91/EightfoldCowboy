@@ -2,14 +2,12 @@ package helper.tiledmap.factories;
 
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
+import helper.EntityManagers.ThicketSaintManager;
 import objects.enemies.ThicketSaint;
 
 import static helper.Constants.PPM;
@@ -20,6 +18,7 @@ public class EntityFactory {
     private GameAssets gameAssets;
     private GameContactListener gameContactListener;
     private static int enemyCounter = 0;
+    private Object entity;
 
     public EntityFactory(ScreenInterface screenInterface, GameAssets gameAssets, GameContactListener gameContactListener) {
         this.screenInterface = screenInterface;
@@ -51,10 +50,11 @@ public class EntityFactory {
         fixtureDef.density = .5f;     // Lower density makes it heavier
         fixtureDef.friction = 0.5f;     // Higher friction prevents sliding
         fixtureDef.restitution = 0.0f;  // No bounce
+
         // Use the enemyCounter to assign unique IDs
         int currentId = enemyCounter++;
 
-        entityBody.createFixture(fixtureDef).setUserData(new BodyUserData(currentId, ENEMY, entityBody));
+        Fixture fixture = entityBody.createFixture(fixtureDef);
         shape.dispose();
 
         switch(entityType) {
@@ -70,11 +70,16 @@ public class EntityFactory {
                                 entityType,
                                 entityName
                         );
+                        this.entity = thicketSaint;
                         screenInterface.addEntity(thicketSaint);
                         System.out.println("Created ThicketSaint with ID: " + currentId);
+
+                        ThicketSaintManager.addEnemy(thicketSaint);
                         break;
                 }
-                break;
+                fixture.setUserData(new BodyUserData(currentId, ENEMY, entityBody, entity));
         }
+
     }
+
 }

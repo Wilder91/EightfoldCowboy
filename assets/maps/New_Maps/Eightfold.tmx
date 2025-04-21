@@ -29,7 +29,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="31" name="player" x="777.728" y="517.446" width="34" height="34"/>
+  <object id="31" name="player" x="777.728" y="537.435" width="34" height="34"/>
   <object id="37" name="pond" x="448.436" y="351.086">
    <polygon points="0,0 210.739,0 210.739,109.059 0,109.059"/>
   </object>

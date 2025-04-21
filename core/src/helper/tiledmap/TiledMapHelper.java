@@ -23,6 +23,7 @@ import helper.BodyHelperService;
 import helper.ContactType;
 import helper.tiledmap.factories.EntityFactory;
 import helper.tiledmap.factories.FenceFactory;
+import helper.tiledmap.factories.PlayerFactory;
 import helper.tiledmap.factories.animals.ChickenFactory;
 import helper.tiledmap.factories.animals.SquirrelFactory;
 import helper.tiledmap.factories.animals.bugs.BugFactory;
@@ -147,26 +148,9 @@ public class TiledMapHelper {
                     float bodyWidth = rectangle.width /3.5f  ;
                     float bodyHeight = rectangle.height / 1.4f;
                     int playerId = 1;
-                    Body body = BodyHelperService.createBody(
-                            centerX,
-                            centerY,
-                            bodyWidth,
-                            bodyHeight,
-                            false,
-                            screenInterface.getWorld(),
-                            ContactType.PLAYER,
-                            playerId
-                    );
+                    PlayerFactory playerFactory = new PlayerFactory(screenInterface, gameAssets);
+                    playerFactory.createPlayer((RectangleMapObject) mapObject);
 
-                    screenInterface.setPlayer(new Player(
-                            centerX * PPM,
-                            centerY * PPM,
-                            rectangle.width,
-                            rectangle.height,
-                            body,
-                            screenInterface,
-                            gameAssets
-                    ));
 
 
                 }
