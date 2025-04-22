@@ -7,19 +7,19 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
 import helper.EntityAnimator;
 import helper.EntityRenderer;
+import helper.SimpleAnimator;
 import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.movement.SimpleIdleHelper;
 import helper.movement.SimpleSpriteWalkingHelper;
 
-import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
 
 public class Chicken extends GameEntity {
-    private SimpleSpriteWalkingHelper chickenWalkingHelper;
-    private SimpleIdleHelper chickenIdleHelper;
-    private EntityRenderer chickenRenderer;
-    private ChickenMovement chickenMovement;
+    private SimpleSpriteWalkingHelper walkingHelper;
+    private SimpleIdleHelper idleHelper;
+    private EntityRenderer renderer;
+    private ChickenMovement movement;
     private EntityAnimator animator;
     private Sprite sprite;
     private float stateTime;
@@ -29,13 +29,13 @@ public class Chicken extends GameEntity {
         super(width, height, body, screenInterface, gameAssets, hp);
         int[] frameCounts = {4, 4, 4};  // [up, down, horizontal]
         int idleFrameCount = 25;
-        this.chickenWalkingHelper = new SimpleSpriteWalkingHelper(gameAssets, "farm_animal", "Chicken", frameCounts, false, 1f);
-        this.chickenIdleHelper = new SimpleIdleHelper(gameAssets, "farm_animal", "Chicken", idleFrameCount, 0.4f);
-        this.chickenRenderer = new EntityRenderer(this);
-        this.chickenMovement = new ChickenMovement(this);
-        this.animator = new ChickenAnimator(this, chickenWalkingHelper, chickenIdleHelper);
+        this.walkingHelper = new SimpleSpriteWalkingHelper(gameAssets, "farm_animal", "Chicken", frameCounts, false, 1f);
+        this.idleHelper = new SimpleIdleHelper(gameAssets, "farm_animal", "Chicken", idleFrameCount, 0.4f);
+        this.renderer = new EntityRenderer(this);
+        this.movement = new ChickenMovement(this);
+        this.animator = new SimpleAnimator(this, walkingHelper, idleHelper);
         // Initialize sprite
-        this.sprite = chickenIdleHelper.getSprite();
+        this.sprite = idleHelper.getSprite();
         if (this.sprite == null) {
             this.sprite = new Sprite();
             System.err.println("Warning: Could not initialize chicken sprite from idle helper");
@@ -61,16 +61,16 @@ public class Chicken extends GameEntity {
         resetDepthToY();
 
         // First update the movement
-        chickenMovement.update(delta);
+        movement.update(delta);
 
         // Then update animation - this sets the current sprite
 
         sprite = animator.updateAnimation(delta);
         // Finally set the updated sprite on the renderer
-        chickenRenderer.setMainSprite(sprite);
+        renderer.setMainSprite(sprite);
 
         // Let the renderer do any additional updates it needs
-        chickenRenderer.update(delta);
+        renderer.update(delta);
 
     }
 
@@ -78,27 +78,27 @@ public class Chicken extends GameEntity {
     @Override
     public void render(SpriteBatch batch) {
 
-        chickenRenderer.render(batch);
+        renderer.render(batch);
     }
 
 
     public void setChickenSpeed(float speed) {
-        chickenMovement.setChickenSpeed(speed);
+        movement.setChickenSpeed(speed);
     }
     void setMovementDuration(float duration) {
-        chickenMovement.setMovementDuration(duration);
+        movement.setMovementDuration(duration);
     }
 
     public void setRestDuration(float duration) {
-        chickenMovement.setRestDuration(duration);
+        movement.setRestDuration(duration);
     }
 
     public int getMoveCount() {
-        return chickenMovement.getMoveCount();
+        return movement.getMoveCount();
     }
 
     public boolean isReturningToOrigin() {
-        return chickenMovement.isReturningToOrigin();
+        return movement.isReturningToOrigin();
     }
 
 }

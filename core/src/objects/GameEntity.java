@@ -9,6 +9,9 @@ import com.mygdx.eightfold.screens.ScreenInterface;
 import java.util.Comparator;
 
 public abstract class GameEntity {
+    public enum State{
+
+    }
     protected float x, y, velX, velY, speed;
     protected float width, height;
     protected Body body;

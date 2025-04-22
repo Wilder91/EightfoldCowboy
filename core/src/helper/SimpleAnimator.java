@@ -1,18 +1,18 @@
-package objects.animals.farm_animals;
+package helper;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import helper.EntityAnimator;
 import helper.movement.SimpleIdleHelper;
 import helper.movement.SimpleSpriteWalkingHelper;
+import objects.GameEntity;
 
-public class ChickenAnimator extends EntityAnimator {
+public class SimpleAnimator extends EntityAnimator {
     private SimpleSpriteWalkingHelper walkingHelper;
     private SimpleIdleHelper idleHelper;
-    public ChickenAnimator(Chicken chicken, SimpleSpriteWalkingHelper chickenWalkingHelper, SimpleIdleHelper chickenIdleHelper) {
-        super(chicken);
-        this.walkingHelper = chickenWalkingHelper;
-        this.idleHelper = chickenIdleHelper;
+    public SimpleAnimator(GameEntity entity, SimpleSpriteWalkingHelper walkingHelper, SimpleIdleHelper idleHelper) {
+        super(entity);
+        this.walkingHelper = walkingHelper;
+        this.idleHelper = idleHelper;
     }
     public Sprite updateAnimation(float delta) {
         Vector2 velocity = entity.getBody().getLinearVelocity();

@@ -16,7 +16,7 @@
         },
         "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles.tsx": {
             "dynamicWrapping": true,
-            "scaleInDock": 1,
+            "scaleInDock": 2.1869,
             "scaleInEditor": 1
         },
         "/Users/michaelwilder/Desktop/Eightfold/assets/maps/Bison_Horizontal_Walk_3.tsx": {
@@ -41,11 +41,11 @@
                 4,
                 2
             ],
-            "scale": 1.97,
-            "selectedLayer": 2,
+            "scale": 0.7004,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 553.0456852791878,
-                "y": 390.8629441624365
+                "x": 434.7515705311251,
+                "y": 368.3609366076528
             }
         },
         "Eightfold_Iso.tmx": {
@@ -103,7 +103,9 @@
             "scaleInEditor": 1
         },
         "fences.tsx": {
-            "dynamicWrapping": false
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "large_rock.tsx": {
             "dynamicWrapping": false,
@@ -165,32 +167,22 @@
     "map.lastUsedFormat": "tmx",
     "openFiles": [
         "Eightfold.tmx",
-        "Rocks.tsx",
-        "large_rock.tsx",
-        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles.tsx",
-        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx",
-        "shop.tsx",
-        "pond.tsx",
-        "aspen.tsx",
-        "barn.tsx",
-        "aspen_1.tsx",
-        "aspen_stump.tsx",
-        "river.tsx"
+        "fences.tsx"
     ],
     "project": "Eightfold.tiled-project",
     "recentFiles": [
+        "fences.tsx",
+        "Eightfold.tmx",
         "river export.tsx",
         "WATER.tsx",
         "river_stuff.tsx",
         "water_tiles.tsx",
-        "Eightfold.tmx",
         "Rocks.tsx",
         "large_rock.tsx",
         "aspen.tsx",
         "pond.tsx",
         "shop.tsx",
-        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx",
-        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles.tsx"
+        "/Users/michaelwilder/Desktop/Eightfold/assets/grass/Grass Tiles Vertical.tsx"
     ],
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",

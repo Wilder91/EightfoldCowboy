@@ -224,7 +224,7 @@ public class Player extends GameEntity {
 
     public void createBody(World world, Door door) {
         this.body = BodyHelperService.createBody(
-                x, y, width, height, false, world, ContactType.PLAYER, 1);
+                x, y, width , height, false, world, ContactType.PLAYER, 1);
     }
 
     public void screenChange(World world, Door door) {

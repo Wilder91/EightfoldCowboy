@@ -49,6 +49,7 @@ public class MeleeCombatHelper {
     private ContactType enemyContactType;
     private ScreenInterface screenInterface;
     private int worldStepCounter = 0;
+    private int frameCounter = 0;
     private Set<Integer> hitEntitiesForCurrentAttack = new HashSet<>();
 
     public MeleeCombatHelper(GameAssets gameAssets, String animalType, String animalName,
@@ -83,6 +84,7 @@ public class MeleeCombatHelper {
     }
 
     public void loadAttackAnimations(float frameDuration) {
+        frameCounter += 1;
         String atlasPath = "atlases/eightfold/" + animalType + "-movement.atlas";
         // Populate the animations map with all available attack animations
         attackAnimations.put("attackUp", createAnimation(animalName + "_up_" + weaponType,
@@ -115,11 +117,12 @@ public class MeleeCombatHelper {
             } else {
                 System.out.println("Attack region " + regionNamePrefix + "_" + i + " not found!");
             }
+            if (frames.size == 0 && attackFrameCounts[frameCounter] != 0) {
+                System.err.println("WARNING: No frames found for animation: " + regionNamePrefix);
+            }
         }
 
-        if (frames.size == 0) {
-            System.err.println("WARNING: No frames found for animation: " + regionNamePrefix);
-        }
+
 
         return new Animation<>(frameDuration, frames, Animation.PlayMode.NORMAL);
     }

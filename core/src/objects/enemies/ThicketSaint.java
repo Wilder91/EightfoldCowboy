@@ -18,6 +18,7 @@ import helper.movement.SimpleIdleHelper;
 import helper.movement.SimpleSpriteWalkingHelper;
 import helper.state.EnemyStateManager;
 import objects.GameEntity;
+import helper.SimpleAnimator;
 
 import static helper.Constants.PPM;
 
@@ -33,6 +34,7 @@ public class ThicketSaint extends GameEntity {
     private SimpleIdleHelper idleHelper;
     private SimpleSpriteWalkingHelper walkingHelper;
     private MeleeCombatHelper meleeCombatHelper;
+    private SimpleAnimator animator;
     private String lastDirection = "idleDown";
     private boolean isFacingRight = true;
     private int id;
@@ -65,10 +67,9 @@ public class ThicketSaint extends GameEntity {
         this.screenInterface = screenInterface;
         this.hp = hp;
         // Initialize the helpers with correct parameters
-        int[] idleFrameCounts = {4};
+        int idleFrameCounts = 4;
         int[] walkingFrameCounts = {8, 8, 8};
         int[] combatFrameCounts = {4, 4, 4, 0, 0};
-
         // Create a custom subclass of SpriteWalkingHelper to override the problematic method
         this.walkingHelper = new SimpleSpriteWalkingHelper(gameAssets, "enemies", this.entityName, walkingFrameCounts, true, .2f) {
             @Override
@@ -77,7 +78,7 @@ public class ThicketSaint extends GameEntity {
             }
         };
 
-        this.idleHelper = new SimpleIdleHelper(gameAssets, "enemies-movement", this.entityName, 4, 1.5f);
+        this.idleHelper = new SimpleIdleHelper(gameAssets, "enemies-movement", this.entityName, idleFrameCounts, 1.5f);
         this.meleeCombatHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", combatFrameCounts, 5, screenInterface.getWorld(),
                 .09f, ContactType.ENEMY, ContactType.PLAYER, screenInterface);
         this.movement = new EntityMovement(this);
@@ -94,7 +95,7 @@ public class ThicketSaint extends GameEntity {
         this.renderer.setMainSprite(sprite);
 
         // Initialize state manager with default state
-        stateManager.setState("IDLE");
+        //stateManager.setState("IDLE");
 
         // Setup sensor
         setupSensor(largeSensorRadius);
@@ -145,21 +146,6 @@ public class ThicketSaint extends GameEntity {
         return this.entityName;
     }
 
-    public void toggleSensor() {
-        // Remove the old sensor fixture
-        for (com.badlogic.gdx.physics.box2d.Fixture fixture : body.getFixtureList()) {
-            if ("playerSensor".equals(fixture.getUserData())) {
-                body.destroyFixture(fixture);
-                System.out.println("Removed old sensor fixture");
-                break;
-            }
-        }
-        isSensorSmall = !isSensorSmall;
-        // Create a new sensor with the updated radius
-        float newRadius = isSensorSmall ? smallSensorRadius : largeSensorRadius;
-        setupSensor(newRadius);
-        System.out.println("Sensor radius changed to: " + newRadius);
-    }
 
     /**
      * Sets the current state of the entity
@@ -168,7 +154,7 @@ public class ThicketSaint extends GameEntity {
     public void setState(State state) {
         if (this.currentState != state) {
             this.currentState = state;
-            stateManager.setState(state.toString());
+            //stateManager.setState(state.toString());
 
             // Reset attack timer when entering attack state
             if (state == State.ATTACKING) {
@@ -205,10 +191,6 @@ public class ThicketSaint extends GameEntity {
     private void updateState(float delta) {
         // If currently attacking, don't change state until attack is complete
         if (currentState == State.ATTACKING) {
-            return;
-        }
-
-        if (currentState == State.ATTACKING) {
             attackTimer += delta; // You'll need to pass delta to this method
 
             if (attackTimer >= attackDuration) {
@@ -219,7 +201,7 @@ public class ThicketSaint extends GameEntity {
                 return; // Skip the rest of the method while attacking
             }
         }
-
+        //animator.updateAnimation(delta);
         // Existing code for determining IDLE or RUNNING states
         float vx = body.getLinearVelocity().x;
         float vy = body.getLinearVelocity().y;
@@ -317,7 +299,6 @@ public class ThicketSaint extends GameEntity {
                         // Fallback to idle sprite if attack sprite is null
                         setState(State.IDLE);
                     }
-
                     // Return to IDLE if attack finished
                     if (!meleeCombatHelper.isAttacking()) {
                         setState(State.IDLE);
