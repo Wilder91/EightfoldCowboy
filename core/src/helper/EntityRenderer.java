@@ -2,19 +2,27 @@ package helper;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import helper.combat.MeleeCombatHelper;
 import objects.GameEntity;
 
 public class EntityRenderer {
     protected GameEntity entity;
-    protected Sprite mainSprite;
+    protected Sprite sprite;
+    protected MeleeCombatHelper meleeCombatHelper;
 
     public EntityRenderer(GameEntity entity) {
         this.entity = entity;
+        // This constructor is missing meleeCombatHelper initialization
+    }
+
+    public EntityRenderer(GameEntity entity, MeleeCombatHelper meleeCombatHelper) {
+        this.entity = entity;
+        this.meleeCombatHelper = meleeCombatHelper;
         // The mainSprite might be null initially and set later
     }
 
     public void setMainSprite(Sprite sprite) {
-        this.mainSprite = sprite;
+        this.sprite = sprite;
     }
 
     public void update(float delta) {
@@ -23,17 +31,24 @@ public class EntityRenderer {
     }
 
     public void render(SpriteBatch batch) {
-        if (mainSprite == null) {
-            System.out.println("WARNING: mainSprite is null for entity at " + entity.getX() + ", " + entity.getY());
-            return; // Skip rendering if no sprite is set
+        if (sprite == null) {
+            System.err.println("Warning: Player sprite is null in rendering component");
+            return; // Skip rendering if sprite is null
         }
-        // First position the sprite
-        mainSprite.setPosition(
-                entity.getX() - mainSprite.getWidth() / 2,
-                entity.getY() - mainSprite.getHeight() / 2
-        );
 
-        // Then draw it at the new position
-        mainSprite.draw(batch);
+        if (meleeCombatHelper != null && meleeCombatHelper.isAttacking()) {
+            // Render attack animation
+            Sprite attackSprite = meleeCombatHelper.getSprite();
+            if (attackSprite != null) {
+                attackSprite.draw(batch);
+            }
+        } else {
+            // Render normal sprite
+            sprite.setPosition(
+                    entity.getX() - sprite.getWidth() / 2,
+                    entity.getY() - sprite.getHeight() / 2
+            );
+            sprite.draw(batch);
+        }
     }
 }

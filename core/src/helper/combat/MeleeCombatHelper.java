@@ -395,6 +395,8 @@ public class MeleeCombatHelper {
     // Update the startAttack method to create the sensor
     public boolean startAttack(String direction, Vector2 playerPosition) {
 
+
+
         hitEntitiesForCurrentAttack.clear();
 
         if (!isAttacking) {

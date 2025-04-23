@@ -143,4 +143,8 @@ public class SimpleIdleHelper {
     public float getStateTime() {
         return stateTime;
     }
+
+    public void setDirection(String lastDirection) {
+
+    }
 }

@@ -259,7 +259,7 @@ public class GameContactListener implements ContactListener {
     private void handleSensorContact(BodyUserData userData, Object otherEntity) {
         if (userData.getType() == ContactType.PLAYER && otherEntity instanceof ThicketSaint) {
             ThicketSaint thicketSaint = (ThicketSaint) otherEntity;
-            thicketSaint.setState(ThicketSaint.State.ATTACKING);
+            thicketSaint.beginAttack();
         }
         else if (userData.getType() == ContactType.NPC) {
             NPC npc = NPCManager.getNPCById(userData.getId());

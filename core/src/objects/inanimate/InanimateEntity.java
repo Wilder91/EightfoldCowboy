@@ -18,7 +18,7 @@ public abstract class InanimateEntity extends GameEntity {
         // Set inanimate-specific fields
         this.id = id;
         this.gameContactListener = gameContactListener;
-        this.speed = 0; // Inanimate objects typically don't move
+        //this.speed = 0; // Inanimate objects typically don't move
     }
 
 

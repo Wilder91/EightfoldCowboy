@@ -10,6 +10,15 @@ public abstract class EntityStateManager<E, S extends Enum<S>> {
         void exit(E entity);
     }
 
+    public void update(E entity, float delta) {
+        S currentState = getCurrentState(entity);
+        StateHandler<E, S> handler = getHandlerForState(currentState);
+
+        if (handler != null) {
+            handler.update(entity, delta);
+        }
+    }
+
     // Abstract methods that need implementation in subclasses
     protected abstract S getCurrentState(E entity);
     protected abstract void setCurrentState(E entity, S newState);

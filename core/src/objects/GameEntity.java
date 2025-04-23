@@ -1,161 +1,218 @@
 package objects;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
-import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.screens.ScreenInterface;
+import helper.combat.MeleeCombatHelper;
+import helper.movement.SimpleIdleHelper;
+import helper.movement.SimpleSpriteWalkingHelper;
+import helper.movement.SpriteIdleHelper;
+import helper.movement.SpriteWalkingHelper;
+import objects.enemies.ThicketSaint;
 
 import java.util.Comparator;
 
 public abstract class GameEntity {
-    public enum State{
 
+
+
+
+    public enum State {
+        IDLE,
+        RUNNING,
+        ATTACKING
     }
-    protected float x, y, velX, velY, speed;
-    protected float width, height;
+
+    protected float x;
+    protected float y;
+    protected float width;
+    protected float height;
     protected Body body;
-    private int entityId;
-    // Depth value used for rendering order (defaults to y position)
-    private float depth;
-    // Flag to indicate if depth should automatically update with y position
-    private boolean autoUpdateDepth = true;
-    private float hp;
+    protected ScreenInterface screenInterface;
+    protected GameAssets gameAssets;
+    protected float hp;
+    protected float depth;
+    protected float depthOffset = 0f;
+    protected float speed = 1.0f; // Default speed value
+
+    // Helpers that can be used by subclasses
+    protected SpriteWalkingHelper walkingHelper;
+    protected SimpleSpriteWalkingHelper simpleWalkingHelper;
+    protected SpriteIdleHelper idleHelper;
+    protected SimpleIdleHelper simpleIdleHelper;
+    protected MeleeCombatHelper meleeHelper;
+    protected Sprite sprite;
+    protected String lastDirection = "idleDown";
+    protected boolean isFacingRight = true;
+    protected State currentState = State.IDLE;
+    protected int entityId;
 
     public GameEntity(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, float hp) {
-        this.x = body.getPosition().x;
-        this.y = body.getPosition().y;
-        this.depth = y; // Initialize depth to match y position
-        this.entityId = 0; // Default ID
+
+
         this.width = width;
         this.height = height;
         this.body = body;
-        this.velX = 0;
-        this.velY = 0;
-        this.speed = 0;
+        this.screenInterface = screenInterface;
+        this.gameAssets = gameAssets;
         this.hp = hp;
-    }
+        this.entityId = 0;
 
+        if (body != null) {
+            this.x = body.getPosition().x;
+            this.y = body.getPosition().y;
+        }
+    }
     // Comparator for Y-based depth sorting
     public static final Comparator<GameEntity> Y_COMPARATOR =
             (entity1, entity2) -> Float.compare(entity2.depth, entity1.depth);
 
 
 
-    public float getDepth() {
-        return depth;
+    // Common getters for helpers that all entities can use
+    public SpriteWalkingHelper getWalkingHelper() {
+        return walkingHelper;
     }
 
-    /**
-     * Set a custom depth value for this entity.
-     * This will override the automatic depth updating based on y position.
-     *
-     * @param depth The custom depth value to use
-     */
-    public void setDepth(float depth) {
-        this.depth = depth;
-        this.autoUpdateDepth = false; // Disable auto-updating
+    public SimpleSpriteWalkingHelper getSimpleWalkingHelper(){
+        return simpleWalkingHelper;
     }
 
-    /**
-     * Set depth to match the current y position of the entity.
-     * This also re-enables automatic depth updating.
-     */
-    public void resetDepthToY() {
-        this.depth = this.y;
-        this.autoUpdateDepth = true;
+    public SpriteIdleHelper getIdleHelper() {
+        return idleHelper;
     }
 
-    /**
-     * Apply an offset to the depth value relative to the y position.
-     * This can be used to fine-tune rendering order without completely
-     * overriding the y-based depth sorting.
-     *
-     * @param offset The amount to offset depth from y position
-     */
-    public void setDepthOffset(float offset) {
-        this.depth = this.y + offset;
-        this.autoUpdateDepth = false;
+    public SimpleIdleHelper getSimpleIdleHelper() {
+        return this.simpleIdleHelper;
     }
 
-    /**
-     * Controls whether depth automatically updates with the y position
-     *
-     * @param autoUpdate True to automatically update depth when y changes
-     */
-    public void setAutoUpdateDepth(boolean autoUpdate) {
-        this.autoUpdateDepth = autoUpdate;
+    public int getId(){
+        return entityId;
     }
 
-    /**
-     * Updates the entity's position from its Box2D body and
-     * updates depth if auto-updating is enabled
-     */
-    protected void updatePositionFromBody() {
-        if (body != null) {
-            this.x = body.getPosition().x;
-            this.y = body.getPosition().y;
-
-            // Update depth automatically if enabled
-            if (autoUpdateDepth) {
-                this.depth = this.y;
-            }
-        }
+    public void setBody(Body b) {
+        this.body = b;
     }
 
-    public abstract void update(float delta);
+    public MeleeCombatHelper getMeleeHelper() {
+        return meleeHelper;
+    }
 
-    public abstract void render(SpriteBatch batch);
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Sprite sprite) {
+        this.sprite = sprite;
+    }
+
+    public String getLastDirection() {
+        return lastDirection;
+    }
+
+    public void setLastDirection(String direction) {
+        this.lastDirection = direction;
+    }
+
+    public boolean isFacingRight() {
+        return isFacingRight;
+    }
+
+    public void setFacingRight(boolean facingRight) {
+        this.isFacingRight = facingRight;
+    }
+
+    public State getState() {
+        return currentState;
+    }
+
+    public void setState(State state) {
+        this.currentState = state;
+    }
 
     public Body getBody() {
         return body;
-    }
-
-    public float getY() {
-        return y;
     }
 
     public float getX() {
         return x;
     }
 
-    public int getId() {
-        return entityId;
+    public float getY() {
+        return y;
     }
 
-    public void setId(int id) {
-        this.entityId = id;
-    }
-
-    public void setBody(Body body) {
-        this.body = body;
-    }
-
-    /**
-     * Get the width of this entity
-     * @return width value
-     */
     public float getWidth() {
         return width;
     }
 
-    /**
-     * Get the height of this entity
-     * @return height value
-     */
     public float getHeight() {
         return height;
     }
 
-    public Player.State getCurrentState() {
-        return this.getCurrentState();
+    public float getHp() {
+        return hp;
     }
 
-    public void setCurrentState(Player.State newState) {
-
+    public void setHp(float hp) {
+        this.hp = hp;
     }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public void resetDepthToY() {
+        this.depth = -this.y;
+    }
+
+    public float getDepth() {
+        return depth;
+    }
+
+    public GameAssets getGameAssets() {
+        return gameAssets;
+    }
+
+    public ScreenInterface getScreenInterface() {
+        return screenInterface;
+    }
+
+    public void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
+        if (this.body != null) {
+            this.body.setTransform(x, y, this.body.getAngle());
+        }
+    }
+
+    public boolean isDead() {
+        return hp <= 0;
+    }
+
+    public void setDepthOffset(float depthOffset) {
+        this.depthOffset = depthOffset;
+    }
+
+    public void dispose() {
+        // Default implementation - subclasses can override
+    }
+
+    public abstract void update(float delta);
+
+    public abstract void render(SpriteBatch batch);
 
     public void takeDamage() {
-
+        // Default implementation
+        this.hp -= 5;
+    }
+    public void setDepth(float y){
+        this.depth = y;
     }
 }
