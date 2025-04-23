@@ -187,7 +187,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
             // Init attacking state
             attackTimer = 0;
 
-            Vector2 position = new Vector2(enemy.getBody().getPosition().x * 100, enemy.getBody().getPosition().y * 100);
+            Vector2 position = new Vector2(enemy.getX() , enemy.getY() );
             enemy.getMeleeHelper().startAttack(enemy.getLastDirection(), position);
         }
 

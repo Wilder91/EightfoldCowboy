@@ -133,6 +133,7 @@ public class ThicketSaint extends GameEntity {
 
     public void beginAttack() {
         System.out.println("okay");
+        //stateManager.changeState(this, ATTACKING);
        //stateManager.changeState(this, GameEntity.State.ATTACKING);
     }
 
@@ -179,7 +180,7 @@ public class ThicketSaint extends GameEntity {
         Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
         sound.play(0.05f);
         this.hp -= 5;
-
+        stateManager.changeState(this, ATTACKING);
         System.out.println("thicketsaint hp: " + hp);
     }
 
@@ -192,16 +193,30 @@ public class ThicketSaint extends GameEntity {
 
         // Update movement
         movement.update(delta);
-        //sprite = animator.updateAnimation(delta);
-        stateManager.update(this, delta);
-        System.out.println(currentState);
-        // Update the renderer
+
+        // Get current position and direction for combat helper
         Vector2 position = new Vector2(x, y);
         Vector2 facingDirection = getFacingDirection();
+
+        // Update state manager BEFORE combat helper
+        stateManager.update(this, delta);
+
+        // Update combat helper AFTER the state manager
         meleeCombatHelper.update(delta, position, facingDirection, isFacingRight, lastDirection);
-        renderer.setMainSprite(sprite);
+
+        // Set the main sprite appropriately based on combat state
+        if (meleeCombatHelper.isAttacking()) {
+            // If attacking, use the attack sprite from the helper
+            renderer.setMainSprite(meleeCombatHelper.getSprite());
+        } else {
+            // Otherwise use the normal sprite
+            renderer.setMainSprite(sprite);
+        }
+
+        // Update renderer last
         renderer.update(delta);
     }
+
 
     private Vector2 getFacingDirection() {
         Vector2 direction = new Vector2(0, 0);

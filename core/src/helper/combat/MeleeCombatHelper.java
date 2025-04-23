@@ -419,6 +419,7 @@ public class MeleeCombatHelper {
                 currentAttackAnimation = attackAnimations.get("attackHorizontal");
             }
 
+
             // Create attack sensor with proper direction
             Vector2 attackDirection = getDirectionVector(direction);
             createAttackSensor(playerPosition, attackDirection);
