@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.*;
+import helper.animation.AnimationHelper;
 import helper.combat.MeleeCombatHelper;
 import helper.movement.SimpleCombatWalkingHelper;
 import helper.movement.SimpleIdleHelper;
@@ -32,6 +33,7 @@ public class ThicketSaint extends GameEntity {
     private MeleeCombatHelper meleeCombatHelper;
     private SimpleAnimator animator;
     private SensorHelper sensorHelper;
+    private AnimationHelper animationHelper;
     private String lastDirection = "idleDown";
 
     private int id;
@@ -75,8 +77,8 @@ public class ThicketSaint extends GameEntity {
             }
         };
 
-        this.idleHelper = new SimpleIdleHelper(gameAssets, "enemies-movement", this.entityName, idleFrameCounts, 1.5f);
-        this.meleeCombatHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", combatFrameCounts, 5, screenInterface.getWorld(),
+        this.idleHelper = new SimpleIdleHelper(gameAssets, "enemies", this.entityName, idleFrameCounts, 1.5f);
+        this.meleeCombatHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword",  5, screenInterface.getWorld(),
                 .07f, ContactType.ENEMY, ContactType.PLAYER, screenInterface, .5f, .5f);
         this.combatWalkingHelper = new SimpleCombatWalkingHelper(gameAssets,  entityType, entityName, combatFrameCounts, false,FRAME_DURATION);
         this.movement = new EntityMovement(this);

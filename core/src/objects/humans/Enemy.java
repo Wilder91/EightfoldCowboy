@@ -49,7 +49,7 @@ public class Enemy extends GameEntity {
         this.simpleIdleHelper = new SimpleIdleHelper(gameAssets, "enemies-movement", entityName, idleFrameCounts, 1.5f);
 
         // Initialize melee helper
-        this.meleeHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", combatFrameCounts, 5,
+        this.meleeHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", 5,
                 screenInterface.getWorld(), 0.09f, ContactType.ENEMY, ContactType.PLAYER, screenInterface, .5f, .5f);
 
         // Initialize renderer

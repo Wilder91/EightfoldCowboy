@@ -14,20 +14,25 @@ public class AnimationHelper {
     private String entityName;
     private String entityType;
     private GameAssets gameAssets;
+    private HashMap<String, Animation<TextureRegion>> animations;
 
-
-    public AnimationHelper(GameAssets gameAssets, GameEntity entity){
+    public AnimationHelper(GameAssets gameAssets, GameEntity entity) {
         this.gameAssets = gameAssets;
-
+        this.animations = new HashMap<>();
     }
-        public void loadAnimations(String entityType, String entityName, float frameDuration, String action){
-            String atlasPath = "atlases/eightfold/" + entityType + ".atlas";
-            HashMap animations = new HashMap<>();
-            // Only populate with up, down and horizontal animations
-            animations.put("runningUp", createAnimation(entityName + "_up_" + action, atlasPath, frameDuration));
-            animations.put("runningDown", createAnimation(entityName + "_down_walk", atlasPath, frameDuration));
-            animations.put("runningHorizontal", createAnimation(entityName + "_horizontal_walk", atlasPath, frameDuration));
-        }
+
+    public void loadAnimations(String entityType, String entityName, float frameDuration, String action) {
+        this.entityType = entityType;
+        this.entityName = entityName;
+        this.atlasPath = "atlases/eightfold/" + entityType + "-movement.atlas";
+
+        // Only populate with up, down and horizontal animations
+        animations.put("runningUp", createAnimation(entityName + "_up_" + action, atlasPath, frameDuration));
+        animations.put("runningDown", createAnimation(entityName + "_down_" + action, atlasPath, frameDuration));
+        animations.put("runningHorizontal", createAnimation(entityName + "_horizontal_" + action, atlasPath, frameDuration));
+        animations.put("runningDiagonalUp", createAnimation(entityName + "_diagUP_" + action, atlasPath, frameDuration));
+        animations.put("runningDiagonalDown", createAnimation(entityName + "_diagDOWN_" + action, atlasPath, frameDuration));
+    }
 
     private Animation<TextureRegion> createAnimation(String regionNamePrefix, String atlasPath, float frameDuration) {
         Array<TextureRegion> frames = new Array<>();
@@ -45,5 +50,15 @@ public class AnimationHelper {
         }
 
         return new Animation<>(frameDuration, frames, Animation.PlayMode.LOOP);
+    }
+
+    // Method to get a specific animation
+    public Animation<TextureRegion> getAnimation(String animationKey) {
+        return animations.get(animationKey);
+    }
+
+    // Method to get all animations
+    public HashMap<String, Animation<TextureRegion>> getAllAnimations() {
+        return animations;
     }
 }

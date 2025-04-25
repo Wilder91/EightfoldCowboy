@@ -50,7 +50,7 @@ public class MeleeCombatHelper {
 
 
     public MeleeCombatHelper(GameAssets gameAssets, String animalType, String animalName,
-                             String weaponType, int[] attackFrameCounts, float attackDamage,
+                             String weaponType, float attackDamage,
                              World world, float frameDuration, ContactType contactType, ContactType enemyContactType,
                              ScreenInterface screenInterface, float scaleX, float scaleY) {  // Added frameDuration parameter
         this.gameAssets = gameAssets;
@@ -58,7 +58,6 @@ public class MeleeCombatHelper {
         this.animalName = animalName;
         this.attackStateTime = 0f;
         this.attackAnimations = new HashMap<>();
-        this.attackFrameCounts = attackFrameCounts;
         this.isAttacking = false;
         this.attackCooldown = 0.5f; // Half second between attacks
         this.attackDamage = attackDamage;
@@ -79,7 +78,7 @@ public class MeleeCombatHelper {
 
         // Calculate attack duration based on animation frames * frame duration
         // For example, if you want the attack to last for the length of the animation:
-        this.attackDuration = attackFrameCounts[2] * frameDuration;
+        this.attackDuration = 8 * frameDuration;
     }
 
     public void loadAttackAnimations(float frameDuration) {

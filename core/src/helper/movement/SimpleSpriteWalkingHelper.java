@@ -41,8 +41,9 @@ public class SimpleSpriteWalkingHelper {
         this.startFlipped = startFlipped;
         this.frameDuration = frameDuration;
         this.animationHelper = new AnimationHelper(gameAssets, entity);
-        //animationHelper.loadAnimations(animalType, animalName, frameDuration, "walk");
-        loadAnimations();
+        animationHelper.loadAnimations(animalType, animalName, frameDuration, "walk");
+        animations = animationHelper.getAllAnimations();
+        //loadAnimations();
         this.currentAnimation = animations.get("runningHorizontal");
 
         this.sprite = new Sprite(this.currentAnimation.getKeyFrame(stateTime));

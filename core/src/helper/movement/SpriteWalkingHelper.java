@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
+import helper.animation.AnimationHelper;
+import objects.GameEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,7 @@ import static helper.Constants.FRAME_DURATION;
 public class SpriteWalkingHelper {
     private Map<String, Animation<TextureRegion>> animations;
     private Animation<TextureRegion> currentAnimation;
+    private AnimationHelper animationHelper;
     private TextureRegion restingFrame;
     private float stateTime;
     private Sprite sprite;
@@ -27,16 +30,18 @@ public class SpriteWalkingHelper {
     private int[] frameCounts;
     private boolean startFlipped;
 
-    public SpriteWalkingHelper(GameAssets gameAssets, String animalType, String animalName, int[] frameCounts, boolean startFlipped) {
+    public SpriteWalkingHelper(GameAssets gameAssets, GameEntity entity, String animalType, String animalName, int[] frameCounts, boolean startFlipped) {
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.animalName = animalName;
         this.stateTime = 0f;
-        this.animations = new HashMap<>();
+        this.animationHelper = new AnimationHelper(gameAssets, entity);
+        animationHelper.loadAnimations(animalType, animalName, FRAME_DURATION, "walk");
+        animations = animationHelper.getAllAnimations();
         this.frameCounts = frameCounts;
         this.startFlipped = startFlipped;
 
-        loadAnimations();
+        //loadAnimations();
 
         this.currentAnimation = animations.get("runningHorizontal");
         setRestingFrame("Sprites/Character/Idle/Idle Down (300)/Character_Idle_Down_1.png");
@@ -49,31 +54,6 @@ public class SpriteWalkingHelper {
         }
     }
 
-    public void loadAnimations() {
-        String atlasPath = "atlases/eightfold/" + animalType + "-movement.atlas";
-        // Populate the animations map with all available running animations
-        animations.put("runningUp", createAnimation(animalName + "_up_walk", frameCounts[0], atlasPath));
-        animations.put("runningDown", createAnimation(animalName + "_down_walk", frameCounts[1], atlasPath));
-        animations.put("runningHorizontal", createAnimation(animalName + "_horizontal_walk", frameCounts[2], atlasPath));
-        animations.put("runningDiagonalUp", createAnimation(animalName + "_diagUP_walk", frameCounts[3], atlasPath));
-        animations.put("runningDiagonalDown", createAnimation(animalName + "_diagDOWN_walk", frameCounts[4], atlasPath));
-    }
-
-    private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount, String atlasPath) {
-        Array<TextureRegion> frames = new Array<>();
-        TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
-        for (int i = 1; i <= frameCount; i++) {
-            TextureRegion region = atlas.findRegion(regionNamePrefix, i);
-            if (region != null) {
-                frames.add(region);
-                //System.out.println("Added frame: " + regionNamePrefix + "_" + i); // Debug print
-            } else {
-                //System.out.println("Region " + regionNamePrefix + "_" + i + " not found!"); // Debug print
-            }
-        }
-        //System.out.println("Total frames for " + regionNamePrefix + ": " + frames.size); // Debug print
-        return new Animation<>(FRAME_DURATION, frames, Animation.PlayMode.LOOP);
-    }
 
     public void updateAnimation(Vector2 linearVelocity, float delta) {
         float vx = linearVelocity.x;

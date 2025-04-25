@@ -32,7 +32,7 @@ public class HorizontalSpriteHelper {
         this.startFlipped = startFlipped;
 
         // Load the walking animation
-        String atlasPath = "atlases/eightfold/" + atlasType + ".atlas";
+        String atlasPath = "atlases/eightfold/" + atlasType + "-movement.atlas";
         walkAnimation = createAnimation(animalName + "_Walk_Side", frameCount, atlasPath, gameAssets);
 
         // Initialize the sprite

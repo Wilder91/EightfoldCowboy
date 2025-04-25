@@ -85,9 +85,9 @@ public class Player extends GameEntity {
         int[] idleFrameCounts = {18, 1, 8, 18, 4};
         int[] meleeFrameCounts = {17, 17, 17, 17, 17};
         this.equippedWeapon = "sword";
-        this.runningHelper = new SpriteWalkingHelper(gameAssets, "character", "character", runningFrameCounts, false);
-        this.idleHelper = new SpriteIdleHelper(gameAssets, "character", "character", idleFrameCounts, 0f);
-        this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", equippedWeapon, meleeFrameCounts, 10f, screenInterface.getWorld(),
+        this.runningHelper = new SpriteWalkingHelper(gameAssets, this, "character", "character", runningFrameCounts, false);
+        this.idleHelper = new SpriteIdleHelper(gameAssets, this, "character", "character", idleFrameCounts, 0f);
+        this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", equippedWeapon, 10f, screenInterface.getWorld(),
                 .03f, ContactType.ATTACK, ContactType.ENEMY, screenInterface, 1f, 1f);
         this.inputHandler = new PlayerInputHelper(this);
         this.sprite = new Sprite();

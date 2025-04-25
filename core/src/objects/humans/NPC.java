@@ -53,7 +53,7 @@ public class NPC extends GameEntity {
         screenInterface.addNPC(this);
         //System.out.println("character name: " + npcId);
         NPCManager.addNPC(this);
-        this.idleHelper = new SpriteIdleHelper(gameAssets, "NPC", characterName, frameCounts, stateTime);
+        this.idleHelper = new SpriteIdleHelper(gameAssets, this, "NPC", characterName, frameCounts, stateTime);
         this.npcRenderer = new EntityRenderer(this);
     }
 

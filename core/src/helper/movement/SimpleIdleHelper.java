@@ -53,7 +53,7 @@ public class SimpleIdleHelper {
      * Loads the idle animation from the atlas
      */
     private void loadAnimation() {
-        String atlasPath = "atlases/eightfold/" + animalType + ".atlas";
+        String atlasPath = "atlases/eightfold/" + animalType + "-movement.atlas";
         String regionPrefix = animalName + "_down_idle";
 
         // Get the atlas

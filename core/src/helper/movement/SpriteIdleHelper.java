@@ -7,15 +7,19 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
+import helper.animation.AnimationHelper;
+import objects.GameEntity;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static helper.Constants.FRAME_DURATION;
 
 
 public class SpriteIdleHelper {
     private Map<String, Animation<TextureRegion>> animations;
     private Animation<TextureRegion> currentAnimation;
+    private AnimationHelper animationHelper;
     private float stateTime;
     private Sprite sprite;
     private GameAssets gameAssets;
@@ -24,15 +28,18 @@ public class SpriteIdleHelper {
     private boolean isFacingRight = true;
     private int[] frameCounts;
 
-    public SpriteIdleHelper(GameAssets gameAssets, String characterType, String characterName, int[] frameCounts, float stateTime) {
+    public SpriteIdleHelper(GameAssets gameAssets, GameEntity entity, String characterType, String characterName, int[] frameCounts, float stateTime) {
         this.gameAssets = gameAssets;
         this.characterType = characterType;
         this.characterName = characterName;
         this.stateTime = stateTime;
         this.animations = new HashMap<>();
         this.frameCounts = frameCounts;
+        this.animationHelper = new AnimationHelper(gameAssets, entity);
+        animationHelper.loadAnimations(characterType, characterName, FRAME_DURATION, "idle");
+        animations = animationHelper.getAllAnimations();
 
-        loadAnimations();
+       // loadAnimations();
 
         this.currentAnimation = animations.get("idleDown");
         this.sprite = new Sprite(currentAnimation.getKeyFrame(0));
