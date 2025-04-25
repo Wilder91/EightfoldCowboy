@@ -8,73 +8,65 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
-import helper.animation.AnimationHelper;
-import objects.GameEntity;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static helper.Constants.FRAME_DURATION;
 
-public class SimpleSpriteWalkingHelper {
+public class SimpleCombatWalkingHelper {
     private Map<String, Animation<TextureRegion>> animations;
     private Animation<TextureRegion> currentAnimation;
     private TextureRegion restingFrame;
     private float stateTime;
     private Sprite sprite;
     private GameAssets gameAssets;
-    private String animalType;
-    private String animalName;
+    private String entityName;
     private boolean isFacingRight = true; // Track the facing direction
     private int[] frameCounts;
     private boolean startFlipped;
     private float frameDuration;
-    private AnimationHelper animationHelper;
 
-    public SimpleSpriteWalkingHelper(GameAssets gameAssets, GameEntity entity, String animalType, String animalName, int[] frameCounts, boolean startFlipped, float frameDuration) {
+    public SimpleCombatWalkingHelper(GameAssets gameAssets, String entityType, String entityName, int[] frameCounts, boolean startFlipped, float frameDuration) {
         this.gameAssets = gameAssets;
-        this.animalType = animalType;
-        this.animalName = animalName;
+        this.entityName = entityName;
         this.stateTime = 0f;
         this.animations = new HashMap<>();
         this.frameCounts = frameCounts;
         this.startFlipped = startFlipped;
         this.frameDuration = frameDuration;
-        this.animationHelper = new AnimationHelper(gameAssets, entity);
-        //animationHelper.loadAnimations(animalType, animalName, frameDuration, "walk");
         loadAnimations();
-        this.currentAnimation = animations.get("runningHorizontal");
+
+        this.currentAnimation = animations.get("combatSide");
 
         this.sprite = new Sprite(this.currentAnimation.getKeyFrame(stateTime));
         this.sprite.setOriginCenter();
 
-        if (startFlipped) {
-            sprite.flip(true, false);
-            isFacingRight = false;
-        }
+
     }
 
     public void loadAnimations() {
-        String atlasPath = "atlases/eightfold/" + animalType + ".atlas";
-        // Only populate with up, down and horizontal animations
-        animations.put("runningUp", createAnimation(animalName + "_up_walk",  atlasPath));
-        animations.put("runningDown", createAnimation(animalName + "_down_walk",  atlasPath));
-        animations.put("runningHorizontal", createAnimation(animalName + "_horizontal_walk",  atlasPath));
+        String atlasPath = "atlases/eightfold/enemies-movement.atlas";
+        // Populate with up, down and side combat animations
+        animations.put("combatUp", createAnimation(entityName + "_combatwalk_up", frameCounts[0], atlasPath));
+        animations.put("combatDown", createAnimation(entityName + "_combatwalk_down", frameCounts[1], atlasPath));
+        animations.put("combatSide", createAnimation(entityName + "_combatwalk_side", frameCounts[2], atlasPath));
     }
 
-    private Animation<TextureRegion> createAnimation(String regionNamePrefix, String atlasPath) {
+    private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount, String atlasPath) {
         Array<TextureRegion> frames = new Array<>();
         TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
 
-        int i = 1;
-        TextureRegion region;
-        while ((region = atlas.findRegion(regionNamePrefix, i)) != null) {
-            frames.add(region);
-            i++;
-        }
-
-        if (frames.size == 0) {
-            System.err.println("No regions found with prefix: " + regionNamePrefix);
+        // Looking at your atlas file, regions are indexed simply as 1, 2, 3...
+        // not with a formatted frame number like "_01"
+        for (int i = 1; i <= frameCount; i++) {
+            // Use the index parameter directly without formatting
+            TextureRegion region = atlas.findRegion(regionNamePrefix, i);
+            if (region != null) {
+                frames.add(region);
+            } else {
+                System.err.println("Region " + regionNamePrefix + " with index " + i + " not found!");
+            }
         }
 
         return new Animation<>(this.frameDuration, frames, Animation.PlayMode.LOOP);
@@ -86,10 +78,16 @@ public class SimpleSpriteWalkingHelper {
         boolean isMoving = Math.abs(vx) > 0.1f || Math.abs(vy) > 0.1f;
 
         if (isMoving) {
-            setRunningAnimation(vx, vy);
+            setCombatAnimation(vx, vy);
             stateTime += delta;
             TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
             sprite.setRegion(frame);
+
+            // Handle horizontal facing direction based on velocity
+            if (Math.abs(vx) > 0.1f) {
+                // Set facing right if velocity is positive, facing left if negative
+               // setFacingRight(vx > 0);
+            }
         } else {
             if (restingFrame != null) {
                 sprite.setRegion(currentAnimation.getKeyFrame(stateTime));
@@ -102,11 +100,6 @@ public class SimpleSpriteWalkingHelper {
 
         sprite.setSize(sprite.getRegionWidth(), sprite.getRegionHeight());
         sprite.setOriginCenter();
-
-        // Adjust the sprite facing direction
-        if (vx != 0) {
-            flipSprite(vx > 0);
-        }
     }
 
     public void setFacingRight(boolean shouldFaceRight) {
@@ -116,19 +109,18 @@ public class SimpleSpriteWalkingHelper {
         }
     }
 
-    private void setRunningAnimation(float vx, float vy) {
+    private void setCombatAnimation(float vx, float vy) {
         // Determine the primary direction of movement
         if (Math.abs(vy) > Math.abs(vx)) {
             // Vertical movement is stronger
             if (vy > 0) {
-                currentAnimation = animations.get("runningUp");
+                currentAnimation = animations.get("combatUp");
             } else {
-                currentAnimation = animations.get("runningDown");
+                currentAnimation = animations.get("combatDown");
             }
         } else {
             // Horizontal movement is stronger or equal
-            currentAnimation = animations.get("runningHorizontal");
-            flipSprite(vx > 0);
+            currentAnimation = animations.get("combatSide");
         }
     }
 

@@ -67,7 +67,8 @@ public class PlayerMovementStateManager extends EntityStateManager<Player, Playe
             player.getMeleeHelper().startAttack(player.getLastDirection(), playerPosition);
         }
 
-        @Override public void exit(Player player) { /* Clean up */ }
+        @Override public void exit(Player player) {
+            /* Clean up */ }
     };
 
     // Helper method for direction updates (specific to Player)

@@ -30,7 +30,7 @@ public class EntityFactory {
         Rectangle rectangle = rectangleMapObject.getRectangle();
         float centerX = (rectangle.x + rectangle.width / 2) / PPM;
         float centerY = (rectangle.y + rectangle.height / 2) / PPM;
-        float bodyWidth = rectangle.width / PPM / 2;
+        float bodyWidth = rectangle.width / PPM;
         float bodyHeight = rectangle.height / PPM;
 
         // Create a dynamic body with physics properties similar to player

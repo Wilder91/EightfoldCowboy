@@ -40,6 +40,7 @@ public class EntityRenderer {
             // Render attack animation
             Sprite attackSprite = meleeCombatHelper.getSprite();
             if (attackSprite != null) {
+                sprite.flip(true,false);
                 attackSprite.draw(batch);
             }
         } else {

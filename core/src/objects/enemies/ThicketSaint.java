@@ -10,18 +10,17 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
-import helper.ContactType;
-import helper.EntityRenderer;
-import helper.EntityMovement;
+import helper.*;
 import helper.combat.MeleeCombatHelper;
+import helper.movement.SimpleCombatWalkingHelper;
 import helper.movement.SimpleIdleHelper;
 import helper.movement.SimpleSpriteWalkingHelper;
 import helper.state.EnemyStateManager;
 import objects.GameEntity;
-import helper.SimpleAnimator;
 
+import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
-import static objects.GameEntity.State.ATTACKING;
+import static objects.GameEntity.State.*;
 
 public class ThicketSaint extends GameEntity {
 
@@ -29,8 +28,10 @@ public class ThicketSaint extends GameEntity {
     private SimpleIdleHelper idleHelper;
     private EnemyStateManager stateManager;
     private SimpleSpriteWalkingHelper walkingHelper;
+    private SimpleCombatWalkingHelper combatWalkingHelper;
     private MeleeCombatHelper meleeCombatHelper;
     private SimpleAnimator animator;
+    private SensorHelper sensorHelper;
     private String lastDirection = "idleDown";
 
     private int id;
@@ -43,10 +44,12 @@ public class ThicketSaint extends GameEntity {
     private CircleShape sensorShape;
     private FixtureDef sensorFixtureDef;
     private Fixture sensorFixture;
-    private float largeSensorRadius = .5f;
-    private float smallSensorRadius = .5f;
+    private float largeSensorRadius = 5f;
+    private float smallSensorRadius = 2f;
     private GameEntity.State currentState = GameEntity.State.IDLE;
     private float hp;
+    private boolean beginPursuit;
+
 
     public ThicketSaint(float width, float height, Body body, ScreenInterface screenInterface,
                         GameAssets gameAssets, String entityType, String entityName, float hp) {
@@ -65,7 +68,7 @@ public class ThicketSaint extends GameEntity {
         int[] combatFrameCounts = {4, 4, 4, 0, 0};
 
         // Create a custom subclass of SpriteWalkingHelper to override the problematic method
-        this.walkingHelper = new SimpleSpriteWalkingHelper(gameAssets, entityType, this.entityName, walkingFrameCounts, false, .2f) {
+        this.walkingHelper = new SimpleSpriteWalkingHelper(gameAssets, this, entityType, this.entityName, walkingFrameCounts, false, FRAME_DURATION) {
             @Override
             public void setRestingFrame(String texturePath) {
                 // Do nothing - avoid loading the hardcoded texture
@@ -74,9 +77,10 @@ public class ThicketSaint extends GameEntity {
 
         this.idleHelper = new SimpleIdleHelper(gameAssets, "enemies-movement", this.entityName, idleFrameCounts, 1.5f);
         this.meleeCombatHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", combatFrameCounts, 5, screenInterface.getWorld(),
-                .09f, ContactType.ENEMY, ContactType.PLAYER, screenInterface);
+                .07f, ContactType.ENEMY, ContactType.PLAYER, screenInterface, .5f, .5f);
+        this.combatWalkingHelper = new SimpleCombatWalkingHelper(gameAssets,  entityType, entityName, combatFrameCounts, false,FRAME_DURATION);
         this.movement = new EntityMovement(this);
-
+        this.sensorHelper = new SensorHelper();
         // Initialize renderer directly without animator
         this.renderer = new EntityRenderer(this, meleeCombatHelper);
         this.animator = new SimpleAnimator(this, walkingHelper, idleHelper);
@@ -91,28 +95,14 @@ public class ThicketSaint extends GameEntity {
         // Initialize state manager and set initial state
         this.stateManager = new EnemyStateManager();
         this.stateManager.setAttackDuration(5f); // Set your attack duration
-        this.stateManager.changeState(this, GameEntity.State.IDLE);
+        this.stateManager.changeState(this, State.IDLE);
 
         // Setup sensor
-        setupSensor(largeSensorRadius);
+        sensorHelper.setupAttackSensor(largeSensorRadius, this);
+        sensorHelper.setupAttackSensor(smallSensorRadius, this);
     }
 
-    private void setupSensor(float radius) {
-        this.sensorFixtureDef = new FixtureDef();
-        sensorFixtureDef.isSensor = true;
 
-        sensorShape = new CircleShape();
-        sensorShape.setRadius(radius);
-        sensorShape.setPosition(new Vector2(0.0f, 0)); // position relative to body center
-        sensorFixtureDef.shape = sensorShape;
-
-        // Add the fixture to your body
-        this.sensorFixture = body.createFixture(sensorFixtureDef);
-        sensorFixture.setUserData(this);
-
-        // Dispose the shape when done
-        sensorShape.dispose();
-    }
 
     // Getters and setters needed by the EnemyStateManager
     public SimpleIdleHelper getSimpleIdleHelper() {
@@ -131,11 +121,72 @@ public class ThicketSaint extends GameEntity {
         return this.meleeCombatHelper;
     }
 
-    public void beginAttack() {
-        System.out.println("okay");
-        //stateManager.changeState(this, ATTACKING);
-       //stateManager.changeState(this, GameEntity.State.ATTACKING);
+    public void setBeginPursuit(boolean pursuit){
+        beginPursuit = pursuit;
     }
+
+    public void pursuePlayer() {
+        // Get player position
+        Vector2 playerPosition = screenInterface.getPlayer().getBody().getPosition();
+        Vector2 myPosition = this.body.getPosition();
+        stateManager.changeState(this, PURSUING);
+
+        // Calculate direction vector to player
+        Vector2 direction = new Vector2(playerPosition.x - myPosition.x, playerPosition.y - myPosition.y);
+
+        // Calculate distance to player
+        float distanceToPlayer = direction.len();
+
+        // Define minimum distance to stop (in Box2D units)
+        float stopDistance = 1f; // Adjust this value as needed
+
+        // Check if player is within the sensor radius
+        if (distanceToPlayer > largeSensorRadius) {
+            // Player is outside sensor radius, gradually stop movement
+            Vector2 currentVelocity = this.body.getLinearVelocity();
+            this.body.setLinearVelocity(currentVelocity.x * 0.8f, currentVelocity.y * 0.8f);
+            stateManager.changeState(this, IDLE);
+            return; // Exit the method early
+        }
+
+        // Only normalize and move if not too close
+        float halfwayDistance = stopDistance * 2; // Adjust this multiplier as needed
+
+        if (distanceToPlayer > stopDistance) {
+            // Normalize the direction
+            direction.nor();
+
+            // Set movement speed
+            float movementSpeed = 1.5f; // Adjust this value as needed
+
+            // Choose state based on distance
+            if (distanceToPlayer > halfwayDistance) {
+                // Far away - use regular walking/running
+                stateManager.changeState(this, RUNNING);
+            } else {
+                // Closer - use combat walking
+                sprite.flip(true,true);
+                stateManager.changeState(this, PURSUING);
+
+            }
+
+            // Apply velocity toward player
+            this.body.setLinearVelocity(direction.x * movementSpeed, direction.y * movementSpeed);
+        } else {
+            // We're close enough, stop moving but don't reset velocity to zero immediately
+            // This creates a more natural slowing down effect
+            Vector2 currentVelocity = this.body.getLinearVelocity();
+            this.body.setLinearVelocity(currentVelocity.x * 0.9f, currentVelocity.y * 0.9f);
+
+            // If we're very close and nearly stopped, we could trigger an attack
+            if (distanceToPlayer < stopDistance * 1f && currentVelocity.len() < 0.2f) {
+                // Trigger attack
+
+                stateManager.changeState(this, GameEntity.State.ATTACKING);
+            }
+        }
+
+        }
 
     public String getLastDirection() {
         return lastDirection;
@@ -191,6 +242,9 @@ public class ThicketSaint extends GameEntity {
         y = body.getPosition().y * PPM;
         resetDepthToY();
 
+        if (beginPursuit){
+            pursuePlayer();
+        }
         // Update movement
         movement.update(delta);
 
@@ -218,32 +272,7 @@ public class ThicketSaint extends GameEntity {
     }
 
 
-    private Vector2 getFacingDirection() {
-        Vector2 direction = new Vector2(0, 0);
 
-        switch (lastDirection) {
-            case "idleUp":
-                direction.set(0, 1);
-                break;
-            case "idleDown":
-                direction.set(0, -1);
-                break;
-            case "idleSide":
-                direction.set(isFacingRight ? 1 : -1, 0);
-                break;
-            case "idleDiagonalUp":
-                direction.set(isFacingRight ? 1 : -1, 1);
-                break;
-            case "idleDiagonalDown":
-                direction.set(isFacingRight ? 1 : -1, -1);
-                break;
-            default:
-                direction.set(isFacingRight ? 1 : -1, 0);
-                break;
-        }
-
-        return direction.nor();
-    }
 
     @Override
     public void render(SpriteBatch batch) {
@@ -256,5 +285,13 @@ public class ThicketSaint extends GameEntity {
 
     public String getEnemyType() {
         return entityType;
+    }
+
+    public SimpleCombatWalkingHelper getCombatWalkingHelper() {
+        return this.combatWalkingHelper;
+    }
+
+    public boolean hasValidTarget() {
+        return true;
     }
 }

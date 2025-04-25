@@ -11,9 +11,10 @@ import objects.enemies.ThicketSaint;
  */
 public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity.State> {
 
-
     private float attackTimer = 0;
     private float attackDuration = 5f; // Default value, can be overridden
+    private float pursuitTimer = 0;
+    private float maxPursuitTime = 10f; // Default pursuit time limit
 
     private final StateHandler<GameEntity, GameEntity.State> idleStateHandler = new StateHandler<GameEntity, GameEntity.State>() {
         @Override
@@ -66,9 +67,6 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
             // Clean up
         }
     };
-
-
-
 
     private final StateHandler<GameEntity, GameEntity.State> runningStateHandler = new StateHandler<GameEntity, GameEntity.State>() {
         @Override
@@ -124,6 +122,88 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
         }
     };
 
+    private final StateHandler<GameEntity, GameEntity.State> pursuingStateHandler = new StateHandler<GameEntity, GameEntity.State>() {
+        @Override
+        public void update(GameEntity enemy, float delta) {
+            Vector2 velocity = enemy.getBody().getLinearVelocity();
+
+            // Update pursuit timer
+            pursuitTimer += delta;
+
+            // Check for state transitions
+            if (Math.abs(velocity.x) <= 0.1f && Math.abs(velocity.y) <= 0.1f) {
+                changeState(enemy, GameEntity.State.IDLE);
+                return;
+            }
+
+            // Check if pursuit time exceeded
+            if (pursuitTimer >= maxPursuitTime) {
+                changeState(enemy, GameEntity.State.RUNNING);
+                return;
+            }
+
+            // Check if enemy is close enough to attack
+            if (enemy.shouldAttack()) {
+                changeState(enemy, GameEntity.State.ATTACKING);
+                return;
+            }
+
+            // Update facing direction
+            updateFacingDirection(enemy, velocity);
+
+            // Check if we're dealing with a ThicketSaint
+            if (enemy instanceof objects.enemies.ThicketSaint) {
+                objects.enemies.ThicketSaint thicketSaint = (objects.enemies.ThicketSaint) enemy;
+
+                // Use combat walking animation for pursuit
+                if (thicketSaint.getCombatWalkingHelper() != null) {
+                    thicketSaint.getCombatWalkingHelper().setFacingRight(thicketSaint.isFacingRight());
+                    thicketSaint.getCombatWalkingHelper().updateAnimation(velocity, delta);
+
+                    Sprite sprite = thicketSaint.getCombatWalkingHelper().getSprite();
+                    if (sprite != null) {
+                        sprite.setFlip(thicketSaint.isFacingRight(), false);
+                        thicketSaint.setSprite(sprite);
+                    }
+                }
+            }
+            // For other entity types that have a combat walking helper
+            else if (enemy.getCombatWalkingHelper() != null) {
+                enemy.getCombatWalkingHelper().setFacingRight(enemy.isFacingRight());
+                enemy.getCombatWalkingHelper().updateAnimation(velocity, delta);
+
+                Sprite sprite = enemy.getCombatWalkingHelper().getSprite();
+                if (sprite != null) {
+                    sprite.setFlip(!enemy.isFacingRight(), false);
+                    enemy.setSprite(sprite);
+                }
+            }
+            // Fallback to regular walking helper if no combat walking helper is available
+            else if (enemy.getWalkingHelper() != null) {
+                enemy.getWalkingHelper().setFacingRight(enemy.isFacingRight());
+                enemy.getWalkingHelper().updateAnimation(velocity, delta);
+
+                Sprite sprite = enemy.getWalkingHelper().getSprite();
+                if (sprite != null) {
+                    sprite.setFlip(!enemy.isFacingRight(), false);
+                    enemy.setSprite(sprite);
+                }
+            }
+        }
+
+        @Override
+        public void enter(GameEntity enemy) {
+            // Init pursuing state
+            pursuitTimer = 0;
+        }
+
+        @Override
+        public void exit(GameEntity enemy) {
+            // Clean up
+            pursuitTimer = 0;
+        }
+    };
+
     private final StateHandler<GameEntity, GameEntity.State> attackingStateHandler = new StateHandler<GameEntity, GameEntity.State>() {
         @Override
         public void update(GameEntity enemy, float delta) {
@@ -152,7 +232,12 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
 
                 // Check if attack is complete
                 if (!thicketSaint.getMeleeHelper().isAttacking() || attackTimer >= attackDuration) {
-                    changeState(enemy, GameEntity.State.IDLE);
+                    // After attack, go back to pursuing if target is still valid
+                    if (thicketSaint.hasValidTarget()) {
+                        changeState(enemy, GameEntity.State.PURSUING);
+                    } else {
+                        changeState(enemy, GameEntity.State.IDLE);
+                    }
                     attackTimer = 0;
                 }
             }
@@ -176,7 +261,12 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
 
                 // Check if attack is complete
                 if (!enemy.getMeleeHelper().isAttacking() || attackTimer >= attackDuration) {
-                    changeState(enemy, GameEntity.State.IDLE);
+                    // After attack, go back to pursuing if target is still valid
+                    if (enemy.hasValidTarget()) {
+                        changeState(enemy, GameEntity.State.PURSUING);
+                    } else {
+                        changeState(enemy, GameEntity.State.IDLE);
+                    }
                     attackTimer = 0;
                 }
             }
@@ -187,7 +277,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
             // Init attacking state
             attackTimer = 0;
 
-            Vector2 position = new Vector2(enemy.getX() , enemy.getY() );
+            Vector2 position = new Vector2(enemy.getX(), enemy.getY());
             enemy.getMeleeHelper().startAttack(enemy.getLastDirection(), position);
         }
 
@@ -262,6 +352,14 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
         this.attackDuration = duration;
     }
 
+    /**
+     * Sets the maximum pursuit time for the enemy
+     * @param duration The duration in seconds
+     */
+    public void setMaxPursuitTime(float duration) {
+        this.maxPursuitTime = duration;
+    }
+
     @Override
     protected GameEntity.State getCurrentState(GameEntity entity) {
         return entity.getState();
@@ -277,6 +375,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
         switch (state) {
             case IDLE: return idleStateHandler;
             case RUNNING: return runningStateHandler;
+            case PURSUING: return pursuingStateHandler;
             case ATTACKING: return attackingStateHandler;
             default: return null;
         }

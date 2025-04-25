@@ -1,6 +1,5 @@
 package helper.combat;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -14,14 +13,9 @@ import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import helper.ContactType;
-import helper.EntityManagers.ThicketSaintManager;
 import objects.enemies.ThicketSaint;
 
-import javax.swing.text.html.parser.Entity;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static helper.Constants.*;
 
@@ -50,11 +44,15 @@ public class MeleeCombatHelper {
     private ScreenInterface screenInterface;
     private int worldStepCounter = 0;
     private int frameCounter = 0;
-    private Set<Integer> hitEntitiesForCurrentAttack = new HashSet<>();
+    private float multiplier;
+    private float frameDuration;
+    private Set<BodyUserData> hitEntitiesForCurrentAttack = new HashSet<>();
+
 
     public MeleeCombatHelper(GameAssets gameAssets, String animalType, String animalName,
                              String weaponType, int[] attackFrameCounts, float attackDamage,
-                             World world, float frameDuration, ContactType contactType, ContactType enemyContactType, ScreenInterface screenInterface) {  // Added frameDuration parameter
+                             World world, float frameDuration, ContactType contactType, ContactType enemyContactType,
+                             ScreenInterface screenInterface, float scaleX, float scaleY) {  // Added frameDuration parameter
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.animalName = animalName;
@@ -71,9 +69,10 @@ public class MeleeCombatHelper {
         this.contactType = contactType;
         this.enemyContactType = enemyContactType;
         this.screenInterface = screenInterface;
+        this.frameDuration = frameDuration;
         // Pass frameDuration to the loadAttackAnimations method
         loadAttackAnimations(frameDuration);
-
+        this.multiplier = scaleX;
         this.currentAttackAnimation = attackAnimations.get("attackHorizontal");
         this.attackSprite = new Sprite();
         this.attackSprite.setOriginCenter();
@@ -84,47 +83,39 @@ public class MeleeCombatHelper {
     }
 
     public void loadAttackAnimations(float frameDuration) {
-        frameCounter += 1;
+        //System.out.println(frameCounter);
+
         String atlasPath = "atlases/eightfold/" + animalType + "-movement.atlas";
         // Populate the animations map with all available attack animations
         attackAnimations.put("attackUp", createAnimation(animalName + "_up_" + weaponType,
-                attackFrameCounts[0], atlasPath, frameDuration));
+                atlasPath));
         attackAnimations.put("attackDown", createAnimation(animalName + "_down_" + weaponType,
-                attackFrameCounts[1], atlasPath, frameDuration));
+                 atlasPath));
         attackAnimations.put("attackHorizontal", createAnimation(animalName + "_horizontal_" + weaponType,
-                attackFrameCounts[2], atlasPath, frameDuration));
+                atlasPath));
         attackAnimations.put("attackDiagonalUp", createAnimation(animalName + "_diagUP_" + weaponType,
-                attackFrameCounts[3], atlasPath, frameDuration));
+                atlasPath));
         attackAnimations.put("attackDiagonalDown", createAnimation(animalName + "_diagDOWN_" + weaponType,
-                attackFrameCounts[4], atlasPath, frameDuration));
+                atlasPath));
     }
 
 
-    private Animation<TextureRegion> createAnimation(String regionNamePrefix, int frameCount,
-                                                     String atlasPath, float frameDuration) {
+    private Animation<TextureRegion> createAnimation(String regionNamePrefix, String atlasPath) {
         Array<TextureRegion> frames = new Array<>();
         TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
 
-        if (atlas == null) {
-            System.err.println("ERROR: Attack atlas not found: " + atlasPath);
-            return new Animation<>(frameDuration, frames);
+        int i = 1;
+        TextureRegion region;
+        while ((region = atlas.findRegion(regionNamePrefix, i)) != null) {
+            frames.add(region);
+            i++;
         }
 
-        for (int i = 1; i <= frameCount; i++) {
-            TextureRegion region = atlas.findRegion(regionNamePrefix, i);
-            if (region != null) {
-                frames.add(region);
-            } else {
-                System.out.println("Attack region " + regionNamePrefix + "_" + i + " not found!");
-            }
-            if (frames.size == 0 && attackFrameCounts[frameCounter] != 0) {
-                System.err.println("WARNING: No frames found for animation: " + regionNamePrefix);
-            }
+        if (frames.size == 0) {
+            System.err.println("No regions found with prefix: " + regionNamePrefix);
         }
 
-
-
-        return new Animation<>(frameDuration, frames, Animation.PlayMode.NORMAL);
+        return new Animation<>(this.frameDuration, frames, Animation.PlayMode.LOOP);
     }
 
     public void setAttackDuration(float duration) {
@@ -139,6 +130,7 @@ public class MeleeCombatHelper {
             attackCooldown -= delta;
         }
         // Update attack state
+
         if (isAttacking && attackSensor != null && attackSensor.getBody() != null) {
             // Get the attack sensor bounds
             PolygonShape sensorShape = (PolygonShape) attackSensor.getShape();
@@ -179,66 +171,94 @@ public class MeleeCombatHelper {
             );
 
             if (foundFixtures.size > 0) {
+                // Create a temporary list to store fixtures to remove
+                Array<Fixture> fixturesToRemove = new Array<>();
+
                 for (Fixture woundedFixture : foundFixtures) {
-                    BodyUserData userData = (BodyUserData)woundedFixture.getUserData();
-
+                    BodyUserData userData = (BodyUserData) woundedFixture.getUserData();
                     // Check if this entity ID has already been hit in this attack
-                    if (hitEntitiesForCurrentAttack.contains(userData.getId())) {
+                    if (hitEntitiesForCurrentAttack.contains(userData)) {
                         // Skip this entity, it's already been hit
-                        //System.out.println("Entity " + userData.getId() + " already hit, skipping");
-                        continue;
+                        System.out.println("Entity " + userData + " already hit, skipping");
+
+
+                    } else {
+                        // Add this entity ID to the set of hit entities
+                        // Apply damage based on entity type
+                        if (userData.getEntity() instanceof ThicketSaint) {
+                            ThicketSaint enemy = (ThicketSaint) userData.getEntity();
+                            enemy.takeDamage();
+                        } else if (userData.getEntity() instanceof Player) {
+                            Player player = (Player) userData.getEntity();
+                            player.takeDamage();
+                        }
+                        hitEntitiesForCurrentAttack.add(userData);
+                        // Mark this fixture for removal after processing
+                        fixturesToRemove.add(woundedFixture);
                     }
-
-                    //System.out.println("Directly applying damage to " + userData.getType() + ": " + userData.getId());
-
-                    // Add this entity ID to the set of hit entities
-                    hitEntitiesForCurrentAttack.add(userData.getId());
-
-                    // Apply damage based on entity type
-                    if(userData.getEntity() instanceof ThicketSaint){
-                        ThicketSaint enemy = (ThicketSaint) userData.getEntity();
-                        enemy.takeDamage();
-                    } else if (userData.getEntity() instanceof Player){
-                        Player player = (Player) userData.getEntity();
-                        player.takeDamage();
-                    }
-
                     // Play hit sound
-
                 }
+                // Remove all processed fixtures
+                foundFixtures.removeAll(fixturesToRemove, true);
             }
 
+            if (isAttacking) {
 
-        }
-        if (isAttacking) {
+                worldStepCounter++;
+                //System.out.println("Attack sensor exists for " + worldStepCounter + " world steps");
+                attackStateTime += delta;
+                currentAttackTimer += delta;
 
-            worldStepCounter++;
-            //System.out.println("Attack sensor exists for " + worldStepCounter + " world steps");
-            attackStateTime += delta;
-            currentAttackTimer += delta;
+                // Update attack sprite
+                TextureRegion frame = currentAttackAnimation.getKeyFrame(attackStateTime, false);
+                attackSprite.setRegion(frame);
+                attackSprite.setSize(frame.getRegionWidth(), frame.getRegionHeight());
+                attackSprite.setOriginCenter();
 
-            // Update attack sprite
-            TextureRegion frame = currentAttackAnimation.getKeyFrame(attackStateTime, false);
-            attackSprite.setRegion(frame);
-            attackSprite.setSize(frame.getRegionWidth(), frame.getRegionHeight());
-            attackSprite.setOriginCenter();
+                // Position the attack sprite based on the character's position and facing direction
+                positionAttackSprite(position, facingDirection);
 
-            // Position the attack sprite based on the character's position and facing direction
-            positionAttackSprite(position, facingDirection);
+                // Update hitbox position
+                updateHitbox();
 
-            // Update hitbox position
-            updateHitbox();
-
-            // Check if attack animation is complete
-            if (currentAttackTimer >= attackDuration * 1.5f ||
-                    (currentAttackAnimation.isAnimationFinished(attackStateTime) && currentAttackTimer >= 0.3f)) {
-                endAttack();
-                removeAttackSensor();
+                // Check if attack animation is complete
+                if (currentAttackTimer >= attackDuration * 1.5f ||
+                        (currentAttackAnimation.isAnimationFinished(attackStateTime) && currentAttackTimer >= 0.3f)) {
+                    endAttack();
+                    removeAttackSensor();
+                }
             }
         }
     }
 
-    private void createAttackSensor(Vector2 position, Vector2 direction) {
+    private void createSwordBladeShape(float length, float baseWidth) {
+        // Create a long triangular shape for a sword blade
+        PolygonShape shape = new PolygonShape();
+
+        // Define vertices for a sword blade (long triangle with thin base)
+        Vector2[] vertices = new Vector2[3];
+
+        // Base of the sword (near the handle)
+        vertices[0] = new Vector2(0, -baseWidth/2);  // Bottom left of base
+        vertices[1] = new Vector2(0, baseWidth/2);   // Top left of base
+
+        // Tip of the sword
+        vertices[2] = new Vector2(length, 0);        // Pointed tip
+
+        // Set the polygon shape with these vertices
+        shape.set(vertices);
+
+        // Rest of your fixture creation code...
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.isSensor = true;
+        // ... other fixture properties
+
+        // Don't forget to dispose the shape when done
+        shape.dispose();
+    }
+
+    private void createAttackSensor(Vector2 position, Vector2 direction, float multiplier) {
         // Remove any existing sensor
         removeAttackSensor();
 
@@ -260,40 +280,40 @@ public class MeleeCombatHelper {
         // Adjust dimensions and offset based on direction
         if (lastDirection.equalsIgnoreCase("idleUp")) {
             // For upward attacks, make the hitbox taller than wide
-            width = 0.5f;      // Narrower width
-            height = 0.25f;     // Taller height
-            offsetY = 0.3f;    // Position above player
-            offsetX = 0f;      // Centered horizontally
+            width = 0.5f * multiplier;      // Narrower width
+            height = 0.25f * multiplier;    // Taller height
+            offsetY = 0.3f;                 // Position above player
+            offsetX = 0f;                   // Centered horizontally
         } else if (lastDirection.equalsIgnoreCase("idleDown")) {
             // For downward attacks, make the hitbox taller than wide
-            width = 0.5f;      // Narrower width
-            height = 0.3f;     // Taller height
-            offsetY = -0.2f;   // Position below player
-            offsetX = 0f;      // Centered horizontally
+            width = 0.5f * multiplier;      // Narrower width
+            height = 0.3f * multiplier;     // Taller height
+            offsetY = -0.2f;                // Position below player
+            offsetX = 0f;                   // Centered horizontally
         } else if (lastDirection.equalsIgnoreCase("idleSide")) {
             // For side attacks, make the hitbox wider than tall
-            width = 0.25f;      // Wider width
-            height = 0.35f;     // Shorter height
+            width = 0.25f * multiplier;     // Wider width
+            height = 0.35f * multiplier;    // Shorter height
             offsetX = isFacingRight ? 0.52f : -0.52f;  // Position to the side based on facing
-            offsetY = 0f;      // Centered vertically
+            offsetY = 0f;                   // Centered vertically
         } else if (lastDirection.equalsIgnoreCase("idleDiagonalUp")) {
             // For diagonal up attacks
-            width = 0.3f;
-            height = 0.5f;
+            width = 0.3f * multiplier;
+            height = 0.5f * multiplier;
             offsetX = isFacingRight ? 0.3f : -0.3f;
             offsetY = 0.3f;
             angle = isFacingRight ? 45 * (float)Math.PI/180 : -45 * (float)Math.PI/180;  // 45 degree angle
         } else if (lastDirection.equalsIgnoreCase("idleDiagonalDown")) {
             // For diagonal down attacks
-            width = 0.3f;
-            height = 0.5f;
+            width = 0.3f * multiplier;
+            height = 0.5f * multiplier;
             offsetX = isFacingRight ? 0.3f : -0.3f;
             offsetY = -0.3f;
             angle = isFacingRight ? -45 * (float)Math.PI/180 : 45 * (float)Math.PI/180;  // -45 degree angle
         } else {
             // Default to horizontal attack
-            width = 0.4f;
-            height = 0.2f;
+            width = 0.4f * multiplier;
+            height = 0.2f * multiplier;
             offsetX = isFacingRight ? 0.5f : -0.5f;
             offsetY = 0f;
         }
@@ -422,7 +442,7 @@ public class MeleeCombatHelper {
 
             // Create attack sensor with proper direction
             Vector2 attackDirection = getDirectionVector(direction);
-            createAttackSensor(playerPosition, attackDirection);
+            createAttackSensor(playerPosition, attackDirection, multiplier);
 
 
             // Reset cooldown

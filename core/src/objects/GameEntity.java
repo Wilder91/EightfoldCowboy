@@ -2,14 +2,12 @@ package objects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.combat.MeleeCombatHelper;
-import helper.movement.SimpleIdleHelper;
-import helper.movement.SimpleSpriteWalkingHelper;
-import helper.movement.SpriteIdleHelper;
-import helper.movement.SpriteWalkingHelper;
+import helper.movement.*;
 import objects.enemies.ThicketSaint;
 
 import java.util.Comparator;
@@ -17,12 +15,15 @@ import java.util.Comparator;
 public abstract class GameEntity {
 
 
-
+    public boolean hasValidTarget() {
+        return true;
+    }
 
     public enum State {
         IDLE,
         RUNNING,
-        ATTACKING
+        ATTACKING,
+        PURSUING
     }
 
     protected float x;
@@ -42,6 +43,7 @@ public abstract class GameEntity {
     protected SimpleSpriteWalkingHelper simpleWalkingHelper;
     protected SpriteIdleHelper idleHelper;
     protected SimpleIdleHelper simpleIdleHelper;
+    protected SimpleCombatWalkingHelper combatWalkingHelper;
     protected MeleeCombatHelper meleeHelper;
     protected Sprite sprite;
     protected String lastDirection = "idleDown";
@@ -67,7 +69,7 @@ public abstract class GameEntity {
     }
     // Comparator for Y-based depth sorting
     public static final Comparator<GameEntity> Y_COMPARATOR =
-            (entity1, entity2) -> Float.compare(entity2.depth, entity1.depth);
+            (entity1, entity2) -> Float.compare(entity1.depth, entity2.depth);
 
 
 
@@ -98,6 +100,41 @@ public abstract class GameEntity {
 
     public MeleeCombatHelper getMeleeHelper() {
         return meleeHelper;
+    }
+
+    public SimpleCombatWalkingHelper getCombatWalkingHelper() {
+        return combatWalkingHelper;
+    }
+
+    public boolean shouldAttack() {
+        return false;
+    }
+
+    protected Vector2 getFacingDirection() {
+        Vector2 direction = new Vector2(0, 0);
+
+        switch (lastDirection) {
+            case "idleUp":
+                direction.set(0, 1);
+                break;
+            case "idleDown":
+                direction.set(0, -1);
+                break;
+            case "idleSide":
+                direction.set(isFacingRight ? 1 : -1, 0);
+                break;
+            case "idleDiagonalUp":
+                direction.set(isFacingRight ? 1 : -1, 1);
+                break;
+            case "idleDiagonalDown":
+                direction.set(isFacingRight ? 1 : -1, -1);
+                break;
+            default:
+                direction.set(isFacingRight ? 1 : -1, 0);
+                break;
+        }
+
+        return direction.nor();
     }
 
     public Sprite getSprite() {

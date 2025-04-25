@@ -42,6 +42,7 @@ public class Tree extends InanimateEntity {
         y = body.getPosition().y * PPM;
         calculateAndSetDepthOffset();
         animator.update(delta);
+        resetDepthToY();
     }
 
     @Override

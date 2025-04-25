@@ -23,6 +23,7 @@ import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.save.SaveManager;
 import conversations.DialogueLine;
 import helper.ContactType;
+import helper.EntityAnimator;
 import helper.tiledmap.TiledMapHelper;
 import helper.world.time.TimeOfDayHelper;
 import objects.GameEntity;
@@ -49,7 +50,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private final SpriteBatch batch;
     private final ScreenInterface screenInterface;
     private World world;
-
+    private EntityAnimator animator;
     private Box2DDebugRenderer box2DDebugRenderer;
     private final TiledMapHelper tiledMapHelper;
     private OrthogonalTiledMapRenderer orthogonalTiledMapRenderer;

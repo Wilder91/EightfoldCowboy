@@ -71,9 +71,14 @@ public class GameContactListener implements ContactListener {
 
             // Handle player leaving door area
             handlePlayerLeavingDoor(userDataA, userDataB);
+            // Special case for ThicketSaint sensor
+            handleEndOfSpecialSensorCases(fixtureA, fixtureB);
 
             // Add other end contact handlers here
         }
+
+
+
         else if (fixtureB.getUserData() == "playerSensor" &&
                 fixtureA.getUserData() instanceof BodyUserData) {
 
@@ -243,12 +248,29 @@ public class GameContactListener implements ContactListener {
 
         if (fixtureA.getUserData() != null && "saintSensor".equals(fixtureA.getUserData())) {
             if (fixtureB.getUserData() instanceof BodyUserData) {
-                handleSensorContact((BodyUserData) fixtureB.getUserData(), fixtureA.getUserData());
+                handleSensorContact((BodyUserData) fixtureB.getUserData(), fixtureA.getUserData(), true);
+                System.out.println("YO");
             }
         }
         else if (fixtureB.getUserData() != null && fixtureB.getUserData() instanceof ThicketSaint) {
             if (fixtureA.getUserData() instanceof BodyUserData) {
-                handleSensorContact((BodyUserData) fixtureA.getUserData(), fixtureB.getUserData());
+                handleSensorContact((BodyUserData) fixtureA.getUserData(), fixtureB.getUserData(), true);
+            }
+        }
+    }
+
+    private void handleEndOfSpecialSensorCases(Fixture fixtureA, Fixture fixtureB) {
+        // Handle ThicketSaint sensor contact
+
+        if (fixtureA.getUserData() != null && "saintSensor".equals(fixtureA.getUserData())) {
+            if (fixtureB.getUserData() instanceof BodyUserData) {
+                handleSensorContact((BodyUserData) fixtureB.getUserData(), fixtureA.getUserData(), false);
+                System.out.println("YO");
+            }
+        }
+        else if (fixtureB.getUserData() != null && fixtureB.getUserData() instanceof ThicketSaint) {
+            if (fixtureA.getUserData() instanceof BodyUserData) {
+                handleSensorContact((BodyUserData) fixtureA.getUserData(), fixtureB.getUserData(), false);
             }
         }
     }
@@ -256,10 +278,10 @@ public class GameContactListener implements ContactListener {
     /**
      * Handle sensor contact cases
      */
-    private void handleSensorContact(BodyUserData userData, Object otherEntity) {
+    private void handleSensorContact(BodyUserData userData, Object otherEntity, Boolean pursuit) {
         if (userData.getType() == ContactType.PLAYER && otherEntity instanceof ThicketSaint) {
             ThicketSaint thicketSaint = (ThicketSaint) otherEntity;
-            thicketSaint.beginAttack();
+            thicketSaint.setBeginPursuit(pursuit);
         }
         else if (userData.getType() == ContactType.NPC) {
             NPC npc = NPCManager.getNPCById(userData.getId());

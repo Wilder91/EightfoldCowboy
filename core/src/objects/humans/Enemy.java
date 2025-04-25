@@ -43,14 +43,14 @@ public class Enemy extends GameEntity {
         int[] combatFrameCounts = {4, 4, 4, 0, 0}; // Adjust as needed
 
         // Initialize walking helper
-        this.simpleWalkingHelper = new SimpleSpriteWalkingHelper(gameAssets, entityType, entityName, walkingFrameCounts, true, 0.5f);
+        this.simpleWalkingHelper = new SimpleSpriteWalkingHelper(gameAssets, this, entityType, entityName, walkingFrameCounts, true, 0.5f);
 
         // Initialize idle helper
         this.simpleIdleHelper = new SimpleIdleHelper(gameAssets, "enemies-movement", entityName, idleFrameCounts, 1.5f);
 
         // Initialize melee helper
         this.meleeHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", combatFrameCounts, 5,
-                screenInterface.getWorld(), 0.09f, ContactType.ENEMY, ContactType.PLAYER, screenInterface);
+                screenInterface.getWorld(), 0.09f, ContactType.ENEMY, ContactType.PLAYER, screenInterface, .5f, .5f);
 
         // Initialize renderer
         this.renderer = new EntityRenderer(this);

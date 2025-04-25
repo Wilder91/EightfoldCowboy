@@ -45,7 +45,7 @@ public class Player extends GameEntity {
     private boolean justSwitchedHelpers;
     private PointLight playerLight;
     private RayHandler rayHandler;
-    private String weaponType;
+    private String equippedWeapon;
     private Sound swordSound;
     private CircleShape sensorShape;
     private FixtureDef sensorFixtureDef;
@@ -84,10 +84,11 @@ public class Player extends GameEntity {
         int[] runningFrameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
         int[] idleFrameCounts = {18, 1, 8, 18, 4};
         int[] meleeFrameCounts = {17, 17, 17, 17, 17};
-        this.weaponType = "sword";
+        this.equippedWeapon = "sword";
         this.runningHelper = new SpriteWalkingHelper(gameAssets, "character", "character", runningFrameCounts, false);
         this.idleHelper = new SpriteIdleHelper(gameAssets, "character", "character", idleFrameCounts, 0f);
-        this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", weaponType, meleeFrameCounts, 10f, screenInterface.getWorld(), .02f, ContactType.ATTACK, ContactType.ENEMY, screenInterface);
+        this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", equippedWeapon, meleeFrameCounts, 10f, screenInterface.getWorld(),
+                .03f, ContactType.ATTACK, ContactType.ENEMY, screenInterface, 1f, 1f);
         this.inputHandler = new PlayerInputHelper(this);
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
@@ -221,7 +222,7 @@ public class Player extends GameEntity {
         Vector2 facingDirection = getFacingDirection();
         meleeHelper.update(delta, position, facingDirection, isFacingRight, lastDirection);
 
-        setDepth(y);
+        resetDepthToY();
     }
 
     public void createBody(World world, Door door) {
@@ -261,33 +262,7 @@ public class Player extends GameEntity {
         this.hp -= 5;
         System.out.println("player hp: " + hp);
     }
-    // Helper method to get the facing direction as a Vector2
-    private Vector2 getFacingDirection() {
-        Vector2 direction = new Vector2(0, 0);
 
-        switch (lastDirection) {
-            case "idleUp":
-                direction.set(0, 1);
-                break;
-            case "idleDown":
-                direction.set(0, -1);
-                break;
-            case "idleSide":
-                direction.set(isFacingRight ? 1 : -1, 0);
-                break;
-            case "idleDiagonalUp":
-                direction.set(isFacingRight ? 1 : -1, 1);
-                break;
-            case "idleDiagonalDown":
-                direction.set(isFacingRight ? 1 : -1, -1);
-                break;
-            default:
-                direction.set(isFacingRight ? 1 : -1, 0);
-                break;
-        }
-
-        return direction.nor();
-    }
 
     public void setBody(Body body) {
         this.body = body;

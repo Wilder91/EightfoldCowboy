@@ -51,7 +51,7 @@ public class Building extends GameEntity {
         this.x = this.getBody().getPosition().x * PPM;
         this.y = this.getBody().getPosition().y * PPM;
         stateTime += delta;
-        //resetDepthToY();
+        resetDepthToY();
         setDepthOffset(-29f);
     }
 

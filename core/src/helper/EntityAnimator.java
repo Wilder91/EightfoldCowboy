@@ -1,10 +1,17 @@
 package helper;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.mygdx.eightfold.GameAssets;
 import helper.movement.SpriteIdleHelper;
 import helper.movement.SpriteWalkingHelper;
 import objects.GameEntity;
+
+import java.util.HashMap;
 
 public class EntityAnimator {
     protected GameEntity entity;
@@ -20,7 +27,7 @@ public class EntityAnimator {
     }
 
     // Full constructor
-    public EntityAnimator(GameEntity entity, SpriteWalkingHelper walkingHelper, SpriteIdleHelper idleHelper) {
+    public EntityAnimator(GameEntity entity, SpriteWalkingHelper walkingHelper, SpriteIdleHelper idleHelper, GameAssets gameAssets) {
         this.entity = entity;
         this.walkingHelper = walkingHelper;
         this.idleHelper = idleHelper;
@@ -43,6 +50,7 @@ public class EntityAnimator {
     public void setIdleHelper(SpriteIdleHelper idleHelper) {
         this.idleHelper = idleHelper;
     }
+
 
     public Sprite updateAnimation(float delta) {
         try {
