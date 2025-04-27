@@ -54,7 +54,7 @@ public class GameContactListener implements ContactListener {
         handleEnemyAttackContacts(userDataA, userDataB);
         handleBirdContacts(userDataA, userDataB, fixtureA.getBody(), fixtureB.getBody());
         handleChickenContacts(userDataA, userDataB, fixtureA.getBody(), fixtureB.getBody());
-        handleBisonContacts(userDataA, userDataB, fixtureA.getBody(), fixtureB.getBody());
+
     }
 
     @Override
@@ -183,19 +183,7 @@ public class GameContactListener implements ContactListener {
     private void handleBirdContacts(BodyUserData userDataA, BodyUserData userDataB,
                                     Body bodyA, Body bodyB) {
 
-        // Player-Bird contact
-        if ((userDataA.getType() == ContactType.PLAYER && userDataB.getType() == ContactType.BIRD) ||
-                (userDataB.getType() == ContactType.PLAYER && userDataA.getType() == ContactType.BIRD)) {
 
-            Body birdBody = (userDataA.getType() == ContactType.BIRD) ? bodyA : bodyB;
-            int birdId = (userDataA.getType() == ContactType.BIRD) ? userDataA.getId() : userDataB.getId();
-            Bird.playerContact(birdBody, birdId);
-        }
-
-        // Bird-Bird contact
-        if (userDataA.getType() == ContactType.BIRD && userDataB.getType() == ContactType.BIRD) {
-            Bird.playerContact(bodyB, userDataB.getId());
-        }
     }
 
     /**
@@ -213,14 +201,6 @@ public class GameContactListener implements ContactListener {
     /**
      * Handles bison-related contacts
      */
-    private void handleBisonContacts(BodyUserData userDataA, BodyUserData userDataB,
-                                     Body bodyA, Body bodyB) {
-
-        if (userDataA.getType() == ContactType.BISON && userDataB.getType() == ContactType.BISON) {
-            bodyA.setLinearDamping(7f);
-            Bird.playerContact(bodyB, userDataB.getId());
-        }
-    }
 
     /**
      * Handles player leaving door area

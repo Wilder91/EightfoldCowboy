@@ -46,7 +46,7 @@ public class Enemy extends GameEntity {
         this.simpleWalkingHelper = new SimpleSpriteWalkingHelper(gameAssets, this, entityType, entityName, walkingFrameCounts, true, 0.5f);
 
         // Initialize idle helper
-        this.simpleIdleHelper = new SimpleIdleHelper(gameAssets, "enemies-movement", entityName, idleFrameCounts, 1.5f);
+        this.simpleIdleHelper = new SimpleIdleHelper(gameAssets, this, "enemies-movement", entityName, idleFrameCounts, 1.5f);
 
         // Initialize melee helper
         this.meleeHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", 5,

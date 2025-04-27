@@ -8,6 +8,7 @@ import com.mygdx.eightfold.GameAssets;
 import helper.EntityAnimator;
 import helper.EntityRenderer;
 import helper.SimpleAnimator;
+import helper.animation.AnimationHelper;
 import objects.GameEntity;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.movement.SimpleIdleHelper;
@@ -24,17 +25,19 @@ public class Chicken extends GameEntity {
     private Sprite sprite;
     private float stateTime;
     private Vector2 originalPosition = new Vector2();
+    private AnimationHelper animationHelper;
 
     public Chicken(float width, float height, Body body, ScreenInterface screenInterface, GameAssets gameAssets, String chickenName, float hp) {
         super(width, height, body, screenInterface, gameAssets, hp);
         int[] frameCounts = {4, 4, 4};  // [up, down, horizontal]
         int idleFrameCount = 25;
         this.walkingHelper = new SimpleSpriteWalkingHelper(gameAssets, this, "farm_animal", "Chicken", frameCounts, false, .4f);
-        this.idleHelper = new SimpleIdleHelper(gameAssets, "farm_animal", "Chicken", idleFrameCount, 0.4f);
+        this.idleHelper = new SimpleIdleHelper(gameAssets, this, "farm_animal", "Chicken", idleFrameCount, 0.4f);
         this.renderer = new EntityRenderer(this);
         this.movement = new ChickenMovement(this);
         this.animator = new SimpleAnimator(this, walkingHelper, idleHelper);
         // Initialize sprite
+
         this.sprite = idleHelper.getSprite();
         if (this.sprite == null) {
             this.sprite = new Sprite();

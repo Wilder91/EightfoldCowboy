@@ -16,10 +16,17 @@ public class PlayerMovementStateManager extends EntityStateManager<Player, Playe
                 return;
             }
             // Update idle animation
-            player.getIdleHelper().setDirection(player.getLastDirection());
-            player.getIdleHelper().setFacingRight(player.isFacingRight());
-            player.getIdleHelper().update(delta);
-            player.setSprite(player.getIdleHelper().getSprite());
+          //  player.getIdleHelper().setDirection(player.getLastDirection());
+            //player.setAction("Idle");
+            updateDirectionVariables(player, velocity);
+            player.getMovementHelper().setAction("idle");
+            player.getMovementHelper().updateAnimation(velocity, delta);
+            //player.setSprite(player.getMovementHelper().getSprite());
+            if (!player.isFacingRight()) {
+                player.getSprite().setFlip(true, false);
+            } else if (player.isFacingRight()) {
+                player.getSprite().setFlip(false, false);
+            }
         }
 
         @Override public void enter(Player player) { /* Init idle state */ }
@@ -38,8 +45,9 @@ public class PlayerMovementStateManager extends EntityStateManager<Player, Playe
             // Update direction variables
             updateDirectionVariables(player, velocity);
             // Update running animation
-            player.getRunningHelper().updateAnimation(velocity, delta);
-            player.setSprite(player.getRunningHelper().getSprite());
+            player.getMovementHelper().setAction("walk");
+            player.getMovementHelper().updateAnimation(velocity, delta);
+            //player.setSprite(player.getMovementHelper().getSprite());
             // Handle sprite flipping
             if (!player.isFacingRight()) {
                 player.getSprite().setFlip(true, false);

@@ -27,11 +27,12 @@ public class AnimationHelper {
         this.atlasPath = "atlases/eightfold/" + entityType + "-movement.atlas";
 
         // Only populate with up, down and horizontal animations
-        animations.put("runningUp", createAnimation(entityName + "_up_" + action, atlasPath, frameDuration));
-        animations.put("runningDown", createAnimation(entityName + "_down_" + action, atlasPath, frameDuration));
-        animations.put("runningHorizontal", createAnimation(entityName + "_horizontal_" + action, atlasPath, frameDuration));
-        animations.put("runningDiagonalUp", createAnimation(entityName + "_diagUP_" + action, atlasPath, frameDuration));
-        animations.put("runningDiagonalDown", createAnimation(entityName + "_diagDOWN_" + action, atlasPath, frameDuration));
+        animations.put("Up", createAnimation(entityName + "_up_" + action, atlasPath, frameDuration));
+        animations.put("Down", createAnimation(entityName + "_down_" + action, atlasPath, frameDuration));
+        animations.put("Horizontal", createAnimation(entityName + "_horizontal_" + action, atlasPath, frameDuration));
+        animations.put("DiagonalUp", createAnimation(entityName + "_diagUP_" + action, atlasPath, frameDuration));
+        animations.put("DiagonalDown", createAnimation(entityName + "_diagDOWN_" + action, atlasPath, frameDuration));
+
     }
 
     private Animation<TextureRegion> createAnimation(String regionNamePrefix, String atlasPath, float frameDuration) {

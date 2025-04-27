@@ -27,6 +27,7 @@ public class SpriteIdleHelper {
     private String characterName;
     private boolean isFacingRight = true;
     private int[] frameCounts;
+    private float frameDuration;
 
     public SpriteIdleHelper(GameAssets gameAssets, GameEntity entity, String characterType, String characterName, int[] frameCounts, float stateTime) {
         this.gameAssets = gameAssets;
@@ -39,9 +40,9 @@ public class SpriteIdleHelper {
         animationHelper.loadAnimations(characterType, characterName, FRAME_DURATION, "idle");
         animations = animationHelper.getAllAnimations();
 
-       // loadAnimations();
+       //loadAnimations();
 
-        this.currentAnimation = animations.get("idleDown");
+        this.currentAnimation = animations.get("Down");
         this.sprite = new Sprite(currentAnimation.getKeyFrame(0));
         this.sprite.setOriginCenter();
     }
@@ -49,36 +50,27 @@ public class SpriteIdleHelper {
     private void loadAnimations() {
        // System.out.println("character TYPE: " + characterType);
         String atlasPath = "atlases/eightfold/" + characterType + "-movement.atlas";
-        animations.put("idleDown", createAnimation(characterName + "_down_idle", frameCounts[0], atlasPath, .3f));
-        animations.put("idleUp", createAnimation(characterName + "_up_idle", frameCounts[1], atlasPath, .1f));
+        animations.put("Down", createAnimation(characterName + "_down_idle", atlasPath, .3f));
+        animations.put("Up", createAnimation(characterName + "_up_idle", atlasPath, .1f));
         //animations.put("idleDiagonalUp", createAnimation(characterName + "_diagUP_idle", frameCounts[2], atlasPath, .1f));
         //animations.put("idleDiagonalDown", createAnimation(characterName + "_diagDOWN_idle", frameCounts[3], atlasPath, .3f));
-        animations.put("idleSide", createAnimation(characterName + "_horizontal_idle", frameCounts[4], atlasPath, .8f));
+        animations.put("Side", createAnimation(characterName + "_horizontal_idle", atlasPath, .8f));
     }
 
-    private Animation<TextureRegion> createAnimation(String regionPrefix, int frameCount, String atlasPath, float frameDuration) {
+    private Animation<TextureRegion> createAnimation(String regionNamePrefix, String atlasPath, float frameDuration) {
         Array<TextureRegion> frames = new Array<>();
         TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
 
-        if (atlas == null) {
-            System.err.println("ERROR: Atlas not found: " + atlasPath);
-            return new Animation<>(frameDuration, frames, Animation.PlayMode.LOOP);
+        int i = 1;
+        TextureRegion region;
+        while ((region = atlas.findRegion(regionNamePrefix, i)) != null) {
+            frames.add(region);
+            i++;
         }
 
-        //System.out.println("Loading idle animation: " + regionPrefix + " with " + frameCount + " frames");
-
-        for (int i = 1; i <= frameCount; i++) {
-            TextureRegion region = atlas.findRegion(regionPrefix, i);
-            if (region != null) {
-                frames.add(region);
-            } else {
-                System.err.println("Missing frame: " + regionPrefix + "_" + i);
-            }
+        if (frames.size == 0) {
+           // System.err.println("No regions found with prefix: " + regionNamePrefix);
         }
-
-        //System.out.println("Loaded " + frames.size + " frames for " + regionPrefix);
-
-
 
         return new Animation<>(frameDuration, frames, Animation.PlayMode.LOOP);
     }

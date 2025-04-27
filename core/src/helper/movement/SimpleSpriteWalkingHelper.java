@@ -44,7 +44,7 @@ public class SimpleSpriteWalkingHelper {
         animationHelper.loadAnimations(animalType, animalName, frameDuration, "walk");
         animations = animationHelper.getAllAnimations();
         //loadAnimations();
-        this.currentAnimation = animations.get("runningHorizontal");
+        this.currentAnimation = animations.get("Horizontal");
 
         this.sprite = new Sprite(this.currentAnimation.getKeyFrame(stateTime));
         this.sprite.setOriginCenter();
@@ -53,32 +53,6 @@ public class SimpleSpriteWalkingHelper {
             sprite.flip(true, false);
             isFacingRight = false;
         }
-    }
-
-    public void loadAnimations() {
-        String atlasPath = "atlases/eightfold/" + animalType + ".atlas";
-        // Only populate with up, down and horizontal animations
-        animations.put("runningUp", createAnimation(animalName + "_up_walk",  atlasPath));
-        animations.put("runningDown", createAnimation(animalName + "_down_walk",  atlasPath));
-        animations.put("runningHorizontal", createAnimation(animalName + "_horizontal_walk",  atlasPath));
-    }
-
-    private Animation<TextureRegion> createAnimation(String regionNamePrefix, String atlasPath) {
-        Array<TextureRegion> frames = new Array<>();
-        TextureAtlas atlas = gameAssets.getAtlas(atlasPath);
-
-        int i = 1;
-        TextureRegion region;
-        while ((region = atlas.findRegion(regionNamePrefix, i)) != null) {
-            frames.add(region);
-            i++;
-        }
-
-        if (frames.size == 0) {
-            System.err.println("No regions found with prefix: " + regionNamePrefix);
-        }
-
-        return new Animation<>(this.frameDuration, frames, Animation.PlayMode.LOOP);
     }
 
     public void updateAnimation(Vector2 linearVelocity, float delta) {
@@ -122,13 +96,13 @@ public class SimpleSpriteWalkingHelper {
         if (Math.abs(vy) > Math.abs(vx)) {
             // Vertical movement is stronger
             if (vy > 0) {
-                currentAnimation = animations.get("runningUp");
+                currentAnimation = animations.get("Up");
             } else {
-                currentAnimation = animations.get("runningDown");
+                currentAnimation = animations.get("Down");
             }
         } else {
             // Horizontal movement is stronger or equal
-            currentAnimation = animations.get("runningHorizontal");
+            currentAnimation = animations.get("Horizontal");
             flipSprite(vx > 0);
         }
     }

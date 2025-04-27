@@ -21,6 +21,7 @@ import helper.state.PlayerMovementStateManager;
 import objects.GameEntity;
 import objects.inanimate.Door;
 
+import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
 
 public class Player extends GameEntity {
@@ -37,10 +38,11 @@ public class Player extends GameEntity {
     private Sprite sprite;
     private boolean isFacingRight;
     private float stateTime;
-    private SpriteWalkingHelper runningHelper;
+    private SpriteMovementHelper movementHelper;
+    private String action;
     private MeleeCombatHelper meleeHelper;
     //private SpriteWalkingHelper walkingHelper;
-    private SpriteIdleHelper idleHelper;
+    //private SpriteIdleHelper idleHelper;
     private String lastDirection = "idleDown";
     private boolean justSwitchedHelpers;
     private PointLight playerLight;
@@ -83,14 +85,18 @@ public class Player extends GameEntity {
         this.rayHandler = new RayHandler(screenInterface.getWorld());
         int[] runningFrameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
         int[] idleFrameCounts = {18, 1, 8, 18, 4};
-        int[] meleeFrameCounts = {17, 17, 17, 17, 17};
         this.equippedWeapon = "sword";
-        this.runningHelper = new SpriteWalkingHelper(gameAssets, this, "character", "character", runningFrameCounts, false);
-        this.idleHelper = new SpriteIdleHelper(gameAssets, this, "character", "character", idleFrameCounts, 0f);
-        this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character", equippedWeapon, 10f, screenInterface.getWorld(),
+        //this.runningHelper = new SpriteWalkingHelper(gameAssets, this, "character", "character", runningFrameCounts, false);
+//        this.idleHelper = new SpriteIdleHelper(gameAssets, this, "character",
+//                "character", idleFrameCounts, 0f);
+        this.action = "idle";
+        this.movementHelper = new SpriteMovementHelper(gameAssets, this, "character", "character",
+                false, FRAME_DURATION, action);
+        this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character",
+                equippedWeapon, 10f, screenInterface.getWorld(),
                 .03f, ContactType.ATTACK, ContactType.ENEMY, screenInterface, 1f, 1f);
         this.inputHandler = new PlayerInputHelper(this);
-        this.sprite = new Sprite();
+        this.sprite = movementHelper.getSprite();
         this.sprite.setSize(width, height);
         this.swordSound = gameAssets.getSound("sounds/whoosh.mp3");
         playerLight = new PointLight(rayHandler, 128, new Color(.5f, .4f, .5f, .8f), .4f, 0, 0);
@@ -121,9 +127,15 @@ public class Player extends GameEntity {
         return idleHelper;
     }
 
+    public SpriteMovementHelper getMovementHelper(){
+        return movementHelper;
+    }
+
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
+
+    public  void setAction(String action){this.action = action; }
 
     public String getLastDirection() {
         return lastDirection;
@@ -133,9 +145,6 @@ public class Player extends GameEntity {
         return isFacingRight;
     }
 
-    public SpriteWalkingHelper getRunningHelper() {
-        return runningHelper;
-    }
 
     public Sprite getSprite() {
         return  sprite;

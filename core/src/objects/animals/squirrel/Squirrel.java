@@ -29,7 +29,7 @@ public class Squirrel extends GameEntity {
         super(width, height, body, screenInterface, gameAssets, hp);
         int idleFrameCount = 20;
         this.squirrelWalkingHelper = new HorizontalSpriteHelper(gameAssets, "wild-animal", "Squirrel", 4, true);
-        this.squirrelIdleHelper = new SimpleIdleHelper(gameAssets, "wild-animal", "Squirrel", idleFrameCount, 0.3f);
+        this.squirrelIdleHelper = new SimpleIdleHelper(gameAssets, this, "wild-animal", "Squirrel", idleFrameCount, 0.3f);
         this.squirrelRenderer = new EntityRenderer(this);
         this.squirrelAnimator = new SquirrelAnimator(this, squirrelWalkingHelper, squirrelIdleHelper);
         this.squirrelMovement = new SquirrelMovement(this);

@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
+import helper.animation.AnimationHelper;
+import objects.GameEntity;
 
 import static helper.Constants.FRAME_DURATION;
 
@@ -19,6 +21,7 @@ public class SimpleIdleHelper {
     private boolean isFacingRight = true;
     private int frameCount;
     private float frameDuration;
+    private AnimationHelper animationHelper;
 
     /**
      * Creates a simple idle animation helper with only one animation
@@ -29,13 +32,15 @@ public class SimpleIdleHelper {
      * @param frameCount Number of frames in the idle animation
      * @param frameDuration Duration of each frame (or 0 to use default)
      */
-    public SimpleIdleHelper(GameAssets gameAssets, String animalType, String animalName, int frameCount, float frameDuration) {
+    public SimpleIdleHelper(GameAssets gameAssets, GameEntity gameEntity, String animalType, String animalName, int frameCount, float frameDuration) {
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.animalName = animalName;
         this.stateTime = 0f;
         this.frameCount = frameCount;
         this.frameDuration = (frameDuration > 0) ? frameDuration : FRAME_DURATION;
+        this.animationHelper = new AnimationHelper(gameAssets, gameEntity);
+        animationHelper.loadAnimations(animalType, animalName,frameDuration, "idle");
 
         loadAnimation();
 

@@ -43,7 +43,7 @@ public class SpriteWalkingHelper {
 
         //loadAnimations();
 
-        this.currentAnimation = animations.get("runningHorizontal");
+        this.currentAnimation = animations.get("Horizontal");
         setRestingFrame("Sprites/Character/Idle/Idle Down (300)/Character_Idle_Down_1.png");
         this.sprite = new Sprite();
         this.sprite.setOriginCenter();
@@ -96,28 +96,28 @@ public class SpriteWalkingHelper {
         if (vy > 0.1f) {
             if (vx > 0) {
                 //System.out.println("YO");
-                currentAnimation = animations.get("runningDiagonalUp");
+                currentAnimation = animations.get("DiagonalUp");
                 flipSprite(true);
             } else if (vx < 0) {
-                currentAnimation = animations.get("runningDiagonalUp");
+                currentAnimation = animations.get("DiagonalUp");
                 flipSprite(false);
             } else {
-                currentAnimation = animations.get("runningUp");
+                currentAnimation = animations.get("Up");
             }
         } else if (vy < -0.1f) {
             if (vx > 0) {
 
-                currentAnimation = animations.get("runningDiagonalDown");
+                currentAnimation = animations.get("DiagonalDown");
             } else if (vx < 0) {
-                currentAnimation = animations.get("runningDiagonalDown");
+                currentAnimation = animations.get("DiagonalDown");
             } else {
-                currentAnimation = animations.get("runningDown");
+                currentAnimation = animations.get("Down");
             }
         } else if (vx > 0.1f) {
-            currentAnimation = animations.get("runningHorizontal");
+            currentAnimation = animations.get("Horizontal");
             flipSprite(true);
         } else if (vx < -0.1f) {
-            currentAnimation = animations.get("runningHorizontal");
+            currentAnimation = animations.get("Horizontal");
             flipSprite(false);
         }
     }

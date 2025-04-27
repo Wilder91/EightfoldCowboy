@@ -108,9 +108,7 @@ public class EntityManager {
             player.update(delta);
         }
 
-        for (Bird bird : birds) {
-            bird.update(delta);
-        }
+
 
         for (Pond pond : ponds) {
             pond.update(delta);
@@ -148,7 +146,7 @@ public class EntityManager {
         if (player != null) sortedEntities.add(player);
         sortedEntities.addAll(chickens);
         sortedEntities.addAll(squirrels);
-        sortedEntities.addAll(birds);
+
         sortedEntities.addAll(butterflies);
         sortedEntities.addAll(dragonflies);
         sortedEntities.addAll(npcs);
@@ -219,8 +217,7 @@ public class EntityManager {
     public boolean removeEntity(GameEntity entity) {
         boolean removed = false;
 
-        if (entity instanceof Bird) removed = birds.remove(entity);
-        else if (entity instanceof Building) removed = buildings.remove(entity);
+        if (entity instanceof Building) removed = birds.remove(entity);
         else if (entity instanceof Boulder) removed = boulders.remove(entity);
         else if (entity instanceof Tree) removed = trees.remove(entity);
         else if (entity instanceof Bush) removed = bushes.remove(entity);
