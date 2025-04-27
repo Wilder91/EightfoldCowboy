@@ -7,8 +7,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.combat.MeleeCombatHelper;
+import helper.combat.PlayerMeleeCombatHelper;
 import helper.movement.*;
-import objects.enemies.ThicketSaint;
 
 import java.util.Comparator;
 
@@ -44,7 +44,7 @@ public abstract class GameEntity {
     protected SpriteIdleHelper idleHelper;
     protected SimpleIdleHelper simpleIdleHelper;
     protected SimpleCombatWalkingHelper combatWalkingHelper;
-    protected MeleeCombatHelper meleeHelper;
+    protected PlayerMeleeCombatHelper meleeHelper;
     protected Sprite sprite;
     protected String lastDirection = "idleDown";
     protected boolean isFacingRight = true;

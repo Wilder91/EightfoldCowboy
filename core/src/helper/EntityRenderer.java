@@ -3,21 +3,23 @@ package helper;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import helper.combat.MeleeCombatHelper;
+import helper.combat.PlayerMeleeCombatHelper;
 import objects.GameEntity;
 
 public class EntityRenderer {
     protected GameEntity entity;
     protected Sprite sprite;
-    protected MeleeCombatHelper meleeCombatHelper;
+    protected PlayerMeleeCombatHelper meleeCombatHelper;
+    protected MeleeCombatHelper combatHelper;
 
     public EntityRenderer(GameEntity entity) {
         this.entity = entity;
         // This constructor is missing meleeCombatHelper initialization
     }
 
-    public EntityRenderer(GameEntity entity, MeleeCombatHelper meleeCombatHelper) {
+    public EntityRenderer(GameEntity entity, MeleeCombatHelper combatHelper) {
         this.entity = entity;
-        this.meleeCombatHelper = meleeCombatHelper;
+        this.combatHelper = combatHelper;
         // The mainSprite might be null initially and set later
     }
 

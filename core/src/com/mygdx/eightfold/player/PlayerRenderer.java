@@ -2,12 +2,13 @@ package com.mygdx.eightfold.player;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import helper.combat.MeleeCombatHelper;
+import helper.combat.PlayerMeleeCombatHelper;
+
 public class PlayerRenderer {
     private Player player;
-    private MeleeCombatHelper meleeHelper;
+    private PlayerMeleeCombatHelper meleeHelper;
 
-    public PlayerRenderer(Player player, MeleeCombatHelper meleeHelper) {
+    public PlayerRenderer(Player player, PlayerMeleeCombatHelper meleeHelper) {
         this.player = player;
         this.meleeHelper = meleeHelper;
     }

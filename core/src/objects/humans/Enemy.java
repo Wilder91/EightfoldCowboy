@@ -8,10 +8,9 @@ import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.ContactType;
 import helper.EntityAnimator;
 import helper.EntityRenderer;
-import helper.combat.MeleeCombatHelper;
+import helper.combat.PlayerMeleeCombatHelper;
 import helper.movement.SimpleIdleHelper;
 import helper.movement.SimpleSpriteWalkingHelper;
-import helper.movement.SpriteIdleHelper;
 
 import helper.state.EnemyStateManager;
 import objects.GameEntity;
@@ -49,7 +48,7 @@ public class Enemy extends GameEntity {
         this.simpleIdleHelper = new SimpleIdleHelper(gameAssets, this, "enemies-movement", entityName, idleFrameCounts, 1.5f);
 
         // Initialize melee helper
-        this.meleeHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword", 5,
+        this.meleeHelper = new PlayerMeleeCombatHelper(gameAssets, entityType, entityName, "sword", 5,
                 screenInterface.getWorld(), 0.09f, ContactType.ENEMY, ContactType.PLAYER, screenInterface, .5f, .5f);
 
         // Initialize renderer

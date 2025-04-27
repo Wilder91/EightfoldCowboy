@@ -22,7 +22,6 @@ public class SpriteMovementHelper{
     private String animalType;
     private String animalName;
     private boolean isFacingRight = true; // Track the facing direction
-    private int[] frameCounts;
     private boolean startFlipped;
     private float frameDuration;
     private AnimationHelper animationHelper;
@@ -59,11 +58,11 @@ public class SpriteMovementHelper{
     public void setAction(String newAction) {
         // Only reload animations if the action has changed
         if (!this.action.equals(newAction)) {
-            System.out.println("Changing action from '" + this.action + "' to '" + newAction + "'");
+
 
             // Store the current direction before changing action
             String currentDirection = getCurrentAnimationKey();
-            System.out.println("Current direction: " + currentDirection);
+
 
             this.action = newAction;
             // Reload animations with the new action
@@ -72,9 +71,9 @@ public class SpriteMovementHelper{
             // Restore the same direction with the new action
             if (animations.containsKey(currentDirection)) {
                 currentAnimation = animations.get(currentDirection);
-                System.out.println("Restored animation direction: " + currentDirection);
+                //System.out.println("Restored animation direction: " + currentDirection);
             } else {
-                System.out.println("Could not restore direction: " + currentDirection + ", defaulting to Down");
+                //System.out.println("Could not restore direction: " + currentDirection + ", defaulting to Down");
                 currentAnimation = animations.get("Down");
             }
 

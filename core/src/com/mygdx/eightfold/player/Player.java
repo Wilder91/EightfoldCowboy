@@ -14,7 +14,7 @@ import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyHelperService;
 import helper.ContactType;
 import com.mygdx.eightfold.GameAssets;
-import helper.combat.MeleeCombatHelper;
+import helper.combat.PlayerMeleeCombatHelper;
 import helper.movement.*;
 
 import helper.state.PlayerMovementStateManager;
@@ -40,7 +40,7 @@ public class Player extends GameEntity {
     private float stateTime;
     private SpriteMovementHelper movementHelper;
     private String action;
-    private MeleeCombatHelper meleeHelper;
+    private PlayerMeleeCombatHelper meleeHelper;
     //private SpriteWalkingHelper walkingHelper;
     //private SpriteIdleHelper idleHelper;
     private String lastDirection = "idleDown";
@@ -92,7 +92,7 @@ public class Player extends GameEntity {
         this.action = "idle";
         this.movementHelper = new SpriteMovementHelper(gameAssets, this, "character", "character",
                 false, FRAME_DURATION, action);
-        this.meleeHelper = new MeleeCombatHelper(gameAssets, "character", "character",
+        this.meleeHelper = new PlayerMeleeCombatHelper(gameAssets, "character", "character",
                 equippedWeapon, 10f, screenInterface.getWorld(),
                 .03f, ContactType.ATTACK, ContactType.ENEMY, screenInterface, 1f, 1f);
         this.inputHandler = new PlayerInputHelper(this);
@@ -203,7 +203,7 @@ public class Player extends GameEntity {
         this.currentState = state;
     }
 
-    public MeleeCombatHelper getMeleeHelper() {
+    public PlayerMeleeCombatHelper getMeleeHelper() {
         return meleeHelper;
     }
     public void setFacingRight(boolean b) {

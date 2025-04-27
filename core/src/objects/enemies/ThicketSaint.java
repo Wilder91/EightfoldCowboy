@@ -12,7 +12,8 @@ import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.*;
 import helper.animation.AnimationHelper;
-import helper.combat.MeleeCombatHelper;
+import helper.combat.EnemyMeleeCombatHelper;
+import helper.combat.PlayerMeleeCombatHelper;
 import helper.movement.SimpleCombatWalkingHelper;
 import helper.movement.SimpleIdleHelper;
 import helper.movement.SimpleSpriteWalkingHelper;
@@ -30,12 +31,15 @@ public class ThicketSaint extends GameEntity {
     private EnemyStateManager stateManager;
     private SimpleSpriteWalkingHelper walkingHelper;
     private SimpleCombatWalkingHelper combatWalkingHelper;
-    private MeleeCombatHelper meleeCombatHelper;
+    private EnemyMeleeCombatHelper meleeCombatHelper;
     private SimpleAnimator animator;
     private SensorHelper sensorHelper;
     private AnimationHelper animationHelper;
     private String lastDirection = "idleDown";
-
+    private float attackCounter;
+    private long lastAttackTime = 0;
+    private static final long ATTACK_COOLDOWN = 2000;
+    
     private int id;
     private float stateTime = 0;
     private ScreenInterface screenInterface;
@@ -78,7 +82,7 @@ public class ThicketSaint extends GameEntity {
         };
 
         this.idleHelper = new SimpleIdleHelper(gameAssets, this, "enemies", this.entityName, idleFrameCounts, 1.5f);
-        this.meleeCombatHelper = new MeleeCombatHelper(gameAssets, entityType, entityName, "sword",  5, screenInterface.getWorld(),
+        this.meleeCombatHelper = new EnemyMeleeCombatHelper(gameAssets, entityType, entityName, "sword",  5, screenInterface.getWorld(),
                 .07f, ContactType.ENEMY, ContactType.PLAYER, screenInterface, .5f, .5f);
         this.combatWalkingHelper = new SimpleCombatWalkingHelper(gameAssets,  entityType, entityName, combatFrameCounts, false,FRAME_DURATION);
         this.movement = new EntityMovement(this);
@@ -115,11 +119,8 @@ public class ThicketSaint extends GameEntity {
         return this.walkingHelper;
     }
 
-    public MeleeCombatHelper getMeleeCombatHelper() {
-        return this.meleeCombatHelper;
-    }
 
-    public MeleeCombatHelper getMeleeHelper() {
+    public EnemyMeleeCombatHelper getMeleeHelper() {
         return this.meleeCombatHelper;
     }
 
@@ -131,7 +132,6 @@ public class ThicketSaint extends GameEntity {
         // Get player position
         Vector2 playerPosition = screenInterface.getPlayer().getBody().getPosition();
         Vector2 myPosition = this.body.getPosition();
-        stateManager.changeState(this, PURSUING);
 
         // Calculate direction vector to player
         Vector2 direction = new Vector2(playerPosition.x - myPosition.x, playerPosition.y - myPosition.y);
@@ -142,34 +142,34 @@ public class ThicketSaint extends GameEntity {
         // Define minimum distance to stop (in Box2D units)
         float stopDistance = 1f; // Adjust this value as needed
 
+        // Determine the appropriate state based on distance
+        GameEntity.State newState = getCurrentState(); // Default to current state
+
         // Check if player is within the sensor radius
         if (distanceToPlayer > largeSensorRadius) {
             // Player is outside sensor radius, gradually stop movement
             Vector2 currentVelocity = this.body.getLinearVelocity();
             this.body.setLinearVelocity(currentVelocity.x * 0.8f, currentVelocity.y * 0.8f);
-            stateManager.changeState(this, IDLE);
-            return; // Exit the method early
+            newState = IDLE;
         }
-
         // Only normalize and move if not too close
-        float halfwayDistance = stopDistance * 2; // Adjust this multiplier as needed
-
-        if (distanceToPlayer > stopDistance) {
+        else if (distanceToPlayer > stopDistance) {
             // Normalize the direction
             direction.nor();
 
             // Set movement speed
-            float movementSpeed = 1.5f; // Adjust this value as needed
+            float movementSpeed = 1.1f; // Adjust this value as needed
+
+            float halfwayDistance = stopDistance * 2; // Adjust this multiplier as needed
 
             // Choose state based on distance
             if (distanceToPlayer > halfwayDistance) {
                 // Far away - use regular walking/running
-                stateManager.changeState(this, RUNNING);
+                newState = RUNNING;
             } else {
                 // Closer - use combat walking
-                sprite.flip(true,true);
-                stateManager.changeState(this, PURSUING);
-
+                sprite.flip(true, true);
+                newState = PURSUING;
             }
 
             // Apply velocity toward player
@@ -180,19 +180,36 @@ public class ThicketSaint extends GameEntity {
             Vector2 currentVelocity = this.body.getLinearVelocity();
             this.body.setLinearVelocity(currentVelocity.x * 0.9f, currentVelocity.y * 0.9f);
 
-            // If we're very close and nearly stopped, we could trigger an attack
             if (distanceToPlayer < stopDistance * 1f && currentVelocity.len() < 0.2f) {
-                // Trigger attack
-
-                stateManager.changeState(this, GameEntity.State.ATTACKING);
+                if (getCurrentState() != ATTACKING) {
+                    triggerAttack();
+                }
             }
         }
 
+        // Only change state if needed
+        if (newState != getCurrentState()) {
+            stateManager.changeState(this, newState);
         }
+    }
 
     public String getLastDirection() {
         return lastDirection;
     }
+
+    public void triggerAttack(){
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastAttackTime < ATTACK_COOLDOWN) {
+            // Still on cooldown, don't attack yet
+            return;
+        }
+
+        // Update the last attack time
+        lastAttackTime = currentTime;
+
+        stateManager.changeState(this, ATTACKING);
+    }
+
 
     public void setLastDirection(String direction) {
         this.lastDirection = direction;
@@ -230,10 +247,12 @@ public class ThicketSaint extends GameEntity {
 
     @Override
     public void takeDamage() {
+        //stateManager.changeState(this, ATTACKING);
+
         Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
         sound.play(0.05f);
         this.hp -= 5;
-        stateManager.changeState(this, ATTACKING);
+        //stateManager.changeState(this, ATTACKING);
         System.out.println("thicketsaint hp: " + hp);
     }
 
