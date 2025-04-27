@@ -38,7 +38,7 @@ public class ThicketSaint extends GameEntity {
     private String lastDirection = "idleDown";
     private float attackCounter;
     private long lastAttackTime = 0;
-    private static final long ATTACK_COOLDOWN = 2000;
+    private static final long ATTACK_COOLDOWN = 1200;
     
     private int id;
     private float stateTime = 0;
@@ -47,8 +47,6 @@ public class ThicketSaint extends GameEntity {
     private String entityType;
     private String entityName;
     private EntityMovement movement;
-    private CircleShape sensorShape;
-    private FixtureDef sensorFixtureDef;
     private Fixture sensorFixture;
     private float largeSensorRadius = 5f;
     private float smallSensorRadius = 2f;
@@ -140,7 +138,7 @@ public class ThicketSaint extends GameEntity {
         float distanceToPlayer = direction.len();
 
         // Define minimum distance to stop (in Box2D units)
-        float stopDistance = 1f; // Adjust this value as needed
+        float stopDistance = 1.4f; // Adjust this value as needed
 
         // Determine the appropriate state based on distance
         GameEntity.State newState = getCurrentState(); // Default to current state
