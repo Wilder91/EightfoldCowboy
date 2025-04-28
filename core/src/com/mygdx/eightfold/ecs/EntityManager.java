@@ -10,6 +10,7 @@ import objects.animals.farm_animals.Chicken;
 import objects.animals.bugs.Bug;
 import objects.animals.bugs.Butterfly;
 import objects.animals.bugs.Dragonfly;
+import objects.enemies.ThicketSaint;
 import objects.humans.Enemy;
 import objects.humans.NPC;
 import objects.inanimate.*;
@@ -124,7 +125,9 @@ public class EntityManager {
 
         for (GameEntity entity : entities){
             entity.update(delta);
+
         }
+
     }
 
     /**
@@ -234,6 +237,7 @@ public class EntityManager {
         }
         else if (entity instanceof Door) removed = doors.remove(entity);
         else if (entity instanceof Bug) removed = bugs.remove(entity);
+        else if (entity instanceof ThicketSaint) removed = enemies.remove(entity);
 
         return removed;
     }

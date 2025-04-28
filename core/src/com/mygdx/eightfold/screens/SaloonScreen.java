@@ -166,7 +166,10 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
+    @Override
+    public void removeEntity(GameEntity entity) {
 
+    }
 
 
     @Override

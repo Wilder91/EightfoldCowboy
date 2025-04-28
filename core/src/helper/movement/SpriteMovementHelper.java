@@ -26,9 +26,10 @@ public class SpriteMovementHelper{
     private float frameDuration;
     private AnimationHelper animationHelper;
     private String action;
+    private Boolean simple;
 
     public SpriteMovementHelper(GameAssets gameAssets, GameEntity entity, String animalType, String animalName,
-                                 boolean startFlipped, float frameDuration, String action){
+                                 boolean startFlipped, float frameDuration, String action, Boolean simple){
         this.gameAssets = gameAssets;
         this.animalType = animalType;
         this.animalName = animalName;
@@ -38,9 +39,10 @@ public class SpriteMovementHelper{
         this.action = action;
         this.frameDuration = frameDuration;
         this.animationHelper = new AnimationHelper(gameAssets, entity);
+        this.simple = simple;
         //animationhelper.loadanimations needs to be called again to change the action, at least as
         //currently written
-        loadAnimations();
+        loadAnimations(simple);
         //animationHelper.loadAnimations(animalType, animalName, frameDuration, action);
         //animations = animationHelper.getAllAnimations();
         //loadAnimations();
@@ -49,10 +51,7 @@ public class SpriteMovementHelper{
         this.sprite = new Sprite(this.currentAnimation.getKeyFrame(stateTime));
         this.sprite.setOriginCenter();
 
-        if (startFlipped) {
-            sprite.flip(true, false);
-            isFacingRight = false;
-        }
+
     }
 
     public void setAction(String newAction) {
@@ -66,7 +65,7 @@ public class SpriteMovementHelper{
 
             this.action = newAction;
             // Reload animations with the new action
-            loadAnimations();
+            loadAnimations(simple);
 
             // Restore the same direction with the new action
             if (animations.containsKey(currentDirection)) {
@@ -92,10 +91,16 @@ public class SpriteMovementHelper{
         return "Down";
     }
 
-    public void loadAnimations(){
+    public void loadAnimations(boolean simple){
         //System.out.println(action);
-        animationHelper.loadAnimations(animalType, animalName, frameDuration, action);
-        animations = animationHelper.getAllAnimations();
+        if(simple) {
+            animationHelper.loadSimpleAnimations(animalType, animalName, frameDuration, action);
+            animations = animationHelper.getAllAnimations();
+        }else {
+            animationHelper.loadAnimations(animalType, animalName, frameDuration, action);
+            animations = animationHelper.getAllAnimations();
+        }
+
 
     }
 
@@ -125,64 +130,40 @@ public class SpriteMovementHelper{
         sprite.setSize(sprite.getRegionWidth(), sprite.getRegionHeight());
         sprite.setOriginCenter();
 
-        // Adjust the sprite facing direction
-        if (vx != 0) {
-            flipSprite(vx > 0);
-        }
     }
 
     public void setFacingRight(boolean shouldFaceRight) {
         if (isFacingRight != shouldFaceRight) {
-            sprite.flip(true, false);
-            isFacingRight = shouldFaceRight;
+
+            //isFacingRight = shouldFaceRight;
         }
     }
 
     private void setCurrentAnimation(float vx, float vy) {
         if (vy > 0.1f) {
-            if (vx > 0) {
-                //System.out.println("YO");
+            if (Math.abs(vx) > 0.1f && animations.containsKey("DiagonalUp")) {
+                // Use diagonal if it exists and we're moving diagonally
                 currentAnimation = animations.get("DiagonalUp");
-                flipSprite(true);
-            } else if (vx < 0) {
-                currentAnimation = animations.get("DiagonalUp");
-                flipSprite(false);
+
             } else {
+                // Fall back to up if no diagonal exists
                 currentAnimation = animations.get("Up");
             }
         } else if (vy < -0.1f) {
-            if (vx > 0) {
+            if (Math.abs(vx) > 0.1f && animations.containsKey("DiagonalDown")) {
+                // Use diagonal if it exists and we're moving diagonally
+                currentAnimation = animations.get("DiagonalDown");
 
-                currentAnimation = animations.get("DiagonalDown");
-            } else if (vx < 0) {
-                currentAnimation = animations.get("DiagonalDown");
             } else {
+                // Fall back to down if no diagonal exists
                 currentAnimation = animations.get("Down");
             }
-        } else if (vx > 0.1f) {
+        } else if (vx > 0.1f || vx < -0.1f) {
             currentAnimation = animations.get("Horizontal");
-            flipSprite(true);
-        } else if (vx < -0.1f) {
-            currentAnimation = animations.get("Horizontal");
-            flipSprite(false);
+
         }
     }
 
-    public Animation<TextureRegion> getCurrentAnimation() {
-        return currentAnimation;
-    }
-
-    private void flipSprite(boolean shouldFaceRight) {
-        if (isFacingRight != shouldFaceRight) {
-            sprite.flip(true, false); // Flip horizontally
-            isFacingRight = shouldFaceRight; // Set the new facing direction
-        }
-    }
-
-    public void setRestingFrame(String texturePath) {
-        Texture texture = new Texture(texturePath);
-        this.restingFrame = new TextureRegion(texture);
-    }
 
     public Sprite getSprite() {
         return sprite;

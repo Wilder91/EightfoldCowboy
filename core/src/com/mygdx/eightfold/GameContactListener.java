@@ -5,8 +5,6 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import helper.ContactType;
-import objects.GameEntity;
-import objects.animals.birds.Bird;
 import objects.animals.farm_animals.Chicken;
 import objects.enemies.ThicketSaint;
 import objects.inanimate.inanimate_helpers.DoorManager;
@@ -40,20 +38,22 @@ public class GameContactListener implements ContactListener {
             // Special case for ThicketSaint sensor
             handleSpecialSensorCases(fixtureA, fixtureB);
             return;
+        } else {
+
+            BodyUserData userDataA = (BodyUserData) fixtureA.getUserData();
+            BodyUserData userDataB = (BodyUserData) fixtureB.getUserData();
+
+            //System.out.println("Contact between: " + userDataA.getType() + " and " + userDataB.getType());
+
+            // Handle each contact type with independent checks
+            handleAttackContacts(userDataA, userDataB);
+            handlePlayerDoorContacts(userDataA, userDataB);
+            handlePlayerNPCContacts(userDataA, userDataB);
+            handleEnemyAttackContacts(userDataA, userDataB);
+            handleBirdContacts(userDataA, userDataB, fixtureA.getBody(), fixtureB.getBody());
+            handleChickenContacts(userDataA, userDataB, fixtureA.getBody(), fixtureB.getBody());
+            handleEnemyPlayerContacts(userDataA, userDataB, contact);
         }
-
-        BodyUserData userDataA = (BodyUserData) fixtureA.getUserData();
-        BodyUserData userDataB = (BodyUserData) fixtureB.getUserData();
-
-        //System.out.println("Contact between: " + userDataA.getType() + " and " + userDataB.getType());
-
-        // Handle each contact type with independent checks
-        handleAttackContacts(userDataA, userDataB);
-        handlePlayerDoorContacts(userDataA, userDataB);
-        handlePlayerNPCContacts(userDataA, userDataB);
-        handleEnemyAttackContacts(userDataA, userDataB);
-        handleBirdContacts(userDataA, userDataB, fixtureA.getBody(), fixtureB.getBody());
-        handleChickenContacts(userDataA, userDataB, fixtureA.getBody(), fixtureB.getBody());
 
     }
 
@@ -89,7 +89,7 @@ public class GameContactListener implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-        // Implement as needed
+
     }
 
     @Override
@@ -175,6 +175,27 @@ public class GameContactListener implements ContactListener {
             // Add player damage logic here
             // screenInterface.damagePlayer(10);
         }
+    }
+
+    private void handleEnemyPlayerContacts(BodyUserData userDataA, BodyUserData userDataB, Contact contact) {
+        //System.out.println("PLAYER HIT BY ENEMY");
+        contact.setEnabled(true);  // Keep collision detection enabled
+        contact.setRestitution(-10); // No bounce
+        contact.setFriction(0);    // No friction
+
+        // This is the key part - this makes the collision "sensor-like" but still registers as a collision
+        contact.setTangentSpeed(0);
+
+        // Reset velocity to zero
+
+
+
+
+        // Get the enemy body
+        BodyUserData enemyData = (userDataA.getType() == ContactType.ENEMY) ? userDataA : userDataB;
+        Body enemyBody = enemyData.getBody();
+        enemyBody.setLinearVelocity(0, 0);
+
     }
 
     /**

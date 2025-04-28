@@ -114,4 +114,5 @@ public interface ScreenInterface {
     void addEntity(GameEntity gameEntity);
 
 
+    void removeEntity(GameEntity entity);
 }

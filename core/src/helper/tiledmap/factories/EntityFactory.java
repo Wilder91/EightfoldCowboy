@@ -43,7 +43,7 @@ public class EntityFactory {
         Body entityBody = screenInterface.getWorld().createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(bodyWidth / 3, bodyHeight / 3);
+        shape.setAsBox(bodyWidth / 2, bodyHeight / 2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -61,6 +61,8 @@ public class EntityFactory {
             case "enemies":
                 switch(entityName) {
                     case "saint_small":
+
+
                         ThicketSaint thicketSaint = new ThicketSaint(
                                 rectangle.width,
                                 rectangle.height,

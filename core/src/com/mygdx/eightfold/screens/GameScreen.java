@@ -303,6 +303,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         ((Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(camera, gameAssets, this));
     }
 
+    public void removeEntity(GameEntity entity){
+        entityManager.removeEntity(entity);
+    }
+
     private void cameraUpdate() {
         if (player != null) {
             Vector3 position = camera.position;

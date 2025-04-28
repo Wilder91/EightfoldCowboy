@@ -18,6 +18,7 @@ import helper.combat.PlayerMeleeCombatHelper;
 import helper.movement.*;
 
 import helper.state.PlayerMovementStateManager;
+import helper.ui.HealthBar;
 import objects.GameEntity;
 import objects.inanimate.Door;
 
@@ -61,6 +62,7 @@ public class Player extends GameEntity {
     private PlayerMovementStateManager stateManager;
     private ScreenInterface screenInterface;
     private float hp;
+    private HealthBar healthBar;
 
 
 
@@ -86,12 +88,14 @@ public class Player extends GameEntity {
         int[] runningFrameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
         int[] idleFrameCounts = {18, 1, 8, 18, 4};
         this.equippedWeapon = "sword";
+        this.healthBar = new HealthBar(20, 1.5f, hp, hp, false);
+        healthBar.setOffsetY(20);
         //this.runningHelper = new SpriteWalkingHelper(gameAssets, this, "character", "character", runningFrameCounts, false);
 //        this.idleHelper = new SpriteIdleHelper(gameAssets, this, "character",
 //                "character", idleFrameCounts, 0f);
         this.action = "idle";
         this.movementHelper = new SpriteMovementHelper(gameAssets, this, "character", "character",
-                false, FRAME_DURATION, action);
+                false, FRAME_DURATION, action, false);
         this.meleeHelper = new PlayerMeleeCombatHelper(gameAssets, "character", "character",
                 equippedWeapon, 10f, screenInterface.getWorld(),
                 .03f, ContactType.ATTACK, ContactType.ENEMY, screenInterface, 1f, 1f);
@@ -256,6 +260,14 @@ public class Player extends GameEntity {
     @Override
     public void render(SpriteBatch batch) {
         renderer.render(batch);
+        batch.end();
+
+        // Make sure we're passing the correct coordinates
+        // Use PPM to ensure coordinates match what's expected
+        healthBar.render(batch.getProjectionMatrix(), x, y);
+
+        // Start the batch again
+        batch.begin();
     }
 
 
@@ -269,6 +281,7 @@ public class Player extends GameEntity {
         Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
         sound.play(0.05f);
         this.hp -= 5;
+        healthBar.updateHealth(hp);
         System.out.println("player hp: " + hp);
     }
 

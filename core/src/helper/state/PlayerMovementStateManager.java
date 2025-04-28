@@ -47,7 +47,7 @@ public class PlayerMovementStateManager extends EntityStateManager<Player, Playe
             // Update running animation
             player.getMovementHelper().setAction("walk");
             player.getMovementHelper().updateAnimation(velocity, delta);
-            //player.setSprite(player.getMovementHelper().getSprite());
+            player.setSprite(player.getMovementHelper().getSprite());
             // Handle sprite flipping
             if (!player.isFacingRight()) {
                 player.getSprite().setFlip(true, false);

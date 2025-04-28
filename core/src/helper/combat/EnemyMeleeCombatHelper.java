@@ -253,7 +253,7 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
             attackType = "idleSide";
             width = 0.25f * multiplier;
             height = 0.35f * multiplier;
-            offsetX = 0.52f;
+            offsetX = 0.32f;
             offsetY = 0f;
             currentAttackAnimation = attackAnimations.get("attackHorizontal");
         } else if (angle2Player >= 135 && angle2Player < 225) {
@@ -394,11 +394,11 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
 
         // Handle sprite flipping based on facing direction
         if (!isFacingRight) {
-            if (!attackSprite.isFlipX()) {
-                attackSprite.flip(true, false);
+            if (attackSprite.isFlipX()) {
+                attackSprite.flip(false, false);
             }
         } else {
-            if (attackSprite.isFlipX()) {
+            if (!attackSprite.isFlipX()) {
                 attackSprite.flip(true, false);
             }
         }

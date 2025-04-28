@@ -4,20 +4,20 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.*;
 import helper.animation.AnimationHelper;
 import helper.combat.EnemyMeleeCombatHelper;
 import helper.combat.PlayerMeleeCombatHelper;
+import helper.combat.SpriteDeathHelper;
 import helper.movement.SimpleCombatWalkingHelper;
 import helper.movement.SimpleIdleHelper;
 import helper.movement.SimpleSpriteWalkingHelper;
+import helper.movement.SpriteMovementHelper;
 import helper.state.EnemyStateManager;
+import helper.ui.HealthBar;
 import objects.GameEntity;
 
 import static helper.Constants.FRAME_DURATION;
@@ -29,8 +29,10 @@ public class ThicketSaint extends GameEntity {
     private Sprite sprite;
     private SimpleIdleHelper idleHelper;
     private EnemyStateManager stateManager;
+    private SpriteMovementHelper movementHelper;
     private SimpleSpriteWalkingHelper walkingHelper;
     private SimpleCombatWalkingHelper combatWalkingHelper;
+    private SpriteDeathHelper deathHelper;
     private EnemyMeleeCombatHelper meleeCombatHelper;
     private SimpleAnimator animator;
     private SensorHelper sensorHelper;
@@ -39,7 +41,7 @@ public class ThicketSaint extends GameEntity {
     private float attackCounter;
     private long lastAttackTime = 0;
     private static final long ATTACK_COOLDOWN = 1200;
-    
+    private HealthBar healthBar;
     private int id;
     private float stateTime = 0;
     private ScreenInterface screenInterface;
@@ -55,17 +57,25 @@ public class ThicketSaint extends GameEntity {
     private boolean beginPursuit;
 
 
+
     public ThicketSaint(float width, float height, Body body, ScreenInterface screenInterface,
                         GameAssets gameAssets, String entityType, String entityName, float hp) {
         super(width, height, body, screenInterface, gameAssets, hp);
         this.sprite = new Sprite();
         this.sprite.setSize(width, height);
+        System.out.println(entityType + ", " + entityName);
         this.entityName = entityName;
         this.entityType = entityType;
         this.screenInterface = screenInterface;
         this.hp = hp;
-
-
+        MassData massData = new MassData();
+        massData.mass = 1000.0f;  // Very high mass
+        massData.center.set(0, 0);  // Center of mass at body center
+        massData.I = 1000.0f;  // High moment of inertia too
+        body.setMassData(massData);
+        this.deathHelper = new SpriteDeathHelper(gameAssets, entityType, entityName, FRAME_DURATION);
+        this.healthBar = new HealthBar(20, 1, hp, hp, true);
+        healthBar.setOffsetY(20);
         // Initialize the helpers with correct parameters
         int idleFrameCounts = 4;
         int[] walkingFrameCounts = {8, 8, 8};
@@ -80,9 +90,10 @@ public class ThicketSaint extends GameEntity {
         };
 
         this.idleHelper = new SimpleIdleHelper(gameAssets, this, "enemies", this.entityName, idleFrameCounts, 1.5f);
+        this.movementHelper = new SpriteMovementHelper(gameAssets, this, entityType, entityName, true, FRAME_DURATION, "idle", true);
         this.meleeCombatHelper = new EnemyMeleeCombatHelper(gameAssets, entityType, entityName, "sword",  5, screenInterface.getWorld(),
-                .07f, ContactType.ENEMY, ContactType.PLAYER, screenInterface, .5f, .5f);
-        this.combatWalkingHelper = new SimpleCombatWalkingHelper(gameAssets,  entityType, entityName, combatFrameCounts, false,FRAME_DURATION);
+                .07f, ContactType.ENEMY, ContactType.PLAYER, screenInterface, .2f, .5f);
+        //this.combatWalkingHelper = new SimpleCombatWalkingHelper(gameAssets,  entityType, entityName, combatFrameCounts, false,FRAME_DURATION);
         this.movement = new EntityMovement(this);
         this.sensorHelper = new SensorHelper();
         // Initialize renderer directly without animator
@@ -126,6 +137,10 @@ public class ThicketSaint extends GameEntity {
         beginPursuit = pursuit;
     }
 
+    public SpriteMovementHelper getMovementHelper(){
+        return movementHelper;
+    }
+
     public void pursuePlayer() {
         // Get player position
         Vector2 playerPosition = screenInterface.getPlayer().getBody().getPosition();
@@ -138,7 +153,7 @@ public class ThicketSaint extends GameEntity {
         float distanceToPlayer = direction.len();
 
         // Define minimum distance to stop (in Box2D units)
-        float stopDistance = 1.4f; // Adjust this value as needed
+        float stopDistance = .9f; // Adjust this value as needed
 
         // Determine the appropriate state based on distance
         GameEntity.State newState = getCurrentState(); // Default to current state
@@ -178,7 +193,7 @@ public class ThicketSaint extends GameEntity {
             Vector2 currentVelocity = this.body.getLinearVelocity();
             this.body.setLinearVelocity(currentVelocity.x * 0.9f, currentVelocity.y * 0.9f);
 
-            if (distanceToPlayer < stopDistance * 1f && currentVelocity.len() < 0.2f) {
+            if (distanceToPlayer < stopDistance && currentVelocity.len() < 0.2f) {
                 if (getCurrentState() != ATTACKING) {
                     triggerAttack();
                 }
@@ -250,6 +265,8 @@ public class ThicketSaint extends GameEntity {
         Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
         sound.play(0.05f);
         this.hp -= 5;
+        this.hp -= 5;
+        healthBar.updateHealth(hp);
         //stateManager.changeState(this, ATTACKING);
         System.out.println("thicketsaint hp: " + hp);
     }
@@ -266,6 +283,13 @@ public class ThicketSaint extends GameEntity {
         }
         // Update movement
         movement.update(delta);
+        if (hp < 1){
+            stateManager.changeState(this, DYING);
+        }
+        if (sprite != null) {
+            // Explicitly flip the sprite based on facing direction
+            sprite.setFlip(!isFacingRight(), false);
+        }
 
         // Get current position and direction for combat helper
         Vector2 position = new Vector2(x, y);
@@ -295,22 +319,30 @@ public class ThicketSaint extends GameEntity {
 
     @Override
     public void render(SpriteBatch batch) {
+        // Draw character as normal
+        float vx = body.getLinearVelocity().x;
+        if (Math.abs(vx) > 0.1f) {
+            boolean shouldFaceRight = vx > 0;
+            sprite.setFlip(!shouldFaceRight, false);
+        }
+
         renderer.render(batch);
+
+        // We need to flush the batch before switching to ShapeRenderer
+        batch.flush();
+
+        // End the SpriteBatch to use ShapeRenderer
+        batch.end();
+
+        // Make sure we're passing the correct coordinates
+        // Use PPM to ensure coordinates match what's expected
+        healthBar.render(batch.getProjectionMatrix(), x, y);
+
+        // Start the batch again
+        batch.begin();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getEnemyType() {
-        return entityType;
-    }
-
-    public SimpleCombatWalkingHelper getCombatWalkingHelper() {
-        return this.combatWalkingHelper;
-    }
-
-    public boolean hasValidTarget() {
-        return true;
+    public SpriteDeathHelper getDeathHelper() {
+        return deathHelper;
     }
 }

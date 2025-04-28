@@ -14,16 +14,22 @@ import java.util.Comparator;
 
 public abstract class GameEntity {
 
-
+    public boolean markedForRemoval = false;
     public boolean hasValidTarget() {
         return true;
     }
+
+    public void remove() {
+        screenInterface.removeEntity(this);
+    }
+
 
     public enum State {
         IDLE,
         RUNNING,
         ATTACKING,
-        PURSUING
+        PURSUING,
+        DYING
     }
 
     protected float x;
@@ -40,6 +46,7 @@ public abstract class GameEntity {
 
     // Helpers that can be used by subclasses
     protected SpriteWalkingHelper walkingHelper;
+    protected SpriteMovementHelper movementHelper;
     protected SimpleSpriteWalkingHelper simpleWalkingHelper;
     protected SpriteIdleHelper idleHelper;
     protected SimpleIdleHelper simpleIdleHelper;
@@ -104,6 +111,14 @@ public abstract class GameEntity {
 
     public SimpleCombatWalkingHelper getCombatWalkingHelper() {
         return combatWalkingHelper;
+    }
+
+    public boolean isMarkedForRemoval() {
+        return markedForRemoval;
+    }
+
+    public SpriteMovementHelper getMovementHelper() {
+        return movementHelper;
     }
 
     public boolean shouldAttack() {
