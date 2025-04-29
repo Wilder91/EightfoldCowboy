@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="718">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="725">
  <tileset firstgid="1" source="large_rock.tsx"/>
  <tileset firstgid="5" source="../../grass/Grass Tiles.tsx"/>
  <tileset firstgid="14" source="pond.tsx"/>
@@ -95,29 +95,11 @@
    </properties>
    <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
-  <object id="100" name="chicken" type="farm_animals" x="400.82" y="387.441">
-   <properties>
-    <property name="class" value="farm_animals"/>
-   </properties>
-   <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
-  </object>
-  <object id="130" name="squirrel" x="448.025" y="362.571">
-   <properties>
-    <property name="class" value="wild_animals"/>
-   </properties>
-   <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
-  </object>
   <object id="297" name="small_rock-1" type="rocks" x="549.925" y="550.483">
    <properties>
     <property name="class" value="rocks"/>
    </properties>
    <polygon points="0,0 86.7983,0 87.3181,62.8279 0,62.3886"/>
-  </object>
-  <object id="657" name="chicken" type="farm_animals" x="404.723" y="442.372">
-   <properties>
-    <property name="class" value="farm_animals"/>
-   </properties>
-   <polygon points="0,0 36.5534,-2.2041 36.9992,34.1635 -2.67464,35.2656"/>
   </object>
   <object id="659" name="small_rock-2" type="rocks" x="154.873" y="271.242">
    <properties>
@@ -217,32 +199,7 @@
    </properties>
    <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
-  <object id="708" name="saint_small" type="enemies" x="701.651" y="442.048" width="34" height="34">
-   <properties>
-    <property name="class" value="enemies"/>
-   </properties>
-  </object>
-  <object id="713" name="saint_small" type="enemies" x="799.894" y="445.068" width="34" height="34">
-   <properties>
-    <property name="class" value="enemies"/>
-   </properties>
-  </object>
-  <object id="714" name="saint_small" type="enemies" x="859.473" y="513.915" width="34" height="34">
-   <properties>
-    <property name="class" value="enemies"/>
-   </properties>
-  </object>
-  <object id="715" name="saint_small" type="enemies" x="798.57" y="572.17" width="34" height="34">
-   <properties>
-    <property name="class" value="enemies"/>
-   </properties>
-  </object>
-  <object id="716" name="saint_small" type="enemies" x="621.157" y="471.548" width="34" height="34">
-   <properties>
-    <property name="class" value="enemies"/>
-   </properties>
-  </object>
-  <object id="717" name="saint_small" type="enemies" x="633.073" y="566.874" width="34" height="34">
+  <object id="717" name="saint_small" type="enemies" x="699.272" y="483.463" width="34" height="34">
    <properties>
     <property name="class" value="enemies"/>
    </properties>

@@ -48,6 +48,7 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
     private boolean playerPositionInitialized = false;
     private final ScreenInterface screenInterface;
     private final GameContactListener gameContactListener;
+
     private final GameAssets gameAssets;
     private final Music music;
     private final ArrayList<Door> doorList;

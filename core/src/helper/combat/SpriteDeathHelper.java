@@ -72,7 +72,7 @@ public class SpriteDeathHelper {
                 if (frames.size > 0) {
                     // Create the animation with the NORMAL play mode (plays once and stops)
                     deathAnimation = new Animation<>(frameDuration, frames, Animation.PlayMode.NORMAL);
-                    System.out.println("Loaded death animation for " + entityName + " with " + frames.size + " frames");
+                    //System.out.println("Loaded death animation for " + entityName + " with " + frames.size + " frames");
                 } else {
                     System.err.println("No death animation frames found for " + entityName);
                 }

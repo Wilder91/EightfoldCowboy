@@ -97,7 +97,7 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
         }
 
         if (frames.size == 0) {
-            System.err.println("No regions found with prefix: " + regionNamePrefix);
+            //System.err.println("No regions found with prefix: " + regionNamePrefix);
         }
 
         return new Animation<>(this.frameDuration, frames, Animation.PlayMode.LOOP);
@@ -161,7 +161,7 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
                         // Apply damage based on entity type
                         if (userData.getEntity() instanceof ThicketSaint) {
                             ThicketSaint enemy = (ThicketSaint) userData.getEntity();
-                            enemy.takeDamage();
+                            //enemy.takeDamage();
                         } else if (userData.getEntity() instanceof Player) {
                             Player player = (Player) userData.getEntity();
                             player.takeDamage();
@@ -318,7 +318,7 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
         fixtureDef.filter.maskBits = contactType.getMaskBits();
         sensorBody.setActive(true);
         attackSensor = sensorBody.createFixture(fixtureDef);
-        attackSensor.setUserData(new BodyUserData(1, contactType, sensorBody, animalName));
+        attackSensor.setUserData(new BodyUserData(0, contactType, sensorBody, animalName));
 
         shape.dispose();
     }

@@ -68,7 +68,7 @@ public class PlayerFactory {
         // Add player to screen
         screenInterface.setPlayer(player);
 
-        System.out.println("Created Player with ID: " + playerId);
+        //System.out.println("Created Player with ID: " + playerId);
 
         return player;
     }

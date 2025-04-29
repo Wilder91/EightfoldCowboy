@@ -77,7 +77,7 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
 
         // Calculate attack duration based on animation frames * frame duration
         // For example, if you want the attack to last for the length of the animation:
-        this.attackDuration = 8 * frameDuration;
+        this.attackDuration = 80 * frameDuration;
     }
 
     public void loadAttackAnimations(float frameDuration) {
@@ -110,7 +110,7 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
         }
 
         if (frames.size == 0) {
-            System.err.println("No regions found with prefix: " + regionNamePrefix);
+            //System.err.println("No regions found with prefix: " + regionNamePrefix);
         }
 
         return new Animation<>(this.frameDuration, frames, Animation.PlayMode.LOOP);
@@ -154,9 +154,25 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
                             if (fixture.getUserData() instanceof BodyUserData) {
                                 BodyUserData userData = (BodyUserData) fixture.getUserData();
                                 if (userData.getType() == enemyContactType) {
-                                    foundFixtures.add(fixture);
-                                    //System.out.println("Found enemy in query: " + userData.getId());
-                                    return true;
+                                    // Get the relative position of the enemy to the player
+                                    Vector2 enemyPos = fixture.getBody().getPosition();
+                                    Vector2 sensorPos = attackSensor.getBody().getPosition();
+                                    Vector2 relativePos = new Vector2(enemyPos.x - sensorPos.x, enemyPos.y - sensorPos.y);
+
+                                    // Check if the enemy is in front of the player based on facing direction
+                                    boolean isInFront = false;
+                                    if (isFacingRight && relativePos.x > 0) {
+                                        isInFront = true;  // Enemy is to the right when player faces right
+                                    } else if (!isFacingRight && relativePos.x < 0) {
+                                        isInFront = true;  // Enemy is to the left when player faces left
+                                    }
+
+                                    // Only report fixtures that are in front of the player
+                                    if (isInFront || lastDirection.equals("idleUp") || lastDirection.equals("idleDown") ||
+                                            lastDirection.equals("idleDiagonalUp") || lastDirection.equals("idleDiagonalDown")) {
+                                        foundFixtures.add(fixture);
+                                        return true;
+                                    }
                                 }
                             }
                             return true; // Keep looking for more fixtures
@@ -189,10 +205,10 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
                         // Apply damage based on entity type
                         if (userData.getEntity() instanceof ThicketSaint) {
                             ThicketSaint enemy = (ThicketSaint) userData.getEntity();
-                            enemy.takeDamage();
+                            //enemy.takeDamage();
                         } else if (userData.getEntity() instanceof Player) {
                             Player player = (Player) userData.getEntity();
-                            player.takeDamage();
+                            //player.takeDamage();
                         }
                         hitEntitiesForCurrentAttack.add(userData.getId());
                         // Mark this fixture for removal after processing
@@ -272,7 +288,7 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
 
         // Create a temporary body for the attack
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(position.x / PPM, position.y / PPM);
         bodyDef.bullet = true; // Use CCD for fast-moving objects
 
@@ -289,7 +305,7 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
         if (lastDirection.equalsIgnoreCase("idleUp")) {
             // For upward attacks, make the hitbox taller than wide
             width = 0.5f * multiplier;      // Narrower width
-            height = 0.25f * multiplier;    // Taller height
+            height = 0.5f * multiplier;    // Taller height
             offsetY = 0.5f;                 // Position above player
             offsetX = 0f;                   // Centered horizontally
         } else if (lastDirection.equalsIgnoreCase("idleDown")) {
@@ -300,7 +316,7 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
             offsetX = 0f;                   // Centered horizontally
         } else if (lastDirection.equalsIgnoreCase("idleSide")) {
             // For side attacks, make the hitbox wider than tall
-            width = 0.25f * multiplier;     // Wider width
+            width = 0.15f * multiplier;     // Wider width
             height = 0.35f * multiplier;    // Shorter height
             offsetX = isFacingRight ? 0.52f : -0.52f;  // Position to the side based on facing
             offsetY = 0f;                   // Centered vertically
@@ -334,11 +350,11 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
         fixtureDef.filter.categoryBits = contactType.getCategoryBits();
-        fixtureDef.filter.maskBits = contactType.getMaskBits();
+        fixtureDef.filter.maskBits =  contactType.getMaskBits();
         sensorBody.setActive(true);
         attackSensor = sensorBody.createFixture(fixtureDef);
-        attackSensor.setUserData(new BodyUserData(1, contactType, sensorBody, animalName));
-
+        attackSensor.setUserData(new BodyUserData(1, contactType, sensorBody, "player_sword"));
+        //System.out.println("attack sensor user data: " + attackSensor.getUserData());
         shape.dispose();
     }
 

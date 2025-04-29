@@ -5,8 +5,10 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import helper.ContactType;
+import objects.GameEntity;
 import objects.animals.farm_animals.Chicken;
 import objects.enemies.ThicketSaint;
+import objects.enemies.ThicketSaintManager;
 import objects.inanimate.inanimate_helpers.DoorManager;
 import objects.humans.NPC;
 import objects.humans.NPCManager;
@@ -27,15 +29,37 @@ public class GameContactListener implements ContactListener {
     @Override
     public void beginContact(Contact contact) {
 
+
         //System.out.println("begin contact");
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
+        boolean isSensorContact = fixtureA.isSensor() || fixtureB.isSensor();
+
+        if (isSensorContact) {
+            // System.out.println(fixtureA.getUserData() + " " + fixtureB.getUserData());
+            // Get the user data from the fixtures to identify them
+
+            Object userDataA = fixtureA.getUserData();
+            Object userDataB = fixtureB.getUserData();
+
+            // Handle different types of sensor contacts
+            if (fixtureA.isSensor() && userDataA instanceof BodyUserData) {
+                BodyUserData sensorData = (BodyUserData) userDataA;
+                handleSensorContact(sensorData, fixtureB, true);
+            }
+
+            if (fixtureB.isSensor() && userDataB instanceof BodyUserData) {
+                BodyUserData sensorData = (BodyUserData) userDataB;
+                handleSensorContact(sensorData, fixtureA, true);
+            }
+        }
+
         // Early exit if fixtures don't have proper user data
         if (!(fixtureA.getUserData() instanceof BodyUserData) ||
                 !(fixtureB.getUserData() instanceof BodyUserData)) {
-
             // Special case for ThicketSaint sensor
+            //System.out.println("here?");
             handleSpecialSensorCases(fixtureA, fixtureB);
             return;
         } else {
@@ -102,7 +126,6 @@ public class GameContactListener implements ContactListener {
      */
     private void handleAttackContacts(BodyUserData userDataA, BodyUserData userDataB) {
         // Check for player attack hitting enemy
-
         boolean isAttackHittingEnemy =
                 (userDataA.getType() == ContactType.ATTACK && userDataB.getType() == ContactType.ENEMY) ||
                         (userDataB.getType() == ContactType.ATTACK && userDataA.getType() == ContactType.ENEMY);
@@ -115,15 +138,22 @@ public class GameContactListener implements ContactListener {
             BodyUserData enemyData = (userDataA.getType() == ContactType.ENEMY) ? userDataA : userDataB;
             System.out.println("Enemy hit: " + enemyData);
 
-            // Play hit sound
-            Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
-            sound.play(0.05f);
+            // Get the enemy ID
+            int enemyId = enemyData.getId();
 
-            // Handle enemy damage logic here
-            // GameEntity enemy = screenInterface.getEntityById(enemyData.getId());
-            // if (enemy != null) {
-            //     enemy.takeDamage(10);
-            // }
+            // Get the ThicketSaint from the manager
+            ThicketSaint thicketSaint = ThicketSaintManager.getEnemyById(enemyId);
+
+            if (thicketSaint != null) {
+                //System.out.println("YOOO");
+                thicketSaint.takeDamage();
+
+                // Play hit sound
+                Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
+                sound.play(0.05f);
+            } else {
+                System.out.println("Could not find enemy with ID: " + enemyId);
+            }
         }
     }
 
@@ -246,15 +276,16 @@ public class GameContactListener implements ContactListener {
      */
     private void handleSpecialSensorCases(Fixture fixtureA, Fixture fixtureB) {
         // Handle ThicketSaint sensor contact
-
+        // System.out.println("SPECIAL");
         if (fixtureA.getUserData() != null && "saintSensor".equals(fixtureA.getUserData())) {
             if (fixtureB.getUserData() instanceof BodyUserData) {
                 handleSensorContact((BodyUserData) fixtureB.getUserData(), fixtureA.getUserData(), true);
-                System.out.println("YO");
+                //System.out.println("YO");
             }
         }
         else if (fixtureB.getUserData() != null && fixtureB.getUserData() instanceof ThicketSaint) {
             if (fixtureA.getUserData() instanceof BodyUserData) {
+
                 handleSensorContact((BodyUserData) fixtureA.getUserData(), fixtureB.getUserData(), true);
             }
         }
@@ -266,7 +297,7 @@ public class GameContactListener implements ContactListener {
         if (fixtureA.getUserData() != null && "saintSensor".equals(fixtureA.getUserData())) {
             if (fixtureB.getUserData() instanceof BodyUserData) {
                 handleSensorContact((BodyUserData) fixtureB.getUserData(), fixtureA.getUserData(), false);
-                System.out.println("YO");
+
             }
         }
         else if (fixtureB.getUserData() != null && fixtureB.getUserData() instanceof ThicketSaint) {

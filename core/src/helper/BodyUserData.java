@@ -1,6 +1,8 @@
 package helper;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.physics.box2d.Body;
+import objects.GameEntity;
 import objects.animals.birds.Bird;
 
 
@@ -12,22 +14,24 @@ public class BodyUserData {
     private Body body;
     private String name;
     private Bird bird;
-    private Object entity;
+    private GameEntity entity;
 
 
+
+
+
+    public BodyUserData(int id, ContactType type, Body body, GameEntity entity) {
+        this.id = id;
+        this.type = type;
+        this.body = body;
+        this.entity = entity;
+    }
 
     public BodyUserData(int id, ContactType type, Body body, String name) {
         this.id = id;
         this.type = type;
         this.body = body;
         this.name = name;
-    }
-
-    public BodyUserData(int id, ContactType type, Body body, Object entity) {
-        this.id = id;
-        this.type = type;
-        this.body = body;
-        this.entity = entity;
     }
 
     public int getId() {
@@ -44,17 +48,17 @@ public class BodyUserData {
         return body;
     }
 
-    public Object getEntity() {
+    public GameEntity getEntity() {
         return entity;
     }
 
-    public void setEntity(Object entity){
+    public void setEntity(GameEntity entity){
         this.entity = entity;
 
     }
 
     @Override
     public String toString() {
-        return "BodyUserData{id=" + id + ", type=" + type + ", body=" + body + '}';
+        return "BodyUserData{id=" + id + ", type=" + type + ", body=" + body + ", entity=" + entity + '}';
     }
 }

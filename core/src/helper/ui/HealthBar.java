@@ -41,8 +41,8 @@ public class HealthBar {
         }
 
         // Debug print
-        System.out.println("HealthBar created with dimensions: " + width + "x" + height +
-                ", health: " + currentHealth + "/" + maxHealth);
+//        System.out.println("HealthBar created with dimensions: " + width + "x" + height +
+//                ", health: " + currentHealth + "/" + maxHealth);
     }
 
     /**

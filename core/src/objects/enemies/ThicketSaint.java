@@ -61,18 +61,21 @@ public class ThicketSaint extends GameEntity {
 
 
 
-    public ThicketSaint(float width, float height, Body body, ScreenInterface screenInterface,
+
+    public ThicketSaint(int id, float width, float height, Body body, ScreenInterface screenInterface,
                         GameAssets gameAssets, String entityType, String entityName, float hp) {
         super(width, height, body, screenInterface, gameAssets, hp);
         this.sprite = new Sprite();
+        this.id = id;
         this.sprite.setSize(width, height);
         System.out.println(entityType + ", " + entityName);
         this.entityName = entityName;
         this.entityType = entityType;
         this.screenInterface = screenInterface;
         this.hp = hp;
+        ThicketSaintManager.addEnemy(this);
         MassData massData = new MassData();
-        massData.mass = 5.0f;  // Very high mass
+        massData.mass = 2.5f;  // Very high mass
         massData.center.set(0, 0);  // Center of mass at body center
         massData.I = 1000.0f;  // High moment of inertia too
         body.setMassData(massData);
@@ -184,7 +187,7 @@ public class ThicketSaint extends GameEntity {
             if (distanceToPlayer > halfwayDistance) {
                 // Far away - use regular walking/running
                 newState = RUNNING;
-            } else {
+            } else if (distanceToPlayer > stopDistance) {
                 // Closer - use combat walking
                 //sprite.flip(true, true);
                 newState = PURSUING;
@@ -196,7 +199,7 @@ public class ThicketSaint extends GameEntity {
             // We're close enough, stop moving but don't reset velocity to zero immediately
             // This creates a more natural slowing down effect
             Vector2 currentVelocity = this.body.getLinearVelocity();
-            this.body.setLinearVelocity(currentVelocity.x * 0.9f, currentVelocity.y * 0.9f);
+            this.body.setLinearVelocity(0, 0);
 
             if (distanceToPlayer < stopDistance && currentVelocity.len() < 0.2f) {
                 if (getCurrentState() != ATTACKING && getCurrentState() != DYING) {
@@ -265,9 +268,6 @@ public class ThicketSaint extends GameEntity {
        this.currentState = state;
     }
 
-    public String getEntityName() {
-        return this.entityName;
-    }
 
 
 
@@ -282,6 +282,10 @@ public class ThicketSaint extends GameEntity {
         healthBar.updateHealth(hp);
         //stateManager.changeState(this, ATTACKING);
         System.out.println("thicketsaint hp: " + hp);
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     @Override
@@ -361,7 +365,7 @@ public class ThicketSaint extends GameEntity {
         } else {
             // This is called on subsequent updates after death animation completes
             screenInterface.removeEntity(this);
-            body.setUserData(new BodyUserData(id, DEAD, body, entityName));
+            body.setUserData(new BodyUserData(id, DEAD, body, this));
 
         }
     }

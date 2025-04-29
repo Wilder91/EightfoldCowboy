@@ -65,7 +65,7 @@ public class AnimationHelper {
         }
 
         if (frames.size == 0) {
-            System.err.println("No regions found with prefix: " + regionNamePrefix);
+            //System.err.println("No regions found with prefix: " + regionNamePrefix);
 
 //             List all regions in atlas for debugging
 //            Array<TextureAtlas.AtlasRegion> allRegions = atlas.getRegions();

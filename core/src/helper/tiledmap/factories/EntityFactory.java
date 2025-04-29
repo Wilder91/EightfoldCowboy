@@ -7,8 +7,9 @@ import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
-import helper.EntityManagers.ThicketSaintManager;
+import objects.GameEntity;
 import objects.enemies.ThicketSaint;
+import objects.enemies.ThicketSaintManager;
 
 import static helper.Constants.PPM;
 import static helper.ContactType.ENEMY;
@@ -18,7 +19,7 @@ public class EntityFactory {
     private GameAssets gameAssets;
     private GameContactListener gameContactListener;
     private static int enemyCounter = 0;
-    private Object entity;
+    private GameEntity entity;
 
     public EntityFactory(ScreenInterface screenInterface, GameAssets gameAssets, GameContactListener gameContactListener) {
         this.screenInterface = screenInterface;
@@ -52,7 +53,8 @@ public class EntityFactory {
         fixtureDef.restitution = 0.0f;  // No bounce
 
         // Use the enemyCounter to assign unique IDs
-        int currentId = enemyCounter++;
+        int currentId = enemyCounter;
+        enemyCounter++;
 
         Fixture fixture = entityBody.createFixture(fixtureDef);
         shape.dispose();
@@ -64,6 +66,7 @@ public class EntityFactory {
 
 
                         ThicketSaint thicketSaint = new ThicketSaint(
+                                currentId,
                                 rectangle.width,
                                 rectangle.height,
                                 entityBody,
@@ -72,15 +75,48 @@ public class EntityFactory {
                                 entityType,
                                 entityName,
                                 25f
-                        );
-                        this.entity = thicketSaint;
-                        screenInterface.addEntity(thicketSaint);
 
+                        );
+                        ThicketSaintManager.addEnemy(thicketSaint);
+                        this.entity = thicketSaint;
+                        fixture.setUserData(new BodyUserData(currentId, ENEMY, entityBody,  thicketSaint));
+                        entityBody.setUserData(new BodyUserData(currentId, ENEMY, entityBody, thicketSaint));
+                        screenInterface.addEntity(thicketSaint);
+                        //ThicketSaintManager.addEnemy(thicketSaint);
+                        System.out.println("Created ThicketSaint: " + thicketSaint);
+                        System.out.println("ThicketSaint class: " + thicketSaint.getClass().getName());
+                        System.out.println("EntityBody: " + entityBody);
 
                         ThicketSaintManager.addEnemy(thicketSaint);
+                        System.out.println("Added ThicketSaint to manager with ID: " + thicketSaint.getId());
+
+                        this.entity = thicketSaint;
+                        System.out.println("Set this.entity to ThicketSaint: " + this.entity);
+
+                        BodyUserData fixtureUserData = new BodyUserData(currentId, ENEMY, entityBody, thicketSaint);
+                        System.out.println("Created fixture userData: " + fixtureUserData);
+                        System.out.println("UserData entity ref: " + fixtureUserData.getEntity());
+
+                        fixture.setUserData(fixtureUserData);
+                        System.out.println("Set fixture userData. Fixture: " + fixture);
+                        System.out.println("Fixture userData after setting: " + fixture.getUserData());
+
+                        BodyUserData bodyUserData = new BodyUserData(currentId, ENEMY, entityBody, thicketSaint);
+                        System.out.println("Created body userData: " + bodyUserData);
+
+                        entityBody.setUserData(bodyUserData);
+                        System.out.println("Set body userData. Current body userData: " + entityBody.getUserData());
+
+                        screenInterface.addEntity(thicketSaint);
+                        System.out.println("Added ThicketSaint to screenInterface");
+
+                        System.out.println("Verifying ThicketSaint in manager: " +
+                                ThicketSaintManager.getEnemyById(thicketSaint.getId()));
+
+
                         break;
                 }
-                fixture.setUserData(new BodyUserData(currentId, ENEMY, entityBody, entity));
+
         }
 
     }

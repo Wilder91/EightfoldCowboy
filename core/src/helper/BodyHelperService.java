@@ -30,7 +30,7 @@ public class BodyHelperService {
 
         // Set user data with entity reference if provided
         if (entityRef != null) {
-            fixture.setUserData(new BodyUserData(id, type, body, entityRef));
+            //fixture.setUserData(new BodyUserData(id, type, body, entityRef));
         } else {
             fixture.setUserData(new BodyUserData(id, type, body, "body"));
         }

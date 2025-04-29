@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.eightfold.DebugContactListener;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.ecs.EntityManager;
@@ -59,6 +60,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private Player player;
     private Music music;
     private final GameContactListener gameContactListener;
+    private final DebugContactListener debugContactListener;
     private final TimeOfDayHelper timeOfDayHelper;
     private final GameAssets gameAssets;
     private final EntityManager entityManager;
@@ -92,9 +94,10 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         this.world = new World(new Vector2(0, 0), false);
         this.gameAssets = gameAssets;
         this.gameContactListener = new GameContactListener(this);
+        this.debugContactListener = new DebugContactListener();
         this.world.setContactListener(this.gameContactListener);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-        this.debugRendering = true;
+        this.debugRendering = false;
 
         // Initialize the EntityManager with the world
         this.entityManager = new EntityManager(world);
@@ -270,6 +273,12 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
         world.step(1 / 60f, 6, 2);
         removeScheduledBodies();
         cameraUpdate();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.T)){
+            System.out.println("t");
+            game.setScreen(new GameScreen(camera, screenInterface, gameAssets, game, origin));
+
+        }
 
         // Update player light position
         if (player != null && playerLight != null) {

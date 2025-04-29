@@ -110,19 +110,19 @@ public class Player extends GameEntity {
                 (short) 0);
         playerLight.setPosition(x + .1f, y);
         this.renderer = new PlayerRenderer(this, meleeHelper);
-        this.sensorFixtureDef = new FixtureDef();
-        sensorFixtureDef.isSensor = true;
-        sensorShape = new CircleShape();
-        sensorShape.setRadius(largeSensorRadius);
-        sensorShape.setPosition(new Vector2(0.0f, 0)); // position relative to body center
-        sensorFixtureDef.shape = sensorShape;
-// Add the fixture to your body
-        this.sensorFixture = body.createFixture(sensorFixtureDef);
-        sensorFixture.setUserData("playerSensor");
+//        this.sensorFixtureDef = new FixtureDef();
+//        sensorFixtureDef.isSensor = true;
+//        sensorShape = new CircleShape();
+//        sensorShape.setRadius(largeSensorRadius);
+//        sensorShape.setPosition(new Vector2(0.0f, 0)); // position relative to body center
+//        sensorFixtureDef.shape = sensorShape;
+//// Add the fixture to your body
+//        this.sensorFixture = body.createFixture(sensorFixtureDef);
+//        sensorFixture.setUserData("playerSensor");
 
 
 // Don't forget to dispose the shape when done
-        sensorShape.dispose();
+        //sensorShape.dispose();
     }
 
 
