@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.*;
@@ -22,6 +23,7 @@ import objects.GameEntity;
 
 import static helper.Constants.FRAME_DURATION;
 import static helper.Constants.PPM;
+import static helper.ContactType.DEAD;
 import static objects.GameEntity.State.*;
 
 public class ThicketSaint extends GameEntity {
@@ -55,6 +57,7 @@ public class ThicketSaint extends GameEntity {
     private GameEntity.State currentState = GameEntity.State.IDLE;
     private float hp;
     private boolean beginPursuit;
+    private boolean dead;
 
 
 
@@ -69,7 +72,7 @@ public class ThicketSaint extends GameEntity {
         this.screenInterface = screenInterface;
         this.hp = hp;
         MassData massData = new MassData();
-        massData.mass = 1000.0f;  // Very high mass
+        massData.mass = 5.0f;  // Very high mass
         massData.center.set(0, 0);  // Center of mass at body center
         massData.I = 1000.0f;  // High moment of inertia too
         body.setMassData(massData);
@@ -115,6 +118,7 @@ public class ThicketSaint extends GameEntity {
         // Setup sensor
         sensorHelper.setupAttackSensor(largeSensorRadius, this);
         sensorHelper.setupAttackSensor(smallSensorRadius, this);
+        this.dead = false;
     }
 
 
@@ -143,6 +147,7 @@ public class ThicketSaint extends GameEntity {
 
     public void pursuePlayer() {
         // Get player position
+        if (body == null) return;
         Vector2 playerPosition = screenInterface.getPlayer().getBody().getPosition();
         Vector2 myPosition = this.body.getPosition();
 
@@ -181,7 +186,7 @@ public class ThicketSaint extends GameEntity {
                 newState = RUNNING;
             } else {
                 // Closer - use combat walking
-                sprite.flip(true, true);
+                //sprite.flip(true, true);
                 newState = PURSUING;
             }
 
@@ -194,7 +199,7 @@ public class ThicketSaint extends GameEntity {
             this.body.setLinearVelocity(currentVelocity.x * 0.9f, currentVelocity.y * 0.9f);
 
             if (distanceToPlayer < stopDistance && currentVelocity.len() < 0.2f) {
-                if (getCurrentState() != ATTACKING) {
+                if (getCurrentState() != ATTACKING && getCurrentState() != DYING) {
                     triggerAttack();
                 }
             }
@@ -208,6 +213,15 @@ public class ThicketSaint extends GameEntity {
 
     public String getLastDirection() {
         return lastDirection;
+    }
+
+    public void dispose(){
+        screenInterface.removeEntity(this);
+    }
+
+    //@Override
+    public void hideHealthBar() {
+        healthBar.dispose();
     }
 
     public void triggerAttack(){
@@ -265,7 +279,6 @@ public class ThicketSaint extends GameEntity {
         Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
         sound.play(0.05f);
         this.hp -= 5;
-        this.hp -= 5;
         healthBar.updateHealth(hp);
         //stateManager.changeState(this, ATTACKING);
         System.out.println("thicketsaint hp: " + hp);
@@ -274,31 +287,51 @@ public class ThicketSaint extends GameEntity {
     @Override
     public void update(float delta) {
         stateTime += delta;
-        x = body.getPosition().x * PPM;
-        y = body.getPosition().y * PPM;
-        resetDepthToY();
+        //System.out.println(body.getUserData());
+        // Split body-dependent and body-independent operations
+        if (body != null) {
+            // Body-dependent physics updates
+            x = body.getPosition().x * PPM;
+            y = body.getPosition().y * PPM;
+            resetDepthToY();
 
-        if (beginPursuit){
-            pursuePlayer();
+            if (beginPursuit) {
+                pursuePlayer();
+            }
+
+            // Handle sprite flipping based on velocity
+            float vx = body.getLinearVelocity().x;
+            if (vx > 0.4f && !isFacingRight) {
+                isFacingRight = true;
+                //sprite.flip(true, false);
+                System.out.println("Flipping sprite to face right");
+            } else if (vx < -0.4f && isFacingRight) {
+                isFacingRight = false;
+                //sprite.flip(true, false);
+                System.out.println("Flipping sprite to face left");
+            }
+        } else {
+            // Log the issue while continuing with non-physics updates
+            System.out.println("Warning: Entity has null body during update");
         }
+
+        // Body-independent updates that should happen regardless
+
         // Update movement
         movement.update(delta);
-        if (hp < 1){
-            stateManager.changeState(this, DYING);
-        }
-        if (sprite != null) {
-            // Explicitly flip the sprite based on facing direction
-            sprite.setFlip(!isFacingRight(), false);
+
+        if (hp < 1) {
+            death();
         }
 
         // Get current position and direction for combat helper
         Vector2 position = new Vector2(x, y);
         Vector2 facingDirection = getFacingDirection();
 
-        // Update state manager BEFORE combat helper
+        // Update state manager
         stateManager.update(this, delta);
 
-        // Update combat helper AFTER the state manager
+        // Update combat helper
         meleeCombatHelper.update(delta, position, facingDirection, isFacingRight, lastDirection);
 
         // Set the main sprite appropriately based on combat state
@@ -314,17 +347,30 @@ public class ThicketSaint extends GameEntity {
         renderer.update(delta);
     }
 
+    public void death() {
+        if (!dead) {
+            stateManager.changeState(this, DYING);
+            healthBar.setVisible(false);
+            Array<Fixture> fixtures = body.getFixtureList();
+            for (Fixture fixture : fixtures) {
+                fixture.setSensor(true);
+            }
+            //sensorHelper.
+            // Mark as dead
 
+        } else {
+            // This is called on subsequent updates after death animation completes
+            screenInterface.removeEntity(this);
+            body.setUserData(new BodyUserData(id, DEAD, body, entityName));
+
+        }
+    }
 
 
     @Override
     public void render(SpriteBatch batch) {
         // Draw character as normal
-        float vx = body.getLinearVelocity().x;
-        if (Math.abs(vx) > 0.1f) {
-            boolean shouldFaceRight = vx > 0;
-            sprite.setFlip(!shouldFaceRight, false);
-        }
+
 
         renderer.render(batch);
 

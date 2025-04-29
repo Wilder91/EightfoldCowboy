@@ -19,7 +19,8 @@ public enum ContactType {
     ENEMY(0x8000, 0x4000 | 0x001),
     THICKETSAINT(0x8000, 0x4000 | 0x1),
     ENEMYATTACK(0x10000, 0x0001 | 0x4000),
-    ROCK(0x9000, 0xFFFF);
+    ROCK(0x9000, 0xFFFF),
+    DEAD(0x12000, 0);
     private final short categoryBits;
     private final short maskBits;
 

@@ -19,6 +19,9 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
     private final StateHandler<GameEntity, GameEntity.State> idleStateHandler = new StateHandler<GameEntity, GameEntity.State>() {
         @Override
         public void update(GameEntity enemy, float delta) {
+            if (enemy.getState() == GameEntity.State.DYING) {
+                return; // Don't process any other state if already dying
+            }
             Vector2 velocity = enemy.getBody().getLinearVelocity();
 
             // Check for state transitions
@@ -39,7 +42,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
                 Sprite sprite = thicketSaint.getSimpleIdleHelper().getSprite();
                 if (sprite != null) {
                     // Handle sprite flipping explicitly
-                    sprite.setFlip(!thicketSaint.isFacingRight(), false);
+                   // sprite.setFlip(!thicketSaint.isFacingRight(), false);
                     thicketSaint.setSprite(sprite);
                 }
             }
@@ -51,7 +54,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
 
                 Sprite sprite = enemy.getIdleHelper().getSprite();
                 if (sprite != null) {
-                    sprite.setFlip(!enemy.isFacingRight(), false);
+                   // sprite.setFlip(!enemy.isFacingRight(), false);
                     enemy.setSprite(sprite);
                 }
             }
@@ -71,6 +74,9 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
     private final StateHandler<GameEntity, GameEntity.State> runningStateHandler = new StateHandler<GameEntity, GameEntity.State>() {
         @Override
         public void update(GameEntity enemy, float delta) {
+            if (enemy.getState() == GameEntity.State.DYING) {
+                return; // Don't process any other state if already dying
+            }
             Vector2 velocity = enemy.getBody().getLinearVelocity();
 
             // Check for state transitions
@@ -90,9 +96,15 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
                 thicketSaint.getMovementHelper().setAction("walk");
                 thicketSaint.getMovementHelper().setFacingRight(thicketSaint.isFacingRight());
                 thicketSaint.getMovementHelper().updateAnimation(velocity, delta);
-                thicketSaint.setSprite(thicketSaint.getMovementHelper().getSprite());
+                Sprite sprite = thicketSaint.getMovementHelper().getSprite();
+                thicketSaint.setSprite(sprite);
                 // Get sprite and set flipping based on direction
                 //Sprite sprite = thicketSaint.getMovementHelper().getSprite();
+
+                if (sprite != null) {
+                    sprite.setFlip(thicketSaint.isFacingRight(), false);
+                    thicketSaint.setSprite(sprite);
+                }
 
             }
             // For other entity types that have a standard walking helper
@@ -106,7 +118,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
 
                 Sprite sprite = enemy.getMovementHelper().getSprite();
                 if (sprite != null) {
-                    sprite.setFlip(enemy.isFacingRight(), false);
+                    //sprite.setFlip(!enemy.isFacingRight(), false);
                     enemy.setSprite(sprite);
                 }
             }
@@ -126,8 +138,11 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
     private final StateHandler<GameEntity, GameEntity.State> pursuingStateHandler = new StateHandler<GameEntity, GameEntity.State>() {
         @Override
         public void update(GameEntity enemy, float delta) {
+            if (enemy.getState() == GameEntity.State.DYING) {
+                return; // Don't process any other state if already dying
+            }
             Vector2 velocity = enemy.getBody().getLinearVelocity();
-
+            //System.out.println("Entity entering PURSUING state");
             // Update pursuit timer
             pursuitTimer += delta;
 
@@ -171,8 +186,8 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
 //                        System.out.println("Before flip - sprite is flipped: " + sprite.isFlipX());
 
                         // Try both ways to see which works
-                        sprite.setFlip(!thicketSaint.isFacingRight(), false);
-                        //sprite.setFlip(thicketSaint.isFacingRight(), false);
+                        //sprite.setFlip(!thicketSaint.isFacingRight(), false);
+                        sprite.setFlip(thicketSaint.isFacingRight(), false);
 
                         //System.out.println("After flip - sprite is flipped: " + sprite.isFlipX());
                         thicketSaint.setSprite(sprite);
@@ -210,7 +225,10 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
         @Override
         public void update(GameEntity enemy, float delta) {
             // Stop movement
+            //enemy.hideHealthBar();
+
             enemy.getBody().setLinearVelocity(0, 0);
+
 
             // Use death animation
             if (enemy instanceof objects.enemies.ThicketSaint) {
@@ -227,11 +245,13 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
 
                 // Handle completion
                 if (!animationStillPlaying) {
-                    System.out.println("Death animation complete for: " + thicketSaint.getEntityName());
+                    //System.out.println("Death animation complete for: " + thicketSaint.getEntityName());
                     // Optional: fade out or mark for removal
-                    thicketSaint.getDeathHelper().setAlpha(0);
+
                 }
+
             }
+
             // Add similar handling for other entity types
         }
 
@@ -240,13 +260,14 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
             // Reset death animation
             if (enemy instanceof objects.enemies.ThicketSaint) {
                 ThicketSaint thicketSaint = (ThicketSaint) enemy;
-                thicketSaint.getDeathHelper().reset();
+
             }
 
             // Stop movement
             enemy.getBody().setLinearVelocity(0, 0);
-            System.out.println("Entity entering DYING state");
+           //System.out.println("Entity entering DYING state");
         }
+
 
         @Override
         public void exit(GameEntity enemy) {
@@ -276,7 +297,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
                 // Set sprite from combat helper
                 Sprite sprite = thicketSaint.getMeleeHelper().getSprite();
                 if (sprite != null) {
-                    sprite.setFlip(!thicketSaint.isFacingRight(), false);
+                    //sprite.setFlip(!thicketSaint.isFacingRight(), false);
                     thicketSaint.setSprite(sprite);
                 }
 
@@ -289,6 +310,9 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
                         changeState(enemy, GameEntity.State.IDLE);
                     }
                     attackTimer = 0;
+                }
+                if (thicketSaint.getHp() < 1){
+                    thicketSaint.dispose();
                 }
             }
             // For other entity types that have a standard melee helper
@@ -305,7 +329,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
                 // Set sprite from combat helper
                 Sprite sprite = enemy.getMeleeHelper().getSprite();
                 if (sprite != null) {
-                    sprite.setFlip(!enemy.isFacingRight(), false);
+                   // sprite.setFlip(!enemy.isFacingRight(), false);
                     enemy.setSprite(sprite);
                 }
 

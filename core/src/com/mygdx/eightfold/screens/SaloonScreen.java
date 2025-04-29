@@ -171,6 +171,11 @@ public class SaloonScreen extends ScreenAdapter implements ScreenInterface {
 
     }
 
+    @Override
+    public void scheduleBodyForRemoval(Body body) {
+
+    }
+
 
     @Override
     public OrthographicCamera getCamera() {

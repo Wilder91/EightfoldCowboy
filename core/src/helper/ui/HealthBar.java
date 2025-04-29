@@ -109,7 +109,13 @@ public class HealthBar {
 
     public void dispose() {
         if (shapeRenderer != null) {
+            // Set flag to prevent rendering after disposal
+            visible = false;
+
+            // Only dispose if we own this ShapeRenderer
+            // Alternatively, you could remove this method entirely and handle disposal elsewhere
             shapeRenderer.dispose();
+            shapeRenderer = null;  // Set to null to prevent double-disposal
         }
     }
 }

@@ -38,14 +38,14 @@
         "Eightfold.tmx": {
             "expandedObjectLayers": [
                 3,
-                4,
-                2
+                2,
+                4
             ],
-            "scale": 0.7004,
+            "scale": 0.3571,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 434.7515705311251,
-                "y": 368.3609366076528
+                "x": 466.25595071408566,
+                "y": 456.4547745729488
             }
         },
         "Eightfold_Iso.tmx": {

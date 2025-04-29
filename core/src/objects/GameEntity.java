@@ -24,6 +24,8 @@ public abstract class GameEntity {
     }
 
 
+
+
     public enum State {
         IDLE,
         RUNNING,
@@ -54,7 +56,7 @@ public abstract class GameEntity {
     protected PlayerMeleeCombatHelper meleeHelper;
     protected Sprite sprite;
     protected String lastDirection = "idleDown";
-    protected boolean isFacingRight = true;
+    protected boolean isFacingRight = false;
     protected State currentState = State.IDLE;
     protected int entityId;
 
@@ -88,6 +90,8 @@ public abstract class GameEntity {
     public SimpleSpriteWalkingHelper getSimpleWalkingHelper(){
         return simpleWalkingHelper;
     }
+
+
 
     public SpriteIdleHelper getIdleHelper() {
         return idleHelper;
@@ -126,6 +130,7 @@ public abstract class GameEntity {
     }
 
     protected Vector2 getFacingDirection() {
+
         Vector2 direction = new Vector2(0, 0);
 
         switch (lastDirection) {

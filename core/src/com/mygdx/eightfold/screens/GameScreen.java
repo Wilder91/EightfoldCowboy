@@ -13,9 +13,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.ecs.EntityManager;
@@ -75,6 +77,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
     private DecisionTextBox decisionTextBox;
     private InfoBox infoBox;
     private String origin;
+    private final Array<Body> bodiesToRemove = new Array<>();
 
     public GameScreen(OrthographicCamera camera, ScreenInterface screenInterface, GameAssets gameAssets, Game game, String origin) {
 
@@ -265,6 +268,7 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     private void update(float delta) {
         world.step(1 / 60f, 6, 2);
+        removeScheduledBodies();
         cameraUpdate();
 
         // Update player light position
@@ -305,6 +309,19 @@ public class GameScreen extends ScreenAdapter implements ScreenInterface {
 
     public void removeEntity(GameEntity entity){
         entityManager.removeEntity(entity);
+    }
+
+    private void removeScheduledBodies() {
+        for (Body body : bodiesToRemove) {
+            if (body != null) {
+                world.destroyBody(body);
+            }
+        }
+        bodiesToRemove.clear();
+    }
+
+    public void scheduleBodyForRemoval(Body body) {
+        bodiesToRemove.add(body);
     }
 
     private void cameraUpdate() {

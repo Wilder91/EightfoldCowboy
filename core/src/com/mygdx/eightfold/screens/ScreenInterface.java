@@ -115,4 +115,6 @@ public interface ScreenInterface {
 
 
     void removeEntity(GameEntity entity);
+
+    void scheduleBodyForRemoval(Body body);
 }

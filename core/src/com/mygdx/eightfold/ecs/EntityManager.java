@@ -235,9 +235,14 @@ public class EntityManager {
             npcMap.remove(npc.getId());
             removed = npcs.remove(npc);
         }
+        else if (entity instanceof ThicketSaint) {
+            removed = entities.remove(entity); // Remove from entities list
+        }
         else if (entity instanceof Door) removed = doors.remove(entity);
         else if (entity instanceof Bug) removed = bugs.remove(entity);
         else if (entity instanceof ThicketSaint) removed = enemies.remove(entity);
+
+
 
         return removed;
     }

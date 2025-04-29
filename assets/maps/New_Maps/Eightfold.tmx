@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="709">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="718">
  <tileset firstgid="1" source="large_rock.tsx"/>
  <tileset firstgid="5" source="../../grass/Grass Tiles.tsx"/>
  <tileset firstgid="14" source="pond.tsx"/>
@@ -217,7 +217,32 @@
    </properties>
    <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
-  <object id="708" name="saint_small" type="enemies" x="702.975" y="337.454" width="34" height="34">
+  <object id="708" name="saint_small" type="enemies" x="701.651" y="442.048" width="34" height="34">
+   <properties>
+    <property name="class" value="enemies"/>
+   </properties>
+  </object>
+  <object id="713" name="saint_small" type="enemies" x="799.894" y="445.068" width="34" height="34">
+   <properties>
+    <property name="class" value="enemies"/>
+   </properties>
+  </object>
+  <object id="714" name="saint_small" type="enemies" x="859.473" y="513.915" width="34" height="34">
+   <properties>
+    <property name="class" value="enemies"/>
+   </properties>
+  </object>
+  <object id="715" name="saint_small" type="enemies" x="798.57" y="572.17" width="34" height="34">
+   <properties>
+    <property name="class" value="enemies"/>
+   </properties>
+  </object>
+  <object id="716" name="saint_small" type="enemies" x="621.157" y="471.548" width="34" height="34">
+   <properties>
+    <property name="class" value="enemies"/>
+   </properties>
+  </object>
+  <object id="717" name="saint_small" type="enemies" x="633.073" y="566.874" width="34" height="34">
    <properties>
     <property name="class" value="enemies"/>
    </properties>

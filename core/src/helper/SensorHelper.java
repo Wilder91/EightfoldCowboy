@@ -11,8 +11,11 @@ public class SensorHelper {
     private FixtureDef sensorFixtureDef;
     private CircleShape sensorShape;
     private Fixture sensorFixture;
+    private int sensorId = 0;
 
     public void setupAttackSensor(float radius, GameEntity entity) {
+        sensorId += 1;
+        int id = sensorId;
         this.sensorFixtureDef = new FixtureDef();
         sensorFixtureDef.isSensor = true;
 

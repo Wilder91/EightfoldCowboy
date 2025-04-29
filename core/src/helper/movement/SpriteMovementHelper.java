@@ -27,6 +27,7 @@ public class SpriteMovementHelper{
     private AnimationHelper animationHelper;
     private String action;
     private Boolean simple;
+    private GameEntity entity;
 
     public SpriteMovementHelper(GameAssets gameAssets, GameEntity entity, String animalType, String animalName,
                                  boolean startFlipped, float frameDuration, String action, Boolean simple){
@@ -37,6 +38,7 @@ public class SpriteMovementHelper{
         this.animations = new HashMap<>();
         this.startFlipped = startFlipped;
         this.action = action;
+        this.entity = entity;
         this.frameDuration = frameDuration;
         this.animationHelper = new AnimationHelper(gameAssets, entity);
         this.simple = simple;
@@ -114,6 +116,14 @@ public class SpriteMovementHelper{
             setCurrentAnimation(vx, vy);
             stateTime += delta;
             TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
+
+            // Check both directions
+            if (vx > 0.4f) {
+                setFacingRight(true);
+            } else if (vx < -0.4f) {
+                setFacingRight(false);
+            }
+
             sprite.setRegion(frame);
         } else {
             if (restingFrame != null) {
@@ -133,9 +143,9 @@ public class SpriteMovementHelper{
     }
 
     public void setFacingRight(boolean shouldFaceRight) {
-        if (isFacingRight != shouldFaceRight) {
-
-            //isFacingRight = shouldFaceRight;
+        if (entity.isFacingRight() != shouldFaceRight) {
+            entity.setFacingRight(shouldFaceRight);
+            sprite.flip(true, false); // Always flip horizontally
         }
     }
 
