@@ -164,7 +164,7 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
                             //enemy.takeDamage();
                         } else if (userData.getEntity() instanceof Player) {
                             Player player = (Player) userData.getEntity();
-                            player.takeDamage();
+                            // player.takeDamage();
                         }
                         hitEntitiesForCurrentAttack.add(userData.getId());
                         fixturesToRemove.add(woundedFixture);
@@ -206,7 +206,7 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
 
         // Create a temporary body for the attack
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(position.x / PPM, position.y / PPM);
         bodyDef.bullet = true; // Use CCD for fast-moving objects
 

@@ -2,6 +2,7 @@ package com.mygdx.eightfold;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.eightfold.player.Player;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
 import helper.ContactType;
@@ -197,10 +198,12 @@ public class GameContactListener implements ContactListener {
      */
     private void handleEnemyAttackContacts(BodyUserData userDataA, BodyUserData userDataB) {
         boolean isEnemyAttackHittingPlayer =
-                (userDataA.getType() == ContactType.ENEMYATTACK && userDataB.getType() == ContactType.PLAYER) ||
-                        (userDataB.getType() == ContactType.ENEMYATTACK && userDataA.getType() == ContactType.PLAYER);
+                (userDataA.getType() == ContactType.ENEMY && userDataB.getType() == ContactType.PLAYER) ||
+                        (userDataB.getType() == ContactType.ENEMY && userDataA.getType() == ContactType.PLAYER);
 
         if (isEnemyAttackHittingPlayer) {
+            Player player = screenInterface.getPlayer();
+            player.takeDamage();
             System.out.println("PLAYER HIT BY ENEMY ATTACK!");
             // Add player damage logic here
             // screenInterface.damagePlayer(10);

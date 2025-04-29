@@ -98,7 +98,7 @@ public class ThicketSaint extends GameEntity {
         this.idleHelper = new SimpleIdleHelper(gameAssets, this, "enemies", this.entityName, idleFrameCounts, 1.5f);
         this.movementHelper = new SpriteMovementHelper(gameAssets, this, entityType, entityName, true, FRAME_DURATION, "idle", true);
         this.meleeCombatHelper = new EnemyMeleeCombatHelper(gameAssets, entityType, entityName, "sword",  5, screenInterface.getWorld(),
-                .07f, ContactType.ENEMY, ContactType.PLAYER, screenInterface, .2f, .5f);
+                .07f, ContactType.ENEMY, ContactType.PLAYER, screenInterface, 1f, .5f);
         //this.combatWalkingHelper = new SimpleCombatWalkingHelper(gameAssets,  entityType, entityName, combatFrameCounts, false,FRAME_DURATION);
         this.movement = new EntityMovement(this);
         this.sensorHelper = new SensorHelper();
