@@ -7,6 +7,7 @@ import com.mygdx.eightfold.GameAssets;
 import com.mygdx.eightfold.GameContactListener;
 import com.mygdx.eightfold.screens.ScreenInterface;
 import helper.BodyUserData;
+import helper.ContactType;
 import objects.GameEntity;
 import objects.enemies.ThicketSaint;
 import objects.enemies.ThicketSaintManager;
@@ -77,10 +78,17 @@ public class EntityFactory {
                                 25f
 
                         );
-                        ThicketSaintManager.addEnemy(thicketSaint);
+                       // System.out.println("Created thicket saint with id: " + currentId);
+
                         this.entity = thicketSaint;
-                        fixture.setUserData(new BodyUserData(currentId, ENEMY, entityBody,  thicketSaint));
-                        entityBody.setUserData(new BodyUserData(currentId, ENEMY, entityBody, thicketSaint));
+                        BodyUserData userData = new BodyUserData(currentId, ENEMY, entityBody, thicketSaint);
+                        fixture.setUserData(userData);
+
+                        entityBody.setUserData(userData);
+                        ThicketSaintManager.addEnemy(thicketSaint);
+                        System.out.println("Creating ENEMY fixture: category=" +
+                                Integer.toHexString(ContactType.ENEMY.getCategoryBits()) +
+                                ", mask=" + Integer.toHexString(ContactType.ENEMY.getMaskBits()));
                         screenInterface.addEntity(thicketSaint);
                         //ThicketSaintManager.addEnemy(thicketSaint);
                         System.out.println("Created ThicketSaint: " + thicketSaint);

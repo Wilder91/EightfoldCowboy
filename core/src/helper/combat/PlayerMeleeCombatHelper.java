@@ -133,92 +133,12 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
             // Get the attack sensor bounds
             PolygonShape sensorShape = (PolygonShape) attackSensor.getShape();
             Vector2 center = new Vector2();
-            float[] vertices = new float[8]; // For a box, 4 vertices x 2 coords each
+
 
             // Get the size of the attack sensor
             sensorShape.getVertex(0, center); // Get one corner
 
-            // Calculate approximate AABB manually based on the sensor body position
-            Vector2 sensorPos = attackSensor.getBody().getPosition();
-            float sensorWidth = 0.5f; // Approximate - adjust based on your actual sizes
-            float sensorHeight = 0.5f;
 
-            //System.out.println("Attack sensor position: " + sensorPos.x + ", " + sensorPos.y);
-
-            // Create a simple AABB query
-            final Array<Fixture> foundFixtures = new Array<>();
-            world.QueryAABB(
-                    new QueryCallback() {
-                        @Override
-                        public boolean reportFixture(Fixture fixture) {
-                            if (fixture.getUserData() instanceof BodyUserData) {
-                                BodyUserData userData = (BodyUserData) fixture.getUserData();
-                                if (userData.getType() == enemyContactType) {
-                                    // Get the relative position of the enemy to the player
-                                    Vector2 enemyPos = fixture.getBody().getPosition();
-                                    Vector2 sensorPos = attackSensor.getBody().getPosition();
-                                    Vector2 relativePos = new Vector2(enemyPos.x - sensorPos.x, enemyPos.y - sensorPos.y);
-
-                                    // Check if the enemy is in front of the player based on facing direction
-                                    boolean isInFront = false;
-                                    if (isFacingRight && relativePos.x > 0) {
-                                        isInFront = true;  // Enemy is to the right when player faces right
-                                    } else if (!isFacingRight && relativePos.x < 0) {
-                                        isInFront = true;  // Enemy is to the left when player faces left
-                                    }
-
-                                    // Only report fixtures that are in front of the player
-                                    if (isInFront || lastDirection.equals("idleUp") || lastDirection.equals("idleDown") ||
-                                            lastDirection.equals("idleDiagonalUp") || lastDirection.equals("idleDiagonalDown")) {
-                                        foundFixtures.add(fixture);
-                                        return true;
-                                    }
-                                }
-                            }
-                            return true; // Keep looking for more fixtures
-                        }
-                    },
-                    sensorPos.x - sensorWidth,
-                    sensorPos.y - sensorHeight,
-                    sensorPos.x + sensorWidth,
-                    sensorPos.y + sensorHeight
-            );
-
-            if (foundFixtures.size > 0) {
-                //System.out.println("Found " + foundFixtures.size + " fixtures in attack range");
-                // Create a temporary list to store fixtures to remove
-                Array<Fixture> fixturesToRemove = new Array<>();
-
-                for (Fixture woundedFixture : foundFixtures) {
-                    BodyUserData userData = (BodyUserData) woundedFixture.getUserData();
-                    //System.out.println("Checking entity: " + userData + ", Already hit? " + hitEntitiesForCurrentAttack.contains(userData));
-
-                    // Rest of your code...
-
-                    if (hitEntitiesForCurrentAttack.contains(userData.getId())) {
-                        // Skip this entity, it's already been hit
-                        //System.out.println("Entity " + userData.getId() + " already hit, skipping");
-
-
-                    } else {
-                        // Add this entity ID to the set of hit entities
-                        // Apply damage based on entity type
-                        if (userData.getEntity() instanceof ThicketSaint) {
-                            ThicketSaint enemy = (ThicketSaint) userData.getEntity();
-                            //enemy.takeDamage();
-                        } else if (userData.getEntity() instanceof Player) {
-                            Player player = (Player) userData.getEntity();
-                            //player.takeDamage();
-                        }
-                        hitEntitiesForCurrentAttack.add(userData.getId());
-                        // Mark this fixture for removal after processing
-                        fixturesToRemove.add(woundedFixture);
-                    }
-                    // Play hit sound
-                }
-                // Remove all processed fixtures
-                foundFixtures.removeAll(fixturesToRemove, true);
-            }
 
             if (isAttacking) {
 
@@ -349,11 +269,13 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = contactType.getCategoryBits();
-        fixtureDef.filter.maskBits =  contactType.getMaskBits();
+
         sensorBody.setActive(true);
         attackSensor = sensorBody.createFixture(fixtureDef);
-        attackSensor.setUserData(new BodyUserData(1, contactType, sensorBody, "player_sword"));
+        attackSensor.setUserData(new BodyUserData(0, contactType, sensorBody, "player_sword"));
+        System.out.println("Creating ATTACK sensor: category=" +
+                Integer.toHexString(contactType.getCategoryBits()) +
+                ", mask=" + Integer.toHexString(contactType.getMaskBits()));
         //System.out.println("attack sensor user data: " + attackSensor.getUserData());
         shape.dispose();
     }

@@ -83,6 +83,11 @@ public class Player extends GameEntity {
         this.body = body;
         this.gameAssets = gameAssets;
         this.hp = hp;
+        MassData massData = new MassData();
+        massData.mass = 2.5f;  // Very high mass
+        massData.center.set(0, 0);  // Center of mass at body center
+        massData.I = 1000.0f;  // High moment of inertia too
+        body.setMassData(massData);
         this.justSwitchedHelpers = false;
         this.rayHandler = new RayHandler(screenInterface.getWorld());
         int[] runningFrameCounts = {8, 8, 8, 8, 8}; // Ensure frame counts are non-zero
@@ -90,6 +95,7 @@ public class Player extends GameEntity {
         this.equippedWeapon = "sword";
         this.healthBar = new HealthBar(20, 1.5f, hp, hp, false);
         healthBar.setOffsetY(20);
+        healthBar.setVisible(false);
         //this.runningHelper = new SpriteWalkingHelper(gameAssets, this, "character", "character", runningFrameCounts, false);
 //        this.idleHelper = new SpriteIdleHelper(gameAssets, this, "character",
 //                "character", idleFrameCounts, 0f);
@@ -110,19 +116,19 @@ public class Player extends GameEntity {
                 (short) 0);
         playerLight.setPosition(x + .1f, y);
         this.renderer = new PlayerRenderer(this, meleeHelper);
-//        this.sensorFixtureDef = new FixtureDef();
-//        sensorFixtureDef.isSensor = true;
-//        sensorShape = new CircleShape();
-//        sensorShape.setRadius(largeSensorRadius);
-//        sensorShape.setPosition(new Vector2(0.0f, 0)); // position relative to body center
-//        sensorFixtureDef.shape = sensorShape;
-//// Add the fixture to your body
-//        this.sensorFixture = body.createFixture(sensorFixtureDef);
-//        sensorFixture.setUserData("playerSensor");
+        this.sensorFixtureDef = new FixtureDef();
+        sensorFixtureDef.isSensor = true;
+        sensorShape = new CircleShape();
+        sensorShape.setRadius(largeSensorRadius);
+        sensorShape.setPosition(new Vector2(0.0f, 0)); // position relative to body center
+        sensorFixtureDef.shape = sensorShape;
+// Add the fixture to your body
+        this.sensorFixture = body.createFixture(sensorFixtureDef);
+        sensorFixture.setUserData("playerSensor");
 
 
-// Don't forget to dispose the shape when done
-        //sensorShape.dispose();
+ //Don't forget to dispose the shape when done
+        sensorShape.dispose();
     }
 
 
@@ -282,6 +288,7 @@ public class Player extends GameEntity {
         sound.play(0.05f);
         this.hp -= 5;
         healthBar.updateHealth(hp);
+        healthBar.setVisible(true);
         System.out.println("player hp: " + hp);
     }
 

@@ -314,8 +314,7 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = contactType.getCategoryBits();
-        fixtureDef.filter.maskBits = contactType.getMaskBits();
+
         sensorBody.setActive(true);
         attackSensor = sensorBody.createFixture(fixtureDef);
         attackSensor.setUserData(new BodyUserData(0, contactType, sensorBody, animalName));

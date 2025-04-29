@@ -31,10 +31,27 @@ public class GameContactListener implements ContactListener {
     public void beginContact(Contact contact) {
 
 
+
         //System.out.println("begin contact");
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
+        if (fixtureA.getUserData() instanceof BodyUserData &&
+                ((BodyUserData)fixtureA.getUserData()).getType() == ContactType.ENEMYATTACK) {
+            System.out.println("ATTACK sensor detected in contact!");
+        }
+        if (fixtureB.getUserData() instanceof BodyUserData &&
+                ((BodyUserData)fixtureB.getUserData()).getType() == ContactType.ENEMYATTACK) {
+            System.out.println("ATTACK sensor detected in contact!");
+        }
 
+        if (fixtureA.getUserData() instanceof BodyUserData &&
+                ((BodyUserData)fixtureA.getUserData()).getType() == ContactType.ATTACK) {
+            System.out.println("ATTACK sensor detected in contact!");
+        }
+        if (fixtureB.getUserData() instanceof BodyUserData &&
+                ((BodyUserData)fixtureB.getUserData()).getType() == ContactType.ATTACK) {
+            System.out.println("ATTACK sensor detected in contact!");
+        }
         boolean isSensorContact = fixtureA.isSensor() || fixtureB.isSensor();
 
         if (isSensorContact) {
@@ -115,6 +132,7 @@ public class GameContactListener implements ContactListener {
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
 
+
     }
 
     @Override
@@ -125,38 +143,7 @@ public class GameContactListener implements ContactListener {
     /**
      * Handles all attack-related contacts
      */
-    private void handleAttackContacts(BodyUserData userDataA, BodyUserData userDataB) {
-        // Check for player attack hitting enemy
-        boolean isAttackHittingEnemy =
-                (userDataA.getType() == ContactType.ATTACK && userDataB.getType() == ContactType.ENEMY) ||
-                        (userDataB.getType() == ContactType.ATTACK && userDataA.getType() == ContactType.ENEMY);
 
-        if (isAttackHittingEnemy) {
-            contactCounter++;
-            System.out.println("ATTACK HIT ENEMY! Count: " + contactCounter);
-
-            // Get the enemy user data
-            BodyUserData enemyData = (userDataA.getType() == ContactType.ENEMY) ? userDataA : userDataB;
-            System.out.println("Enemy hit: " + enemyData);
-
-            // Get the enemy ID
-            int enemyId = enemyData.getId();
-
-            // Get the ThicketSaint from the manager
-            ThicketSaint thicketSaint = ThicketSaintManager.getEnemyById(enemyId);
-
-            if (thicketSaint != null) {
-                //System.out.println("YOOO");
-                thicketSaint.takeDamage();
-
-                // Play hit sound
-                Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
-                sound.play(0.05f);
-            } else {
-                System.out.println("Could not find enemy with ID: " + enemyId);
-            }
-        }
-    }
 
     /**
      * Handles player-door interactions
@@ -170,7 +157,7 @@ public class GameContactListener implements ContactListener {
             BodyUserData doorData = (userDataA.getType() == ContactType.DOOR) ? userDataA : userDataB;
             Door door = DoorManager.getDoorById(doorData.getId());
             if (door != null) {
-                System.out.println("Player began contact with door: " + door.getName());
+              //  System.out.println("Player began contact with door: " + door.getName());
                 door.playerContact();
             }
         }
@@ -193,18 +180,52 @@ public class GameContactListener implements ContactListener {
         }
     }
 
+    private void handleAttackContacts(BodyUserData userDataA, BodyUserData userDataB) {
+        // Check for player attack hitting enemy
+
+        boolean isAttackHittingEnemy =
+                (userDataA.getType() == ContactType.ATTACK && userDataB.getType() == ContactType.ENEMY) ||
+                        (userDataB.getType() == ContactType.ATTACK && userDataA.getType() == ContactType.ENEMY);
+        if (isAttackHittingEnemy) {
+            contactCounter++;
+            //System.out.println("ATTACK HIT ENEMY! Count: " + contactCounter);
+
+            // Get the enemy user data
+            BodyUserData enemyData = (userDataA.getType() == ContactType.ENEMY) ? userDataA : userDataB;
+            BodyUserData attackData = (userDataA.getType() == ContactType.ATTACK) ? userDataA : userDataB;
+           // System.out.println("Enemy hit: " + enemyData + " by attack: " + attackData);
+
+            // Get the enemy ID
+            int enemyId = enemyData.getId();
+
+            // Get the ThicketSaint from the manager
+            ThicketSaint thicketSaint = ThicketSaintManager.getEnemyById(enemyId);
+
+            if (thicketSaint != null) {
+                //System.out.println("YOOO");
+                thicketSaint.takeDamage();
+
+                // Play hit sound
+                Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
+                //sound.play(0.05f);
+            } else {
+                System.out.println("Could not find enemy with ID: " + enemyId);
+            }
+        }
+    }
+
     /**
      * Handles enemy attack hitting player
      */
     private void handleEnemyAttackContacts(BodyUserData userDataA, BodyUserData userDataB) {
         boolean isEnemyAttackHittingPlayer =
-                (userDataA.getType() == ContactType.ENEMY && userDataB.getType() == ContactType.PLAYER) ||
-                        (userDataB.getType() == ContactType.ENEMY && userDataA.getType() == ContactType.PLAYER);
+                (userDataA.getType() == ContactType.ENEMYATTACK && userDataB.getType() == ContactType.PLAYER) ||
+                        (userDataB.getType() == ContactType.ENEMYATTACK && userDataA.getType() == ContactType.PLAYER);
 
         if (isEnemyAttackHittingPlayer) {
             Player player = screenInterface.getPlayer();
             player.takeDamage();
-            System.out.println("PLAYER HIT BY ENEMY ATTACK!");
+            //System.out.println("PLAYER HIT BY ENEMY ATTACK!");
             // Add player damage logic here
             // screenInterface.damagePlayer(10);
         }

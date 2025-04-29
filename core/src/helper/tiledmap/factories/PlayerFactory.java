@@ -64,6 +64,7 @@ public class PlayerFactory {
                 userData.setEntity(player);
             }
         }
+        body.setUserData(new BodyUserData(playerId, ContactType.PLAYER, body, player));
 
         // Add player to screen
         screenInterface.setPlayer(player);

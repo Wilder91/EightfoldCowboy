@@ -98,7 +98,7 @@ public class ThicketSaint extends GameEntity {
         this.idleHelper = new SimpleIdleHelper(gameAssets, this, "enemies", this.entityName, idleFrameCounts, 1.5f);
         this.movementHelper = new SpriteMovementHelper(gameAssets, this, entityType, entityName, true, FRAME_DURATION, "idle", true);
         this.meleeCombatHelper = new EnemyMeleeCombatHelper(gameAssets, entityType, entityName, "sword",  5, screenInterface.getWorld(),
-                .07f, ContactType.ENEMY, ContactType.PLAYER, screenInterface, 1f, .5f);
+                .07f, ContactType.ENEMYATTACK, ContactType.PLAYER, screenInterface, 1f, .5f);
         //this.combatWalkingHelper = new SimpleCombatWalkingHelper(gameAssets,  entityType, entityName, combatFrameCounts, false,FRAME_DURATION);
         this.movement = new EntityMovement(this);
         this.sensorHelper = new SensorHelper();
@@ -275,13 +275,16 @@ public class ThicketSaint extends GameEntity {
     @Override
     public void takeDamage() {
         //stateManager.changeState(this, ATTACKING);
+        if(hp > 0) {
+            Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
+            sound.play(0.05f);
+            this.hp -= 5;
+            healthBar.updateHealth(hp);
+            //stateManager.changeState(this, ATTACKING);
+            System.out.println("thicketsaint hp: " + hp);
+        } else {
 
-        Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
-        sound.play(0.05f);
-        this.hp -= 5;
-        healthBar.updateHealth(hp);
-        //stateManager.changeState(this, ATTACKING);
-        System.out.println("thicketsaint hp: " + hp);
+        }
     }
 
     public int getId() {
