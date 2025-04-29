@@ -257,13 +257,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
 
         @Override
         public void enter(GameEntity enemy) {
-            // Reset death animation
-            if (enemy instanceof objects.enemies.ThicketSaint) {
-                ThicketSaint thicketSaint = (ThicketSaint) enemy;
 
-            }
-
-            // Stop movement
             enemy.getBody().setLinearVelocity(0, 0);
            //System.out.println("Entity entering DYING state");
         }
@@ -305,6 +299,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
                 if (!thicketSaint.getMeleeHelper().isAttacking() || attackTimer >= attackDuration) {
                     // After attack, go back to pursuing if target is still valid
                     if (thicketSaint.hasValidTarget()) {
+
                         changeState(enemy, GameEntity.State.PURSUING);
                     } else {
                         changeState(enemy, GameEntity.State.IDLE);
@@ -426,13 +421,6 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
         this.attackDuration = duration;
     }
 
-    /**
-     * Sets the maximum pursuit time for the enemy
-     * @param duration The duration in seconds
-     */
-    public void setMaxPursuitTime(float duration) {
-        this.maxPursuitTime = duration;
-    }
 
     @Override
     protected GameEntity.State getCurrentState(GameEntity entity) {

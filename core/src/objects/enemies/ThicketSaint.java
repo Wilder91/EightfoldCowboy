@@ -157,55 +157,94 @@ public class ThicketSaint extends GameEntity {
         // Calculate direction vector to player
         Vector2 direction = new Vector2(playerPosition.x - myPosition.x, playerPosition.y - myPosition.y);
 
-        // Calculate distance to player
-        float distanceToPlayer = direction.len();
+        // Calculate horizontal and vertical distances
+        float horizontalDistance = Math.abs(playerPosition.x - myPosition.x);
+        float verticalDistance = Math.abs(playerPosition.y - myPosition.y);
+        float totalDistance = direction.len();
 
         // Define minimum distance to stop (in Box2D units)
-        float stopDistance = .9f; // Adjust this value as needed
+        float stopDistance = 0.9f;
+        float attackRange = 1.2f; // Slightly larger than stop distance
 
         // Determine the appropriate state based on distance
         GameEntity.State newState = getCurrentState(); // Default to current state
 
         // Check if player is within the sensor radius
-        if (distanceToPlayer > largeSensorRadius) {
+        if (totalDistance > largeSensorRadius) {
             // Player is outside sensor radius, gradually stop movement
             Vector2 currentVelocity = this.body.getLinearVelocity();
             this.body.setLinearVelocity(currentVelocity.x * 0.8f, currentVelocity.y * 0.8f);
             newState = IDLE;
         }
+        // Determine attack direction based on player position
+        else if (totalDistance <= attackRange) {
+            // Set attack direction based on player position
+            if (verticalDistance > horizontalDistance * 1.5f) {
+                // Player is mostly above/below
+                if (playerPosition.y > myPosition.y) {
+                    setLastDirection("idleUp");
+                } else {
+                    setLastDirection("idleDown");
+                }
+            } else if (horizontalDistance > verticalDistance * 1.5f) {
+                // Player is mostly to left/right
+                if (playerPosition.x > myPosition.x) {
+                    setLastDirection("idleSide");
+                    setFacingRight(true);
+                } else {
+                    setLastDirection("idleSide");
+                    setFacingRight(false);
+                }
+            } else {
+                // Player is diagonal
+                if (playerPosition.y > myPosition.y) {
+                    if (playerPosition.x > myPosition.x) {
+                        setLastDirection("idleDiagonalUp");
+                        setFacingRight(true);
+                    } else {
+                        setLastDirection("idleDiagonalUp");
+                        setFacingRight(false);
+                    }
+                } else {
+                    if (playerPosition.x > myPosition.x) {
+                        setLastDirection("idleDiagonalDown");
+                        setFacingRight(true);
+                    } else {
+                        setLastDirection("idleDiagonalDown");
+                        setFacingRight(false);
+                    }
+                }
+            }
+
+            // We're close enough to attack
+            this.body.setLinearVelocity(0, 0);
+
+            // Only trigger attack if we're not already attacking
+            if (getCurrentState() != ATTACKING && getCurrentState() != DYING) {
+                triggerAttack();
+            }
+        }
         // Only normalize and move if not too close
-        else if (distanceToPlayer > stopDistance) {
+        else if (totalDistance > stopDistance) {
             // Normalize the direction
             direction.nor();
 
             // Set movement speed
-            float movementSpeed = 1.1f; // Adjust this value as needed
+            float movementSpeed = 1.1f;
 
-            float halfwayDistance = stopDistance * 2; // Adjust this multiplier as needed
+            float halfwayDistance = stopDistance * 2;
 
             // Choose state based on distance
-            if (distanceToPlayer > halfwayDistance) {
+            if (totalDistance > halfwayDistance) {
                 // Far away - use regular walking/running
                 newState = RUNNING;
-            } else if (distanceToPlayer > stopDistance) {
+            } else if (totalDistance > stopDistance) {
                 // Closer - use combat walking
-                //sprite.flip(true, true);
                 newState = PURSUING;
             }
 
             // Apply velocity toward player
             this.body.setLinearVelocity(direction.x * movementSpeed, direction.y * movementSpeed);
-        } else {
-            // We're close enough, stop moving but don't reset velocity to zero immediately
-            // This creates a more natural slowing down effect
-            Vector2 currentVelocity = this.body.getLinearVelocity();
-            this.body.setLinearVelocity(0, 0);
-
-            if (distanceToPlayer < stopDistance && currentVelocity.len() < 0.2f) {
-                if (getCurrentState() != ATTACKING && getCurrentState() != DYING) {
-                    triggerAttack();
-                }
-            }
         }
 
         // Only change state if needed
@@ -302,9 +341,9 @@ public class ThicketSaint extends GameEntity {
             y = body.getPosition().y * PPM;
             resetDepthToY();
 
-            if (beginPursuit) {
+
                 pursuePlayer();
-            }
+
 
             // Handle sprite flipping based on velocity
             float vx = body.getLinearVelocity().x;

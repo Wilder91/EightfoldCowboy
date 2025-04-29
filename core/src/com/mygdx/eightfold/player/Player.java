@@ -292,7 +292,6 @@ public class Player extends GameEntity {
         System.out.println("player hp: " + hp);
     }
 
-
     public void setBody(Body body) {
         this.body = body;
     }

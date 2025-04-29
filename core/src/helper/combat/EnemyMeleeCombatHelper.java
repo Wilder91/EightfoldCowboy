@@ -244,8 +244,8 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
             // Down
             attackType = "idleDown";
             width = 0.5f * multiplier;
-            height = 0.3f * multiplier;
-            offsetY = -0.2f;
+            height = 0.25f * multiplier;
+            offsetY = -0.5f;
             offsetX = 0f;
             currentAttackAnimation = attackAnimations.get("attackDown");
         } else if ((angle2Player >= 0 && angle2Player < 45) || (angle2Player >= 315 && angle2Player <= 360)) {

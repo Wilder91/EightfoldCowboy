@@ -37,20 +37,20 @@ public class GameContactListener implements ContactListener {
         Fixture fixtureB = contact.getFixtureB();
         if (fixtureA.getUserData() instanceof BodyUserData &&
                 ((BodyUserData)fixtureA.getUserData()).getType() == ContactType.ENEMYATTACK) {
-            System.out.println("ATTACK sensor detected in contact!");
+            //System.out.println("ATTACK sensor detected in contact!");
         }
         if (fixtureB.getUserData() instanceof BodyUserData &&
                 ((BodyUserData)fixtureB.getUserData()).getType() == ContactType.ENEMYATTACK) {
-            System.out.println("ATTACK sensor detected in contact!");
+           //System.out.println("ATTACK sensor detected in contact!");
         }
 
         if (fixtureA.getUserData() instanceof BodyUserData &&
                 ((BodyUserData)fixtureA.getUserData()).getType() == ContactType.ATTACK) {
-            System.out.println("ATTACK sensor detected in contact!");
+           // System.out.println("ATTACK sensor detected in contact!");
         }
         if (fixtureB.getUserData() instanceof BodyUserData &&
                 ((BodyUserData)fixtureB.getUserData()).getType() == ContactType.ATTACK) {
-            System.out.println("ATTACK sensor detected in contact!");
+            //System.out.println("ATTACK sensor detected in contact!");
         }
         boolean isSensorContact = fixtureA.isSensor() || fixtureB.isSensor();
 

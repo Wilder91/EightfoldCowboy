@@ -273,9 +273,6 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
         sensorBody.setActive(true);
         attackSensor = sensorBody.createFixture(fixtureDef);
         attackSensor.setUserData(new BodyUserData(0, contactType, sensorBody, "player_sword"));
-        System.out.println("Creating ATTACK sensor: category=" +
-                Integer.toHexString(contactType.getCategoryBits()) +
-                ", mask=" + Integer.toHexString(contactType.getMaskBits()));
         //System.out.println("attack sensor user data: " + attackSensor.getUserData());
         shape.dispose();
     }
