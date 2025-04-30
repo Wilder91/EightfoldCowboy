@@ -1,6 +1,8 @@
 package helper.state;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import objects.GameEntity;
@@ -141,6 +143,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
             if (enemy.getState() == GameEntity.State.DYING) {
                 return; // Don't process any other state if already dying
             }
+
             Vector2 velocity = enemy.getBody().getLinearVelocity();
             //System.out.println("Entity entering PURSUING state");
             // Update pursuit timer
@@ -158,19 +161,12 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
                 return;
             }
 
-            // Check if enemy is close enough to attack
-            if (enemy.shouldAttack()) {
-                changeState(enemy, GameEntity.State.ATTACKING);
-                return;
-            }
-
             // Update facing direction
             updateFacingDirection(enemy, velocity);
 
             // Check if we're dealing with a ThicketSaint
             if (enemy instanceof objects.enemies.ThicketSaint) {
                 objects.enemies.ThicketSaint thicketSaint = (objects.enemies.ThicketSaint) enemy;
-
                 // Use combat walking animation for pursuit
                 if (thicketSaint.getMovementHelper() != null) {
 
@@ -193,6 +189,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
                         thicketSaint.setSprite(sprite);
                     }
                 }
+
             }
             // For other entity types that have a combat walking helper
             else if (enemy.getCombatWalkingHelper() != null) {
@@ -260,6 +257,49 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
 
             enemy.getBody().setLinearVelocity(0, 0);
            //System.out.println("Entity entering DYING state");
+        }
+
+
+        @Override
+        public void exit(GameEntity enemy) {
+            // Clean up
+        }
+    };
+
+    private final StateHandler<GameEntity, GameEntity.State> woundedStateHandler = new StateHandler<GameEntity, GameEntity.State>() {
+        @Override
+        public void update(GameEntity enemy, float delta) {
+            // Stop movement
+            //enemy.hideHealthBar();
+            Boolean animationStarted = false;
+
+
+            enemy.getBody().setLinearVelocity(0, 0);
+            enemy.getMovementHelper().setAction("hit");
+            enemy.getMovementHelper().setFacingRight(enemy.isFacingRight());
+            enemy.getMovementHelper().setFrameDuration(.9f);
+            enemy.getMovementHelper().updateAnimation(enemy.getBody().getLinearVelocity(), delta);
+            Sprite sprite = enemy.getMovementHelper().getSprite();
+            enemy.setSprite(sprite);
+
+
+
+                // Check if animation is complete
+                Animation<TextureRegion> currentAnimation = enemy.getMovementHelper().getCurrentAnimation();
+                if (currentAnimation != null &&
+                        enemy.getMovementHelper().getStateTime() >= currentAnimation.getAnimationDuration()) {
+                    // Animation is complete, change to next state
+                    changeState(enemy, GameEntity.State.IDLE); // or whatever state should come next
+                    //animationStarted = false; // Reset for next time
+                }
+            }
+
+
+        @Override
+        public void enter(GameEntity enemy) {
+
+            enemy.getBody().setLinearVelocity(0, 0);
+            //System.out.println("Entity entering DYING state");
         }
 
 
@@ -440,6 +480,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
             case PURSUING: return pursuingStateHandler;
             case ATTACKING: return attackingStateHandler;
             case DYING: return dyingStateHandler;
+            case WOUNDED: return woundedStateHandler;
             default: return null;
         }
     }

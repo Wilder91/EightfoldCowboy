@@ -1,5 +1,6 @@
 package helper.animation;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -40,14 +41,28 @@ public class AnimationHelper {
         this.entityName = entityName;
         this.atlasPath = "atlases/eightfold/" + entityType + "-movement.atlas";
 
-        // Only load animations that exist in the atlas
-        animations.put("Up", createAnimation(entityName + "_up_" + action, atlasPath, frameDuration));
-        animations.put("Down", createAnimation(entityName + "_down_" + action, atlasPath, frameDuration));
-        animations.put("Horizontal", createAnimation(entityName + "_horizontal_" + action, atlasPath, frameDuration));
+        // Load the atlas
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(atlasPath));
 
-        // Don't try to load diagonal animations if they don't exist in the atlas
-        // animations.put("DiagonalUp", createAnimation(entityName + "_diagUP_" + action, atlasPath, frameDuration));
-        // animations.put("DiagonalDown", createAnimation(entityName + "_diagDOWN_" + action, atlasPath, frameDuration));
+        // Define all possible animation directions
+        String[] directions = {"Up", "Down", "Horizontal", "DiagonalUp", "DiagonalDown"};
+        String[] prefixes = {
+                entityName + "_up_" + action,
+                entityName + "_down_" + action,
+                entityName + "_horizontal_" + action,
+                entityName + "_diagUP_" + action,
+                entityName + "_diagDOWN_" + action
+        };
+
+        // Check each direction and create animations only if frames exist
+        for (int i = 0; i < directions.length; i++) {
+            String prefix = prefixes[i];
+
+            // Check if at least the first frame exists
+            if (atlas.findRegion(prefix + "1") != null || atlas.findRegion(prefix) != null) {
+                animations.put(directions[i], createAnimation(prefix, atlasPath, frameDuration));
+            }
+        }
     }
 
     private Animation<TextureRegion> createAnimation(String regionNamePrefix, String atlasPath, float frameDuration) {
@@ -60,12 +75,12 @@ public class AnimationHelper {
         TextureRegion region;
         while ((region = atlas.findRegion(regionNamePrefix, i)) != null) {
             frames.add(region);
-            //System.out.println("Added frame " + i + " for " + regionNamePrefix);
+            System.out.println("Added frame " + i + " for " + regionNamePrefix);
             i++;
         }
 
         if (frames.size == 0) {
-            //System.err.println("No regions found with prefix: " + regionNamePrefix);
+            System.err.println("No regions found with prefix: " + regionNamePrefix);
 
 //             List all regions in atlas for debugging
 //            Array<TextureAtlas.AtlasRegion> allRegions = atlas.getRegions();

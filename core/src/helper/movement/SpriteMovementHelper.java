@@ -89,7 +89,7 @@ public class SpriteMovementHelper{
                 return entry.getKey();
             }
         }
-        // Default to horizontal if current animation not found
+        // Default to down if current animation not found
         return "Down";
     }
 
@@ -195,6 +195,12 @@ public class SpriteMovementHelper{
         stateTime = 0f;
     }
 
+    public void setFrameDuration(float newDuration){
+        frameDuration = newDuration;
+    };
 
 
+    public Animation<TextureRegion> getCurrentAnimation() {
+        return currentAnimation;
+    }
 }

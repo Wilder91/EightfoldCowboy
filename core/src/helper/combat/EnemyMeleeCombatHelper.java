@@ -122,56 +122,7 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
             Vector2 center = new Vector2();
             sensorShape.getVertex(0, center);
 
-            // Calculate approximate AABB for query
-            Vector2 sensorPos = attackSensor.getBody().getPosition();
-            float sensorWidth = 0.5f;
-            float sensorHeight = 0.5f;
 
-            // Create a simple AABB query
-            final Array<Fixture> foundFixtures = new Array<>();
-            world.QueryAABB(
-                    new QueryCallback() {
-                        @Override
-                        public boolean reportFixture(Fixture fixture) {
-                            if (fixture.getUserData() instanceof BodyUserData) {
-                                BodyUserData userData = (BodyUserData) fixture.getUserData();
-                                if (userData.getType() == enemyContactType) {
-                                    foundFixtures.add(fixture);
-                                    return true;
-                                }
-                            }
-                            return true; // Keep looking for more fixtures
-                        }
-                    },
-                    sensorPos.x - sensorWidth,
-                    sensorPos.y - sensorHeight,
-                    sensorPos.x + sensorWidth,
-                    sensorPos.y + sensorHeight
-            );
-
-            if (foundFixtures.size > 0) {
-                Array<Fixture> fixturesToRemove = new Array<>();
-
-                for (Fixture woundedFixture : foundFixtures) {
-                    BodyUserData userData = (BodyUserData) woundedFixture.getUserData();
-
-                    if (hitEntitiesForCurrentAttack.contains(userData.getId())) {
-                        // Skip this entity, it's already been hit
-                    } else {
-                        // Apply damage based on entity type
-                        if (userData.getEntity() instanceof ThicketSaint) {
-                            ThicketSaint enemy = (ThicketSaint) userData.getEntity();
-                            //enemy.takeDamage();
-                        } else if (userData.getEntity() instanceof Player) {
-                            Player player = (Player) userData.getEntity();
-                            // player.takeDamage();
-                        }
-                        hitEntitiesForCurrentAttack.add(userData.getId());
-                        fixturesToRemove.add(woundedFixture);
-                    }
-                }
-                foundFixtures.removeAll(fixturesToRemove, true);
-            }
 
             if (isAttacking) {
                 worldStepCounter++;
@@ -253,7 +204,7 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
             attackType = "idleSide";
             width = 0.25f * multiplier;
             height = 0.35f * multiplier;
-            offsetX = 0.32f;
+            offsetX = 0.42f;
             offsetY = 0f;
             currentAttackAnimation = attackAnimations.get("attackHorizontal");
         } else if (angle2Player >= 135 && angle2Player < 225) {
@@ -321,30 +272,6 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
 
         shape.dispose();
     }
-
-
-//    public void setFacingRight(boolean isFacingRight) {
-//        this.isFacingRight = isFacingRight;
-//    }
-
-//    @Override
-//    public void update(float delta, Vector2 position, Vector2 facingDirection, boolean isFacingRight, String lastDirection) {
-//        // Calculate direction to player for real-time tracking
-//        if (isAttacking && screenInterface.getPlayer() != null) {
-//            Vector2 playerPos = screenInterface.getPlayer().getBody().getPosition();
-//            Vector2 enemyPos = new Vector2(position.x / PPM, position.y / PPM);
-//            Vector2 dirToPlayer = new Vector2(playerPos.x - enemyPos.x, playerPos.y - enemyPos.y);
-//
-//            // Update the facing direction based on player position
-//            boolean shouldFaceRight = dirToPlayer.x > 0;
-//            if (this.isFacingRight != shouldFaceRight) {
-//                this.isFacingRight = shouldFaceRight;
-//            }
-//        }
-//
-//        // Call the parent update method
-//        super.update(delta, position, facingDirection, this.isFacingRight, lastDirection);
-//    }
 
     private void removeAttackSensor() {
         if (attackSensor != null && attackSensor.getBody() != null) {

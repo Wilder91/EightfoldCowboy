@@ -163,8 +163,8 @@ public class ThicketSaint extends GameEntity {
         float totalDistance = direction.len();
 
         // Define minimum distance to stop (in Box2D units)
-        float stopDistance = 0.9f;
-        float attackRange = 1.2f; // Slightly larger than stop distance
+        float stopDistance = 1.1f;
+        float attackRange = 1.1f; // Slightly larger than stop distance
 
         // Determine the appropriate state based on distance
         GameEntity.State newState = getCurrentState(); // Default to current state
@@ -313,13 +313,13 @@ public class ThicketSaint extends GameEntity {
 
     @Override
     public void takeDamage() {
-        //stateManager.changeState(this, ATTACKING);
+        //stateManager.changeState(this, WOUNDED);
         if(hp > 0) {
             Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
             sound.play(0.05f);
             this.hp -= 5;
             healthBar.updateHealth(hp);
-            //stateManager.changeState(this, ATTACKING);
+            stateManager.changeState(this, WOUNDED);
             System.out.println("thicketsaint hp: " + hp);
         } else {
 

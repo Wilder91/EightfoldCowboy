@@ -31,6 +31,7 @@ public abstract class GameEntity {
         RUNNING,
         ATTACKING,
         PURSUING,
+        WOUNDED,
         DYING
     }
 

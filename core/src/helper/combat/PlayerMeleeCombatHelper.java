@@ -116,10 +116,6 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
         return new Animation<>(this.frameDuration, frames, Animation.PlayMode.LOOP);
     }
 
-    public void setAttackDuration(float duration) {
-        this.attackDuration = duration;
-    }
-
     public void update(float delta, Vector2 position, Vector2 facingDirection, boolean isFacingRight, String lastDirection) {
         this.isFacingRight = isFacingRight;
         this.lastDirection = lastDirection;
@@ -238,7 +234,7 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
             // For side attacks, make the hitbox wider than tall
             width = 0.15f * multiplier;     // Wider width
             height = 0.35f * multiplier;    // Shorter height
-            offsetX = isFacingRight ? 0.52f : -0.52f;  // Position to the side based on facing
+            offsetX = isFacingRight ? 0.42f : -0.42f;  // Position to the side based on facing
             offsetY = 0f;                   // Centered vertically
         } else if (lastDirection.equalsIgnoreCase("idleDiagonalUp")) {
             // For diagonal up attacks
