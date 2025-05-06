@@ -314,16 +314,14 @@ public class ThicketSaint extends GameEntity {
     @Override
     public void takeDamage() {
         //stateManager.changeState(this, WOUNDED);
-        if(hp > 0) {
-            Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
-            sound.play(0.05f);
-            this.hp -= 5;
-            healthBar.updateHealth(hp);
-            stateManager.changeState(this, WOUNDED);
-            System.out.println("thicketsaint hp: " + hp);
-        } else {
 
-        }
+        this.hp -= 5;
+        Sound sound = screenInterface.getGameAssets().getSound("sounds/bison-sound.mp3");
+        sound.play(0.05f);
+        healthBar.updateHealth(hp);
+        stateManager.changeState(this, WOUNDED);
+        System.out.println("thicketsaint hp: " + hp);
+
     }
 
     public int getId() {
@@ -400,17 +398,22 @@ public class ThicketSaint extends GameEntity {
             Array<Fixture> fixtures = body.getFixtureList();
             for (Fixture fixture : fixtures) {
                 fixture.setSensor(true);
+                fixture.setUserData(new BodyUserData(id, DEAD, body, this));
             }
+            //body.setUserData(new BodyUserData(id, DEAD, body, this));
+
+
             //sensorHelper.
             // Mark as dead
 
         } else {
             // This is called on subsequent updates after death animation completes
             screenInterface.removeEntity(this);
-            body.setUserData(new BodyUserData(id, DEAD, body, this));
+
 
         }
     }
+
 
 
     @Override
@@ -436,5 +439,9 @@ public class ThicketSaint extends GameEntity {
 
     public SpriteDeathHelper getDeathHelper() {
         return deathHelper;
+    }
+
+    public int getAttackFrameIndex() {
+        return meleeCombatHelper.getFrameIndex();
     }
 }

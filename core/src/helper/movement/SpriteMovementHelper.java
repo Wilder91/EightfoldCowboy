@@ -60,15 +60,13 @@ public class SpriteMovementHelper{
         // Only reload animations if the action has changed
         if (!this.action.equals(newAction)) {
 
-
             // Store the current direction before changing action
             String currentDirection = getCurrentAnimationKey();
-
 
             this.action = newAction;
             // Reload animations with the new action
             loadAnimations(simple);
-
+            //System.out.println(currentDirection);
             // Restore the same direction with the new action
             if (animations.containsKey(currentDirection)) {
                 currentAnimation = animations.get(currentDirection);
@@ -86,6 +84,7 @@ public class SpriteMovementHelper{
     private String getCurrentAnimationKey() {
         for (Map.Entry<String, Animation<TextureRegion>> entry : animations.entrySet()) {
             if (entry.getValue() == currentAnimation) {
+
                 return entry.getKey();
             }
         }
@@ -99,6 +98,7 @@ public class SpriteMovementHelper{
             animationHelper.loadSimpleAnimations(animalType, animalName, frameDuration, action);
             animations = animationHelper.getAllAnimations();
         }else {
+            System.out.println("not simple");
             animationHelper.loadAnimations(animalType, animalName, frameDuration, action);
             animations = animationHelper.getAllAnimations();
         }
@@ -106,8 +106,11 @@ public class SpriteMovementHelper{
 
     }
 
-    public void updateAnimation(Vector2 linearVelocity, float delta) {
+    public int getFrameIndex(){
+        return currentAnimation.getKeyFrameIndex(stateTime);
+    }
 
+    public void updateAnimation(Vector2 linearVelocity, float delta) {
         float vx = linearVelocity.x;
         float vy = linearVelocity.y;
         boolean isMoving = Math.abs(vx) > 0.1f || Math.abs(vy) > 0.1f;
@@ -126,20 +129,26 @@ public class SpriteMovementHelper{
 
             sprite.setRegion(frame);
         } else {
-            if (restingFrame != null) {
+            // FIXED: When stopping, we need to ensure we're using the correct idle animation
+            // based on the last direction of movement
+            String currentKey = getCurrentAnimationKey();
 
-                sprite.setRegion(currentAnimation.getKeyFrame(stateTime));
-            } else {
-
-                stateTime += delta;
-                TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
-                sprite.setRegion(frame);
+            // Map movement animations to their corresponding idle animations
+            if (currentKey.equals("DiagonalUp")) {
+                // Make sure to use "Up" idle animation when stopping from diagonal up movement
+                currentAnimation = animations.get("Up");
+            } else if (currentKey.equals("DiagonalDown")) {
+                currentAnimation = animations.get("Down");
             }
+            // For horizontal, we keep the same animation
+
+            stateTime += delta;
+            TextureRegion frame = currentAnimation.getKeyFrame(stateTime, true);
+            sprite.setRegion(frame);
         }
 
         sprite.setSize(sprite.getRegionWidth(), sprite.getRegionHeight());
         sprite.setOriginCenter();
-
     }
 
     public void setFacingRight(boolean shouldFaceRight) {
@@ -165,6 +174,7 @@ public class SpriteMovementHelper{
                 currentAnimation = animations.get("DiagonalDown");
 
             } else {
+                //System.out.println("fall back!");
                 // Fall back to down if no diagonal exists
                 currentAnimation = animations.get("Down");
             }

@@ -280,6 +280,10 @@ public class EnemyMeleeCombatHelper extends MeleeCombatHelper {
         }
     }
 
+    public int getFrameIndex(){
+        return currentAttackAnimation.getKeyFrameIndex(attackStateTime);
+    }
+
     private void positionAttackSprite(Vector2 position, Vector2 facingDirection) {
         // Get the current frame's dimensions
         float frameWidth = attackSprite.getWidth();

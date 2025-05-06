@@ -15,13 +15,18 @@ public class PlayerMovementStateManager extends EntityStateManager<Player, Playe
                 changeState(player, Player.State.RUNNING);
                 return;
             }
-            // Update idle animation
-          //  player.getIdleHelper().setDirection(player.getLastDirection());
-            //player.setAction("Idle");
-            updateDirectionVariables(player, velocity);
+
+            // Update idle animation - don't call updateDirectionVariables here!
+            // This preserves the last direction from the running state
             player.getMovementHelper().setAction("idle");
-            player.getMovementHelper().updateAnimation(velocity, delta);
-            //player.setSprite(player.getMovementHelper().getSprite());
+
+            // Pass zero velocity to ensure we're properly in idle mode
+            player.getMovementHelper().updateAnimation(new Vector2(0, 0), delta);
+
+            // Make sure sprite is updated correctly
+            player.setSprite(player.getMovementHelper().getSprite());
+
+            // Handle sprite flipping
             if (!player.isFacingRight()) {
                 player.getSprite().setFlip(true, false);
             } else if (player.isFacingRight()) {
@@ -88,22 +93,25 @@ public class PlayerMovementStateManager extends EntityStateManager<Player, Playe
             player.setFacingRight(true);
         }
 
-        // Update lastDirection
-        if (velocity.y > 0.1f) {
-            if (Math.abs(velocity.x) > 0.1f) {
-                player.setLastDirection("idleDiagonalUp");
-            } else {
-                player.setLastDirection("idleUp");
+        // Only update lastDirection when actually moving
+        if (Math.abs(velocity.x) > 0.1f || Math.abs(velocity.y) > 0.1f) {
+            if (velocity.y > 0.1f) {
+                if (Math.abs(velocity.x) > 0.1f) {
+                    player.setLastDirection("idleDiagonalUp");
+                } else {
+                    player.setLastDirection("idleUp");
+                }
+            } else if (velocity.y < -0.1f) {
+                if (Math.abs(velocity.x) > 0.1f) {
+                    player.setLastDirection("idleDiagonalDown");
+                } else {
+                    player.setLastDirection("idleDown");
+                }
+            } else if (Math.abs(velocity.x) > 0.1f) {
+                player.setLastDirection("idleSide");
             }
-        } else if (velocity.y < -0.1f) {
-            if (Math.abs(velocity.x) > 0.1f) {
-                player.setLastDirection("idleDiagonalDown");
-            } else {
-                player.setLastDirection("idleDown");
-            }
-        } else if (Math.abs(velocity.x) > 0.1f) {
-            player.setLastDirection("idleSide");
         }
+        // Don't change lastDirection when velocity is near zero
     }
 
     @Override

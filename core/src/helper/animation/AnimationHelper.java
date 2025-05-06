@@ -15,6 +15,7 @@ public class AnimationHelper {
     private String entityName;
     private String entityType;
     private GameAssets gameAssets;
+    private int currentFrame;
     private HashMap<String, Animation<TextureRegion>> animations;
 
     public AnimationHelper(GameAssets gameAssets, GameEntity entity) {
@@ -75,8 +76,13 @@ public class AnimationHelper {
         TextureRegion region;
         while ((region = atlas.findRegion(regionNamePrefix, i)) != null) {
             frames.add(region);
-            System.out.println("Added frame " + i + " for " + regionNamePrefix);
+            currentFrame = i;
+            if(entityName == "character") {
+                //System.out.println("Current Frame: " + currentFrame + entityName);
+            }
             i++;
+
+
         }
 
         if (frames.size == 0) {

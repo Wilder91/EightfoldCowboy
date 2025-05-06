@@ -50,6 +50,8 @@ public abstract class MeleeCombatHelper {
     public void update(float delta, Vector2 position, Vector2 direction, boolean facingRight, String lastDirection) {
     }
 
+
+
     public Sprite getSprite() {
         return sprite;
     }

@@ -218,12 +218,21 @@ public class GameContactListener implements ContactListener {
      * Handles enemy attack hitting player
      */
     private void handleEnemyAttackContacts(BodyUserData userDataA, BodyUserData userDataB) {
+        if (userDataA.getType() == ContactType.ENEMYATTACK){
+            System.out.println("A");
+        }
+        if (userDataB.getType() == ContactType.ENEMYATTACK){
+            //System.out.println("B");
+        }
+       ThicketSaint thicketSaint = ThicketSaintManager.getEnemyById(userDataB.getId());
+        //System.out.println("Frame index: " + thicketSaint.getAttackFrameIndex());
         boolean isEnemyAttackHittingPlayer =
                 (userDataA.getType() == ContactType.ENEMYATTACK && userDataB.getType() == ContactType.PLAYER) ||
                         (userDataB.getType() == ContactType.ENEMYATTACK && userDataA.getType() == ContactType.PLAYER);
 
         if (isEnemyAttackHittingPlayer) {
             Player player = screenInterface.getPlayer();
+
             player.takeDamage();
             //System.out.println("PLAYER HIT BY ENEMY ATTACK!");
             // Add player damage logic here

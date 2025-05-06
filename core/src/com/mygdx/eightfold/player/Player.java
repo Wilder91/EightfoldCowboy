@@ -229,7 +229,7 @@ public class Player extends GameEntity {
         stateTime += delta;
         x = body.getPosition().x * PPM;
         y = body.getPosition().y * PPM;
-
+        //System.out.println(movementHelper.getFrameIndex());
         inputHandler.processInput();
         updateSensor();
 
@@ -276,6 +276,11 @@ public class Player extends GameEntity {
         batch.begin();
     }
 
+    public void parry(){
+        Sound parrySound = gameAssets.getSound("sounds/sword-clash.wav");
+        parrySound.play();
+
+    }
 
     private void updateSensor() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {

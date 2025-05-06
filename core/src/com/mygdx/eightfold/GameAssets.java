@@ -57,6 +57,7 @@ public class GameAssets {
         assetManager.load("buildings/Barn_Bottom.png", Texture.class);
         assetManager.load("buildings/Shop_Top.png", Texture.class);
         assetManager.load("buildings/Shop_Bottom.png", Texture.class);
+        assetManager.load("sounds/sword-clash.wav", Sound.class);
         // Load individual textures for bison grazing
         for (int i = 0; i <= 39; i++) {
             String filename = "animals/bison/grazing/Bison_Grazing_" + i + ".png";

@@ -267,46 +267,44 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
     };
 
     private final StateHandler<GameEntity, GameEntity.State> woundedStateHandler = new StateHandler<GameEntity, GameEntity.State>() {
+        private boolean animationStarted = false;
+
         @Override
         public void update(GameEntity enemy, float delta) {
-            // Stop movement
-            //enemy.hideHealthBar();
-            Boolean animationStarted = false;
-
-
             enemy.getBody().setLinearVelocity(0, 0);
-            enemy.getMovementHelper().setAction("hit");
-            enemy.getMovementHelper().setFacingRight(enemy.isFacingRight());
-            enemy.getMovementHelper().setFrameDuration(.9f);
+
+            // Only set the action once when entering this state
+            if (!animationStarted) {
+                enemy.getMovementHelper().setAction("hit");
+                animationStarted = true;
+            }
+
+            // Update the animation
             enemy.getMovementHelper().updateAnimation(enemy.getBody().getLinearVelocity(), delta);
             Sprite sprite = enemy.getMovementHelper().getSprite();
             enemy.setSprite(sprite);
 
-
-
-                // Check if animation is complete
-                Animation<TextureRegion> currentAnimation = enemy.getMovementHelper().getCurrentAnimation();
-                if (currentAnimation != null &&
-                        enemy.getMovementHelper().getStateTime() >= currentAnimation.getAnimationDuration()) {
-                    // Animation is complete, change to next state
-                    changeState(enemy, GameEntity.State.IDLE); // or whatever state should come next
-                    //animationStarted = false; // Reset for next time
-                }
+            // Check if animation is complete
+            Animation<TextureRegion> currentAnimation = enemy.getMovementHelper().getCurrentAnimation();
+            if (currentAnimation != null &&
+                    enemy.getMovementHelper().getStateTime() >= currentAnimation.getAnimationDuration()) {
+                // Animation is complete, change to next state
+                changeState(enemy, GameEntity.State.IDLE); // or whatever state should come next
             }
-
+        }
 
         @Override
         public void enter(GameEntity enemy) {
-
             enemy.getBody().setLinearVelocity(0, 0);
-            //System.out.println("Entity entering DYING state");
+            animationStarted = false; // Reset the flag when entering state
         }
-
 
         @Override
         public void exit(GameEntity enemy) {
             // Clean up
+            animationStarted = false; // Reset for next time
         }
+
     };
 
     private final StateHandler<GameEntity, GameEntity.State> attackingStateHandler = new StateHandler<GameEntity, GameEntity.State>() {
@@ -331,7 +329,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
                 // Set sprite from combat helper
                 Sprite sprite = thicketSaint.getMeleeHelper().getSprite();
                 if (sprite != null) {
-                    //sprite.setFlip(!thicketSaint.isFacingRight(), false);
+                    sprite.setFlip(!thicketSaint.isFacingRight(), false);
                     thicketSaint.setSprite(sprite);
                 }
 
@@ -374,7 +372,7 @@ public class EnemyStateManager extends EntityStateManager<GameEntity, GameEntity
                     if (enemy.hasValidTarget()) {
                         changeState(enemy, GameEntity.State.PURSUING);
                     } else {
-                        changeState(enemy, GameEntity.State.IDLE);
+                        changeState(enemy, GameEntity.State.PURSUING);
                     }
                     attackTimer = 0;
                 }

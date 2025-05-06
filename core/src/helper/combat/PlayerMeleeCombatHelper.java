@@ -97,6 +97,10 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
                 atlasPath));
     }
 
+    public int getFrameIndex(){
+        return currentAttackAnimation.getKeyFrameIndex(attackStateTime);
+    }
+
 
     private Animation<TextureRegion> createAnimation(String regionNamePrefix, String atlasPath) {
         Array<TextureRegion> frames = new Array<>();
@@ -115,6 +119,8 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
 
         return new Animation<>(this.frameDuration, frames, Animation.PlayMode.LOOP);
     }
+
+
 
     public void update(float delta, Vector2 position, Vector2 facingDirection, boolean isFacingRight, String lastDirection) {
         this.isFacingRight = isFacingRight;
@@ -144,6 +150,7 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
                 currentAttackTimer += delta;
 
                 // Update attack sprite
+
                 TextureRegion frame = currentAttackAnimation.getKeyFrame(attackStateTime, false);
                 attackSprite.setRegion(frame);
                 attackSprite.setSize(frame.getRegionWidth(), frame.getRegionHeight());

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="998">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="1004">
  <tileset firstgid="1" source="large_rock.tsx"/>
  <tileset firstgid="5" source="../../grass/Grass Tiles.tsx"/>
  <tileset firstgid="14" source="pond.tsx"/>
@@ -199,7 +199,7 @@
    </properties>
    <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
-  <object id="717" name="saint_small" type="enemies" x="699.272" y="483.463" width="34" height="34">
+  <object id="717" name="saint_small" type="enemies" x="507.295" y="474.196" width="34" height="34">
    <properties>
     <property name="class" value="enemies"/>
    </properties>
@@ -215,6 +215,11 @@
   </object>
   <object id="728" name="chicken" type="farm_animals" x="428.969" y="524.295">
    <polygon points="0,0 30.4515,0 30.4515,22.5076 3.97193,22.5076"/>
+  </object>
+  <object id="1003" name="saint_small" type="enemies" x="696.624" y="476.844" width="34" height="34">
+   <properties>
+    <property name="class" value="enemies"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="3" name="wall">
