@@ -116,7 +116,7 @@ public class PlayerMovementStateManager extends EntityStateManager<Player, Playe
 
     @Override
     protected Player.State getCurrentState(Player entity) {
-        return entity.getCurrentState();
+        return entity.getCurrentPlayerState();
     }
 
     @Override

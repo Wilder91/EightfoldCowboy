@@ -23,7 +23,16 @@ public abstract class GameEntity {
         screenInterface.removeEntity(this);
     }
 
+    public void triggerAttack() {
+        this.triggerAttack();
+    }
 
+    public void toggleSensor() {
+    }
+
+    public State getCurrentState() {
+        return this.currentState;
+    }
 
 
     public enum State {

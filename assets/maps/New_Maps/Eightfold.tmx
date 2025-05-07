@@ -29,7 +29,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects">
-  <object id="31" name="player" x="700.525" y="391.615" width="34" height="34"/>
+  <object id="31" name="player" x="591.959" y="469.729" width="34" height="34"/>
   <object id="37" name="pond" x="448.436" y="351.086">
    <polygon points="0,0 210.739,0 210.739,109.059 0,109.059"/>
   </object>
@@ -199,7 +199,7 @@
    </properties>
    <polygon points="0,0 0,28.1054 23.0108,28.1054 22.9258,0"/>
   </object>
-  <object id="717" name="saint_small" type="enemies" x="507.295" y="474.196" width="34" height="34">
+  <object id="717" name="saint_small" type="enemies" x="852.853" y="501.999" width="34" height="34">
    <properties>
     <property name="class" value="enemies"/>
    </properties>
@@ -216,7 +216,7 @@
   <object id="728" name="chicken" type="farm_animals" x="428.969" y="524.295">
    <polygon points="0,0 30.4515,0 30.4515,22.5076 3.97193,22.5076"/>
   </object>
-  <object id="1003" name="saint_small" type="enemies" x="696.624" y="476.844" width="34" height="34">
+  <object id="1003" name="saint_small" type="enemies" x="716.483" y="349.742" width="34" height="34">
    <properties>
     <property name="class" value="enemies"/>
    </properties>

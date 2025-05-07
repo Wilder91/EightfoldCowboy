@@ -205,7 +205,7 @@ public class Player extends GameEntity {
         body.setLinearVelocity(0, 0);
     }
 
-    public State getCurrentState() {
+    public State getCurrentPlayerState() {
         return currentState;
     }
 
