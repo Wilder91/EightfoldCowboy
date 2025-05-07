@@ -234,12 +234,12 @@ public class PlayerMeleeCombatHelper extends MeleeCombatHelper {
         } else if (lastDirection.equalsIgnoreCase("idleDown")) {
             // For downward attacks, make the hitbox taller than wide
             width = 0.5f * multiplier;      // Narrower width
-            height = 0.3f * multiplier;     // Taller height
-            offsetY = -0.2f;                // Position below player
+            height = 0.5f * multiplier;     // Taller height
+            offsetY = -0.5f;                // Position below player
             offsetX = 0f;                   // Centered horizontally
         } else if (lastDirection.equalsIgnoreCase("idleSide")) {
             // For side attacks, make the hitbox wider than tall
-            width = 0.15f * multiplier;     // Wider width
+            width = 0.35f * multiplier;     // Wider width
             height = 0.35f * multiplier;    // Shorter height
             offsetX = isFacingRight ? 0.42f : -0.42f;  // Position to the side based on facing
             offsetY = 0f;                   // Centered vertically
